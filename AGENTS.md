@@ -46,6 +46,9 @@ explicit user instruction.
   (the Strategy docs already do — keep it that way).
 - Frontmatter metadata (`unit`, `stage`, `lifecycle`, `updated`) on all 3SM
   documents; bump `updated` when editing.
+- `docs/management_summary.md` — bilingual (DE/FR) management summary for
+  decision makers: always keep it current whenever the project's substance
+  changes; it is linked early in the README.
 
 ## Research/data discipline
 

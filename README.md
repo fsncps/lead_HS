@@ -10,6 +10,11 @@ Everything here rests on publicly retrievable documents — safety data sheets,
 customs statistics, legal texts, producer catalogues. **No laboratory, no
 purchased samples, no paid market reports.** Minimal cost by design.
 
+> **Kurzfassung / Résumé (DE/FR):**
+> [`docs/management_summary.md`](docs/management_summary.md) — bilingual
+> management summary for decision makers; a living document, always kept
+> current.
+
 ---
 
 ## The question
@@ -221,6 +226,7 @@ track what is sourced versus open.
 
     README.md                  this file
     AGENTS.md                  conventions for AI-assisted work on this repo
+    docs/management_summary.md bilingual management summary (DE/FR), always current
     docs/plan/3SM/             planning notes (3-stage system)
     ├── README.md              plain-language guide to the planning tree
     ├── MASTER.md              project dashboard
