@@ -21,7 +21,7 @@ the project to the next stage.
 |---|---|
 | [`MASTER.md`](MASTER.md) | Project dashboard: current stage, key numbers, document index |
 | [`10_STRATEGY/MASTER.md`](10_STRATEGY/MASTER.md) | The decisions taken so far, open questions, and the roadmap |
-| [`10_STRATEGY/methodology.md`](10_STRATEGY/methodology.md) | How the market is measured: population estimate, sampling plan, laboratory checks |
+| [`10_STRATEGY/methodology.md`](10_STRATEGY/methodology.md) | How the market is measured: Swiss trade statistics, population estimate, sampling plan, cross-document corroboration (no laboratory) |
 | [`10_STRATEGY/lead_sds.md`](10_STRATEGY/lead_sds.md) | Background: which lead compounds occur in paints, what EU law allows, and what safety data sheets can and cannot reveal |
 
 Folders for `20_DESIGN/`, `30_IMPLEMENTATION/` and an archive will be created
