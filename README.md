@@ -53,11 +53,32 @@ Lead appears in paint for three reasons, not one:
 Two things follow. Even inside the EU, the anti-corrosion and drier routes
 remain open — the signal, if any, lives in professional and industrial
 solvent-borne coatings (3208), not water-borne wall paints (3209). And
-Swiss law runs on its own track: Swiss chemicals legislation has been
-substantially aligned with EU REACH/CLP rules, but whether every EU lead
-restriction carries over, and how third-country imports are controlled, is
-exactly the kind of question this study documents (see the legal workstream
-below; details still to be verified).
+Swiss law runs on its own track: Switzerland bans paints with **0.01%
+(100 ppm) total lead or more** (ChemRRV, Anhang 2.8) — far stricter than
+the EU. How that ban meets the EU market is the regulatory seam this study
+examines.
+
+## The regulatory seam: Cassis de Dijon and the Swiss lead ban
+
+The **Cassis de Dijon principle** (from a 1979 EU Court of Justice ruling)
+means: products lawfully sold in the EU may, as a rule, also be sold in
+Switzerland without renewed Swiss approval. Switzerland adopted this
+unilaterally in 2010 (Technical Barriers to Trade Act, THG Art. 16a).
+
+The exceptions are catalogued in the **VIPaV** (SR 946.513.8), Art. 2 — and
+the very first item is **lead-containing paints and varnishes** (Art. 2
+Bst. a Ziff. 1, referencing ChemRRV Anhang 2.8). This entry ensures that
+EU-lawful lead paints (say, a red-lead primer legally sold in Germany or
+Sweden) cannot flow into Switzerland under Cassis de Dijon despite failing
+the Swiss 100 ppm ban. The catalogue is reviewed every five years (last
+review 2023: keep; next around 2028); enforcement sits with the BAFU, the
+Cassis dossier with SECO.
+
+Whether this exception has a **factual field of application** — whether
+there are lead paints on the EU market at all, and which — is exactly the
+question nobody can currently answer, and the one this study addresses with
+documented evidence. (Swiss chemicals-law details beyond this frame are an
+open research item; see the strategy docs.)
 
 ## The core problem: nobody counts paint products
 
@@ -83,6 +104,19 @@ formulation** (one recipe, however many colour shades) or one **shop item**
 (each colour × tin size × brand)? The difference spans one to three orders
 of magnitude. This study counts **base formulations**, the same way official
 product registers do.
+
+## What we already know: hard EU-market findings (2026-08-31)
+
+The first research pass already answers part of "is there anything on the
+market at all":
+
+| Stream | Status on the EU market | Evidence |
+|---|---|---|
+| Lead chromate pigments (chrome yellow/red) | **No lawful supply since 17 Mar 2022** — the Commission refused the last authorisations after the Sweden v Commission litigation | court records, ECHA register |
+| Red lead / minium anticorrosive primers | **Documented presence in niches** — marine chandlers in Germany (Epifanes "WERDOL Bleimennige", SDS 2021); Sweden sells only to licensed professionals; DIY mainstream substituted lead-free | live retail + SDS |
+| Lead driers (octoate) in alkyd paints | **Unknown** — neither presence nor absence documented; the key open empirical question for our sampling | gap |
+| Artists' oil colours (lead white, Cremnitz white, Naples yellow) | **Documented presence** (Old Holland/NL, Zecchi/IT) — but classified under **HS 3213**, outside 3208/3209 and invisible in trade statistics | live catalogues |
+| Legacy: road paints | 63% of 236 sampled European road paints contained lead (up to 17.2%) — provenance unresolved | Turner & Filella 2022, *Environmental Pollution* |
 
 ## Suggested methodology (brainstormed, subject to refinement)
 
@@ -207,20 +241,25 @@ track what is sourced versus open.
 
 | Phase | Content |
 |---|---|
-| 0 | Close research gaps: Swiss customs extraction (EZV), legal dossier (ChemO alignment, MRA coverage), PCN statistics, Nordic SPIN query, catalog counts |
-| 1 | Pilot: freeze the lead dictionary, test SDS collection and parsing on 1–2 groups |
-| 2 | Build the product frame, draw the sample, collect documents at full scale |
+| 0 | Close research gaps: Swiss customs extraction (EZV); verify current legal texts (ChemRRV Anhang 2.8, consolidated VIPaV); EU lead-chromate refusal decision reference; PCN statistics; Nordic SPIN query; catalog counts |
+| 1 | Pilot: freeze the lead dictionary, test SDS collection and parsing on 1–2 groups (lead-drier stream first) |
+| 2 | Build the product frame, draw the sample, collect documents at full scale; run the HS 3213 artists' colours census annex in parallel |
 | 3 | Cross-document corroboration and quality assurance |
 | 4 | Analysis; write the decision-makers' discussion basis; freeze the database |
 
 ## Expected result (hypotheses to test, not conclusions)
 
 - Consumer decorative paints: ≈ 0% intentional lead.
-- Professional/industrial solvent-borne segments: single-digit percentages.
+- Professional/industrial solvent-borne segments: niche documented presence
+  (red-lead primers, marine), lead driers unknown.
 - Third-country imports: markedly higher, mirroring source-market prevalence
   (global studies show >50% in several countries).
+- Artists' oil colours (3213 census annex): the clearest case of lawful
+  lead-colour presence.
 - A documented gap map EU vs Switzerland, every claim traceable to a public
-  document.
+  document — including the caveat that the Swiss 100 ppm ban sits **below**
+  the EU safety-data-sheet declaration floor (0.1%), so a paint can be
+  EU-lawful, fully documented, and still exceed the Swiss ban invisibly.
 
 ## Repository layout
 
