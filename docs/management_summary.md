@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-08-31 — in Erstellung / en cours de rédaction.
+Stand / État: 2026-09-11 — in Erstellung / en cours de rédaction.
 
 ---
 
@@ -21,16 +21,21 @@ Pigmente weitgehend verboten; Rostschutz-Zusätze und Trockenstoffe bleiben
 jedoch auch in der EU zulässig. Für Europa — und erst recht für die Schweiz —
 existiert keine Messung, wie häufig bleihaltige Farben heute im Handel sind.
 Die Schweiz ist nicht Mitglied der EU oder des EWR; ihr Farbenmarkt wird
-durch Inlandproduktion, EU-Importe und Drittland-Importe gespeist, die
-rechtlich unterschiedlich eingebunden sind (bilaterale Abkommen).
+durch Inlandproduktion, EU-Importe und Drittland-Importe gespeist. Für
+Produkte aus der EU und dem EWR gilt das autonom übernommene
+Cassis-de-Dijon-Prinzip, für Drittland-Importe nicht.
 
 ### Regulatorischer Kontext: Cassis de Dijon und VIPaV
 
 Das «Cassis-de-Dijon-Prinzip» (benannt nach einem EuGH-Urteil von 1979)
 besagt im Kern: Produkte, die in der EU rechtskonform im Verkehr sind,
 dürfen grundsätzlich auch ohne erneute schweizerische Prüfung verkauft
-werden. Die Schweiz hat dieses Prinzip 2010 einseitig übernommen und im
+werden. Die Schweiz hat dieses Prinzip 2010 autonom übernommen und im
 Bundesgesetz über die technischen Handelshemmnisse (THG) verankert.
+Ausnahmen sind nur zum Schutz überwiegender öffentlicher Interessen
+möglich (THG Art. 4); sie wurden bei der Einführung des Prinzips 2010
+festgelegt und schützen jeweils eine Schweizer Technikvorschrift, die aus
+solchen Interessen von den EU-Vorschriften abweicht.
 
 Ausnahmen von diesem Grundsatz listet die Verordnung über das
 Inverkehrbringen von Produkten nach ausländischen Vorschriften (VIPaV,
@@ -41,8 +46,13 @@ Chemikalien-Risikoreduktions-Verordnung (ChemRRV, Anhang 2.8) Farben mit
 einem Gesamtbleigehalt ab 0,01 % (100 ppm) — deutlich strenger als die EU.
 Der Ausnahmeeintrag bewirkt, dass EU-rechtskonforme bleihaltige Farben
 nicht über das Cassis-Prinzip in die Schweiz eingeführt werden können.
-Vollzugsbehörde ist das BAFU; der Katalog wird alle fünf Jahre überprüft
-(letzte Überprüfung 2023 mit dem Ergebnis «Beibehaltung»; nächste ca. 2028).
+Vollzugsbehörde ist das BAFU. Der gesamte Ausnahmekatalog wird alle fünf
+Jahre überprüft (letzte Überprüfung 2023 mit dem Ergebnis «Beibehaltung»;
+nächste ca. 2028); das SECO führt diese Überprüfung durch. Dasjenige
+Bundesamt, welches eine Ausnahme beantragt hat, verantwortet die
+zugehörige Regelung und deren Umsetzung, Überwachung und Revision. Die
+vorliegende Studie liefert hierfür die dokumentbasierte
+Entscheidungsgrundlage — ohne Ergebnis der Überprüfung vorwegzunehmen.
 
 Ob dieser Rahmen ein faktisches Anwendungsfeld hat — ob es also bleihaltige
 Farben auf dem EU-Markt und auf dem Schweizer Markt überhaupt noch gibt und
@@ -76,8 +86,7 @@ Rechtsvergleich EU–Schweiz inkl. Cassis-de-Dijon-/VIPaV-Rahmen.
 [PLATZHALTER — wird laufend ergänzt; Resultate folgen nach Phase 2
 (Erhebung) und Phase 4 (Bericht).]
 
-Aktueller Stand (31.08.2026): Strategiephase abgeschlossen. Erste harte
-Marktbefunde (EU, dokumentiert):
+Marktbefunde (Stand 31.08.2026, EU, dokumentiert):
 
 - **Bleichromat-Pigmente:** keine rechtmässige EU-Inverkehrbringung mehr seit
   17.03.2022 (Verweigerung der letzten Autorisierungen nach dem
@@ -98,6 +107,16 @@ der EU vollkommen rechtskonform deklariert sein und trotzdem die
 schweizerische Grenze überschreiten — für die rein dokumentbasierte Methode
 unsichtbar. Dieser blinde Fleck wird in allen Resultaten ausgewiesen.
 
+Projektstand (11.09.2026): Die Strategie für die erste Ausbaustufe
+(«v0.1.1 — Quellenprüfung») ist abgeschlossen. Der technische Entwurf für
+das Erhebungswerkzeug — ein kleines eigenes Programm («leadhs»), das
+Dokumente sammelt, unangetastet archiviert und jeden Befund nachvollziehbar
+macht — und für die zugehörige Evidence-Datenbank liegt vor und wurde am
+11.09.2026 zweistufig geprüft (inhaltlich-kritische Überprüfung und
+Engineering-Review; die Befunde werden in einem Korrekturplan nachgefahren).
+Vereinfachte Diagramme zum Vorgehen (Entscheidungsbaum je Produkt,
+Quellenprüfung) und zum Werkzeug sind im Projekt-README enthalten.
+
 ### Grenzen der Studie
 
 Sicherheitsdatenblätter weisen deklarationspflichtige Inhaltsstoffe erst ab
@@ -109,9 +128,10 @@ sie werden als klar ausgewiesene Einschränkungen dokumentiert.
 
 ### Nächste Schritte
 
-Phase 0: Beschaffung der Schweizer Handelsdaten (EZV); Verifikation der
-geltenden Rechtstexte (ChemRRV Anhang 2.8, VIPaV im konsolidierten Wortlaut);
-dann Piloterhebung, Erhebung (inkl. 3213-Census), Bericht
+Sofort: Bau des Erhebungswerkzeugs und Quellenprüfung (Phase 0) —
+Beschaffung der Schweizer Handelsdaten (EZV) und Verifikation der geltenden
+Rechtstexte (ChemRRV Anhang 2.8, VIPaV im konsolidierten Wortlaut); danach
+Piloterhebung, Erhebung (inkl. 3213-Census), Bericht
 (Diskussionsgrundlage) und Abschluss der Produkt-Datenbank.
 
 ---
@@ -129,15 +149,22 @@ l'UE. Aucune mesure n'existe pour l'Europe — et encore moins pour la Suisse
 — de la fréquence réelle des peintures au plomb sur le marché. La Suisse
 n'est membre ni de l'UE ni de l'EEE ; son marché des peintures est alimenté
 par la production indigène, les importations de l'UE et celles de pays
-tiers, intégrées différemment sur le plan juridique (accords bilatéraux).
+tiers. Pour les produits de l'UE et de l'EEE s'applique le principe
+Cassis de Dijon repris de manière autonome, mais pas pour les importations
+de pays tiers.
 
 ### Contexte réglementaire : Cassis de Dijon et OPPr
 
 Le principe dit « Cassis de Dijon » (du nom d'un arrêt de la CJCE de 1979)
 signifie en substance que des produits mis légalement sur le marché de
 l'UE peuvent en principe être vendus en Suisse sans nouvel examen
-technique suisse. La Suisse a repris ce principe unilatéralement en 2010 et
-l'a ancré dans la loi sur les obstacles techniques au commerce (LOTC).
+technique suisse. La Suisse a repris ce principe de manière autonome en
+2010 et l'a ancré dans la loi sur les obstacles techniques au commerce
+(LOTC). Les exceptions ne sont possibles qu'à la protection d'intérêts
+publics prépondérants (art. 4 LOTC) ; elles ont été définies lors de
+l'introduction du principe en 2010 et protègent chacune une prescription
+technique suisse qui diverge des prescriptions de l'UE pour de tels
+intérêts.
 
 Les exceptions à ce principe figurent à l'article 2 de l'ordonnance sur la
 mise sur le marché de produits selon des prescriptions étrangères (OPPr /
@@ -148,9 +175,13 @@ liés aux produits chimiques (ORRChim, annexe 2.8), la Suisse interdit les
 peintures dont la teneur totale en plomb atteint 0,01 % (100 ppm) — nettement
 plus strict que l'UE. Cette exception empêche que des peintures au plomb
 conformes au droit de l'UE ne soient importées en Suisse par la voie du
-principe Cassis de Dijon. L'autorité d'exécution est l'OFEV ; le catalogue
-est réexaminé tous les cinq ans (dernier examen en 2023, concluant au
-maintien ; prochain vers 2028).
+principe Cassis de Dijon. L'autorité d'exécution est l'OFEV. L'ensemble du
+catalogue des exceptions est réexaminé tous les cinq ans (dernier examen
+en 2023, concluant au maintien ; prochain vers 2028) ; le SECO conduit ce
+réexamen. L'office fédéral qui a demandé une exception reste responsable
+de la réglementation correspondante, de sa mise en œuvre, de sa
+surveillance et de sa révision. La présente étude fournit à cet égard la
+base de décision documentaire — sans préjuger de l'issue de l'examen.
 
 Ce cadre a-t-il un champ d'application factuel — existe-t-il encore des
 peintures au plomb sur le marché de l'UE et sur le marché suisse, et dans
@@ -186,8 +217,7 @@ Cassis-de-Dijon/OPPr.
 [PLACEHOLDER — complété au fil de l'eau ; résultats après la phase 2
 (collecte) et la phase 4 (rapport).]
 
-État actuel (31.08.2026) : phase stratégique achevée. Premiers constats de
-marché fermes (UE, documentés) :
+Constats de marché (état au 31.08.2026, UE, documentés) :
 
 - **Pigments au chromate de plomb :** plus de mise sur le marché légale dans
   l'UE depuis le 17.03.2022 (refus des dernières autorisations après la
@@ -209,6 +239,17 @@ peut être parfaitement déclaré conformément au droit de l'UE et dépasser
 malgré tout la limite suisse — de manière invisible pour la méthode purement
 documentaire. Cet angle mort est signalé dans tous les résultats.
 
+État du projet (11.09.2026) : la stratégie de la première étape
+(« v0.1.1 — vérification des sources ») est achevée. La conception
+technique de l'outil de collecte — un petit programme propre
+(« leadhs ») qui rassemble, archive sans modification et rend traçables
+les documents — et de la base de données de preuves correspondante est
+établie et a été vérifiée en deux étapes le 11.09.2026 (examen critique
+de contenu et revue d'ingénierie ; les constats sont suivis dans un plan
+de correction). Des schémas simplifiés de la démarche (arbre de décision
+par produit, vérification des sources) et de l'outil figurent dans le
+README du projet.
+
 ### Limites de l'étude
 
 Les fiches de données de sécurité ne signalent les substances dangereuses
@@ -220,8 +261,9 @@ sont documentés comme restrictions explicitement signalées.
 
 ### Prochaines étapes
 
-Phase 0 : obtention des statistiques du commerce extérieur suisse (AFD) ;
-vérification des textes juridiques en vigueur (ORRChim annexe 2.8, OPPr au
-libellé consolidé) ; puis collecte pilote, collecte (y compris recensement
-3213), rapport (base de discussion) et finalisation de la base de données
-produits.
+Immédiatement : construction de l'outil de collecte et vérification des
+sources (phase 0) — obtention des statistiques du commerce extérieur suisse
+(AFD) et vérification des textes juridiques en vigueur (ORRChim annexe 2.8,
+OPPr au libellé consolidé) ; puis collecte pilote, collecte (y compris
+recensement 3213), rapport (base de discussion) et finalisation de la base
+de données produits.

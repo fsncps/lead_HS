@@ -7,6 +7,7 @@
 .DS_Store
 Thumbs.db
 .env
+.envrc
 node_modules/
 dist/
 __pycache__/
