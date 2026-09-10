@@ -1,0 +1,79 @@
+digraph dataflow {
+  rankdir=LR;
+  node [fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=10];
+
+  // External entities
+  sources [shape=box, label="Sources (CS/PE/LG/ST/LI)"];
+  generated_report [shape=box, label="generated report (DE/FR/EN)"];
+
+  // Processes
+  probe [shape=box, style=rounded, label="probe"];
+  acquire [shape=box, style=rounded, label="acquire"];
+  ingest [shape=box, style=rounded, label="ingest"];
+  parse [shape=box, style=rounded, label="parse"];
+  frame [shape=box, style=rounded, label="frame"];
+  sample [shape=box, style=rounded, label="sample"];
+  screen [shape=box, style=rounded, label="screen"];
+  corroborate [shape=box, style=rounded, label="corroborate"];
+  analyze [shape=box, style=rounded, label="analyze"];
+  report [shape=box, style=rounded, label="report"];
+
+  // Data stores
+  probe_run_finding [shape=cylinder, label="probe_run / probe_finding"];
+  population_anchor [shape=cylinder, label="population_anchor"];
+  raw_store [shape=cylinder, label="raw store (data/raw/<sha256>)"];
+  product [shape=cylinder, label="product"];
+  sighting [shape=cylinder, label="sighting"];
+  manufacturer [shape=cylinder, label="manufacturer"];
+  sds_document [shape=cylinder, label="sds_document"];
+  sds_finding [shape=cylinder, label="sds_finding"];
+  lead_compound [shape=cylinder, label="lead_compound"];
+  trade_stat [shape=cylinder, label="trade_stat"];
+  frame_stratum [shape=cylinder, label="frame_stratum"];
+  sampling_selection [shape=cylinder, label="sampling_run / sample_selection"];
+  screen_status [shape=cylinder, label="screen_status"];
+  corroboration_docs [shape=cylinder, label="corroboration documents"];
+  corroboration [shape=cylinder, label="corroboration"];
+  prevalence [shape=cylinder, label="prevalence"];
+
+  // Flows
+  sources -> probe [label="source data"];
+  probe -> probe_run_finding [label="probe results"];
+  probe_run_finding -> population_anchor [label="provisional anchors"];
+
+  sources -> acquire [label="source data"];
+  acquire -> raw_store [label="raw files"];
+
+  raw_store -> ingest [label="raw data"];
+  ingest -> product;
+  ingest -> sighting;
+  ingest -> manufacturer;
+
+  product -> parse [label="product data"];
+  sds_document -> parse [label="SDS docs"];
+  parse -> sds_finding;
+  parse -> lead_compound;
+
+  trade_stat -> frame [label="trade stats"];
+  population_anchor -> frame [label="anchors"];
+  frame -> frame_stratum;
+
+  frame_stratum -> sample [label="strata"];
+  sample -> sampling_selection;
+
+  sampling_selection -> screen [label="selected samples"];
+  screen -> screen_status;
+
+  sds_finding -> corroborate [label="findings"];
+  corroboration_docs -> corroborate [label="corroboration docs"];
+  corroborate -> corroboration;
+
+  frame_stratum -> analyze;
+  sds_finding -> analyze;
+  corroboration -> analyze;
+  analyze -> prevalence;
+
+  prevalence -> report [label="estimates"];
+  report -> generated_report [label="DE/FR/EN report"];
+}

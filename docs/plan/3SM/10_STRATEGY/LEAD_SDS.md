@@ -1,8 +1,8 @@
 ---
-unit: v0.1
+unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-08-31
+updated: 2026-09-10
 ---
 
 # Lead identification via SDS — compounds, legal status, feasibility
@@ -21,6 +21,23 @@ sheets must list classified hazardous ingredients above 0.1% — so they
 reveal deliberately added lead, but not the 100–1000 ppm band that matters
 for the Swiss ban. The document also lists the first hard EU-market
 presence findings and prior studies that calibrate expectations.
+
+## DECISIONS (condensed; authoritative list in MASTER.md)
+
+- Dictionary v0.1 scope: pigments, anticorrosives, driers, artists'
+  pigments; unverified CAS flagged (*) until ECHA EC-inventory check.
+- SDS Section 3 as primary detection source; UFI as join key; Section 15
+  authorisation statements as anomaly signal (MASTER D5).
+- Feasibility verdict: declared classified lead ≥ 0.1% is visible; the
+  100–1000 ppm band is invisible — headline caveat (MASTER D15).
+
+## OPEN ITEMS
+
+- CAS verification: lead naphthenate (61790-14-5?), lead neodecanoate
+  (27253-29-8?) vs ECHA EC inventory — before dictionary freeze.
+- OJ reference of the 17 Mar 2022 lead-chromate refusal.
+- Artists' colours: member-state permit practice (ILO C13) NL/IT/DE/FR.
+- FR/IT red-lead primer retail sweep ("minium de plomb"/"minio rosso").
 
 ## Lead-compound dictionary (v0.1)
 
@@ -64,9 +81,12 @@ Annex XIV (sunset 2019) — screening flag when present.
 
 ## Swiss layer (VIPaV / ChemRRV / Cassis de Dijon)
 
-- **Cassis de Dijon (CH):** EU/EEA-lawful products may enter the Swiss
-  market without Swiss re-approval (THG Art. 16a, unilateral, 1 July 2010);
-  exceptions catalogued in **VIPaV (SR 946.513.8) Art. 2**.
+- **Cassis de Dijon (CH — autonomous, not bilateral):** EU/EEA-lawful
+  products may enter the Swiss market without Swiss re-approval (THG
+  Art. 16a, autonomously adopted 1 July 2010; MRA = separate THG
+  instrument, out of scope); exceptions (Federal Council, THG Art. 16a
+  Abs. 2 lit. e i.V.m. Art. 4 Abs. 3–4) catalogued in **VIPaV
+  (SR 946.513.8) Art. 2**; statutory list basis THG Art. 31 Abs. 2.
 - **VIPaV Art. 2 Bst. a Ziff. 1** = "bleihaltige Anstrichfarben und Lacke
   sowie damit behandelte Produkte (Anhang 2.8 ChemRRV)" — the first item of
   the exceptions catalogue, in force since 2010, still in the SECO
@@ -77,8 +97,13 @@ Annex XIV (sunset 2019) — screening flag when present.
   total Pb ≥ 0.01% (100 ppm); ban on placing on the market incl. treated
   articles; no standing lead exceptions (transitions expired 2006/07).
   Stricter than the EU — hence the exception.
-- Five-yearly review of the catalogue (VIPaV Art. 3): 2023 outcome "keep"
-  (Eignung/Erforderlichkeit/Verhältnismässigkeit affirmed); next ~2028.
+- Five-yearly review of the **entire** exception catalogue (VIPaV Art. 3),
+  conducted by SECO: 2023 outcome "keep" (Eignung/Erforderlichkeit/
+  Verhältnismässigkeit affirmed); next ~2028. Governance chain: the
+  requesting/owning office (BBL per commissioning context 2026-09-10 —
+  verify before naming in deliverables) is responsible for implementation,
+  monitoring, revision; BAFU enforces; the study feeds this cycle with a
+  document-based decision basis, outcome-neutral.
 - Chemicals/CdD boundary: a product enters either via Swiss chemicals law
   or via CdD, not mixed; follow-up duties survive (Anmeldestelle Chemikalien).
 - ChemO/REACH-alignment details beyond this frame remain an open dossier
@@ -105,7 +130,7 @@ Annex XIV (sunset 2019) — screening flag when present.
   artificial-stone 2022: constituents under-reported).
 - **No laboratory in this project:** blind spots cannot be bounded
   experimentally. Mitigation is document-only corroboration (see
-  `methodology.md`): cross-check positives against TDS, labels, retailer
+  `METHODOLOGY.md`): cross-check positives against TDS, labels, retailer
   listings, older SDS versions, cross-market brand variants; report
   contradictions as findings; carry an explicit limitations section in the
   final discussion basis.
@@ -124,4 +149,4 @@ Annex XIV (sunset 2019) — screening flag when present.
 
 ## REFERENCES
 
-Legal EU: consolidated REACH CELEX 02006R1907-20221014; Reg (EU) 125/2012; Reg (EU) 2020/878; Reg (EU) 2015/628; GC T-837/16 + CJEU C-389/19 P — via EUR-Lex/ICLR + Wayback snapshots (accessed 2026-08-31). Legal CH: THG Art. 16a (archived 2010), VIPaV Art. 1–2 (archived 2010), ChemRRV Anh. 2.8 (archived 2005), SECO Negativliste 2026, SECO 2023 five-yearly review, Anmeldestelle Chemikalien (URLs in methodology.md). Market: product/SDS URLs in methodology.md §REFERENCES. Studies: DOIs and OpenAlex records as cited. SDS quality: DOI 10.2478/s13382-014-0302-8; DOI 10.1093/annweh/wxac020; DOI 10.1002/ajim.20613.
+Legal EU: consolidated REACH CELEX 02006R1907-20221014; Reg (EU) 125/2012; Reg (EU) 2020/878; Reg (EU) 2015/628; GC T-837/16 + CJEU C-389/19 P — via EUR-Lex/ICLR + Wayback snapshots (accessed 2026-08-31). Legal CH: THG Art. 16a (archived 2010), VIPaV Art. 1–2 (archived 2010), ChemRRV Anh. 2.8 (archived 2005), SECO Negativliste 2026, SECO 2023 five-yearly review, Anmeldestelle Chemikalien (URLs in METHODOLOGY.md). Market: product/SDS URLs in METHODOLOGY.md §REFERENCES. Studies: DOIs and OpenAlex records as cited. SDS quality: DOI 10.2478/s13382-014-0302-8; DOI 10.1093/annweh/wxac020; DOI 10.1002/ajim.20613.

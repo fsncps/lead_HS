@@ -36,3 +36,43 @@ documented NL/IT; lead driers: unknown). The 100 ppm (CH ban) vs 0.1%
 (EU SDS floor) visibility gap promoted to headline limitation. Management
 summary (DE/FR), README, AGENTS and Strategy docs updated (commit pending
 at time of writing). Unit remains LIVE in STRATEGY.
+
+## 2026-09-10 — v0.1 — Background/purpose correction: autonomous CdD frame, not EU-bilateral
+
+Framing error corrected after reading the SECO Cassis-de-Dijon/THG/MRA
+pages and the THG full text (Lexaris, SR 946.51): the study is anchored in
+the autonomously adopted Cassis-de-Dijon principle (THG Art. 16a — one of
+three THG instruments), not in EU-bilateral compliance; MRA (THG Art. 14)
+scoped out. Political protocol recorded in 10_STRATEGY decision 11:
+exceptions defined at the principle's 2010 inception, each protecting a
+deviating Swiss technical regulation (THG Art. 4 Abs. 3–4) with a
+requesting/owning federal office responsible for implementation,
+monitoring, revision; lead entry: requester/owner BBL (commissioning
+context — verify before naming in deliverables), enforcement BAFU, SECO
+conducts the five-yearly review of the entire catalogue (2023: keep; next
+~2028); deliverable = outcome-neutral decision basis for the owner within
+that cycle. THG Art. 31 Abs. 2 (list-keeping basis) verified via Lexaris.
+README, management summary (DE/FR), strategy docs and AGENTS reworded.
+Unit remains LIVE in STRATEGY.
+
+## 2026-09-10 — v0.1 — Strategy topics: data source / data model / architecture
+
+Expanded 10_STRATEGY: DATA_SOURCE.md (source register, provenance &
+scraping discipline), DATA_MODEL.md (evidence-database schema:
+formulation-level products, SDS findings, seeded sampling runs),
+ARCHITECTURE.md (no-server CLI pipeline `leadhs`, generated reporting).
+methodology.md → METHODOLOGY.md and lead_sds.md → LEAD_SDS.md (CAPS
+standardization); DECISIONS/OPEN ITEMS sections added to both. MASTER
+gains decisions 16–18 (tooling stack, database principles, reporting).
+Unit remains LIVE in STRATEGY.
+
+## 2026-09-10 — v0.1.1 — First unit opened: probe-first rollout (slim CLI)
+
+Unit v0.1.1 (source probing) defined as the first bounded work unit:
+slim `leadhs` slice — db init/status, source load/list, probe
+run/report — nothing else; full command surface stays design-ahead
+(M0–M4 rollout, ARCHITECTURE.md). Probe entities added to the schema
+(probe_run, probe_finding; provisional counts, manual anchor
+promotion — D20). Strategy readiness split: Design may proceed for
+the slim probe CLI; full-pipeline freeze awaits probe results. v0.1
+remains the foundational strategy pass. Unit v0.1.1 LIVE in STRATEGY.

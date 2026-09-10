@@ -1,0 +1,54 @@
+digraph architecture {
+  rankdir=TB;
+  node [fontname="Helvetica", fontsize=11, shape=box, style="rounded,filled", fillcolor="#eef2f7", color="#5b7fa6"];
+  edge [fontname="Helvetica", fontsize=10, color="#444444"];
+
+  CLI [label="leadhs CLI (click)\ndb|source|probe|doctor", fillcolor="#dbe8f6"];
+  db [label="db.py\nconnect WAL, migrate, audit R1-R9"];
+  store [label="store.py\nraw store: put/get/verify"];
+  fetch [label="fetch.py\nrobots, rate limit, retry"];
+  engine [label="probe/engine.py\nper-source run loop"];
+  adapters [label="probe/adapters.py\nCS / PE / ST + manual"];
+  report [label="report.py\nreport: md/csv/json"];
+  doctor [label="doctor.py\nenvironment preflight"];
+  sqlite [label="SQLite leadhs.sqlite\nprobe-era subset + views", shape=cylinder, fillcolor="#f6f0db", color="#a6935b"];
+  raw [label="data/raw/\nraw document store", shape=folder, fillcolor="#f6f0db", color="#a6935b"];
+
+  subgraph cluster_probe {
+    label="probe";
+    fontname="Helvetica";
+    fontsize=11;
+    color="#8aa4bf";
+    style="rounded";
+    engine;
+    adapters;
+  }
+
+  subgraph cluster_storage {
+    label="storage";
+    fontname="Helvetica";
+    fontsize=11;
+    color="#bfa96b";
+    style="rounded";
+    sqlite;
+    raw;
+  }
+
+  CLI -> db;
+  CLI -> store;
+  CLI -> fetch;
+  CLI -> engine;
+  CLI -> report;
+  CLI -> doctor;
+
+  engine -> adapters;
+  engine -> db;
+  engine -> store;
+  engine -> fetch;
+
+  adapters -> fetch [label="network"];
+  adapters -> store [label="raw archive"];
+
+  db -> sqlite;
+  store -> raw;
+}

@@ -1,0 +1,39 @@
+digraph ER {
+  rankdir=LR;
+  node [fontname="Helvetica", fontsize=11, shape=record];
+  edge [fontname="Helvetica", fontsize=10];
+
+  source            [label="{source}"];
+  probe_run         [label="{probe_run}"];
+  probe_finding     [label="{probe_finding}"];
+  manufacturer      [label="{manufacturer}"];
+  product           [label="{product}"];
+  sighting          [label="{sighting}"];
+  sds_document      [label="{sds_document}"];
+  sds_finding       [label="{sds_finding}"];
+  lead_compound     [label="{lead_compound}"];
+  corroboration     [label="{corroboration}"];
+  trade_stat        [label="{trade_stat}"];
+  population_anchor [label="{population_anchor}"];
+  frame_stratum     [label="{frame_stratum}"];
+  sampling_run      [label="{sampling_run}"];
+  sample_selection  [label="{sample_selection}"];
+
+  source -> probe_run         [label="1:N runs"];
+  probe_run -> probe_finding  [label="1:N yields"];
+  source -> probe_finding     [label="1:N reports"];
+  source -> manufacturer      [label="1:N documents"];
+  manufacturer -> product     [label="1:N makes"];
+  product -> sighting         [label="1:N has"];
+  product -> sds_document     [label="1:N has"];
+  sds_document -> sds_finding [label="1:N yields"];
+  lead_compound -> sds_finding [label="1:N appears in"];
+  product -> corroboration    [label="1:N has"];
+  source -> trade_stat        [label="1:N reports"];
+  source -> population_anchor [label="1:N defines"];
+  source -> frame_stratum     [label="1:N defines"];
+  sampling_run -> sample_selection [label="1:N selects"];
+  product -> sample_selection [label="1:N sampled in"];
+  frame_stratum -> sample_selection [label="1:N stratifies"];
+  probe_finding -> population_anchor [label="1:1 manual promotion", style=dashed];
+}

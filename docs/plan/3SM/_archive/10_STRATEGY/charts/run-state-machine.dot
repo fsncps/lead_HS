@@ -1,0 +1,24 @@
+digraph run_state_machine {
+  rankdir=LR;
+  node [fontname="Helvetica", fontsize=11, shape=box, style="rounded,filled", fillcolor="#e8f0fe"];
+  edge [fontname="Helvetica", fontsize=10];
+
+  initial [shape=circle, label="", style=filled, fillcolor=black, fixedsize=true, width=0.2];
+
+  planned [label="planned\nrun row created,\nrun_key assigned"];
+  running [label="running\nadapter probing this source"];
+  done [shape=doublecircle, style=filled, fillcolor="#c6e0b4", label="done\nfindings + docs written"];
+  failed [fillcolor="#fbe4e4", label="failed\nunrecoverable network\nerror (exit 2)"];
+  blocked [fillcolor="#fbe4e4", label="blocked\nsource wholly inaccessible"];
+  aborted [fillcolor="#fbe4e4", label="aborted\nuser interrupt;\nfindings persist"];
+
+  initial -> planned;
+  planned -> running [label="start"];
+  running -> done [label="all findings written"];
+  running -> failed [label="unrecoverable network error"];
+  running -> blocked [label="source wholly inaccessible"];
+  running -> aborted [label="interrupt (Ctrl-C)"];
+  failed -> planned [label="re-run as NEW run\n(old findings stay)"];
+  blocked -> planned [label="re-run as NEW run\n(manual fallback recorded)"];
+  aborted -> planned [label="re-run as NEW run\n(old findings persist)"];
+}

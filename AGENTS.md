@@ -6,12 +6,16 @@ Project-specific instructions for all agents in this repository.
 
 Documentation-only study of lead in paints under HS/CN 3208 + 3209 (plus a
 census annex for artists' colours under 3213) on the **Swiss and EU
-markets**, framed by Swiss external trade and the bilateral/regulatory
-frame (Cassis-de-Dijon principle, VIPaV exceptions catalogue, ChemRRV lead
-ban). Deliverable: a discussion basis for decision makers plus a reusable
-product/SDS evidence database. Research study + light data-engineering
-hybrid (document scraping, database). Currently in 3SM stage STRATEGY,
-unit v0.1.
+markets**, framed by Swiss external trade and the autonomous Swiss
+Cassis-de-Dijon regulatory frame (THG Art. 16a, VIPaV exceptions
+catalogue, ChemRRV lead ban — not an EU-bilateral matter; MRA out of
+scope). Deliverable: a decision basis for the actors around the lead-paint
+exception (regulation owner, review lead; commissioning context stays
+implicit in public documents) plus a reusable product/SDS evidence
+database. Research study + light data-engineering hybrid (document
+scraping, database). Currently in 3SM stage STRATEGY; active unit
+v0.1.1 (source probing — slim CLI), on top of the v0.1 foundational
+strategy pass.
 
 **Hard constraints:** no laboratory work, no physical samples, no paid data
 sources — publicly retrievable documents only, minimal cost.
@@ -26,8 +30,10 @@ In planning work, read first:
     docs/plan/3SM/MASTER.md
     docs/plan/3SM/10_STRATEGY/MASTER.md
 
-then the relevant topic files (`10_STRATEGY/methodology.md`,
-`10_STRATEGY/lead_sds.md`). Treat existing Strategy as accumulated knowledge;
+then the relevant topic files (`10_STRATEGY/METHODOLOGY.md`,
+`10_STRATEGY/LEAD_SDS.md`, `10_STRATEGY/DATA_SOURCE.md`,
+`10_STRATEGY/DATA_MODEL.md`, `10_STRATEGY/ARCHITECTURE.md`). Treat existing
+Strategy as accumulated knowledge;
 do not re-research settled questions.
 
 ## 3SM
@@ -56,10 +62,11 @@ explicit user instruction.
 
 - Lead-compound identifiers (CAS/EC) that are still unverified must stay
   flagged until checked against the ECHA EC inventory.
-- Swiss regulatory specifics (ChemO/REACH alignment, MRA coverage, EZV data
-  granularity, current ChemRRV Anhang 2.8 wording, consolidated VIPaV text)
-  remain OPEN until verified against primary sources — see 10_STRATEGY open
-  items; do not assert them as fact.
+- Swiss regulatory specifics (ChemO/REACH alignment, EZV data granularity,
+  current ChemRRV Anhang 2.8 wording, consolidated VIPaV text, BBL
+  requester/owner role for the lead exception) remain OPEN until verified
+  against primary sources — see 10_STRATEGY open items; do not assert them
+  as fact.
 - Web-scraped SDS/product data: record source URL and retrieval date per
   record; respect site terms; no bulk hammering.
 

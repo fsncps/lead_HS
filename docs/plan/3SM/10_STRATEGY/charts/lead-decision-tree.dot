@@ -1,0 +1,37 @@
+digraph decision_tree {
+  rankdir=TB;
+  node [fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=10];
+
+  q1 [shape=diamond, label="SDS Sec.3 lists lead compound?"];
+  none_listed [shape=box, label="none_listed; weak evidence of absence"];
+
+  q2 [shape=diamond, label="Classified CMR/OEL-listed, ≥ 0.1%?"];
+  invisible [shape=box, label="Invisible (blind spot 100–1000 ppm)"];
+
+  q3 [shape=diamond, label="EU legal status of compound?"];
+  anomaly [shape=box, label="Anomaly; supply unlikely; verify"];
+
+  q4 [shape=diamond, label="Swiss 100 ppm total-Pb ban engaged?"];
+  swiss_engaged [shape=box, label="swiss_ban_engaged = true"];
+  record_finding [shape=box, label="Record finding"];
+
+  q5 [shape=diamond, label="Corroboration across documents?"];
+  confirmed [shape=box, label="Confirmed finding"];
+  contradiction [shape=box, label="Contradiction = reportable finding"];
+  silence [shape=box, label="Weak evidence of absence"];
+
+  q1 -> none_listed [label="no"];
+  q1 -> q2 [label="yes"];
+  q2 -> invisible [label="no / below floor"];
+  q2 -> q3 [label="yes"];
+  q3 -> anomaly [label="banned / refused"];
+  q3 -> q4 [label="unrestricted"];
+  q4 -> swiss_engaged [label="yes"];
+  q4 -> record_finding [label="no / unclear"];
+  swiss_engaged -> q5 [label="corroborate", style=dashed];
+  record_finding -> q5 [label="continue"];
+  q5 -> confirmed [label="agrees"];
+  q5 -> contradiction [label="contradicts"];
+  q5 -> silence [label="consistent silence"];
+}

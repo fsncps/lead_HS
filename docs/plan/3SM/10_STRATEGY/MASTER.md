@@ -1,8 +1,8 @@
 ---
-unit: v0.1
+unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-08-31
+updated: 2026-09-11
 ---
 
 # Strategy MASTER — lead_HS
@@ -20,14 +20,18 @@ how many products we check (about 2,000–3,000 by statistical precision),
 how we detect lead (safety-data-sheet ingredients sections, cross-checked
 across documents — no laboratory), and the regulatory frame the evidence
 feeds into (Swiss ban at 100 ppm total Pb via ChemRRV Anhang 2.8, shielded
-from EU-lawful imports by the VIPaV exceptions catalogue, reviewed every
-five years). Open questions and the phased roadmap follow.
+from EU-lawful imports by the VIPaV exceptions catalogue — an autonomous
+Cassis-de-Dijon exception whose entire catalogue is reviewed every five
+years under SECO's lead, serving the exception's owner). Open questions
+and the phased roadmap follow.
 
 ## DECISIONS
 
-1. **Deliverable:** discussion basis for decision makers (briefing on Swiss
-   external trade in 3208/3209 paints, lead prevalence, and the EU/CH
-   regulatory seams) + reusable product/SDS evidence database.
+1. **Deliverable:** decision basis for the federal actors around the
+   lead-paint exception (regulation owner and review lead; see decision 11
+   institutional frame) — briefing on Swiss external trade in 3208/3209
+   paints, lead prevalence, and the regulatory seams — plus a reusable
+   product/SDS evidence database.
 2. **Unit of analysis:** formulation/base product (register-like; colour and
    size variants collapse; point-of-sale tinting variants excluded). Matches
    PCN/SPIN logic and regulatory reality.
@@ -56,16 +60,35 @@ five years). Open questions and the phased roadmap follow.
    databases, no commercial market reports, no sample purchases.
 10. **Swiss workstreams are first-class Phase-0 items:** (a) EZV/swiss-impex
     trade extraction at CN8 × partner; (b) legal dossier EU vs CH (ChemO
-    REACH-alignment, MRA sectoral coverage, third-country import control).
-11. **Regulatory anchoring (neutral, after SECO exchange):** the study
-    documents whether the VIPaV Art. 2 Bst. a Ziff. 1 exception (lead paints,
-    shielding ChemRRV Anhang 2.8's ≥0.01% total-Pb ban from
-    Cassis-de-Dijon imports) has a factual field of application. It informs
-    the standing five-yearly review (last 2023: keep; next ~2028) and
-    related policy conversations **without presupposing deletion or
-    exception outcomes**. SECO's "Art 2a(1)" read as Art. 2 Bst. a Ziff. 1
-    (no Art. 2a exists; inference, confirm only if load-bearing). Art. 16
-    VIPaV is a list-maintenance provision — context only.
+    REACH-alignment, third-country import control; MRA deliberately out of
+    scope — separate THG instrument, see decision 11).
+11. **Regulatory anchoring and political protocol (corrected 2026-09-10;
+    supersedes the "bilateral" framing):** the study is anchored in the
+    **autonomous Swiss Cassis-de-Dijon frame** — THG Art. 16a, one of
+    three THG instruments (autonomous harmonization; state-treaty
+    agreements/MRA; CdD). It is **not** an EU-bilateral compliance matter;
+    MRAs (THG Art. 14) are a separate instrument and out of scope.
+    Exceptions (Federal Council; THG Art. 16a Abs. 2 lit. e i.V.m.
+    Art. 4 Abs. 3–4: overriding public interests, e.g. health protection)
+    were defined at the principle's inception (2010); each protects a
+    Swiss technical regulation deviating from EU rules, and each has an
+    institutional owner: the requesting federal office, responsible for
+    implementation, monitoring and revision. For the lead-paints entry
+    (VIPaV Art. 2 Bst. a Ziff. 1, shielding ChemRRV Anhang 2.8's
+    ≥0.01% total-Pb ban) the requester/owner is the **BBL** (per
+    commissioning context 2026-09-10 — verify against public record before
+    naming BBL in deliverables); BAFU enforces; **SECO conducts the
+    five-yearly review of the entire exception catalogue** (last 2023:
+    keep; next ~2028; criteria Eignung/Erforderlichkeit/
+    Verhältnismässigkeit). The study documents whether the exception has
+    a factual field of application and supplies the decision basis for
+    the owner within that review cycle — **without presupposing deletion
+    or retention outcomes**. Public-facing documents keep the
+    commissioning relationship implicit; correct institutional wording
+    only. SECO's "Art 2a(1)" read as Art. 2 Bst. a Ziff. 1 (no Art. 2a
+    exists; inference, confirm only if load-bearing). Art. 16 VIPaV
+    (list keeping; statutory basis THG Art. 31 Abs. 2 — verified via
+    Lexaris SR 946.51) is context only.
 12. **EU-market leg:** EU-lawful presence of lead paints is a first-class
     study object (the Cassis upstream), not just context. Same SDS method on
     EU-side catalogs. Seed products already documented: Epifanes WERDOL
@@ -85,11 +108,43 @@ five years). Open questions and the phased roadmap follow.
     can be EU-lawful and transparently documented yet exceed the Swiss ban,
     invisibly to the SDS method. Carried as an explicit limitation in every
     deliverable.
+16. **Tooling (light data-engineering):** single-user, no-server pipeline
+    driven by one CLI (`leadhs`; Python ≥ 3.11, stdlib-first; requests/
+    bs4/click/jinja2/pypdf only); state = one SQLite file + hash-addressed
+    raw-document store (both gitignored); code, migrations, seed
+    dictionaries and final reports in git. No servers/services — fits
+    Slackware/no-systemd and the cost constraint. Detail: ARCHITECTURE.md.
+17. **Evidence-database principles:** provenance on every record (source
+    URL + retrieval date + raw hash); formulation-level products with a
+    sighting dedup layer; the declared-vs-total-Pb blind spot encoded as
+    a concentration taxonomy (`none_listed` ≠ lead-free); seeded,
+    reproducible sampling runs; append-only corrections; unverified
+    CAS/EC stay flagged. Schema: DATA_MODEL.md.
+18. **Reporting:** every number in generated reports comes from the
+    database (cited with run ID + seed); generated technical report DE
+    primary, FR secondary, EN optional; the hand-maintained bilingual
+    `docs/management_summary.md` is never overwritten by generated
+    artifacts.
+19. **Probe-first rollout (unit v0.1.1):** the first bounded work unit is
+    a slim CLI slice — `db init/status`, `source load/list`, `probe
+    run/report` — nothing else. The full command surface (ARCHITECTURE.md)
+    is designed ahead and implemented progressively (M0 probe → M1
+    frame/sample → M2 acquire/parse → M3 corroborate/analyze → M4
+    report). Probing is the Phase-0 instrument: the source census converts
+    OPEN register rows into verified access metadata and provisional
+    frame inputs before any sampling design is frozen.
+20. **Probe entities & anchor promotion:** probing records (`probe_run`,
+    `probe_finding`) carry full provenance like every other record; census
+    counts are **provisional** — promotion to `population_anchor` /
+    `frame_stratum` is a manual method decision, never automatic (catalog
+    coverage bias is real). Probing obeys the DATA_SOURCE.md scraping
+    discipline.
 
 ## OPEN ITEMS
 
 - OPEN/NON-BLOCKING: EZV/swiss-impex — confirm free access and granularity
   (CN8 by partner country, multi-year) for 3208/3209 (+ 3213); extract 2019–2025.
+  Probe target of unit v0.1.1 (D19).
 - OPEN: current consolidated ChemRRV Anhang 2.8 (SR 814.81) wording — the
   0.01% threshold, treated articles, and any exceptions verified only on the
   2005 snapshot; verify on fedlex.
@@ -104,8 +159,12 @@ five years). Open questions and the phased roadmap follow.
   only if the mapping becomes load-bearing; do not build on the deletion
   scenario.
 - OPEN/NON-BLOCKING: Swiss legal dossier — ChemO/ChemG restriction status of
-  lead compounds in paints; EU–CH MRA sectoral coverage of paints/chemicals;
-  third-country import control.
+  lead compounds in paints; third-country import control. (MRA coverage
+  dropped from scope 2026-09-10: separate THG instrument, not this study.)
+- OPEN (soft): BBL as requester/owner of the lead exception (per
+  commissioning context 2026-09-10) — verify against public record (e.g.
+  the 2010 VIPaV explanatory report/Botschaft) before naming BBL in any
+  deliverable.
 - OPEN/NON-BLOCKING: Swiss product-notification landscape (no PCN membership;
   poison-centre/product-register equivalents and any public statistics);
   Swiss producer statistics (BFS).
@@ -122,11 +181,17 @@ five years). Open questions and the phased roadmap follow.
 ## ROADMAP (strategy altitude)
 
 - Phase 0 — close gaps: Swiss customs extraction (EZV); verify current legal
-  texts (ChemRRV Anhang 2.8, consolidated VIPaV); 2022 refusal OJ ref; PCN
-  stats; SPIN query; PRODCOM; catalog counts.
+  texts (ChemRRV Anhang 2.8, consolidated VIPaV); document the CdD
+  governance chain for the lead exception from public sources (requester/
+  owner, review procedure, 2010 inception record); 2022 refusal OJ ref;
+  PCN stats; SPIN query; PRODCOM; catalog counts — via the v0.1.1 source
+  census (`leadhs probe`, D19): counts per source, access constraints,
+  provisional population anchors.
 - Phase 1 — pilot: freeze lead dictionary + SDS scrape/parsing on 1–2 strata
   (lead-driers stream first); validate hit-rate prior and CN-assignment
-  heuristics.
+  heuristics; build the `leadhs` CLI skeleton (acquire → ingest → parse →
+  sample → report) as the pilot vehicle (skeleton started in v0.1.1 —
+  probe era; acquire/ingest/parse land here).
 - Phase 2 — frame build + stratified draw + document collection at full n;
   run the HS 3213 artists' colours census annex in parallel.
 - Phase 3 — cross-document corroboration and quality assurance (replaces
@@ -135,11 +200,29 @@ five years). Open questions and the phased roadmap follow.
 
 ## Topic index
 
-- `methodology.md` — population, frame, stratification, sampling, corroboration
-- `lead_sds.md` — compounds, legal status, SDS feasibility, prior studies
+- `METHODOLOGY.md` — population, frame, stratification, sampling, corroboration
+- `LEAD_SDS.md` — compounds, legal status, SDS feasibility, prior studies
+- `DATA_SOURCE.md` — source register, access, provenance & scraping discipline
+- `DATA_MODEL.md` — evidence-database schema (products, SDS findings, runs)
+- `ARCHITECTURE.md` — pipeline, CLI (`leadhs`), reporting concept
+- `charts/` — rendered diagrams in active use (system components,
+  lead decision tree, probe process); index and regeneration:
+  `charts/README.md`; superseded charts archived under
+  `_archive/10_STRATEGY/charts/`
+
+## Active unit
+
+- `v0.1.1.md` — source probing (slim CLI): db/source/probe tools; the
+  Phase-0 instrument. Strategy converged; Design may proceed for the
+  slim scope.
+- v0.1 (feasibility & study design) remains the foundational strategy
+  pass; its legal-verification open items stay in OPEN ITEMS above.
 
 ## Readiness for Design
 
-Not yet. Phase 0 must pin the Swiss frame (trade structure by origin, catalog
-coverage, current legal-text verification) before Design commits to
-architecture.
+Split. For unit v0.1.1 (slim probe CLI): yes — strategy is converged
+(scope, entities, discipline fixed in D19/D20, DATA_MODEL.md,
+ARCHITECTURE.md); Design may proceed. For the full pipeline (frame,
+sampling, scraping at scale): not yet — freeze awaits the v0.1.1 probe
+results (source counts, swiss-impex format, SDS corpus quality) and the
+legal-text verification items in OPEN ITEMS.

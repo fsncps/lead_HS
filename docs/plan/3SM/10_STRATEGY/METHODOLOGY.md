@@ -1,8 +1,8 @@
 ---
-unit: v0.1
+unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-08-31
+updated: 2026-09-11
 ---
 
 # Methodology — population, sampling, corroboration
@@ -10,29 +10,108 @@ updated: 2026-08-31
 ## Abstract
 
 This document explains how the study measures the market — using only
-documents, at minimal cost. The setting: paints under customs headings 3208
-(solvent-borne) and 3209 (water-borne) on the Swiss **and** EU markets, plus
-a full census of artists' oil colours (3213). Swiss trade statistics show
-what is imported, from where, in what quantities; producer and retailer
-catalogues (scraped and de-duplicated) become the sampling frame. Because no
-official register counts paint products, the population size is estimated by
-triangulation. The market is divided into eight groups, each split by
-origin; a few hundred products per group are checked via their safety data
-sheets. A key regulatory fact shapes the design: Switzerland bans paints
-with ≥ 0.01% total lead (100 ppm), while EU safety data sheets only declare
-classified lead compounds from 0.1% — so the method has a blind spot exactly
-at the regulatory seam, which is stated openly in all results. There is no
-laboratory; findings are corroborated across independent documents.
+documents, at minimal cost, with no laboratory. The setting: paints under
+customs headings 3208 (solvent-borne) and 3209 (water-borne) on the Swiss
+**and** EU markets, plus a complete count of artists' oil colours (heading
+3213). In plain terms: Swiss trade statistics show what is imported, from
+where and in what quantities; producer and retailer catalogues — collected
+systematically from their websites and de-duplicated — provide the list of
+products to draw from (the "sampling frame"); because no official register
+counts paint products, the size of that list is estimated by combining
+several independent sources (triangulation). The market is divided into
+eight groups, each split by origin; a few hundred products per group are
+checked via their safety data sheets (SDS — the standardized
+hazard-information sheets that accompany professional chemical products).
+A key regulatory fact shapes the design: Switzerland bans paints with
+≥ 0.01% total lead (100 ppm — parts per million), while EU safety data
+sheets only declare classified lead compounds from 0.1% — so the method
+has a blind spot exactly at the regulatory seam, which is stated openly in
+all results. Suspected findings are corroborated — cross-checked against
+independent documents about the same product — instead of being tested in
+a lab. Technical terms are glossed at first use and summarized in the
+glossary below; the implementation-mapping table near the end is for the
+engineering reader and may be skipped.
+
+## DECISIONS (condensed; authoritative list in MASTER.md)
+
+- Unit of analysis = base formulation; SKU counting rejected (MASTER D2).
+- Precision-based stratified sampling, ~2,000–3,000 products, FPC where
+  frames are small (MASTER D4).
+- Corroboration instead of laboratory — hard constraint (MASTER D7).
+- HS 3213 artists' colours as full census annex, not a sample (MASTER D13).
+- Implementation: `leadhs` CLI pipeline per ARCHITECTURE.md; data sources
+  per DATA_SOURCE.md; schema per DATA_MODEL.md.
+
+## OPEN ITEMS
+
+- EZV/swiss-impex granularity and free access (Phase 0) — gates frame
+  weighting by origin; probe target of unit v0.1.1.
+- Population triangulation inputs to be pinned (Phase 0) — provisional
+  counts arrive with the v0.1.1 source census.
+- Multilingual SDS parsing and dedup rules — calibrate in Phase-1 pilot.
+
+## Terms used (plain-language glossary)
+
+- **SDS (safety data sheet / Sicherheitsdatenblatt / fiche de données de
+  sécurité):** the standardized information sheet that must accompany
+  professional chemical products in the EU and Switzerland; Section 3
+  "Composition" lists classified hazardous ingredients from 0.1% by weight.
+- **Formulation (base formulation):** one paint recipe, however many colour
+  shades or tin sizes are sold from it — the study's unit of counting.
+- **SKU (stock keeping unit):** one shop item (colour × tin size × brand);
+  counting SKUs would inflate the numbers 10–1000× without adding
+  information — rejected.
+- **CN8 / HS code:** the 8-digit customs tariff number under which a
+  consignment is declared (3208 solvent-borne paints, 3209 water-borne,
+  3213 artists' colours); "CN" = Combined Nomenclature, the EU tariff
+  nomenclature.
+- **ppm:** parts per million by weight (10 000 ppm = 1%).
+- **Sampling frame:** the list of products from which the sample is drawn —
+  here: catalogues, de-duplicated to formulation level.
+- **Stratum (plural: strata) / stratified sampling:** a market segment with
+  a similar lead expectation; sampling within each segment separately, so
+  rare segments are not drowned out.
+- **Census:** a complete count of every member of a (small) population, as
+  opposed to a sample — used for artists' oil colours (3213).
+- **Prevalence:** the share of products in a group that contain lead.
+- **Margin of error / 95% confidence interval:** how close a share measured
+  on a sample is expected to be to the true share; the interval contains
+  the true value in 95 of 100 such samples.
+- **FPC (finite population correction):** a small discount on the sample
+  size when the population itself is small.
+- **Triangulation:** estimating one quantity by combining several
+  independent sources that each see part of it.
+- **Corroboration:** cross-checking a suspected finding against independent
+  documents about the same product.
+- **PCN (poison centre notification):** the EU register of hazardous
+  mixtures notified to poison centres — formulation-level, but covering
+  only hazardous mixtures and not openly published.
+- **SPIN:** the Nordic product-register database (DK/SE/NO/FI); reports
+  counts of preparations containing a given substance.
+- **UFI:** a 16-character code on an EU SDS that identifies the specific
+  formulation to poison centres.
+- **NACE 20.30:** the statistical classification code for "manufacture of
+  paints, varnishes and similar coatings".
 
 ## Regulatory frame and legal categorization
 
-- **Cassis de Dijon (CH):** products lawfully marketed in the EU/EEA may be
-  placed on the Swiss market without Swiss re-approval (THG Art. 16a,
-  unilaterally adopted 1 July 2010). Exceptions are catalogued in VIPaV
+- **Cassis de Dijon (CH — autonomous, not bilateral):** products lawfully
+  marketed in the EU/EEA may be placed on the Swiss market without Swiss
+  re-approval (THG Art. 16a, autonomously adopted 1 July 2010; one of
+  three THG instruments — MRAs under THG Art. 14 are separate and out of
+  scope). Exceptions (Federal Council; THG Art. 16a Abs. 2 lit. e i.V.m.
+  Art. 4 Abs. 3–4: overriding public interests, e.g. health protection),
+  defined at the principle's inception, are catalogued in VIPaV
   (SR 946.513.8) Art. 2; **Bst. a Ziff. 1 = lead-containing paints and
   varnishes and treated articles (referring to ChemRRV Anhang 2.8)** — in
-  force since 2010, still listed in the SECO Negativliste of 1 Jan 2026;
-  enforcement authority BAFU; five-yearly review (2023: keep; next ~2028).
+  force since 2010, still listed in the SECO Negativliste of 1 Jan 2026.
+  Institutional chain: requester/owner = BBL (commissioning context
+  2026-09-10; verify before naming in deliverables), responsible for
+  implementation, monitoring, revision; enforcement authority BAFU;
+  **SECO reviews the entire exception catalogue every five years**
+  (VIPaV Art. 3; 2023: keep; next ~2028); list-keeping statutory basis
+  THG Art. 31 Abs. 2 (verified, Lexaris SR 946.51). The study supplies
+  the decision basis within that cycle, outcome-neutral.
 - **Swiss substance ban:** ChemRRV Anhang 2.8 (2005 wording; current text
   OPEN) defines lead paints as those with total Pb ≥ 0.01% (100 ppm) and
   bans placing them (and treated articles) on the market — stricter than the
@@ -120,15 +199,21 @@ draws weighted by EZV import shares (Phase 0).
 
 ## Sample size (precision-based)
 
-- n = z²·p(1−p)/e²: 385 for p=0.5 ±5%; ≈811 for p≈5% ±1.5% (95% CI).
-- Apply FPC for small stratum frames (n/(1+n/N)).
+- The standard sample-size formula (n = z²·p(1−p)/e² — in words: the
+  number to check depends on the margin of error sought and the expected
+  share, **not** on the size of the market) gives: **385** products per
+  group for a ±5% margin of error; **≈ 811** for ±1.5% on rarer
+  occurrences (95% confidence).
+- FPC (finite population correction — a discount when the group itself is
+  small): n/(1+n/N).
 - Full design ≈ 2,000–3,000 products; pilot ≈ 300–800.
-- Note: sampling fraction is not the precision driver; if N ≈ 30–50k the
+- Note: what matters is how many products are checked, not what fraction
+  of the market that represents; if the total population N ≈ 30–50k, the
   design coincidentally lands at 5–10%.
 
 ## Lead determination (documents only)
 
-- Primary: SDS Section 3 parsing vs lead dictionary (see `lead_sds.md`);
+- Primary: SDS Section 3 parsing vs lead dictionary (see `LEAD_SDS.md`);
   record concentration ranges, classification, staleness (pre-2021/878 format
   = red flag), UFI, Section 15 statements. Swiss/EU-market sheets typically
   in DE/FR/IT/EN — language handling required in the pipeline.
@@ -155,15 +240,46 @@ draws weighted by EZV import shares (Phase 0).
 - Verify current consolidated texts: ChemRRV Anhang 2.8 (SR 814.81) —
   threshold, treated articles, exceptions; VIPaV (SR 946.513.8) — Art. 2
   catalogue and Art. 16 body; FR wording.
+- Document the CdD governance chain for the lead exception from public
+  sources: requester/owner office, review procedure (VIPaV Art. 3), 2010
+  inception record (explanatory report/Botschaft) — BBL role currently per
+  commissioning context only.
 - EU layer: OJ reference of the 17 Mar 2022 lead-chromate authorisation
   refusal; ECHA guidance (if any) on Annex XVII 16/17 vs artists' colours;
   FR/IT red-lead primer retail sweep.
 
-## REFERENCES (accessed 2026-08-31)
+## Implementation mapping
+
+| Method step (this document) | Pipeline stage | CLI | Data entities |
+|---|---|---|---|
+| Source census & probing | probe | `probe run`, `probe report` | probe_run, probe_finding → population_anchor |
+| Frame construction (catalogs) | acquire, ingest | `acquire run`, `ingest sightings` | product, sighting |
+| Trade statistics | acquire, ingest | `acquire run` (CS-1/CS-2) | trade_stat |
+| Stratification & populations | frame | `frame set` | frame_stratum, population_anchor |
+| Sample size & draw | sample | `sample plan`, `sample draw` | sampling_run, sample_selection |
+| Lead determination | parse | `parse sds`, `review` | sds_finding, lead_compound |
+| Corroboration | corroborate | `review`, `corroborate` | corroboration |
+| Census annex (3213) | ingest, parse | census-flagged products | product |
+| Analysis & reporting | analyze, report | `analyze prevalence`, `report build` | derived + all |
+
+## Rendered diagrams
+
+`charts/lead-decision-tree` renders the lead-determination and blind-spot
+logic of this document as a decision tree:
+
+![How a product is judged: does its safety data sheet list a lead compound, is it declared at 0.1% or more, does the Swiss 100 ppm ban plausibly apply, and do independent documents agree?](charts/lead-decision-tree.png)
+
+Strategy diagrams are proposals — the written documents win. Index:
+`charts/README.md`.
+
+## REFERENCES (accessed 2026-08-31; THG/CdD additions 2026-09-10)
 
 - SECO Negativliste CdD, 1 Jan 2026: seco.admin.ch/dam/de/sd-web/8jJ6a7UYFYzf/Negativliste-SECO-Januar-2026-DE.pdf
 - SECO/WBF five-yearly review report, 29 Mar 2023: seco.admin.ch/dam/de/sd-web/jUlHD7NFv0hM/BERICHT_Fünfjährige Überprüfung der CdD-Ausnahmen gemäss Art. 3 VIPaV, 2023.pdf
 - SECO Cassis-de-Dijon page: seco.admin.ch/de/cassis-de-dijon-prinzip
+- SECO THG page (three instruments): seco.admin.ch/de/bundesgesetz-technische-handelshemmnisse
+- THG SR 946.51 full text, stand 1 May 2017 (Lexaris; Art. 4, 16a, 31 Abs. 2): lexaris.de/book/version/documentflat/head/222871
+- SECO MRA page (scope delimitation only): seco.admin.ch/de/allgemeine-informationen-mra
 - Anmeldestelle Chemikalien, CdD guidance: anmeldestelle.admin.ch/de/cassis-de-dijon
 - THG Art. 16a (2010 stand, archived): web.archive.org/web/20101011224435/http://www.admin.ch/ch/d/sr/946_51/a16a.html
 - VIPaV SR 946.513.8, Art. 1–2 (2010 stand, archived): web.archive.org/web/20101011224439/http://www.admin.ch/ch/d/sr/946_513_8/a2a.html

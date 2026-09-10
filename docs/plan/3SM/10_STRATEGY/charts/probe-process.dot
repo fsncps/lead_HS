@@ -1,0 +1,42 @@
+digraph workflow {
+  rankdir=TB;
+  node [fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=10];
+
+  start [shape=circle, label="Start"];
+  load_source [shape=box, style=rounded, label="Load source row from register"];
+  check_rules [shape=box, style=rounded, label="Check robots.txt + terms + rate limit"];
+  robots_decision [shape=diamond, label="Robots deny our paths?"];
+  robots_finding [shape=box, style=rounded, label="Record robots_denied finding\n(manual, fallback note)"];
+  fetch [shape=box, style=rounded, label="Fetch per mode\n(≥2s/domain, 2 retries,\n429 → capped backoff)"];
+  access_decision [shape=diamond, label="HTTP 403, persistent 429,\nor paywall/login?"];
+  access_finding [shape=box, style=rounded, label="Record access_blocked finding"];
+  format_decision [shape=diamond, label="Export layout as expected?"];
+  format_finding [shape=box, style=rounded, label="Record format finding\n(WARNING, manual review)"];
+  enumerate [shape=box, style=rounded, label="Enumerate categories /\nrun test export"];
+  sample [shape=box, style=rounded, label="Sample N products (default 5)"];
+  archive [shape=box, style=rounded, label="Archive samples + export\nas sha256-named raw docs"];
+  write_findings [shape=box, style=rounded, label="Write findings + documents"];
+  run_done [shape=doublecircle, label="Run done"];
+  run_failed [shape=doublecircle, label="Run failed\nexit 2"];
+  run_blocked [shape=doublecircle, label="Run blocked\nexit 2"];
+
+  start -> load_source;
+  load_source -> check_rules;
+  check_rules -> robots_decision;
+  robots_decision -> robots_finding [label="yes"];
+  robots_decision -> fetch [label="no"];
+  robots_finding -> run_blocked;
+  fetch -> access_decision;
+  access_decision -> access_finding [label="yes"];
+  access_decision -> format_decision [label="no"];
+  access_finding -> run_blocked;
+  format_decision -> format_finding [label="no"];
+  format_decision -> enumerate [label="yes"];
+  format_finding -> enumerate;
+  enumerate -> sample;
+  sample -> archive;
+  archive -> write_findings;
+  write_findings -> run_done;
+  write_findings -> run_failed [label="network failure"];
+}
