@@ -1,0 +1,40 @@
+# Probe report — unit v0.1.1{% if source_filter %}
+**source filter: {{ source_filter }}**{% endif %}
+
+Generated from the database views (v_probe_latest / v_anchor_candidates /
+v_source_activity). Counts come from the DB only (P7).
+
+## Census findings (latest done run per source × metric)
+
+{% if census %}
+{% for source_id, findings in census|dictsort %}
+### {{ source_id }}
+
+| metric | value | method | run_key | started_at |
+|---|---|---|---|---|
+{% for f in findings %}| {{ f.metric_code }} | {{ fmt(f) }} | {{ f.method_code }} | {{ f.run_key }} | {{ f.started_at }} |
+{% endfor %}
+{% endfor %}
+{% else %}
+_No done-run findings yet — run `leadhs probe run` first._
+{% endif %}
+
+## Anchor candidates (provisional — manual promotion, M1 decision)
+
+{% if anchors %}
+| source_id | metric | value | run_key |
+|---|---|---|---|
+{% for a in anchors %}| {{ a.source_id }} | {{ a.metric_code }} | {{ a.value_numeric }} {{ a.unit_code or '' }} | {{ a.run_key }} |
+{% endfor %}
+> Provisional frame inputs only. Promotion to population_anchor is a
+> manual method decision (10_STRATEGY/MASTER D20), not automatic.
+{% else %}
+_None yet._
+{% endif %}
+
+## Source activity
+
+| source_id | first retrieved | last retrieved | runs | findings |
+|---|---|---|---|---|
+{% for a in activity %}| {{ a.source_id }} | {{ a.first_retrieved_at or '-' }} | {{ a.last_retrieved_at or '-' }} | {{ a.run_count }} | {{ a.finding_count }} |
+{% endfor %}
