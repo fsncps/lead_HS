@@ -17,9 +17,11 @@ scraping, database). Currently in 3SM stage IMPLEMENTATION: unit
 v0.1.1 (source probing — slim CLI) is built and gate-verified
 (PHASE01–07; the PHASE08 census feasibility pass ran 2026-09-11, its
 close-out transferred to v0.1.2 per D26); unit v0.1.2 (operator layer
-+ census close-out) has ENG-reviewed phase plans
-(`30_IMPLEMENTATION/v0.1.2/`, PHASE01–07) and awaits the build
-go-ahead — on top of the v0.1 foundational strategy pass.
++ census close-out) is built (PHASE01–06 done 2026-09-11, 155 offline
+tests; migration 0003 per-HS metrics + census_status, od8 report
+content layer, repo Makefile with GO=1 guards) — PHASE07, the census
+execution through `GO=1 make census`, awaits the explicit
+real-network go — on top of the v0.1 foundational strategy pass.
 
 **Hard constraints:** no laboratory work, no physical samples, no paid data
 sources — publicly retrievable documents only, minimal cost.

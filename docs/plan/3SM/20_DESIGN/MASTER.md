@@ -28,9 +28,9 @@ topic documents below.
   operability, report routing, structured source reports) — design
   converged (units/v0.1.2.md, od1–od10; second-pass CEO review
   HOLD SCOPE; D25/D26 absorbed, D27 applied);
-  implementation plans exist but predate od8–od10 (drift marker in
-  the unit doc — rescope at implementation activation). Build awaits
-  explicit go; the census executes through it (`GO=1 make census`).
+  **built 2026-09-11** — implementation trail rescoped to od8–od10 at
+  activation, PHASE01–06 done (155 offline tests), PHASE07 census
+  execution awaits explicit go (`GO=1 make census`).
 - Unit v0.1 (feasibility & study design) — foundational strategy
   pass, LIVE in STRATEGY.
 - Full-pipeline design: **present but not frozen** — freeze awaits

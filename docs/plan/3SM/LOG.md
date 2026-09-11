@@ -110,5 +110,29 @@ regulatory-frame section retitled background; the design-consequence
 bullet now carries HS/CN + origin only. Design data_model.md aligned
 (d27); LG register rows stay inactive and carry no findings (matrix
 shows them only as inactive register rows). Public-facing docs
-(READMEs, management summary, AGENTS) still pending; commits pending
-at time of writing.
+(READMEs, management summary, AGENTS) completed and committed the
+same day (aaef1f3).
+
+## 2026-09-11 — v0.1.2 — Rescope to second-pass design; PHASE01–06 built
+
+Implementation trail rescoped to the second-pass design delta
+(od8–od10) at activation: PHASE05 rewritten (migration 0003 with
+records_hs3208/3209/3213 + census_status, v_anchor_candidates
+redefinition, od9 census mechanics, od8 report content layer),
+PHASE07 metric names aligned, data_model.md §Migration plan renumbered
+0004–0010. Then PHASE01–06 executed: CLI exit-code enforcement in
+main() (standalone_mode=False), DB-init preflight on all seven
+schema-reading commands, repo Makefile with GO=1 guards and report
+routing, operability/preflight/makefile tests plus a net-marked doctor
+test, census capability (0003 applied on upgrade with backup; CS-2
+parameterized per-HS queries with archived responses; PE category
+depth ≤ 3; census_status manual records), od8 report content layer
+(md narrative + matrix over all registered sources incl. inactive,
+run status incl. blocked/failed, "—" vs 0 legend; csv = matrix only;
+json full structure; goldens regenerated with review), README
+EN/DE/FR "Using the tool" sections + Status + layout, wheel verified
+(0.1.2, uv tool env, --data-dir from foreign CWD). Build seam
+recorded: od9 category path moved to finding notes (R4 strict;
+interfaces.md row clarified). 155 tests pass offline (up from 101).
+PHASE07 (real-network census via GO=1 make census) planned — awaits
+explicit go. Commits pending at time of writing.

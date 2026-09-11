@@ -7,7 +7,7 @@ updated: 2026-09-11
 
 # PHASE03 — Operator layer (Makefile, housekeeping, report routing)
 
-Status: planned · Depends on: PHASE01 (targets invoke the fixed
+Status: done (2026-09-11) · Depends on: PHASE01 (targets invoke the fixed
 CLI) · Governs: the stable operator entrypoint.
 
 ## Objective

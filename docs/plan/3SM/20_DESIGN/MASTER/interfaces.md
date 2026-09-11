@@ -146,7 +146,7 @@ no `rescue StandardError` equivalent).
 | code | label | value_type | meaning |
 |---|---|---|---|
 | catalog_count | Catalog product count | numeric | total products listed site-wide |
-| category_count | Category product count | numeric | products in one category (value_text = category path) |
+| category_count | Category product count | numeric | products in one category (category path in the finding notes — R4 stays strict: numeric metrics carry no value_text) |
 | category_list | Categories exposed | text | JSON list of category names/paths |
 | format | Export/download format | text | observed layout of official exports |
 | granularity | Statistics granularity | text | dimensions available (e.g. CN8 × partner × year) |

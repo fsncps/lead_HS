@@ -55,6 +55,8 @@ text: `units/v0.1.2.md`.
 - Report routing: `make report` renders into `data/report/`
   (gitignored intermediates); `make report-publish WHICH=…` copies —
   never moves — one report into `docs/report/` (committed finals).
+  Payload: the od8 structured census report (report.py content
+  layer, contract below).
 - CLI contract enforcement lives in `cli.main()`:
   `standalone_mode=False`; usage errors exit 1; `Abort`/interrupt
   exit 130; bare groups print help; `_ensure_initialized` turns an
@@ -83,7 +85,7 @@ text: `units/v0.1.2.md`.
                           data/leadhs.sqlite + data/raw/ (gitignored)
 ```
 
-## Package layout (v0.1.1)
+## Package layout (v0.1.1 + v0.1.2 additions)
 
     src/leadhs/
       __init__.py        # version
@@ -100,14 +102,17 @@ text: `units/v0.1.2.md`.
                          # retry/backoff; injectable clock+sleep
       ids.py             # deterministic run_key builder
        metrics.py         # probe-metric constants + seed list
-                          # (runtime source of truth; 0001 seeds
-                          # pinned to it by a sync test)
+                          # (runtime source of truth; 0001 + 0003
+                          # seeds pinned to it by a sync test)
       source.py          # register CSV load/list
       probe/
         __init__.py
         engine.py        # per-source run loop, run lifecycle
-        adapters.py      # CS / PE / ST adapters + manual recording
-      report.py          # probe report rendering (md/csv/json)
+        adapters.py      # CS / PE / ST adapters + manual recording;
+                         # od9: CS-2 parameterized per-HS query,
+                         # PE category depth ≤ 3
+      report.py          # od8 content layer: one DB-only assembly,
+                         # three renderers (md/csv/json)
       doctor.py          # environment preflight
       dict/
         sources.csv      # source register seed (mirrors
@@ -116,6 +121,7 @@ text: `units/v0.1.2.md`.
       migrations/
         0001__probe_base.sql
         0002__probe_core.sql
+        0003__probe_metrics.sql  # records_hs* + census_status (v0.1.2)
     tests/
     pyproject.toml       # console script: leadhs = leadhs.cli:main
 
@@ -147,8 +153,9 @@ count grows. Split on pain, not before (minimal-diff preference).
   without the dash (`CS-1` → `probe-20260910-cs1`); collisions append
   `-2`, `-3`.
 - **metrics.py** — `METRIC_*` constants + `PROBE_METRIC_SEEDS`;
-  runtime validation uses this list; a sync test asserts migration
-  0001's seeds match it exactly.
+  runtime validation uses this list; a sync test asserts migrations
+  0001 + 0003 seeds match it exactly (0003 adds records_hs3208/3209/
+  3213 + census_status, od10).
 - **probe/engine.py** — `run_one(source, mode, sample_n, dry_run)`:
   creates the run row, resolves the adapter, collects documents +
   finding drafts, writes them, sets run status; `--all` loops over
@@ -158,9 +165,22 @@ count grows. Split on pain, not before (minimal-diff preference).
 - **probe/adapters.py** — adapter registry keyed by source class;
   the Python contract is in interfaces.md. The contract is considered
   defined only once all three initial adapters (CS export check, PE
-  census, ST SPIN check) run against it.
-- **report.py** — renders the probe report from views (md default;
-  csv/json via `--format`).
+  census, ST SPIN check) run against it. od9 mechanics (v0.1.2):
+  CS-2 builds a parameterized per-HS query (constants documented;
+  exact values pinned at census execution → `run.parameters_json`;
+  the response is archived as a document; an empty result set is an
+  honest 0); PE fetches up to 3 category pages (category_count per
+  category, path in the finding notes — R4 strict); a failing
+  category page appends a note and the run continues.
+- **report.py** — the od8 content layer: one DB-only assembly —
+  `_fetch_sources` (register), `_fetch_latest_runs` (latest census
+  run per source, single GROUP BY, any status; dry-runs excluded via
+  parameters_json parsed in Python; malformed JSON fails open toward
+  inclusion), census/anchor/activity views — feeding three renderers
+  from the same data: md (framing, summary matrix over all
+  registered sources, per-source sections, run status incl.
+  blocked/failed + notes, legend "—" vs 0), csv (summary matrix
+  only), json (full structure).
 - **doctor.py** — checks: Python version, sqlite3, optional binaries
   (mdbtools, pdftotext, pandoc — warnings, not errors), data dir
   writability, contact configured, optional network reachability of
@@ -171,18 +191,22 @@ count grows. Split on pain, not before (minimal-diff preference).
 - **CS-1 swiss-impex** (format_check + census): attempt a small
   export/query (HS 3208, one year, one partner); record format,
   granularity, coverage_years, export_rows, free_access; archive the
-  export file as a document. Comext (CS-2) already verified — light
-  re-check only.
+  export file as a document. CS-2 Comext (od9): parameterized
+  per-HS queries — records_hs3208/3209/3213 findings (method=api),
+  parameters and archived response recorded for verification.
 - **PE-1..4** (census): robots/terms/rate_limit/languages findings;
-  enumerate catalog categories (category_list); catalog_count and
-  category_count where exposed; sample N products (default 5) →
+  enumerate catalog categories (category_list); catalog_count
+  (landing page) and category_count per category — depth ≤ 3 pages,
+  path in the finding notes (R4); sample N products (default 5) →
   page_sample_ok, sds_sample_ok; sample pages raw-archived as
   documents.
 - **ST-2 SPIN** (format_check): download availability, mdbtools
   presence, small extraction attempt; extraction_path finding; the
   downloaded DB file is hashed and archived as a document.
 - **ST-1 PCN** (access_check): manual-web findings recorded via
-  `leadhs probe record` (method=manual), like any probe finding.
+  `leadhs probe record` (method=manual), like any probe finding;
+  census deferrals and manual export mechanics use the census_status
+  metric (od9; works on inactive sources).
 - **LG**: not probed (Strategy — legal-text verification is a manual
   document workstream; register rows stay inactive and never reach
   reports — MASTER D27).
@@ -218,7 +242,9 @@ note; never hammering (10_STRATEGY/DATA_SOURCE.md discipline).
 
 - **analyze/report (M3/M4):** jinja2 → Markdown, PDF via pandoc when
   available; every figure from the DB, cited with run ID + seed
-  (Strategy D18); analytical views computed in code.
+  (Strategy D18); analytical views computed in code. The v0.1.2
+  report.py content layer (od8) establishes the pattern: one
+  DB-only assembly, renderers from the same data.
 - **db export (M4, designed now):** frozen snapshot (SQLite backup
   API / VACUUM INTO), generated schema doc + data dictionary, CSV
   dumps per table, and a MANIFEST.sha256 over the snapshot + raw
@@ -257,7 +283,7 @@ note; never hammering (10_STRATEGY/DATA_SOURCE.md discipline).
         │  emits documents (raw-archived) + probe_finding rows
         ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│ SQLite leadhs.sqlite — probe-era subset (0001–0002)              │
+│ SQLite leadhs.sqlite — probe-era subset (0001–0003)              │
 │ schema_version │ source │ document │ run │ probe_run │           │
 │ probe_finding  │ 10 lookups          │ views: v_probe_latest,    │
 │ v_anchor_candidates, v_source_activity                             │
@@ -352,11 +378,23 @@ Test strategy, matrix and key tests: testing.md.
   vars until M1 (v0.1.2; strategy D21).
 - a13: report routing implemented — `data/report/` intermediates,
   `report-publish` copies to `docs/report/` (v0.1.2; strategy D22).
+- a14: report content layer — one DB-only assembly, three renderers
+  (md narrative + matrix, csv = summary matrix, json = full);
+  dry-runs excluded; blocked/failed visible (od8, i12; strategy
+  D25).
+- a15: census mechanics — CS-2 parameterized per-HS query with
+  recorded parameters + archived response, PE category depth ≤ 3
+  (path in notes, R4 strict), manual records via census_status;
+  per-HS metrics records_hs3208/3209/3213 + census_status via
+  migration 0003 (od9/od10; strategy D26).
 
 ## OPEN ITEMS
 
 - swiss-impex export mechanics (URL parameters, CSV layout) — the
   probe answers this; CS adapter details follow.
+- CS-2 exact Comext query parameters (reporter/product/period/flow)
+  — pinned at census execution (PHASE07); the archived response
+  verifies (od9).
 - mdbtools availability/version on Slackware — doctor + probe.
 - pandoc/PDF route, chart rendering — M3/M4 (inherited).
 - acquire queue design (persistent per-domain queue vs in-run state)

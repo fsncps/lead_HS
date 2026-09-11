@@ -7,7 +7,7 @@ updated: 2026-09-11
 
 # PHASE01 — CLI operability
 
-Status: planned · Depends on: — · Governs: the CLI contract
+Status: done (2026-09-11) · Depends on: — · Governs: the CLI contract
 enforcement everything else sits on.
 
 ## Objective

@@ -51,14 +51,19 @@ conflict goes back to DESIGN per 3SM regression rules).
    takes the latest done run).
 3. **Feasibility-gap completion:** CS-1 swiss-impex fetch + export
    mechanics (format/granularity/coverage/export_rows as findings,
-   export archived); CS-2 query-parameter answer; ST-2 SPIN fetch +
-   extraction path (mdbtools present or documented-blocked); PE
-   catalog-level counts (catalog_count/category_count/category_list
-   where exposed); per-HS records (hs3208/3209/3213_count) where a
-   source exposes them.
+   export archived); CS-2 query-parameter answer (parameterized
+   per-HS queries → records_hs3208/3209/3213; empty result = honest
+   0); ST-2 SPIN fetch + extraction path (mdbtools present or
+   documented-blocked); PE catalog-level counts (catalog_count/
+   category_count/category_list where exposed); per-HS records where
+   a source exposes them.
 4. **Manual-web work (ST-1 PCN):** locate formulation-level
    aggregates; record via `make record SOURCE=ST-1 METRIC=…` (or
    `leadhs probe record`), attaching pages as documents where useful.
+   Deferrals and manual export mechanics (ST-1 aggregates, PE-3
+   portal enumeration, CS-1 UI export if hands are needed) are
+   recorded as `census_status` records (method=manual) so the report
+   shows them.
 5. **Deliver the report:** `make report` → `data/report/`; review
    the structured sections + summary matrix; publish with
    `make report-publish WHICH=data/report/probe-report.md` (copies;

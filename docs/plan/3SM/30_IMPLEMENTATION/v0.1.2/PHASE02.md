@@ -7,7 +7,7 @@ updated: 2026-09-11
 
 # PHASE02 — DB initialization preflight
 
-Status: planned · Depends on: PHASE01 · Governs: the guided-error
+Status: done (2026-09-11) · Depends on: PHASE01 · Governs: the guided-error
 contract for every schema-reading command.
 
 ## Objective

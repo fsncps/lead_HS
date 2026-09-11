@@ -17,12 +17,39 @@ exit gate. The design docs carry the full detail (including the
 complete Makefile recipe text); phase files restate only what a
 builder needs at hand and cite the governing section for the rest.
 The plan was ENG-reviewed on 2026-09-11 (SMALL CHANGE mode; findings
-and decisions below). With strategy **D26** the unit is the **M0
-close-out**: the operator layer (PHASE01–04) is completed by the
+and decisions below) and **rescoped at implementation activation the
+same day** to the second-pass design delta (od8–od10: report content
+layer, census completion mechanics, migration 0003 with the
+records_hs*/census_status vocabulary; the pre-od8 "hs3208_count"
+naming and the report sketch are superseded — PHASE05 rewritten,
+PHASE07 metric names aligned). With strategy **D26** the unit is the
+**M0 close-out**: the operator layer (PHASE01–04) is completed by the
 census capability (PHASE05), docs/distribution (PHASE06) and the
 census close-out execution (PHASE07) — the census runs through
 `GO=1 make census` and closes the gaps of the 2026-09-11
 feasibility pass.
+
+## Build record (2026-09-11)
+
+PHASE01–06 executed in order; **155 passed** on the full offline suite
+(net/mdbtools deselected; 2 deselected by markers), up from 101 before
+the unit. Recorded build decisions beyond the phase text:
+
+- **od9/R4 seam:** od9's "category path in value_text" collided with
+  the binding R4 audit rule (numeric metrics carry no value_text) —
+  the category path lives in the finding **notes**; interfaces.md
+  vocabulary row clarified (docs-only, R4 unchanged). Details in
+  PHASE05.
+- **make stub exit code:** the M1–M4 stub recipe exits 1, but GNU make
+  surfaces any recipe failure as exit 2 — tests assert nonzero + the
+  milestone pointer (the load-bearing behavior); design recipe text
+  unchanged.
+- **Wheel verification:** `python -m build` → wheel 0.1.2; installs
+  into a throwaway `uv tool` env; `leadhs --data-dir <tmp> db init`
+  applies 0001–0003 from a foreign CWD; doctor runs. No release
+  artifacts committed (dist/ gitignored).
+- PHASE07 (census execution, real network) remains **planned** —
+  awaits the explicit go-ahead.
 
 ## Scope
 
@@ -30,21 +57,25 @@ The operator layer **plus the census close-out (D26)**: CLI
 exit-code enforcement in `main()` + DB-init preflight (`cli.py`);
 `source list` / doctor / `--data-dir` fixes; repo-root `Makefile`
 (thin wrapper, `GO=1` guard, report routing); `.gitignore`
-housekeeping; migration 0003 per-HS count metrics (od9); structured
-census report content (od8/D25); README + translations; wheel build
-verification; and the census execution itself (PHASE07). M1–M4
-surfaces stay stub targets.
+housekeeping; migration 0003 probe-metric extension —
+records_hs3208/3209/3213 + census_status, v_anchor_candidates
+redefined (od10); census completion mechanics (od9: parameterized
+CS-2 query, ST-2 register URL fix, PE category depth ≤ 3, manual
+census_status records); structured report content layer (od8/D25);
+README + translations; wheel build verification; and the census
+execution itself (PHASE07). M1–M4 surfaces stay stub targets. Schema
+carries product data only (Strategy MASTER D27).
 
 ## Phase tracking
 
 | # | Focus | Depends on | Exit gate | Status |
 |---|---|---|---|---|
-| 01 | CLI operability (main() exit mapping, no_args_is_help, list fix, doctor --net, --data-dir, version 0.1.2) | — | `--help` 0; `leadhs dource` 1; bare groups help/0 on stdout; `--db`+`--data-dir` 1; `--no-net` gone; Ctrl-C 130; existing suite green | planned |
-| 02 | DB-init preflight (`_ensure_initialized` + wiring into 7 commands) | 01 | guided error exit 1 on missing/empty/no-schema_version for all 7; `db init` exempt; passes after init | planned |
-| 03 | operator layer (repo Makefile, .gitignore `.benchmarks/`, report routing) | 01 | `make help` 0; probe/census fail at guard before side effects; stubs exit 1; `-n report` 3 `--out` lines; `report-publish` copies | planned |
-| 04 | tests (operability, preflight, make-wiring; net-marked doctor --net; smoke updates) | 01–03 | full offline suite green (net/mdbtools deselected); `pytest -m net` collects ≥ 1 | planned |
-| 05 | census capability (migration 0003 per-HS metrics; structured report content per D25; tests + golden refresh) | 04 | suite green incl. sync test (0001+0003 == metrics.py); structured sections + matrix on fixture corpus; R4 holds for new metrics | planned |
-| 06 | docs & distribution (README EN/DE/FR, Status, layout; wheel-build verification) | 01–05 | wheel installs into throwaway uv tool env; `--data-dir <tmp> db init` works; READMEs current | planned |
+| 01 | CLI operability (main() exit mapping, no_args_is_help, list fix, doctor --net, --data-dir, version 0.1.2) | — | `--help` 0; `leadhs dource` 1; bare groups help/0 on stdout; `--db`+`--data-dir` 1; `--no-net` gone; Ctrl-C 130; existing suite green | done 2026-09-11 |
+| 02 | DB-init preflight (`_ensure_initialized` + wiring into 7 commands) | 01 | guided error exit 1 on missing/empty/no-schema_version for all 7; `db init` exempt; passes after init | done 2026-09-11 |
+| 03 | operator layer (repo Makefile, .gitignore `.benchmarks/`, report routing) | 01 | `make help` 0; probe/census fail at guard before side effects; stubs exit 1; `-n report` 3 `--out` lines; `report-publish` copies | done 2026-09-11 |
+| 04 | tests (operability, preflight, make-wiring; net-marked doctor --net; smoke updates) | 01–03 | full offline suite green (net/mdbtools deselected); `pytest -m net` collects ≥ 1 | done 2026-09-11 |
+| 05 | census capability (migration 0003 records_hs*/census_status + v_anchor_candidates redefinition; od9 mechanics: CS-2 parameterized query, ST-2 URL fix, PE category depth; od8 report content layer; tests + golden refresh) | 04 | suite green incl. sync test (0001+0003 == metrics.py); matrix + sections + legend on fixture corpus (csv = matrix only); blocked/failed visible; R4 holds for new metrics | done 2026-09-11 |
+| 06 | docs & distribution (README EN/DE/FR, Status, layout; wheel-build verification) | 01–05 | wheel installs into throwaway uv tool env; `--data-dir <tmp> db init` works; READMEs current | done 2026-09-11 |
 | 07 | census close-out (execution through the operator layer) | 01–06 + explicit go | every register row probed or manual; feasibility gaps closed/documented; structured report published; `db audit` exit 0 | planned |
 
 Statuses: `planned → in-progress → done` (update this table and the
@@ -99,8 +130,11 @@ Empirically verified against click 8.3.1 before finalization
   deferred to M1.** D25 mandates per-HS records (3208/3209/3213) in
   this unit's census report, so the metric vocabulary must exist
   before execution (i4 extension rule: migration INSERT; codes never
-  renamed). New PHASE05 delivers the migration + the od8 report
-  content.
+  renamed). PHASE05 delivers the migration + the od8 report content.
+  Second-pass naming (od10): `records_hs3208/3209/3213` +
+  `census_status` (not the earlier `hs*_count` sketch);
+  v_anchor_candidates redefined; design-ahead migrations renumbered
+  0004–0010 (docs-only).
 - **B8 — PHASE08 of v0.1.1 is absorbed here (D26).** The v0.1.1
   PHASE08 feasibility pass (2026-09-11) is the empirical record; its
   close-out is PHASE07 of this unit. The v0.1.1 trail is updated to
@@ -124,8 +158,11 @@ Empirically verified against click 8.3.1 before finalization
   `leadhs --data-dir <tmp> db init` works.
 - README updated; translations updated in the same change set (B6).
 - Migration 0003 applies idempotently (fresh + upgrade); vocabulary
-  sync test green; structured census report renders per D25 on the
-  fixture corpus.
+  sync test green; report renders per od8 on the fixture corpus —
+  framing, summary matrix over all registered sources (incl.
+  inactive), per-source sections, run status incl. blocked/failed +
+  notes, "—" vs 0 legend; csv is the matrix; json the full
+  structure.
 - **Census delivered (PHASE07):** every register row probed or
   explicitly manual; feasibility gaps closed or documented-blocked;
   structured report published to `docs/report/`; `db audit` exit 0

@@ -25,8 +25,10 @@ discussion basis for decision makers plus a reusable database of checked
 products. This file is the project dashboard. Current stage: v0.1.1
 built (probe CLI gate-verified; census feasibility pass executed
 2026-09-11); unit v0.1.2 — operator layer + census close-out (D26) —
-has design and ENG-reviewed implementation plans; build awaits
-explicit go.
+**built 2026-09-11** (PHASE01–06 done; trail rescoped to the
+second-pass design od8–od10; 155 offline tests pass); the census
+execution (PHASE07, `GO=1 make census`, real network) awaits explicit
+go.
 
 **Project:** Identify which paint/varnish products (HS/CN 3208/3209, plus a
 3213 artists' colours census annex) on the Swiss and EU markets contain
@@ -46,7 +48,7 @@ no paid data sources, minimal cost.
 |---|---|---|
 | v0.1 (feasibility & study design) | STRATEGY | foundational pass; legal-verification open items carried in Strategy MASTER |
 | v0.1.1 (source probing — slim CLI) | IMPLEMENTATION | PHASE01–07 built & gate-verified 2026-09-11; PHASE08 feasibility pass executed 2026-09-11; census close-out transferred to v0.1.2 (D26) |
-| v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | design od1–od9 converged (D21–D26); ENG-reviewed phase plans PHASE01–07 written; build awaits explicit go |
+| v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | built 2026-09-11 (PHASE01–06; rescoped to second-pass od8–od10; 155 tests offline); PHASE07 census execution awaits explicit go |
 
 ## Documents
 

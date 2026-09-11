@@ -7,7 +7,7 @@ updated: 2026-09-11
 
 # PHASE06 — Docs & distribution readiness
 
-Status: planned · Depends on: PHASE01–05 · Governs: the
+Status: done (2026-09-11) · Depends on: PHASE01–05 · Governs: the
 user-facing surface and the portability check.
 
 ## Objective

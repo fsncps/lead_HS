@@ -7,7 +7,7 @@ updated: 2026-09-11
 
 # PHASE04 — Tests (operability, preflight, make wiring)
 
-Status: planned · Depends on: PHASE01–03 · Governs: the confidence
+Status: done (2026-09-11) · Depends on: PHASE01–03 · Governs: the confidence
 layer for the operator layer.
 
 ## Objective

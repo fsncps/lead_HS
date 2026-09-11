@@ -30,6 +30,15 @@ NEW DATA FLOWS:
   register CSV → source rows
   fetch → document row + raw-store file
   adapter → FindingDrafts (+ documents)
+  migration 0003 INSERTs → records_hs3208/3209/3213 + census_status;
+    v_anchor_candidates redefined (records_hs* included)
+  CS-2 parameterized per-HS queries (empty result = honest 0;
+    parameters surfaced for run.parameters_json; response archived)
+  PE category depth ≤ 3 (category_count per category, path in notes)
+  census_status manual records (probe record works on inactive
+    sources)
+  report content assembly: dry-run exclusion, blocked/failed rows,
+    all-sources matrix, "—" vs 0 legend, csv = matrix, json full
   views → report output
   make target wiring (make -n / guarded targets)
   report file routing data/report → docs/report
@@ -57,12 +66,14 @@ path (no sources → "no sources", exit 0) and nil/empty inputs
 
 ## Key test files
 
-- **test_migrations.py** — fresh DB applies 0001→0002; re-run is a
-  no-op (idempotency via schema_version); migration order enforced;
-  CHECK constraints hold (per-source probe run; archived ⇒ hash);
-  backup round-trip (seeded DB → migrate → timestamped backup
-  restores a working DB); sync test (0001 probe_metric seeds ==
-  metrics.py list).
+- **test_migrations.py** — fresh DB applies 0001→0002→0003; re-run is
+  a no-op (idempotency via schema_version); migration order enforced
+  (0002/0003 apply in order on a gapped DB); CHECK constraints hold
+  (per-source probe run; archived ⇒ hash); backup round-trip (seeded
+  DB → migrate → timestamped backup restores a working DB); 0003
+  seeds present with correct value_types; 0003 redefines
+  v_anchor_candidates (records_hs* listed); sync test (0001 + 0003
+  probe_metric seeds == metrics.py list).
 - **test_store.py** — hash-only filenames; source-id allowlist
   rejects traversal attempts (`../`, `CS-1/../../`); orphan
   detection; verify(hash) round-trip.
@@ -72,10 +83,17 @@ path (no sources → "no sources", exit 0) and nil/empty inputs
   2× then ProbeNetworkError; dry-run mode performs zero network calls.
 - **test_adapters_pe.py** — fixture catalog HTML → catalog_count,
   category_count/category_list, languages; sample pages →
-  page_sample_ok/sds_sample_ok; sample pages archived as documents.
+  page_sample_ok/sds_sample_ok; sample pages archived as documents;
+  category depth ≤ 3 (od9: per-category category_count, path read
+  from the finding notes); failing category page → note + the run
+  continues; dry-run plans only.
 - **test_adapters_cs.py** — fixture export CSV → format,
   granularity, export_rows; wrong-layout fixture → UnexpectedFormat
-  → format finding with WARNING.
+  → format finding with WARNING; JSON query API per-HS emission
+  (od9/od10: records_hs3208/3209 populated, records_hs3213 empty
+  result = honest 0; parameters surfaced; the response archived as
+  the finding's document); per-HS URLs carry the query parameters;
+  dry-run plans the HS URLs without network.
 - **test_adapters_st.py** — gated on mdbtools binary (skipif):
   extraction_path ok; missing binary → BinaryMissing path (forced).
 - **test_adapters_contract.py** — each adapter runs against a
@@ -93,7 +111,16 @@ path (no sources → "no sources", exit 0) and nil/empty inputs
   last done census; v_anchor_candidates lists count-metrics;
   v_source_activity first/last retrieval.
 - **test_report_golden.py** — fixture findings → exact md/csv/json
-  output (golden files; intentional changes regenerate with review).
+  output (golden files; intentional changes regenerate with review —
+  regenerated for od8 with review, 2026-09-11).
+- **test_report_content.py** (t8) — structural content tests on the
+  od8 assembly: title/framing/legend strings; summary matrix covers
+  all registered sources incl. inactive; run status incl. blocked
+  and failed sources with their notes; "—" (not queried) vs 0
+  (queried, empty) distinction; duplicate same-run category_count
+  rows listed in full; dry-run-only DB → "no census runs yet";
+  metric values cite their done run_key; csv = summary matrix only;
+  json carries the full structure.
 - **test_cli_smoke.py** — end-to-end on a temp DB + fixture register
   + local fixture site: init → load → probe run → report → audit
   exit 0. The 2am-Friday confidence test.
@@ -102,6 +129,9 @@ path (no sources → "no sources", exit 0) and nil/empty inputs
   a planted orphan file; clean fixture corpus exits 0.
 - **test_doctor.py** — fake binaries on PATH; missing contact →
   warning; data-dir not writable → error.
+- **test_doctor_net.py** — the suite's one `@pytest.mark.net` test:
+  `doctor --net` reaches example.com (RFC 2606; B5 — keeps
+  `pytest -m net` / `make test-net` collecting ≥ 1).
 - **test_cli_operability.py** — exit-code mapping (unknown command,
   missing option, bad choice → 1); bare groups print help exit 0;
   `source list` registered once (no `list-`); `--db`+`--data-dir`
@@ -126,7 +156,10 @@ class, missing URL, duplicate ID — last errors loudly, exit 1);
 empty register; huge HTML page; non-UTF-8 bytes (raw store keeps
 bytes; parsing degrades to page_sample_ok=0); robots.txt 404 (treat
 as allow) and empty file; duplicate findings on re-probe (dedup by
-new-run semantics, not mutation).
+new-run semantics, not mutation). csv formula-injection from
+scraped text — accepted LOW (design note; not separately tested).
+Malformed run parameters_json — fails open (treated as a real run;
+the engine always writes parseable JSON; accepted untested).
 
 ## Chaos test
 
@@ -170,6 +203,9 @@ v_probe_latest unchanged by the aborted run.
 - t7: operability + preflight + make-wiring tests
   (test_cli_operability.py, test_preflight.py, test_makefile.py) —
   v0.1.2 (HOLD-SCOPE review 2026-09-11).
+- t8: report content-layer structural tests (test_report_content.py)
+  + golden regeneration with review for od8 — v0.1.2 (HOLD-SCOPE
+  review 2026-09-11).
 
 ## OPEN ITEMS
 
