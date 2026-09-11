@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Architecture — modules, runtime, tooling (Design)
@@ -35,11 +35,61 @@ every stage is a CLI step (10_STRATEGY/ARCHITECTURE.md D1/D5).
 - No long-lived state anywhere; resumability comes from the `run`
   audit trail + append-only evidence, not from daemon state.
 
+## Operator layer (v0.1.2)
+
+The Makefile at the repo root is the stable operator entrypoint — a
+thin wrapper, one target per `leadhs` call; pipeline logic lives in
+the CLI (strategy D21; d21/a12). Full target contract and recipe
+text: `units/v0.1.2.md`.
+
+- Parameters are make variables with documented defaults (`DB`,
+  `MODE`, `SAMPLE`, `SOURCE`, `REPORT_DIR`, `PUBLISH_DIR`) until M1,
+  when a committed config file joins (one config migration).
+- GO gate: costly network targets (`probe`, `census`) and the
+  destructive `clobber` carry a `guard-%` **prerequisite** — the
+  gate fires before any recipe side effect; `census` lists its guard
+  first, so `setup` never runs without GO=1. `clobber` additionally
+  prompts for a typed `yes`.
+- `make help` is the self-documenting operator index; M1–M4 stages
+  exist as stub targets that exit 1 with a pointer.
+- Report routing: `make report` renders into `data/report/`
+  (gitignored intermediates); `make report-publish WHICH=…` copies —
+  never moves — one report into `docs/report/` (committed finals).
+- CLI contract enforcement lives in `cli.main()`:
+  `standalone_mode=False`; usage errors exit 1; `Abort`/interrupt
+  exit 130; bare groups print help; `_ensure_initialized` turns an
+  uninitialized DB into a guided error (never `bug:`).
+- Installed (non-repo) use: `--data-dir DIR` (mutually exclusive
+  with `--db`) is the explicit home for `leadhs.sqlite` + `raw/` —
+  never CWD-implicit writes (strategy D24).
+
+```
+┌──────────────────────── make (operator layer) ───────────────────────────┐
+│ help · install · doctor · db-init/status/audit · sources-load/list       │
+│ setup · probe-dry · probe-single · record · report · report-publish      │
+│ probe · census · clobber      ◀── guard-% prerequisite: GO=1 (+ typed    │
+│ frame sample acquire ingest        yes on clobber)                       │
+│   parse analyze full  ◀── M1–M4 stubs, exit 1                            │
+└──────────────┬───────────────────────────────────────────┬───────────────┘
+               │ one `leadhs` call per target              │ files
+               ▼                                           ▼
+┌──────────────────────────────┐        data/report/ (gitignored intermediates)
+│ leadhs CLI (click)           │        docs/report/ (published finals)
+│ main(): exit-code mapping    │
+│ _ensure_initialized gate     │──▶ db.py · store.py · fetch.py ·
+│ --db PATH | --data-dir DIR   │    probe/ · report.py · doctor.py
+└──────────────────────────────┘                 │
+                                                 ▼
+                          data/leadhs.sqlite + data/raw/ (gitignored)
+```
+
 ## Package layout (v0.1.1)
 
     src/leadhs/
       __init__.py        # version
-      cli.py             # click groups: db, source, probe, doctor
+      cli.py             # click groups: db, source, probe, doctor;
+                         # main() exit mapping + _ensure_initialized
+                         # preflight (v0.1.2)
       db.py              # connect(), migrate (forward-only + backup),
                          # status, audit (rules R1–R9)
       models.py          # dataclasses (SourceRef, Document, Run,
@@ -49,8 +99,9 @@ every stage is a CLI step (10_STRATEGY/ARCHITECTURE.md D1/D5).
       fetch.py           # THE fetch seam: robots, rate limit, UA,
                          # retry/backoff; injectable clock+sleep
       ids.py             # deterministic run_key builder
-      metrics.py         # probe-metric constants + seed list
-                         # (single source of truth for 0001 + code)
+       metrics.py         # probe-metric constants + seed list
+                          # (runtime source of truth; 0001 seeds
+                          # pinned to it by a sync test)
       source.py          # register CSV load/list
       probe/
         __init__.py
@@ -88,14 +139,16 @@ count grows. Split on pain, not before (minimal-diff preference).
   checked per domain (cached); ≥ 2 s between requests per domain;
   UA `leadhs/<version> (+<contact>)` (contact via `LEADHS_CONTACT`
   env or flag — doctor warns when unset); 2 retries with exponential
-  backoff; `RobotsDisallowed` and `Blocked` (403/429) raised as typed
-  errors.
+  backoff; `RobotsDisallowed`, `Blocked` (403/paywall) and
+  `RateLimited` (429 — one capped backoff, then Blocked) raised as
+  typed errors.
 - **ids.py** — `run_key(kind, date, slug, attempt)`:
   `<kind>-<YYYYMMDD>-<slug>`; probe slug = source id lowercased
   without the dash (`CS-1` → `probe-20260910-cs1`); collisions append
   `-2`, `-3`.
 - **metrics.py** — `METRIC_*` constants + `PROBE_METRIC_SEEDS`;
-  migration 0001 and runtime validation both use this list.
+  runtime validation uses this list; a sync test asserts migration
+  0001's seeds match it exactly.
 - **probe/engine.py** — `run_one(source, mode, sample_n, dry_run)`:
   creates the run row, resolves the adapter, collects documents +
   finding drafts, writes them, sets run status; `--all` loops over
@@ -143,6 +196,10 @@ note; never hammering (10_STRATEGY/DATA_SOURCE.md discipline).
   v_probe_latest (latest run per source × metric).
 - Per-domain backoff and retry in fetch.py; sustained failure →
   blocked finding + continue.
+- Stale-run reclaim: a run left `running` by a hard crash (SIGKILL/
+  power loss) is marked `failed` with note `stale run reclaimed` by
+  the next `db init` / `probe run` / `db status`; the census is
+  unaffected (v_probe_latest reads done runs only).
 - Nothing swallowed silently: every rescue writes a finding or a
   run.notes line and a log line (CEO review rule).
 
@@ -212,26 +269,33 @@ note; never hammering (10_STRATEGY/DATA_SOURCE.md discipline).
              ┌───────────────────────────┐
              │ probe run --source PE-1   │
              └────────────┬──────────────┘
-                          │
-        ┌─────────────────▼─────────────────┐
-        │ load source + robots/terms/rate   │
-        └──────┬──────────────┬─────────────┘
-    happy      │              │ error
-      ▼        ▼              ▼
-  enumerate  robots deny   fetch fail
-  categories   │            (retry 2x,
-      │        ▼             backoff)
-      ▼     finding         ▼
-  fetch pages (blocked,   finding(blocked,
-  ≤1 req/2s  manual,      manual); skip
-      │      run.notes)   source; run=done
-      ▼                     (partial, notes)
-  document (raw) + findings (catalog_count,
-  category_count, sds_sample_ok, languages,
-  terms, rate_limit)
-      ▼
-  run → done
-  empty path: no active sources → "no sources", exit 0
+                           │
+         ┌─────────────────▼─────────────────┐
+         │ load source + robots/terms/rate   │
+         └──────┬────────────┬─────────────┘
+     happy      │              │ error
+       ▼        ▼              ▼
+   enumerate  robots deny   fetch fail
+   categories   │            (retry 2x,
+       │        ▼             backoff;
+       ▼     finding         429: one capped
+   fetch pages (robots_     backoff first)
+   ≤1 req/2s  denied,         ▼
+       │      manual);      finding(access_
+       │      run=blocked,  blocked, manual)
+       │      exit 2          │
+       │                      ▼
+       │                  run=blocked,
+       │                  exit 2 (findings
+       │                  collected before
+       │                  → run=done+notes)
+       ▼
+   document (raw) + findings (catalog_count,
+   category_count, sds_sample_ok, languages,
+   terms, rate_limit)
+       ▼
+   run → done
+   empty path: no active sources → "no sources", exit 0
 ```
 
 ### Run state machine
@@ -244,13 +308,17 @@ planned ──► running ──► done
              failed/blocked/aborted
    blocked: manual fallback recorded as finding
    aborted: interrupt; inserted findings persist
+   stale running (SIGKILL/power loss) → failed
+   ("stale run reclaimed") on next db/probe command
 ```
 
 ## Repository layout (target, beyond the package)
 
+    Makefile               # operator entrypoint (v0.1.2)
     data/raw/              # gitignored raw store
     data/leadhs.sqlite     # gitignored database
-    docs/report/           # generated reports (final ones committed)
+    data/report/           # gitignored report intermediates
+    docs/report/           # published final reports only (committed)
     tests/                 # pytest (see testing.md)
     docs/plan/3SM/         # planning (this tree)
 
@@ -275,6 +343,14 @@ Test strategy, matrix and key tests: testing.md.
   review).
 - a10: doctor/status/audit are the operational surface — no-server
   observability.
+- a11: stale-run reclaim — hard-crash `running` rows are marked
+  failed with a `stale run reclaimed` note by the next db/probe
+  command (ENG review 2026-09-11).
+- a12: make is the operator entrypoint — thin wrapper, `guard-%`
+  GO=1 prerequisite (census guard precedes setup), params as make
+  vars until M1 (v0.1.2; strategy D21).
+- a13: report routing implemented — `data/report/` intermediates,
+  `report-publish` copies to `docs/report/` (v0.1.2; strategy D22).
 
 ## OPEN ITEMS
 
@@ -286,3 +362,6 @@ Test strategy, matrix and key tests: testing.md.
   — M2 design.
 - sample-page selection strategy (first-N vs seeded random) — decide
   at implementation; seeded random preferred for reproducibility.
+- Wheel release mechanics (tag → wheel → GitHub release asset;
+  install smoke on Linux/macOS/Windows) — first external use; v0.1.2
+  verifies the wheel builds only (units/v0.1.2.md).

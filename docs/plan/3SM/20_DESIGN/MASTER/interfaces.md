@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Interfaces & contracts (Design)
@@ -32,13 +32,17 @@ disagree, this document wins.
                         [--value X | --value-text T] [--unit U]
                         [--url URL] [--document FILE] [--note TEXT]
     leadhs probe report [--source ID] [--format md|csv|json]
-    leadhs doctor [--net | --no-net]
+    leadhs doctor [--net]
 
 Design-ahead surface (milestones per 10_STRATEGY/ARCHITECTURE.md):
 `acquire run`, `ingest sightings`, `parse sds`, `review next|decide`,
 `frame set`, `frame promote`, `sample plan`, `sample draw`,
 `corroborate`, `analyze prevalence`, `report build`, `dict load`,
 `db query`, `db export`.
+
+All groups print help on bare invocation (`no_args_is_help`; exit 0).
+`source list` is registered under exactly one name — the derived
+`list-` artifact is removed (v0.1.2).
 
 ## Command contracts
 
@@ -54,13 +58,34 @@ Design-ahead surface (milestones per 10_STRATEGY/ARCHITECTURE.md):
 | `probe report` | render census from v_probe_latest + v_anchor_candidates; md default | 0 |
 | `doctor` | environment preflight (python, sqlite, binaries as warnings, data dir, contact, optional reachability) | 0 (warnings allowed); 1 errors |
 
-Global flags: `--verbose` (structured logging), `--db PATH`
-(default `data/leadhs.sqlite`), `--contact` / `LEADHS_CONTACT`
-(user-agent contact; doctor warns when unset).
+Global flags: `--verbose` (structured logging); `--db PATH`
+(default `data/leadhs.sqlite`) **or** `--data-dir DIR` (base
+directory for `leadhs.sqlite` + `raw/`; installed non-repo use —
+mutually exclusive with `--db`, conflict is a usage error, exit 1);
+`--contact` / `LEADHS_CONTACT` (user-agent contact; doctor warns
+when unset).
 
 Exit-code convention (all commands): **0** success; **1**
-usage/data error; **2** an operation ran but ended failed/blocked
-(findings recorded); **3** audit found violations.
+usage/data error — including click usage errors (unknown command,
+missing required option, bad choice), enforced in `main()`;
+**2** an operation ran but ended failed/blocked (findings
+recorded); **3** audit found violations; **130** on interrupt
+(`KeyboardInterrupt` → `Abort` → 130 in `main()`).
+
+## DB initialization contract (v0.1.2)
+
+Every command that reads the schema requires an initialized
+database: `db status`, `db audit`, `source load`, `source list`,
+`probe run`, `probe record`, `probe report`. If the DB file is
+missing/empty or `schema_version` is absent, the command prints a
+guided error and exits 1:
+
+    error: database not initialized — run `make setup` (repo) or
+    `leadhs db init` then `leadhs source load` first
+
+Never a `bug:` label (strategy D21; operability requirement 2).
+`db init` is the only command that initializes. The check lives once
+in `cli.py` (`_ensure_initialized`), shared by all seven commands.
 
 ## Provenance contract (binding — every write path)
 
@@ -104,8 +129,9 @@ usage/data error; **2** an operation ran but ended failed/blocked
 
 | Exception (defined in fetch.py / adapters.py) | Trigger | Engine maps to |
 |---|---|---|
-| `RobotsDisallowed` | robots.txt disallows our paths | finding robots_denied (method=manual) + run done |
-| `Blocked` | HTTP 403/429 or paywall/login wall | finding access_blocked + run done |
+| `RobotsDisallowed` | robots.txt disallows our paths | finding robots_denied (method=manual) + run blocked (exit 2); findings already collected → run done + notes |
+| `Blocked` | HTTP 403 or paywall/login wall | finding access_blocked + run blocked (exit 2); findings already collected → run done + notes |
+| `RateLimited` | HTTP 429 | one capped backoff then retry; persistent 429 → finding access_blocked + run blocked (exit 2) |
 | `ProbeNetworkError` (wraps `requests.RequestException` after 2 retries) | DNS/TLS/timeout/5xx | run failed; exit 2 |
 | `UnexpectedFormat` | export layout not as expected | finding format (value_text) — WARNING, manual review |
 | `BinaryMissing` / `ExtractionError` | mdbtools absent / SPIN extraction fails | finding extraction_path (blocked/failed) |
@@ -138,8 +164,9 @@ no `rescue StandardError` equivalent).
 | free_access | Free access confirmed | numeric | 0/1 — no account/paywall needed |
 
 Extension rule: new metrics are added by a migration INSERT (code
-never renamed; value_type fixed at insert). `metrics.py` is the single
-source of truth shared by migration 0001 and runtime validation.
+never renamed; value_type fixed at insert). `metrics.py` is the
+runtime source of truth; a sync test pins migration 0001's seeds to
+it (0001 is static SQL and cannot call Python).
 
 ## Run semantics
 
@@ -151,8 +178,23 @@ source of truth shared by migration 0001 and runtime validation.
   same-day re-runs append `-2`, `-3` (deterministic, unique).
 - **Abort/resume:** interrupt → current run `aborted` (findings
   persist); re-run creates a new run; the "current" census is
-  v_probe_latest (latest run per source × metric) — never a mutation
-  of old findings.
+  v_probe_latest (latest done run per source × metric) — never a
+  mutation of old findings.
+- **Outcome rule:** run status reflects the whole source — reachable
+  with findings collected → `done`; wholly inaccessible (robots deny,
+  403, persistent 429, paywall) → `blocked`; unrecoverable network
+  error → `failed`. `probe run` exits 2 when any run ended blocked or
+  failed; findings collected before a block keep the run `done` with
+  a notes line.
+- **Stale-run reclaim:** a run left `running` by a hard crash
+  (SIGKILL/power loss) is marked `failed` with note
+  `stale run reclaimed` by the next `db init` / `probe run` /
+  `db status` (threshold: started_at older than the current process,
+  or 1 h); the census is unaffected — v_probe_latest reads `done`
+  runs only.
+- **Pacing:** `probe run --all` on the full register is a multi-minute
+  operation (≥ 2 s spacing per domain); progress via `--verbose`;
+  re-runs are incremental (per-source new runs).
 - **parameters_json (probe):**
   `{"mode": "...", "sample_n": 5, "dry_run": false, "contact_set": true}`
   — other kinds define their schema at their milestone.
@@ -218,6 +260,16 @@ attempted action — full context, never message-only).
 - i6: export/query contracts fixed now, built M4 (CEO review).
 - i7: dry_run performs zero network calls (enforced via
   ctx.fetcher.plan).
+- i8: `RateLimited` (429) split from `Blocked` (403/paywall): one
+  capped backoff, then blocked (ENG review 2026-09-11).
+- i9: outcome-based run status — done / blocked / failed per source;
+  exit 2 on any blocked or failed run (ENG review 2026-09-11).
+- i10: exit-code enforcement in `main()` — click runs with
+  `standalone_mode=False`; UsageError → 1, other ClickException →
+  its code, Abort/KeyboardInterrupt → 130, Exit → its code; bare
+  groups print help (`no_args_is_help`) (v0.1.2; HOLD-SCOPE review).
+- i11: DB-initialization preflight contract — guided error, exit 1,
+  never `bug:`, for all schema-reading commands (v0.1.2).
 
 ## OPEN ITEMS
 
@@ -228,3 +280,7 @@ attempted action — full context, never message-only).
 - `db query` output formats (table vs csv flag) — trivial, at M4.
 - parameters_json schemas for acquire/import/sampling kinds — at
   their milestones.
+- `probe record` = one run per finding — revisit batching (one manual
+  run, multiple findings) at M1 if PCN passes produce run churn.
+- `sample_n`/`mode` stored in both `parameters_json` and typed columns
+  (`probe_run.mode_code`) — pick one home at implementation.

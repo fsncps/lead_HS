@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Data model — normalized evidence database (Design)
@@ -23,9 +23,9 @@ H-codes, category assignments) are junction tables; what a safety data
 sheet literally says is kept separate from what we interpret it to
 mean; and every derived number (the "plausibly exceeds the Swiss ban"
 flag, prevalence rates) is a database *view*, never a stored column.
-The schema is written to port to PostgreSQL unchanged and to be
-reusable for future substance-in-products studies via a `study`
-discriminator.
+The schema is written to port to PostgreSQL with two documented
+variances (id generation, one partial index) and to be reusable for
+future substance-in-products studies via a `study` discriminator.
 
 ## Design principles
 
@@ -47,15 +47,17 @@ discriminator.
    value-updated; corrections are new rows or review-status
    transitions. Reference rows (source register, lookups, dictionary,
    study) evolve in place and are never deleted.
-8. **Portability** — SQLite now (WAL, foreign keys ON); DDL avoids
-   SQLite-only constructs so it ports to PostgreSQL unchanged.
+8. **Portability** — SQLite now (WAL, foreign keys ON); the DDL stays
+   standard SQL except two documented variances (rowid-alias ids, one
+   partial index), listed in the portability section.
 9. **Reuse** — `study` discriminator + study-agnostic substance
    dictionary: a second study (e.g. another substance group in
    consumer products) reuses the database with zero migration.
 
 ## Conventions
 
-- Entity tables: `id INTEGER PRIMARY KEY` (rowid; no AUTOINCREMENT).
+- Entity tables: `id INTEGER PRIMARY KEY` (rowid alias; no
+  AUTOINCREMENT — PostgreSQL port swaps to IDENTITY; variance).
 - Lookup tables: `code TEXT PRIMARY KEY` (stable, human-readable in
   the released artifact; renumbering impossible).
 - Foreign keys: `… REFERENCES x (y) ON DELETE RESTRICT` — nothing
@@ -148,13 +150,15 @@ artifact (web page, PDF, CSV export, manual save). The raw store holds
 the bytes at `data/raw/<source_id>/<sha256>.<ext>`; filenames are
 hash-only (security rule, interfaces.md P5).
 - id INTEGER PK; source_id → source NOT NULL
+- run_id → run NOT NULL (retrieved inside a run — P1/R9 hold for
+  documents by construction)
 - url TEXT NOT NULL; retrieved_at TEXT NOT NULL
 - raw_hash TEXT UNIQUE — sha256 of raw bytes; CHECK
   (status_code != 'archived' OR raw_hash IS NOT NULL)
 - content_type TEXT; language_code → language; title TEXT
 - size_bytes INTEGER; retrieval_method_code → access_method
 - status_code → document_status NOT NULL DEFAULT 'archived'; notes TEXT
-- Index: (source_id); UNIQUE (raw_hash).
+- Index: (source_id), (run_id); UNIQUE (raw_hash).
 
 **run** — one audit-trail row per operation, any kind.
 - id INTEGER PK; run_key TEXT UNIQUE NOT NULL — deterministic,
@@ -164,9 +168,11 @@ hash-only (security rule, interfaces.md P5).
   (kind_code != 'probe' OR source_id IS NOT NULL): **probe runs are
   per-source** (CEO review), so partial failure is visible per source
 - started_at TEXT NOT NULL; finished_at TEXT
-- status_code → run_status NOT NULL DEFAULT 'running'
+- status_code → run_status NOT NULL DEFAULT 'planned' (initial state
+  per the run lifecycle; the engine moves it to running/done)
 - parameters_json TEXT; seed INTEGER; notes TEXT
-- Index: (source_id), (kind_code), (status_code).
+- Index: (source_id), (kind_code), (status_code),
+  (source_id, status_code, started_at) — covering v_probe_latest.
 
 **probe_run** — typed detail of a probe run.
 - run_id INTEGER PK → run; mode_code → probe_mode NOT NULL
@@ -191,8 +197,9 @@ decision (10_STRATEGY/MASTER.md D20).
 ### Probe-era views (0002)
 
 - **v_probe_latest** — the current finding per (source, metric):
-  latest run (by started_at, then run id) per source × metric; the
-  "current census" under re-runs.
+  latest **done** run (status_code='done'; by started_at, then run
+  id) per source × metric; aborted/failed/blocked runs keep their
+  findings but never shadow the current census.
 - **v_anchor_candidates** — latest findings with metric in
   (catalog_count, category_count, export_rows) — candidate population
   anchors for manual promotion. Redefined by 0004 to also exclude
@@ -278,7 +285,8 @@ strings on sightings.
   document_id → document; assessed_at TEXT; active INTEGER NOT NULL
   DEFAULT 1; notes TEXT
 - Partial UNIQUE index: (product_id) WHERE active = 1 — one current
-  classification, full history retained.
+  classification, full history retained (partial-index syntax is the
+  second PostgreSQL variance).
 
 **category** — catalog categories as discovered by probing.
 - id INTEGER PK; source_id → source NOT NULL; parent_id → category
@@ -462,7 +470,9 @@ exist per applied migrations.
 - **Second study, zero migration:** insert a `study` row; its
   products, anchors, frames, sampling runs live under that study_id.
   Substance dictionary, documents, sources, lookups are shared.
-- **PostgreSQL port:** type variances only (BOOLEAN, JSONB); no
+- **PostgreSQL port:** documented variances only — BOOLEAN, JSONB, id
+  generation (`INTEGER PRIMARY KEY` rowid alias → IDENTITY/BIGSERIAL),
+  and the `product_classification` partial-index syntax; no other
   SQLite-only constructs in migrations (no AUTOINCREMENT, no PRAGMA —
   pragmas are runtime connection settings in db.py).
 - **Export artifact (M4, designed now):** frozen snapshot
@@ -492,6 +502,10 @@ exist per applied migrations.
   redefinition allowed and recorded.
 - dm12: append-only evidence; reference data updatable, never deleted.
 - dm13: ON DELETE RESTRICT everywhere.
+- dm14: run lifecycle in schema — initial status `planned`;
+  v_probe_latest restricted to `done` runs (ENG review 2026-09-11).
+- dm15: document.run_id NOT NULL — the provenance backbone is
+  run-complete; P1/R9 hold for documents by construction.
 
 ## OPEN ITEMS
 
@@ -508,6 +522,10 @@ exist per applied migrations.
   design.
 - run.parameters_json schema per kind — probe fixed now
   (interfaces.md); others defined at their milestones.
+- Backup target directory — propose `data/backups/` (gitignored);
+  confirm at implementation.
+- trade_stat.run_id nullable vs P1 — confirm import-only provenance
+  (manual trade-stat entry would need a run or an exception rule).
 
 ## REFERENCES
 

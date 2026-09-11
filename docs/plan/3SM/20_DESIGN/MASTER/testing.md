@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Testing (Design)
@@ -23,12 +23,16 @@ in the interfaces.md mapping table has at least one test.
 NEW CLI FLOWS:
   db init/status/audit | source load/list | probe run (dry+fixture)
   probe record | probe report | doctor
+  exit-code mapping (usage → 1, Abort → 130) | bare-group help
+  source list single registration | doctor --net | --data-dir
 
 NEW DATA FLOWS:
   register CSV → source rows
   fetch → document row + raw-store file
   adapter → FindingDrafts (+ documents)
   views → report output
+  make target wiring (make -n / guarded targets)
+  report file routing data/report → docs/report
 
 NEW CODEPATHS:
   robots deny | 403/429 block | retry→fail | rate-limit spacing
@@ -42,6 +46,8 @@ NEW INTEGRATIONS / EXTERNAL CALLS:
 
 NEW ERROR/RESCUE PATHS:
   every row of the interfaces.md exception table
+  uninitialized DB → guided error | make GO guard | clobber confirm
+  report-publish missing WHICH
 ```
 
 Each matrix item maps to: test type (unit / integration / smoke),
@@ -53,13 +59,17 @@ path (no sources → "no sources", exit 0) and nil/empty inputs
 
 - **test_migrations.py** — fresh DB applies 0001→0002; re-run is a
   no-op (idempotency via schema_version); migration order enforced;
-  CHECK constraints hold (per-source probe run; archived ⇒ hash).
+  CHECK constraints hold (per-source probe run; archived ⇒ hash);
+  backup round-trip (seeded DB → migrate → timestamped backup
+  restores a working DB); sync test (0001 probe_metric seeds ==
+  metrics.py list).
 - **test_store.py** — hash-only filenames; source-id allowlist
   rejects traversal attempts (`../`, `CS-1/../../`); orphan
   detection; verify(hash) round-trip.
 - **test_fetch.py** — fake clock: ≥2 s spacing per domain; robots
-  deny → RobotsDisallowed; 403/429 → Blocked; retry 2× then
-  ProbeNetworkError; dry-run mode performs zero network calls.
+  deny → RobotsDisallowed; 403 → Blocked; 429 → RateLimited (one
+  capped backoff) → retry succeeds, persistent 429 → blocked; retry
+  2× then ProbeNetworkError; dry-run mode performs zero network calls.
 - **test_adapters_pe.py** — fixture catalog HTML → catalog_count,
   category_count/category_list, languages; sample pages →
   page_sample_ok/sds_sample_ok; sample pages archived as documents.
@@ -68,12 +78,20 @@ path (no sources → "no sources", exit 0) and nil/empty inputs
   → format finding with WARNING.
 - **test_adapters_st.py** — gated on mdbtools binary (skipif):
   extraction_path ok; missing binary → BinaryMissing path (forced).
+- **test_adapters_contract.py** — each adapter runs against a
+  `PRAGMA query_only=ON` connection and completes draft-only: pins
+  i3 (adapters never write the DB; engine owns the single write
+  path) and guards the adapter contract for future adapters
+  (implementation-plan ENG review 2026-09-11).
 - **test_engine.py** — one run per source; `--all` continues past a
   failing source; interrupt → run aborted, findings persist; re-run
-  → new run_key (-2 suffix); exit codes.
+  → new run_key (-2 suffix); exit codes; stale-run reclaim
+  (pre-inserted stale `running` run → next command marks it failed
+  with `stale run reclaimed`).
 - **test_views.py** — v_probe_latest correctness under re-run (newer
-  run wins); v_anchor_candidates lists count-metrics; v_source_activity
-  first/last retrieval.
+  done run wins); a later aborted/blocked run does not shadow the
+  last done census; v_anchor_candidates lists count-metrics;
+  v_source_activity first/last retrieval.
 - **test_report_golden.py** — fixture findings → exact md/csv/json
   output (golden files; intentional changes regenerate with review).
 - **test_cli_smoke.py** — end-to-end on a temp DB + fixture register
@@ -84,6 +102,22 @@ path (no sources → "no sources", exit 0) and nil/empty inputs
   a planted orphan file; clean fixture corpus exits 0.
 - **test_doctor.py** — fake binaries on PATH; missing contact →
   warning; data-dir not writable → error.
+- **test_cli_operability.py** — exit-code mapping (unknown command,
+  missing option, bad choice → 1); bare groups print help exit 0;
+  `source list` registered once (no `list-`); `--db`+`--data-dir`
+  conflict → 1; `--no-net` gone from doctor help; Abort/interrupt
+  → 130 (v0.1.2).
+- **test_preflight.py** — uninitialized DB (missing file / empty /
+  no schema_version) → guided error, exit 1, on db status|audit,
+  source load|list, probe run|record|report; after `db init` the
+  same commands pass; `db init` itself unaffected (v0.1.2).
+- **test_makefile.py** — gated on `make` + repo root: `make help`
+  exit 0; `make probe`/`make census` (no GO) fail with the guard
+  message before any side effect; `make sample` fails with the
+  milestone pointer; `GO=1 make -n probe` prints the leadhs line;
+  `make -n report` prints the three `--out` lines;
+  `make report-publish` (no WHICH) fails with the usage line
+  (v0.1.2).
 
 ## Hostile-QA cases (explicitly tested)
 
@@ -97,7 +131,8 @@ new-run semantics, not mutation).
 ## Chaos test
 
 Kill a probe run mid-source (simulated interrupt): run=aborted,
-findings persisted, re-run idempotent, `db audit` still clean.
+findings persisted, re-run idempotent, `db audit` still clean,
+v_probe_latest unchanged by the aborted run.
 
 ## Flakiness & environment rules
 
@@ -109,6 +144,8 @@ findings persisted, re-run idempotent, `db audit` still clean.
   (tmp_path + in-memory SQLite).
 - The fixture site runs on an ephemeral localhost port in a thread —
   no external dependencies.
+- Makefile tests run only `make -n` (dry-run) or guarded targets
+  that fail before any side effect; skipped when `make` is absent.
 
 ## Ambition checks
 
@@ -128,6 +165,11 @@ findings persisted, re-run idempotent, `db audit` still clean.
   the coverage checklist).
 - t5: fixture site via local http.server thread; fixture register +
   fixture exports in tests/fixtures/.
+- t6: crash/backup coverage — metrics sync, backup round-trip,
+  stale-run reclaim, 429-retry tests (ENG review 2026-09-11).
+- t7: operability + preflight + make-wiring tests
+  (test_cli_operability.py, test_preflight.py, test_makefile.py) —
+  v0.1.2 (HOLD-SCOPE review 2026-09-11).
 
 ## OPEN ITEMS
 

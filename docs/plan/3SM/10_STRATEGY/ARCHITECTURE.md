@@ -28,6 +28,8 @@ to 20_DESIGN.
 - **No servers, no services, no daemons** — fits Slackware/no-systemd
   and the minimal-cost constraint; every stage is a CLI step.
 - Persistence: SQLite + raw store (DATA_MODEL.md).
+- Orchestration: GNU Make (`Makefile`, repo root) as the stable
+  operator entrypoint; one target = one `leadhs` call (v0.1.2, D8).
 
 ## Pipeline stages
 
@@ -84,12 +86,18 @@ The core user flow — set sampling parameters, run, get a report — is:
 `sample plan` → `sample draw` → (screen/corroborate) → `analyze` →
 `report build`.
 
+The Makefile wraps these one-call-per-target; `make help` is the
+operator index. Composite flows (census) stay in make until the CLI
+grows matching commands.
+
 ## Rollout (implementation order; v0.1.1 = M0)
 
 - **M0 — probe (unit v0.1.1):** `db init/status`, `source load/list`,
   `probe run/report`. Schema subset: `schema_version`, `source`,
   `probe_run`, `probe_finding`. Delivers the source census and
   provisional population anchors; nothing else is implemented.
+- **v0.1.2 — operator layer (between M0 and M1):** Makefile, CLI
+  operability fixes, report routing; no new pipeline stages.
 - **M1 — frame & sample:** `frame set`, `sample plan`, `sample draw`
   (probe counts + trade stats → strata; parameters p/precision/
   confidence/FPC/seed).
@@ -107,12 +115,49 @@ DATA_MODEL.md.
 
     src/leadhs/            # package: cli, db, acquire/, parse/, frame,
                            # sample, analyze, report/ (templates), dict/
+    Makefile               # operator entrypoint (v0.1.2)
     data/raw/              # gitignored raw store
     data/leadhs.sqlite     # gitignored database
-    docs/report/           # generated reports (final ones committed)
+    data/report/           # gitignored report intermediates (regenerated freely)
+    docs/report/           # published final reports only (committed)
     tests/                 # pytest: parse fixtures, seed reproducibility,
                            # CLI smoke
     pyproject.toml
+
+## Distribution & portability
+
+Audience (decided 2026-09-11): author + technical peers on
+Linux/macOS/Windows; terminal use presumed. That fixes the model —
+**ship a standard wheel, install with a managed interpreter; do not
+bundle.**
+
+- **Install route:** `uv tool install <wheel URL>` (pipx equivalent) —
+  identical on all three platforms; uv fetches Python 3.11+ itself when
+  missing. Repo-developer path stays `make install` (editable). Wheels
+  attach as GitHub release assets; **no public PyPI footprint** (name
+  discoverability; commissioning context stays implicit).
+
+- **Portability policy:** the core stays pure-Python — pypdf is the
+  default PDF backend; poppler/mdbtools remain optional accelerators,
+  detected at runtime (`leadhs doctor`), never install requirements.
+  pathlib-only paths; installed (non-repo) use gets an explicit data
+  dir (`--data-dir`), never CWD-implicit writes; SQLite + raw store
+  stay relocatable by copy (zip and move).
+
+- **Rejected as distribution vehicles:** Docker (Win/Mac = Linux VM
+  under Docker Desktop; multi-GB proprietary runtime with license
+  limits, volume-mount/ownership friction, SQLite-on-bind-mount
+  caveats — solves a native-dependency problem this stack does not
+  have; a dev/CI image may be added later, it is not the shipping
+  vehicle); AppImage (Linux-only by definition); conda-forge (no
+  conda-native audience); language rewrite (cost).
+
+- **Contingency (recorded, not built):** if a genuinely non-technical
+  recipient ever materializes, PyInstaller per-OS bundles via a CI
+  matrix (windows-latest; macOS arm64+x64; Linux tarball/AppImage
+  optional) — accepting Windows SmartScreen click-through and macOS
+  notarization costs (Apple Developer ~USD 99/yr). Built only then,
+  never speculatively.
 
 ## Report concept
 
@@ -129,6 +174,9 @@ DATA_MODEL.md.
   is never overwritten by generated artifacts.
 - Intermediates are regenerated freely; final report versions are
   committed with their run IDs.
+- Routing: intermediates → `data/report/`; publishing → `docs/report/`
+  is an explicit act (`make report-publish`). Finals are committed with
+  their run IDs.
 
 ## Testing & quality (light but real)
 
@@ -177,6 +225,17 @@ data-model ER) are archived under `../_archive/10_STRATEGY/charts/`.
   full surface is implemented progressively (MASTER D19).
 - D7: probing is a first-class pipeline stage with its own entities
   (`probe_run`/`probe_finding`), not an ad-hoc script (MASTER D20).
+- D8: operator layer lives in make — thin wrapper, pipeline logic
+  gravitates into the CLI (MASTER D21).
+- D9: report intermediates in `data/report/`, explicit publish to
+  `docs/report/` (MASTER D22).
+- D10: distribution = standard wheel + managed interpreter (`uv tool
+  install`/pipx) for author + technical peers; wheels as GitHub
+  release assets, no public PyPI (2026-09-11).
+- D11: portability = pure-Python core as policy (native tools
+  optional, runtime-detected); no bundling; Docker/AppImage rejected
+  as distribution vehicles; PyInstaller per-OS builds are the
+  recorded contingency for a non-technical audience.
 
 ## OPEN ITEMS
 
@@ -188,3 +247,11 @@ data-model ER) are archived under `../_archive/10_STRATEGY/charts/`.
   target of v0.1.1).
 - Chart rendering (matplotlib vs table-first) — Design.
 - Report PDF route (pandoc availability on Slackware) — Design.
+- Config-file parameter surface (sampling p/precision/confidence/seed,
+  per-source budgets) — introduce at M1 (MASTER D21).
+- Release mechanics (implementation): tag → wheel → GitHub release
+  asset; install smoke-test on Linux/macOS/Windows; document the two
+  install paths (repo `make install`; peer `uv tool install`) in the
+  README at first external use.
+- Data-dir default for installed (non-repo) use (platformdirs vs
+  explicit-only) — Design.

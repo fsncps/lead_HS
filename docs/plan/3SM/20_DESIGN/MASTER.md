@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Design MASTER — lead_HS
@@ -20,8 +20,16 @@ topic documents below.
 
 ## State
 
-- Unit **v0.1.1** — in DESIGN (design docs LIVE; strategy converged
-  for the slim scope).
+- Unit **v0.1.1** — built: PHASE01–07 done and gate-verified
+  2026-09-11 (101 passed); the PHASE08 census feasibility pass was
+  executed 2026-09-11 and its close-out is transferred to v0.1.2
+  (D26). Design docs LIVE.
+- Unit **v0.1.2** (operator layer + census close-out: make, CLI
+  operability, report routing, structured source reports) — design
+  converged (units/v0.1.2.md, od1–od9; D25/D26 absorbed);
+  implementation plans written (30_IMPLEMENTATION/v0.1.2/,
+  PHASE01–07; ENG review 2026-09-11). Build awaits explicit go; the
+  census executes through it (`GO=1 make census`).
 - Unit v0.1 (feasibility & study design) — foundational strategy
   pass, LIVE in STRATEGY.
 - Full-pipeline design: **present but not frozen** — freeze awaits
@@ -38,6 +46,7 @@ topic documents below.
   contracts, metric vocabulary, audit rules R1–R9, export contract
 - `MASTER/testing.md` — test matrix, key tests, flakiness rules
 - `units/v0.1.1.md` — the design delta for the active unit
+- `units/v0.1.2.md` — design delta for the operator-layer unit
 
 (The canonical "design" subject is covered by architecture +
 interfaces together — consolidation decision, no separate
@@ -47,6 +56,14 @@ design.md.)
 
 - **Built in v0.1.1:** migrations 0001–0002 + views; db/source/
   probe/doctor commands; three adapters; report md/csv/json.
+- **Built in v0.1.2:** repo Makefile (operator entrypoint, GO=1
+  guard), CLI exit-code enforcement + DB-init preflight, `source
+  list`/doctor/`--data-dir` fixes, report routing, housekeeping;
+  migration 0003 per-HS count metrics (od9); structured census
+  report content (od8/D25); the census close-out execution (P7).
+- **Deferred from v0.1.2:** M1–M4 stages (stub targets only), wheel
+  release mechanics (first external use). DE/FR README sync resolved:
+  same change set (B6).
 - **Designed ahead, built M1–M4:** dictionary/catalog/frame/sampling/
   trade/sds/evidence tables (0003–0009); acquire/parse/analyze/
   report surfaces; db query; db export (frozen artifact + manifest);
@@ -61,7 +78,7 @@ design.md.)
 - **d1** SQLite + PostgreSQL-portable DDL (CEO review; strategy D1
   kept).
 - **d2** `document` provenance backbone — url/source/retrieved_at/
-  raw_hash live once (dm2, a-series).
+  raw_hash live once (dm2, dm15).
 - **d3** unified `run` table + typed detail tables (dm3).
 - **d4** full schema designed now; probe-era subset implemented
   (milestone-gated migrations 0001–0009) (dm10, dm11).
@@ -70,13 +87,13 @@ design.md.)
 - **d6** export path + read-only query surface designed now, built
   M4; per-product evidence dossier in the report (i6; CEO review).
 - **d7** per-source probe runs; abort/resume; latest-per-metric view
-  (a2, ud1).
+  (a2, ud1, a11, dm14, i9).
 - **d8** raw-store security: hash-only filenames + source-id
   allowlist (a5, P5).
 - **d9** probe_metric vocabulary fixed in v0.1.1, extended only by
-  migration (i4, ud7).
+  migration (i4, ud7, t6).
 - **d10** single fetch seam with injectable clock; three-adapter
-  contract; adapters never write the DB (a1, a3, a4, i3).
+  contract; adapters never write the DB (a1, a3, a4, i3, i8).
 - **d11** lookups keyed by stable TEXT codes (dm1).
 - **d12** classification history (product_classification, active
   flag) (dm6).
@@ -90,7 +107,26 @@ design.md.)
 - **d18** exit-code convention 0/1/2/3 (i1).
 - **d19** register of record = repo CSV; `source add` deferred (i2,
   ud8).
-- **d20** backup-before-migration default on (a8, ud6).
+- **d20** backup-before-migration default on (a8, ud6, t6).
+- **d21** operator layer in make — thin wrapper, `guard-%` GO=1
+  prerequisite (census guard precedes setup), params as make vars
+  until M1, clobber GO=1 + typed confirm (a12; strategy D21,
+  U1–U4).
+- **d22** CLI exit-code enforcement in `main()` (standalone_mode
+  False; usage errors → 1; Abort/interrupt → 130) + DB-init
+  preflight guided error (i10, i11; od2, od3).
+- **d23** report routing implemented — `data/report/` intermediates,
+  `report-publish` copies to `docs/report/` (a13, od5; strategy D22).
+- **d24** `--data-dir` for installed use, exclusive with `--db`
+  (od4; strategy D24).
+- **d25** structured census report content — per-source metadata
+  (identification/access/content/counts/availability/provenance) +
+  cross-source summary matrix; "source feasibility" framing
+  (od8; strategy D25).
+- **d26** M0 close-out lives in v0.1.2 — census completion delivered
+  and executed through the operator layer; per-HS count metrics via
+  migration 0003 INSERT, not deferred to M1 (od9 = OD-A; strategy
+  D26; supersedes census-first sequencing).
 
 ## OPEN ITEMS
 
@@ -111,9 +147,17 @@ design.md.)
 ## Readiness for IMPLEMENTATION
 
 - **v0.1.1: ready.** Design converged (schema fixed to column level,
-  contracts and test matrix written). Next step per 3SM: engineering
-  review of this design (optional), then 30_IMPLEMENTATION/v0.1.1/
-  PHASE##.md when explicitly instructed.
+  contracts and test matrix written); engineering review done
+  2026-09-11 (critical + ENG review; findings applied per
+  FIXPLAN_2026-09-11.md). Next step per 3SM:
+  30_IMPLEMENTATION/v0.1.1/PHASE##.md when explicitly instructed.
+- **v0.1.2: ready — implementation plans written.** Design converged
+  (operator layer + census close-out; CEO review 2026-09-11 HOLD
+  SCOPE + ENG review 2026-09-11 SMALL CHANGE; OD-A resolved as
+  migration 0003). Phase plans:
+  30_IMPLEMENTATION/v0.1.2/PHASE01–07. Build awaits explicit go;
+  PHASE07 (census execution) additionally requires the real-network
+  go-ahead.
 - **Full pipeline: not ready.** Freeze awaits probe results (source
   counts, swiss-impex format, SDS corpus quality) and the
   legal-verification items in 10_STRATEGY/MASTER.md.

@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # lead_HS — MASTER
@@ -22,8 +22,11 @@ cycle. It
 works purely from documents — chiefly safety data sheets (SDS) and trade
 statistics — with no laboratory and at minimal cost. The outcome is a
 discussion basis for decision makers plus a reusable database of checked
-products. This file is the project dashboard. Current stage: **strategy**
-— research and decisions, nothing is being built yet.
+products. This file is the project dashboard. Current stage: v0.1.1
+built (probe CLI gate-verified; census feasibility pass executed
+2026-09-11); unit v0.1.2 — operator layer + census close-out (D26) —
+has design and ENG-reviewed implementation plans; build awaits
+explicit go.
 
 **Project:** Identify which paint/varnish products (HS/CN 3208/3209, plus a
 3213 artists' colours census annex) on the Swiss and EU markets contain
@@ -42,7 +45,8 @@ no paid data sources, minimal cost.
 | Unit | Stage | Notes |
 |---|---|---|
 | v0.1 (feasibility & study design) | STRATEGY | foundational pass; legal-verification open items carried in Strategy MASTER |
-| v0.1.1 (source probing — slim CLI) | STRATEGY | first bounded unit; probe-first rollout decided (D19/D20); Design may proceed for the slim scope |
+| v0.1.1 (source probing — slim CLI) | IMPLEMENTATION | PHASE01–07 built & gate-verified 2026-09-11; PHASE08 feasibility pass executed 2026-09-11; census close-out transferred to v0.1.2 (D26) |
+| v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | design od1–od9 converged (D21–D26); ENG-reviewed phase plans PHASE01–07 written; build awaits explicit go |
 
 ## Documents
 

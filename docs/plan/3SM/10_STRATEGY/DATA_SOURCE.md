@@ -158,6 +158,20 @@ Probing obeys the access & scraping discipline below — light by design
 (counts and constraints, not bulk collection). Probe outputs are
 provisional frame inputs (MASTER D20).
 
+### Census metadata set (complete source record — v0.1.2)
+
+Per source, the census report must present: identification (id,
+class, name, URL, access method, verification status); access
+(`free_access`, `robots`, `terms`, `rate_limit`, `extraction_path`,
+blocked/denied status + notes); content (`format`, `granularity`,
+`coverage_years`, `languages`); counts (`export_rows` /
+`catalog_count` / `category_count`; per-HS records 3208/3209/3213
+where the source exposes them); availability (`page_sample_ok`,
+`sds_sample_ok`); provenance (run keys, timestamps, archived
+documents). Framing: these are source-feasibility metrics; product
+and lead prevalence are M2+ deliverables and are never implied by
+this report (D25).
+
 ## Provenance rules (binding)
 
 1. Every scraped record stores `source_id`, `url`, `retrieved_at`.

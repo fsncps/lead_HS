@@ -138,11 +138,32 @@ owner). Open questions and the phased roadmap follow.
     frame inputs before any sampling design is frozen.
 20. **Probe entities & anchor promotion:** probing records (`probe_run`,
     `probe_finding`) carry full provenance like every other record; census
-    counts are **provisional** — promotion to `population_anchor` /
+    counts are **provisional** —     promotion to `population_anchor` /
     `frame_stratum` is a manual method decision, never automatic (catalog
     coverage bias is real). Probing obeys the DATA_SOURCE.md scraping
     discipline.
-
+21. **Operator layer (queued unit v0.1.2):** the stable operator
+    entrypoint is a repo-root `Makefile` (GNU make, stock Slackware) —
+    one target per `leadhs` call; pipeline targets (`setup`, `probe`,
+    `report`, `census`) orchestrate only until the CLI grows the
+    matching commands — pipeline logic belongs in the CLI long-term,
+    make stays a thin wrapper (refines D2). Pipeline parameters are
+    make variables with documented defaults until milestone M1, when a
+    committed config file joins (one config migration, not two;
+    parameters still land per-run in the DB per D2). Costly network
+    operations (`probe` over all actives, `census`) require explicit
+    confirmation (`GO=1`) — the operational form of the census
+    go-ahead discipline; wiping local state (`clobber`) is gated the
+    same way. CLI operability principles: bare group invocation prints
+    help; an uninitialized database yields a guided error ("run
+    `make setup`"), never a `bug:` label; strict exit-code conformance
+    0/1/2/3/130 (click usage errors → 1); doctor is the preflight gate
+    in every pipeline recipe.
+22. **Report routing:** generated intermediates go to `data/report/`
+    (gitignored, beside the DB, regenerated freely); publishing into
+    `docs/report/` (committed) is an explicit act (`make
+    report-publish`). `docs/report/` holds published finals only.
+    (Refines D18; `management_summary.md` protection unchanged.)
 23. **Multilingual documentation (i18n):** English is canonical; DE/FR
     translations live in sibling files with a language suffix
     (`README.de.md`, `README.fr.md`, `METHODOLOGY.de.md`, …) next to the
@@ -154,6 +175,27 @@ owner). Open questions and the phased roadmap follow.
     documents remain EN-only. Substantive EN edits update translations in
     the same change set or leave `source_updated` behind as a visible
     drift marker.
+24. **Distribution & portability (2026-09-11):** `leadhs` ships as a
+    standard wheel installed via a managed interpreter (`uv tool
+    install`/pipx) for the author and technical peers; wheels as
+    GitHub release assets — no public PyPI footprint (commissioning
+    context stays implicit). Pure-Python core is a portability policy
+    (optional native tools runtime-detected via `leadhs doctor`);
+    Docker/AppImage/bundling rejected; PyInstaller per-OS builds
+    recorded as contingency only. Detail: ARCHITECTURE.md (D10/D11).
+25. **Source-report structure & transparency (2026-09-11):** the
+    census report presents structured per-source metadata
+    (identification, access, content, counts, availability,
+    provenance) plus a cross-source summary matrix, in md/csv/json;
+    run status and notes are visible; section titles state "source
+    feasibility" — never product or lead counts (M2+). Refines D22.
+    Detail: DATA_SOURCE.md (census metadata set).
+26. **M0 close-out lives in v0.1.2 (2026-09-11):** census completion
+    (parameter fixes, catalog-level probes, manual records, metric
+    additions where required) is delivered by unit v0.1.2 together
+    with the operator layer and executed through it; the v0.1.1
+    PHASE08 feasibility pass (2026-09-11) is its empirical record.
+    Supersedes the same-day census-first sequencing decision.
 
 ## OPEN ITEMS
 
@@ -201,7 +243,12 @@ owner). Open questions and the phased roadmap follow.
   owner, review procedure, 2010 inception record); 2022 refusal OJ ref;
   PCN stats; SPIN query; PRODCOM; catalog counts — via the v0.1.1 source
   census (`leadhs probe`, D19): counts per source, access constraints,
-  provisional population anchors.
+  provisional population anchors. Census go granted 2026-09-11;
+  feasibility pass executed the same day (gaps: CS-1 fetch, CS-2
+  query params, ST-2 fetch, PE catalog level, manual sources). v0.1.2
+  (D26) is the census close-out — full source probing, structured
+  source reports, operator layer — and delivers the census through
+  `GO=1 make census`.
 - Phase 1 — pilot: freeze lead dictionary + SDS scrape/parsing on 1–2 strata
   (lead-driers stream first); validate hit-rate prior and CN-assignment
   heuristics; build the `leadhs` CLI skeleton (acquire → ingest → parse →
@@ -219,7 +266,8 @@ owner). Open questions and the phased roadmap follow.
 - `LEAD_SDS.md` — compounds, legal status, SDS feasibility, prior studies
 - `DATA_SOURCE.md` — source register, access, provenance & scraping discipline
 - `DATA_MODEL.md` — evidence-database schema (products, SDS findings, runs)
-- `ARCHITECTURE.md` — pipeline, CLI (`leadhs`), reporting concept
+- `ARCHITECTURE.md` — pipeline, CLI (`leadhs`), reporting, distribution &
+  portability
 - `charts/` — rendered diagrams in active use (system components,
   lead decision tree, probe process); index and regeneration:
   `charts/README.md`; superseded charts archived under
@@ -230,6 +278,9 @@ owner). Open questions and the phased roadmap follow.
 - `v0.1.1.md` — source probing (slim CLI): db/source/probe tools; the
   Phase-0 instrument. Strategy converged; Design may proceed for the
   slim scope.
+- `v0.1.2.md` — census close-out (full source probing, structured
+  source reports, operator layer per D25/D26): strategy converged
+  (D21/D22/D25/D26); unit doc LIVE.
 - v0.1 (feasibility & study design) remains the foundational strategy
   pass; its legal-verification open items stay in OPEN ITEMS above.
 
@@ -241,3 +292,7 @@ ARCHITECTURE.md); Design may proceed. For the full pipeline (frame,
 sampling, scraping at scale): not yet — freeze awaits the v0.1.1 probe
 results (source counts, swiss-impex format, SDS corpus quality) and the
 legal-text verification items in OPEN ITEMS.
+
+For unit v0.1.2 (census close-out): strategy converged
+(D21/D22/D25/D26); Design proceeds on od1–od7 plus od8 (report
+content) and the OD-A decision (per-HS metrics vs M1 deferral).

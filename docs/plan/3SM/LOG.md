@@ -76,3 +76,23 @@ run/report — nothing else; full command surface stays design-ahead
 promotion — D20). Strategy readiness split: Design may proceed for
 the slim probe CLI; full-pipeline freeze awaits probe results. v0.1
 remains the foundational strategy pass. Unit v0.1.1 LIVE in STRATEGY.
+
+## 2026-09-11 — v0.1.1 built; v0.1.2 opened as operator layer + census close-out
+
+Unit v0.1.1 PHASE01–07 built and gate-verified (101 passed offline);
+the PHASE08 census feasibility pass was executed the same day and its
+recorded gaps (CS-1 fetch, CS-2 query parameters, ST-2 fetch, PE
+catalog level, manual sources) move forward. Strategy decisions
+D21–D26 added (operator layer, report routing, i18n, distribution,
+structured source reports, M0 close-out in v0.1.2); unit v0.1.2
+re-scoped accordingly (U1–U10): the census close-out is delivered by
+v0.1.2 and executed through the operator layer (`GO=1 make census`),
+superseding the census-first sequencing discussion. Design converged
+(od1–od9; CEO review 2026-09-11 HOLD SCOPE; OD-A resolved — per-HS
+count metrics via migration 0003, not deferred to M1); implementation
+phase plans PHASE01–07 written and ENG-reviewed (SMALL CHANGE;
+exit-map hardening from empirical click verification; test-net job;
+README EN/DE/FR same change set). v0.1.1 PHASE08 marked transferred;
+READMEs (EN/DE/FR), management summary, AGENTS and dashboards
+updated. Nothing frozen; build and census execution await explicit
+instruction (commits pending at time of writing).

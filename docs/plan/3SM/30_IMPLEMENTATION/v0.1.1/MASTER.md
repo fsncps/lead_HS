@@ -35,12 +35,14 @@ run against the register (PHASE08 — execution, not code).
 | 05 | probe (engine + CS/PE/ST adapters + record) | 02, 03, 04 | outcome-based done/blocked on fixture site; exit codes; single write path | done |
 | 06 | reporting (report.py from views) | 05 | md/csv/json golden render from fixture findings | done |
 | 07 | tests (full matrix + fixtures) | 01–06 | suite green offline (net/mdbtools deselected); smoke + hostile + chaos | done |
-| 08 | census run (operational execution) | 07 + explicit go | every OPEN register row probed or explicitly manual; report delivered; register Status updated | planned |
+| 08 | census run (operational execution) | 07 + explicit go | every OPEN register row probed or explicitly manual; report delivered; register Status updated | transferred to v0.1.2 (D26) — feasibility pass executed 2026-09-11; close-out in `../v0.1.2/PHASE07.md` |
 
 Build state: PHASE01–07 implemented and gate-verified 2026-09-11 —
 `pytest`: **101 passed, 1 deselected** (mdbtools-gated ST test;
 markers net/mdbtools deselected by default), stable across sessions.
-PHASE08 (real census run) awaits explicit go-ahead.
+The PHASE08 census feasibility pass was executed 2026-09-11 (gaps
+recorded); per strategy D26 the census close-out is delivered by unit
+v0.1.2 (`../v0.1.2/PHASE07.md`) through the operator layer.
 
 Statuses: `planned → in-progress → done` (per-phase; update this table
 and the PHASE file header when a phase starts/finishes). PHASE08 is

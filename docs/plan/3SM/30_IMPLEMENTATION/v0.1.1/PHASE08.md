@@ -7,8 +7,12 @@ updated: 2026-09-11
 
 # PHASE08 — Census run (execution, not code)
 
-Status: planned · Depends on: PHASE07 done + explicit go-ahead ·
-Governs: the unit's operational deliverable.
+Status: **transferred to unit v0.1.2** (strategy D26, 2026-09-11) —
+the feasibility pass below was executed 2026-09-11 and is the
+empirical record; the census close-out (gap completion, structured
+report, register updates) is `../v0.1.2/PHASE07.md`, executed through
+the operator layer. · Original dependencies: PHASE01–07 + explicit
+go-ahead.
 
 ## Objective
 
