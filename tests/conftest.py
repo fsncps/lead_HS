@@ -19,7 +19,7 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
         _FixtureSite.hits[self.path] = _FixtureSite.hits.get(self.path, 0) + 1
-        p = self.path
+        p, _, query = self.path.partition("?")
         if p == "/robots.txt":
             self.send_response(200)
             self.end_headers()
@@ -29,7 +29,7 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.end_headers()
         elif p == "/":
             html = b"""<html lang="de"><head><link rel="alternate" hreflang="fr" href="/?lang=fr"/></head>
-<body><nav><a href="/cat/wandfarben">Wandfarben</a><a href="/cat/grundierung">Grundierung</a></nav>
+<body><nav><a href="/cat/wandfarben">Wandfarben</a><a href="/cat/grundierung">Grundierung</a><a href="/cat/broken">Kaputt</a></nav>
 <p>500 Produkte</p><a href="/terms">AGB</a>
 <a href="/p/1.html">Produkt 1</a><a href="/p/2.html">Produkt 2</a><a href="/p/3.html">Produkt 3</a>
 <a href="/p/4.html">Produkt 4</a></body></html>"""
@@ -43,7 +43,8 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             sds_html = '<a href="/sds/sheet.pdf">SDS</a>' if has_sds else ""
             self._html(f"<html><body><h1>Product {p}</h1>{sds_html}</body></html>".encode())
         elif p == "/cat/wandfarben":
-            self._html(b"<html><body>Wandfarben category</body></html>")
+            self._html(b'<html><body>Wandfarben category <a href="/p/10.html">Produkt 10</a>'
+                       b'<a href="/p/11.html">Produkt 11</a></body></html>')
         elif p == "/cat/grundierung":
             self._html(b"<html><body>Grundierung category</body></html>")
         elif p == "/terms":
@@ -61,7 +62,9 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
         elif p == "/api.json":
-            data = json.dumps({"value": [{"x": 1}, {"x": 2}, {"x": 3}]}).encode()
+            # od9: parameterized CS query — empty result set for HS 3213
+            rows = [] if "product=3213" in query else [{"x": 1}, {"x": 2}, {"x": 3}]
+            data = json.dumps({"value": rows}).encode()
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()

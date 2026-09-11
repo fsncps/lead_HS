@@ -10,6 +10,6 @@ LG-2,LG,"SECO (Negativliste, CdD)",https://www.seco.admin.ch,download,public leg
 LG-3,LG,EUR-Lex / OJ,https://eur-lex.europa.eu,download,public legal texts,partially_verified,0,"REACH consolidated, Annex XIV decisions, 2022 refusal; 2022 OJ ref OPEN - not probed"
 LG-4,LG,"ECHA (DUR, EC inventory)",https://echa.europa.eu,scrape,public register,partially_verified,0,"authorisation refusals + CAS/EC verification; DUR verified, EC-inventory checks pending - not probed"
 ST-1,ST,ECHA PCN statistics,https://echa.europa.eu,manual,public statistics,open,0,"formulation counts (hazardous mixtures); manual-web via probe record (locate aggregates) - active=0 per ENG review A1"
-ST-2,ST,Nordic SPIN (DK/SE/NO/FI),http://spin2000.net,download,free Access-DB download,partially_verified,1,"preparation counts, lead-CAS incidence; DB download page ?page_id=54; extraction path OPEN (mdbtools)"
+ST-2,ST,Nordic SPIN (DK/SE/NO/FI),http://spin2000.net/?page_id=54,download,free Access-DB download,partially_verified,1,"preparation counts, lead-CAS incidence; register URL = DB download page ?page_id=54 (od9 fix); extraction path OPEN (mdbtools)"
 ST-3,ST,Eurostat PRODCOM / SBS,https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sbs_na_ind_r2,api,public API,verified,0,"NACE 20.30 production values/producer counts; verified - not a probe target this unit"
 LI-1,LI,Studies / IPEN / CEPE,https://www.ipen.org,download,public reports,verified,0,"calibration priors; CEPE cepe.org/about-the-industry/; not probed"

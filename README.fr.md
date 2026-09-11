@@ -98,19 +98,27 @@ Le registre complet, avec règles d'accès et discipline de provenance, en langa
 
 La collecte est automatisée par un petit programme en ligne de commande (« leadhs ») — pas de site web, pas de serveur, une machine. Sa mission : garder la chaîne de preuves étanche — chaque document récupéré est archivé comme original intact, avec sa source, sa date de récupération et une empreinte numérique de son contenu ; chaque observation est liée à l'exécution qui l'a produite ; rien n'est jamais écrasé — les corrections sont de nouvelles entrées, de sorte que chaque chiffre du rapport final remonte à un document précis. L'outil, la base de données et tous les rapports générés ne contiennent que des **données produit** — composés du plomb, concentrations, documents, dénombrements. Les textes juridiques sont le cadre contextuel de l'étude et vivent dans les documents de l'étude ; l'outil ne les stocke ni ne les rapporte jamais.
 
-La première unité de construction — **v0.1.1, « sondage »** — est implémentée et testée. Elle couvre exactement cette première étape : mettre en place la base de preuves, charger le registre des sources prévues, exécuter les visites de test respectueuses, produire le premier rapport de recensement. Rien de plus ; la chaîne de collecte complète viendra avec les unités suivantes.
+Les deux premières unités de construction — **v0.1.1, « sondage »** et **v0.1.2, « couche opérateur + achèvement du recensement »** — sont implémentées et testées (155 tests automatisés, suite hors ligne). Ensemble, elles couvrent : la mise en place de la base de preuves, le chargement du registre des sources prévues, les visites de test respectueuses et des rapports de faisabilité structurés par source. Rien de plus ; la chaîne de collecte complète viendra avec les unités suivantes.
 
-Installation et premières commandes (Python 3.11+) :
+## Utiliser l'outil
 
-    pip install -e .                   # installe « leadhs » depuis ce dossier
-    leadhs --contact vous@exemple.ch   # facultatif, par exécution : contact pour les opérateurs de sites
-    leadhs doctor                      # contrôle préalable de l'environnement (python, sqlite, dossier de données, contact)
-    leadhs db init                     # créer/migrer la base de preuves (data/leadhs.sqlite)
-    leadhs source load                 # charger le registre des sources (14 sources prévues)
-    leadhs source list                 # afficher le registre
-    leadhs probe run --all --dry-run   # planifier toutes les requêtes de sondage ; zéro appel réseau
-    leadhs probe run --all             # les visites de test respectueuses (réseau réel, cadencé)
-    leadhs probe report --format md    # rapport de recensement à partir des constats enregistrés
+Deux voies d'installation (Python 3.11+) :
+
+- **Dans ce dépôt** (développement) : `make setup` — installe l'outil, crée/migre la base, charge le registre des sources et exécute le contrôle préalable de l'environnement (idempotent ; peut être relancé sans risque).
+- **Hors du dépôt** (wheel installé) : `uv tool install <leadhs-wheel>` et travailler systématiquement avec un dossier de données explicite : `leadhs --data-dir ~/leadhs-data db init` — l'outil n'écrit jamais implicitement dans le répertoire courant.
+
+Au quotidien (dans le dépôt ; une cible make = un appel « leadhs ») :
+
+    make help                                 # l'index de tout ce qui suit
+    make probe-dry                            # plan du recensement ; zéro appel réseau
+    GO=1 make probe                           # recensement réel — exige le GO=1 explicite
+    make record SOURCE=ST-1 METRIC=census_status VALUE_TEXT="…"   # constat manuel
+    make report                               # rend md/csv/json dans data/report/
+    make report-publish WHICH=data/report/probe-report.md         # dépose dans docs/report/
+    make db-audit                             # contrôle de provenance (exit 3 en cas de violation)
+    GO=1 make clobber                         # remise à zéro gardée du état local
+
+Le recensement (les vraies visites de test sur toutes les sources actives) s'exécute comme « GO=1 make census » — setup, sondage, rapport et audit en séquence, gardé derrière « GO=1 » car il touche de vrais sites. L'adresse de contact pour les opérateurs de sites vient de l'environnement (« LEADHS_CONTACT ») ; doctor avertit si elle est absente. Codes de sortie en une phrase : 0 ok · 1 erreur d'usage/données · 2 une exécution s'est terminée bloquée/échouée (constats conservés) · 3 violations d'audit · 130 interrompu.
 
 « --help » après chaque commande explique les options.
 
@@ -118,7 +126,7 @@ Documents de travail : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md)
 
 ## Première étape : vérifier les sources
 
-Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données. C'est précisément ce que l'unité de sondage ci-dessus exécute ; la passe de faisabilité du 11 septembre 2026 a été exécutée une fois et a consigné les lacunes restantes. Achever le recensement est le livrable de la prochaine unité (v0.1.2), qui l'exécute via un point d'entrée make avec un feu vert explicite — toujours uniquement sur instruction explicite.
+Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données. La passe de faisabilité du 11 septembre 2026 a été exécutée une fois et a consigné les lacunes restantes ; achever le recensement est le livrable de v0.1.2 (construite), qui l'exécute via le point d'entrée make — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite (« GO=1 make census »).
 
 ## La feuille de route
 
@@ -160,9 +168,12 @@ Avant toute collecte à grande échelle, chaque source prévue reçoit une petit
     README.de.md               version allemande
     README.fr.md               version française
     AGENTS.md                  conventions pour le travail assisté par IA (EN)
+    Makefile                   point d'entrée opérateur (« make help » = index)
     pyproject.toml             empaquetage Python de l'outil leadhs
-    src/leadhs/                code source de l'outil (unité v0.1.1 : sondage)
+    src/leadhs/                code source de l'outil (v0.1.1 sondage + v0.1.2 couche opérateur)
     tests/                     suite de tests automatisés hors ligne
+    data/                      état de travail local (gitignored) : base, stockage brut, rapports intermédiaires
+    docs/report/               rapports finaux publiés (commités délibérément)
     docs/management_summary.md synthèse de gestion bilingue (DE/FR), toujours à jour
     docs/plan/3SM/             notes de planification (système à 3 étages, EN)
     ├── README.md              guide en langage clair (EN)
@@ -176,4 +187,4 @@ Avant toute collecte à grande échelle, chaque source prévue reçoit une petit
 
 ## État
 
-La stratégie, la conception revue et un plan d'implémentation revu par l'ingénierie sont en place pour les deux premières unités de construction. **v0.1.1, sondage des sources** — implémentée et testée : 101 tests automatisés passent (suite hors ligne) ; la passe de faisabilité du recensement du 11 septembre 2026 a été exécutée et ses lacunes consignées. **v0.1.2, couche opérateur + achèvement du recensement** — planifiée ensuite : un point d'entrée make à la racine du dépôt avec un feu vert explicite (« GO=1 »), de petites corrections d'ergonomie CLI, des métriques de comptage par position tarifaire (3208/3209/3213) et un rapport de faisabilité structuré par source ; le recensement complet s'exécutera ensuite comme « GO=1 make census » — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite. Rien n'est gelé — la méthodologie reste ouverte à révision à mesure que les résultats de la phase 0 arrivent.
+La stratégie, la conception revue et un plan d'implémentation revu par l'ingénierie sont en place pour les deux premières unités de construction. **v0.1.1, sondage des sources** — implémentée et testée ; la passe de faisabilité du recensement du 11 septembre 2026 a été exécutée et ses lacunes consignées puis transférées. **v0.1.2, couche opérateur + achèvement du recensement** — implémentée et testée : point d'entrée make à la racine du dépôt avec feu vert explicite (« GO=1 »), ergonomie CLI et application des codes de sortie, contrôle préalable de la base, métriques de comptage par position tarifaire (3208/3209/3213), constats manuels census_status et le rapport de faisabilité structuré par source (matrice récapitulative, statut des exécutions y compris bloquées/échouées, légende « — » vs 0) ; 155 tests automatisés passent (suite hors ligne). Le recensement complet lui-même s'exécute comme « GO=1 make census » — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite. Rien n'est gelé — la méthodologie reste ouverte à révision à mesure que les résultats de la phase 0 arrivent.

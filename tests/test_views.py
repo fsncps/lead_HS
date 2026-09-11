@@ -39,10 +39,23 @@ def test_blocked_run_does_not_shadow(loaded_conn, store, fetcher):
 
 def test_anchor_candidates(loaded_conn, store, fetcher):
     _run(loaded_conn, store, fetcher, "PX-1")
-    rows = loaded_conn.execute("SELECT source_id, metric_code, value_numeric FROM v_anchor_candidates").fetchall()
-    metrics = {r[1] for r in rows}
-    assert metrics == {"catalog_count"}  # only count-metrics from the PE census
+    rows = loaded_conn.execute(
+        "SELECT source_id, metric_code, value_numeric FROM v_anchor_candidates WHERE metric_code = 'catalog_count'"
+    ).fetchall()
     assert rows[0][0] == "PX-1" and rows[0][2] == 500.0
+    metrics = {r[0] for r in loaded_conn.execute("SELECT metric_code FROM v_anchor_candidates").fetchall()}
+    assert metrics == {"catalog_count", "category_count"}  # count-metrics from the PE census
+
+
+def test_anchor_candidates_includes_records_hs(loaded_conn, store):
+    """0003 view redefinition (od10): the records_hs* metrics are anchors."""
+    engine.record_manual(loaded_conn, store, "CX-1", "records_hs3208", value="12", unit="count")
+    engine.record_manual(loaded_conn, store, "CX-1", "records_hs3213", value="0", unit="count")
+    rows = loaded_conn.execute(
+        "SELECT metric_code, value_numeric FROM v_anchor_candidates WHERE source_id = 'CX-1'"
+    ).fetchall()
+    assert {r[0] for r in rows} == {"records_hs3208", "records_hs3213"}
+    assert dict(rows)["records_hs3213"] == 0.0
 
 
 def test_source_activity(loaded_conn, store, fetcher):

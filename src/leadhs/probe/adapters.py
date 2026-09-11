@@ -19,6 +19,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import urllib.parse
 from typing import Optional, Protocol
 from urllib.parse import urljoin
 
@@ -130,6 +131,26 @@ def _soup(resp: FetchResponse) -> BeautifulSoup:
 _EXPECTED_EXPORT_COLUMNS = {"hs_code", "year", "partner"}
 _JSON_LIST_COUNTS = ("value", "obs", "records", "observations", "data")
 
+# od9: parameterized CS-2 query — documented constants with defaults
+# fixed here (exact values pinned at census execution); the parameters
+# land in run.parameters_json via ProbeResult.parameters, and every
+# response is archived as a document (verification artifact).
+_CS_QUERY_DEFAULTS = {
+    "format": "JSON",
+    "freq": "A",
+    "period": "2024",
+    "flow": "IMP",
+    "reporter": "EU27_2020",
+}
+_HS_CODES = ("3208", "3209", "3213")
+
+
+def _query_url(base: str, params: dict) -> str:
+    from urllib.parse import urlencode
+
+    sep = "&" if "?" in base else "?"
+    return f"{base}{sep}{urlencode(params)}"
+
 
 class CSAdapter:
     key = "CS"
@@ -137,10 +158,19 @@ class CSAdapter:
     def supports(self, source: SourceRef) -> bool:
         return source.class_code == "CS"
 
+    def _is_query_api(self, source: SourceRef) -> bool:
+        return source.access_method_code == "api"
+
     def probe(self, source: SourceRef, ctx) -> ProbeResult:
         if ctx.dry_run:
-            ctx.fetcher.plan(source.url)
+            if self._is_query_api(source):
+                for hs in _HS_CODES:
+                    ctx.fetcher.plan(_query_url(source.url, {**_CS_QUERY_DEFAULTS, "product": hs}))
+            else:
+                ctx.fetcher.plan(source.url)
             return ProbeResult()
+        if self._is_query_api(source):
+            return self._probe_query_api(source, ctx)
         resp = ctx.fetcher.get(source.url)
         _log(ctx, "cs_get", url=source.url, status=resp.status_code)
         docs = [_doc(source.url, resp, retrieval_method_code=source.access_method_code or "scrape")]
@@ -158,6 +188,53 @@ class CSAdapter:
             findings.append(FindingDraft(metric_code="free_access", method_code=source.access_method_code or "scrape", value_numeric=1, unit_code=None))
             notes.append("landing page reached; export mechanics to confirm manually")
         return ProbeResult(documents=docs, findings=findings, notes=notes)
+
+    def _probe_query_api(self, source: SourceRef, ctx) -> ProbeResult:
+        """od9: one parameterized JSON query per HS heading; each response
+        archived; empty result set is an honest 0."""
+        docs, findings, notes = [], [], []
+        query_params = {}
+        for hs in _HS_CODES:
+            params = {**_CS_QUERY_DEFAULTS, "product": hs}
+            query_params[hs] = params
+            url = _query_url(source.url, params)
+            resp = ctx.fetcher.get(url)
+            _log(ctx, "cs_query", url=url, status=resp.status_code, hs=hs)
+            docs.append(_doc(url, resp, retrieval_method_code="api"))
+            try:
+                data = json.loads(resp.text)
+            except ValueError:
+                raise UnexpectedFormat(
+                    f"HS {hs}: expected JSON but content not parseable",
+                    partial=ProbeResult(documents=docs, findings=findings),
+                    url=url,
+                )
+            rows = self._rows_of(data)
+            findings.append(
+                FindingDraft(
+                    metric_code=f"records_hs{hs}",
+                    method_code="api",
+                    value_numeric=len(rows),
+                    unit_code="count",
+                    document=docs[-1],
+                    notes=f"query params: {json.dumps(params, sort_keys=True)}",
+                )
+            )
+            notes.append(f"HS {hs}: {len(rows)} rows")
+        return ProbeResult(documents=docs, findings=findings, notes=notes, parameters={"query": query_params})
+
+    @staticmethod
+    def _rows_of(data) -> list:
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            for key in _JSON_LIST_COUNTS:
+                if isinstance(data.get(key), list):
+                    return data[key]
+            for value in data.values():
+                if isinstance(value, list):
+                    return value
+        return []
 
     def _probe_csv(self, source, resp, ctx, docs, notes):
         reader = csv.reader(io.StringIO(resp.text))
@@ -257,6 +334,36 @@ class PEAdapter:
         findings.append(FindingDraft(metric_code="category_list", method_code="scrape", value_text=json.dumps(categories)))
 
         product_links = self._product_links(soup, base)
+
+        # od9: category depth ≤ 3 — one category_count per category
+        # (value_text = category path); a failing category page appends
+        # a note and continues (sample-page pattern). Polite spacing is
+        # enforced by the fetcher.
+        for cat_url in categories[:3]:
+            try:
+                cat_resp = ctx.fetcher.get(cat_url)
+            except FetchError as exc:
+                notes.append(f"category {cat_url}: {exc.__class__.__name__}")
+                continue
+            if cat_resp.status_code != 200:
+                notes.append(f"category {cat_url}: HTTP {cat_resp.status_code}")
+                continue
+            docs.append(_doc(cat_url, cat_resp, retrieval_method_code="scrape"))
+            cat_products = self._product_links(_soup(cat_resp), base)
+            findings.append(
+                FindingDraft(
+                    metric_code="category_count",
+                    method_code="scrape",
+                    value_numeric=len(cat_products),
+                    unit_code="count",
+                    # category path lives in notes — R4 stays strict
+                    # (numeric metrics carry no value_text); interfaces.md
+                    # vocabulary row clarified accordingly
+                    notes=f"category path: {urllib.parse.urlparse(cat_url).path or cat_url}",
+                    document=docs[-1],
+                )
+            )
+
         catalog_count = self._catalog_count(soup) or (len(product_links) if product_links else None)
         if catalog_count:
             findings.append(FindingDraft(metric_code="catalog_count", method_code="scrape", value_numeric=catalog_count, unit_code="count"))

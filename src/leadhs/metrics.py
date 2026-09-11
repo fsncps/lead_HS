@@ -1,9 +1,9 @@
 """probe-metric vocabulary — the runtime source of truth.
 
 Authoritative table: 20_DESIGN/MASTER/interfaces.md §probe_metric
-vocabulary. Migration 0001 seeds are pinned to this list by a sync
-test (t6); new metrics enter via a migration INSERT, codes are never
-renamed, value_type is fixed at insert (i4).
+vocabulary. Migration 0001 + 0003 seeds are pinned to this list by a
+sync test (t6); new metrics enter via a migration INSERT, codes are
+never renamed, value_type is fixed at insert (i4).
 """
 
 from __future__ import annotations
@@ -35,6 +35,10 @@ METRIC_EXTRACTION_PATH = "extraction_path"
 METRIC_ACCESS_BLOCKED = "access_blocked"
 METRIC_ROBOTS_DENIED = "robots_denied"
 METRIC_FREE_ACCESS = "free_access"
+METRIC_RECORDS_HS3208 = "records_hs3208"
+METRIC_RECORDS_HS3209 = "records_hs3209"
+METRIC_RECORDS_HS3213 = "records_hs3213"
+METRIC_CENSUS_STATUS = "census_status"
 
 
 PROBE_METRIC_SEEDS = (
@@ -55,6 +59,11 @@ PROBE_METRIC_SEEDS = (
     Metric(METRIC_ACCESS_BLOCKED, "Access blocked", "text"),
     Metric(METRIC_ROBOTS_DENIED, "Robots denial", "text"),
     Metric(METRIC_FREE_ACCESS, "Free access confirmed", "numeric"),
+    # 0003__probe_metrics.sql (v0.1.2, od10)
+    Metric(METRIC_RECORDS_HS3208, "Records HS 3208", "numeric"),
+    Metric(METRIC_RECORDS_HS3209, "Records HS 3209", "numeric"),
+    Metric(METRIC_RECORDS_HS3213, "Records HS 3213", "numeric"),
+    Metric(METRIC_CENSUS_STATUS, "Census status", "text"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)

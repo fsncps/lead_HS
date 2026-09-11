@@ -72,4 +72,5 @@ def test_report_source_filter(probed):
     import json
 
     data = json.loads(reportmod.render(probed, format="json", source_id="CX-1"))
-    assert all(row["source_id"] == "CX-1" for row in data["census"])
+    assert [s["id"] for s in data["sources"]] == ["CX-1"]
+    assert data["report"]["source_filter"] == "CX-1"

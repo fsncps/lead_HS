@@ -170,6 +170,28 @@ def test_record_manual_bad_metric(loaded_conn, store):
         engine.record_manual(loaded_conn, store, "ST-1", "nope", value="1")
 
 
+def test_record_manual_census_status_on_inactive_source(loaded_conn, store):
+    """od9/od10: census_status records work on inactive sources (ST-1)."""
+    summary = engine.record_manual(
+        loaded_conn, store, "ST-1", "census_status",
+        value_text="PCN aggregates located manually; deferral noted",
+        url="https://echa.europa.eu/pcn",
+    )
+    assert summary["status"] == "done"
+    row = loaded_conn.execute(
+        "SELECT pf.value_text, pf.method_code FROM probe_finding pf "
+        "JOIN run r ON r.id = pf.run_id WHERE r.run_key = ?",
+        (summary["run_key"],),
+    ).fetchone()
+    assert row[0] == "PCN aggregates located manually; deferral noted"
+    assert row[1] == "manual"
+
+
+def test_record_manual_census_status_rejects_value(loaded_conn, store):
+    with pytest.raises(engine.EngineError):
+        engine.record_manual(loaded_conn, store, "ST-1", "census_status", value="1")
+
+
 def test_record_manual_numeric_metric_needs_value(loaded_conn, store):
     with pytest.raises(engine.EngineError):
         engine.record_manual(loaded_conn, store, "ST-1", "catalog_count", value_text="x")

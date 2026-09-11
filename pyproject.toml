@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "leadhs"
-version = "0.1.1"
-description = "Lead-in-paints evidence tool (HS 3208/3209/3213) — probe unit v0.1.1"
+version = "0.1.2"
+description = "Lead-in-paints evidence tool (HS 3208/3209/3213)"
 requires-python = ">=3.11"
 dependencies = [
     "click",

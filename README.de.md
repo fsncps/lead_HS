@@ -100,19 +100,27 @@ Das vollständige Register mit Zugriffsregeln und Provenienzdisziplin, in einfac
 
 Das Sammeln automatisiert ein kleines Kommandozeilenprogramm («leadhs») — keine Website, kein Server, eine Maschine. Seine Aufgabe ist es, die Beweiskette lückenlos zu halten: Jedes abgerufene Dokument wird als unverändertes Original archiviert, mit Quelle, Abrufdatum und digitalem Fingerabdruck seines Inhalts; jede Beobachtung ist an den Lauf gebunden, der sie erzeugt; nichts wird je überschrieben — Korrekturen sind neue Einträge, sodass jede Zahl im Schlussbericht auf ein konkretes Dokument zurückverfolgt werden kann. Werkzeug, Datenbank und alle erzeugten Berichte enthalten ausschliesslich **Produktdaten** — Bleiverbindungen, Konzentrationen, Dokumente, Zählungen. Rechtstexte sind Hintergrundrahmen der Studie und leben in den Studiendokumenten; das Werkzeug speichert und berichtet sie nie.
 
-Die erste Baueinheit — **v0.1.1, «Sondierung»** — ist implementiert und getestet. Sie deckt genau diesen ersten Schritt ab: die Evidenzdatenbank einrichten, das Register der geplanten Quellen laden, die höflichen Testbesuche ausführen, den ersten Zensusbericht rendern. Nichts darüber hinaus; die vollständige Sammelpipeline kommt mit späteren Einheiten.
+Die ersten beiden Baueinheiten — **v0.1.1, «Sondierung»** und **v0.1.2, «Operator-Schicht + Zensus-Abschluss»** — sind implementiert und getestet (155 automatisierte Tests, Offline-Suite). Zusammen decken sie ab: die Evidenzdatenbank einrichten, das Register der geplanten Quellen laden, die höflichen Testbesuche und strukturierte Feasibility-Berichte je Quelle. Nichts darüber hinaus; die vollständige Sammelpipeline kommt mit späteren Einheiten.
 
-Installation und erste Befehle (Python 3.11+):
+## Das Werkzeug benutzen
 
-    pip install -e .                   # «leadhs» aus diesem Ordner installieren
-    leadhs --contact sie@beispiel.ch   # optional, pro Lauf: Kontaktangabe für Seitenbetreiber
-    leadhs doctor                      # Umgebungs-Vorprüfung (Python, SQLite, Datenverzeichnis, Kontakt)
-    leadhs db init                     # Evidenzdatenbank anlegen/migrieren (data/leadhs.sqlite)
-    leadhs source load                 # Quellenregister laden (14 geplante Quellen)
-    leadhs source list                 # Register anzeigen
-    leadhs probe run --all --dry-run   # alle Sondierungsanfragen planen; null Netzzugriffe
-    leadhs probe run --all             # die höflichen Testbesuche (echtes Netz, getaktet)
-    leadhs probe report --format md    # Zensusbericht aus den erfassten Befunden
+Zwei Installationswege (Python 3.11+):
+
+- **In diesem Repository** (Entwicklung): `make setup` — installiert das Werkzeug, erstellt/migriert die Datenbank, lädt das Quellenregister und führt die Umgebungs-Vorprüfung aus (idempotent; gefahrlos wiederholbar).
+- **Ausserhalb des Repositories** (installiertes Wheel): `uv tool install <leadhs-wheel>` und stets mit explizitem Datenverzeichnis arbeiten: `leadhs --data-dir ~/leadhs-data db init` — das Werkzeug schreibt nie implizit ins aktuelle Verzeichnis.
+
+Im Alltag (im Repository; ein Make-Target = ein «leadhs»-Aufruf):
+
+    make help                                 # das Verzeichnis aller Targets
+    make probe-dry                            # Zensus-Plan; null Netzzugriffe
+    GO=1 make probe                           # echter Zensus — nur mit explizitem GO=1
+    make record SOURCE=ST-1 METRIC=census_status VALUE_TEXT="…"   # manueller Befund
+    make report                               # md/csv/json nach data/report/ rendern
+    make report-publish WHICH=data/report/probe-report.md         # nach docs/report/ stellen
+    make db-audit                             # Provenienzprüfung (Exit 3 bei Verstössen)
+    GO=1 make clobber                         # bewachtes Zurücksetzen des lokalen Zustands
+
+Der Zensus (die echten Testbesuche über alle aktiven Quellen) läuft als «GO=1 make census» — Setup, Sondierung, Bericht und Audit in der Folge, hinter «GO=1» bewacht, weil er echte Sites berührt. Die Kontaktadresse für Seitenbetreiber kommt aus der Umgebung («LEADHS_CONTACT»); doctor warnt, wenn sie fehlt. Exit-Codes in einem Satz: 0 ok · 1 Benutzungs-/Datenfehler · 2 ein Lauf endete blockiert/fehlgeschlagen (Befunde bleiben erfasst) · 3 Audit-Verstösse · 130 unterbrochen.
 
 «--help» hinter jedem Befehl erklärt die Optionen.
 
@@ -120,7 +128,7 @@ Arbeitsdokumente: [Architektur](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) und [
 
 ## Erster Schritt: die Quellen prüfen
 
-Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt. Genau das führt die obige Sondierungseinheit aus; der Sondierungs-Lauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert. Den Zensus abschliessen ist die Aufgabe der nächsten Einheit (v0.1.2), die ihn über einen Make-Einstiegspunkt mit explizitem Go-Gate führt — ebenfalls nur auf ausdrückliche Anweisung.
+Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt. Der Sondierungs-Lauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert; den Zensus abschliessen ist die Aufgabe von v0.1.2 (gebaut), die ihn über den Make-Einstiegspunkt führt — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet («GO=1 make census»).
 
 ## Der Fahrplan
 
@@ -162,9 +170,12 @@ Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höfli
     README.de.md               deutsche Fassung
     README.fr.md               französische Fassung
     AGENTS.md                  Konventionen für KI-gestützte Arbeit an diesem Repo (EN)
+    Makefile                   Operator-Einstiegspunkt («make help» = Verzeichnis)
     pyproject.toml             Python-Paketierung des leadhs-Werkzeugs
-    src/leadhs/                Quellcode des Werkzeugs (Einheit v0.1.1: Sondierung)
+    src/leadhs/                Quellcode des Werkzeugs (v0.1.1 Sondierung + v0.1.2 Operator-Schicht)
     tests/                     automatisierte Offline-Testsuite
+    data/                      lokaler Arbeitszustand (gitignored): Datenbank, Raw-Speicher, Berichts-Zwischenstände
+    docs/report/               publizierte Berichts-Finalfassungen (bewusst committet)
     docs/management_summary.md zweisprachige Management-Zusammenfassung (DE/FR), stets aktuell
     docs/plan/3SM/             Planungsnotizen (3-Stufen-System, EN)
     ├── README.md              einfachsprachige Anleitung zum Planungsbaum (EN)
@@ -178,4 +189,4 @@ Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höfli
 
 ## Status
 
-Strategie, begutachtetes Design und ein im Engineering begutachteter Implementierungsplan liegen für die ersten beiden Baueinheiten vor. **v0.1.1, Quellensondierung** — implementiert und getestet: 101 automatisierte Tests bestehen (Offline-Suite); der Zensus-Erprobungslauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert. **v0.1.2, Operator-Schicht + Zensus-Abschluss** — als nächstes geplant: ein Make-Einstiegspunkt im Repo-Root mit explizitem Go-Gate («GO=1»), kleine CLI-Bedienungsfixes, Zollpositions-Zählmetriken (3208/3209/3213) und ein strukturierter Feasibility-Bericht je Quelle; der vollständige Zensus läuft dann als «GO=1 make census» — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet. Nichts ist eingefroren — die Methodik bleibt offen für Revision, während die Phase-0-Ergebnisse eintreffen.
+Strategie, begutachtetes Design und ein im Engineering begutachteter Implementierungsplan liegen für die ersten beiden Baueinheiten vor. **v0.1.1, Quellensondierung** — implementiert und getestet; der Zensus-Erprobungslauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert und weitergereicht. **v0.1.2, Operator-Schicht + Zensus-Abschluss** — implementiert und getestet: Make-Einstiegspunkt im Repo-Root mit explizitem Go-Gate («GO=1»), CLI-Bedienbarkeit und Exit-Code-Durchsetzung, Datenbank-Vorprüfung, Zollpositions-Zählmetriken (3208/3209/3213), Census-Status-Handeinträge und der strukturierte Feasibility-Bericht je Quelle (Zusammenfassungsmatrix, Laufstatus inkl. blockiert/fehlgeschlagen, «—» vs. 0-Legende); 155 automatisierte Tests bestehen (Offline-Suite). Der vollständige Zensus selbst läuft als «GO=1 make census» — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet. Nichts ist eingefroren — die Methodik bleibt offen für Revision, während die Phase-0-Ergebnisse eintreffen.

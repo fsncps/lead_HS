@@ -1,144 +1,725 @@
 {
-  "census": [
+  "report": {
+    "title": "Source feasibility census report",
+    "framing": "This report documents what each registered source delivers for the census \u2014 access, formats, granularity, counts and availability. These are source-feasibility metrics only: product and lead prevalence are M2+ deliverables and are never implied here. The tool, the database and the reports carry product data only (Strategy MASTER D27): inactive register rows appear in the matrix without findings.",
+    "legend": [
+      "\u201c\u2014\u201d = metric absent (source not queried for it); 0 = queried, empty result.",
+      "Metric values cite the run_key of the done run they come from.",
+      "Status reflects the latest census run per source (dry-run runs excluded); blocked/failed runs are shown with their notes."
+    ],
+    "no_runs_line": "No census runs yet \u2014 run `make probe-dry` to plan or `GO=1 make probe` to execute.",
+    "source_filter": null
+  },
+  "sources": [
     {
-      "source_id": "CX-1",
-      "metric_code": "coverage_years",
-      "value_numeric": null,
-      "value_text": "to confirm (year column present)",
-      "unit_code": null,
-      "method_code": "download",
-      "run_key": "probe-20260910-cx1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "CX-1",
+      "class_code": "CS",
+      "name": "Fixture export",
+      "url": "http://127.0.0.1:PORT/export.csv",
+      "access_method_code": "download",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "good csv",
+      "run": {
+        "run_key": "probe-20260910-cx1",
+        "status": "done",
+        "started_at": "2026-09-10T12:00:00Z",
+        "finished_at": "2026-09-10T12:00:00Z",
+        "notes": null,
+        "documents": 1,
+        "findings": 5
+      },
+      "status": "done",
+      "matrix": {
+        "format": "CSV; columns: hs_code, year, partner, value",
+        "granularity": "CN8 x partner x year (observed columns)",
+        "coverage_years": "to confirm (year column present)",
+        "free_access": "1",
+        "export_rows": "3 count",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "probe-20260910-cx1"
+      },
+      "sections": {
+        "access": [],
+        "content": [
+          {
+            "source_id": "CX-1",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "CSV; columns: hs_code, year, partner, value",
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260910-cx1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "CSV; columns: hs_code, year, partner, value"
+          },
+          {
+            "source_id": "CX-1",
+            "metric_code": "granularity",
+            "value_numeric": null,
+            "value_text": "CN8 x partner x year (observed columns)",
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260910-cx1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "CN8 x partner x year (observed columns)"
+          },
+          {
+            "source_id": "CX-1",
+            "metric_code": "coverage_years",
+            "value_numeric": null,
+            "value_text": "to confirm (year column present)",
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260910-cx1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "to confirm (year column present)"
+          }
+        ],
+        "counts": [
+          {
+            "source_id": "CX-1",
+            "metric_code": "export_rows",
+            "value_numeric": 3.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "download",
+            "run_key": "probe-20260910-cx1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "3 count"
+          }
+        ],
+        "availability": [
+          {
+            "source_id": "CX-1",
+            "metric_code": "free_access",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260910-cx1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "1"
+          }
+        ]
+      }
     },
     {
-      "source_id": "CX-1",
-      "metric_code": "export_rows",
-      "value_numeric": 3.0,
-      "value_text": null,
-      "unit_code": "count",
-      "method_code": "download",
-      "run_key": "probe-20260910-cx1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "CX-2",
+      "class_code": "CS",
+      "name": "Fixture bad export",
+      "url": "http://127.0.0.1:PORT/export-bad.csv",
+      "access_method_code": "download",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "bad layout",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "CX-1",
-      "metric_code": "format",
-      "value_numeric": null,
-      "value_text": "CSV; columns: hs_code, year, partner, value",
-      "unit_code": null,
-      "method_code": "download",
-      "run_key": "probe-20260910-cx1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "CX-3",
+      "class_code": "CS",
+      "name": "Fixture api",
+      "url": "http://127.0.0.1:PORT/api.json",
+      "access_method_code": "api",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "json",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "CX-1",
-      "metric_code": "free_access",
-      "value_numeric": 1.0,
-      "value_text": null,
-      "unit_code": null,
-      "method_code": "download",
-      "run_key": "probe-20260910-cx1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "CX-4",
+      "class_code": "CS",
+      "name": "Fixture 500",
+      "url": "http://127.0.0.1:PORT/error500",
+      "access_method_code": "api",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "network fail",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "CX-1",
-      "metric_code": "granularity",
-      "value_numeric": null,
-      "value_text": "CN8 x partner x year (observed columns)",
-      "unit_code": null,
-      "method_code": "download",
-      "run_key": "probe-20260910-cx1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-1",
+      "class_code": "PE",
+      "name": "Fixture catalog",
+      "url": "http://127.0.0.1:PORT/",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "census good catalog",
+      "run": {
+        "run_key": "probe-20260910-px1",
+        "status": "done",
+        "started_at": "2026-09-10T12:00:00Z",
+        "finished_at": "2026-09-10T12:00:00Z",
+        "notes": null,
+        "documents": 5,
+        "findings": 11
+      },
+      "status": "done",
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "1",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "500 count",
+        "category_count": "2 count",
+        "page_sample_ok": "2 count",
+        "sds_sample_ok": "1 count",
+        "last_run_key": "probe-20260910-px1"
+      },
+      "sections": {
+        "access": [
+          {
+            "source_id": "PX-1",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "allowed"
+          },
+          {
+            "source_id": "PX-1",
+            "metric_code": "terms",
+            "value_numeric": null,
+            "value_text": "link present: /terms",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "link present: /terms"
+          },
+          {
+            "source_id": "PX-1",
+            "metric_code": "rate_limit",
+            "value_numeric": null,
+            "value_text": "unknown \u2014 polite default <= 1 req / 2 s",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "unknown \u2014 polite default <= 1 req / 2 s"
+          }
+        ],
+        "content": [
+          {
+            "source_id": "PX-1",
+            "metric_code": "languages",
+            "value_numeric": null,
+            "value_text": "[\"de\", \"fr\"]",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "[\"de\", \"fr\"]"
+          },
+          {
+            "source_id": "PX-1",
+            "metric_code": "category_list",
+            "value_numeric": null,
+            "value_text": "[\"http://127.0.0.1:PORT/cat/wandfarben\", \"http://127.0.0.1:PORT/cat/grundierung\", \"http://127.0.0.1:PORT/cat/broken\"]",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "[\"http://127.0.0.1:PORT/cat/wandfarben\", \"http://127.0.0.1:PORT/cat/grundierung\", \"http://127.0.0.1:PORT/cat/broken\"]"
+          }
+        ],
+        "counts": [
+          {
+            "source_id": "PX-1",
+            "metric_code": "catalog_count",
+            "value_numeric": 500.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "500 count"
+          },
+          {
+            "source_id": "PX-1",
+            "metric_code": "category_count",
+            "value_numeric": 2.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": "category path: /cat/wandfarben",
+            "value": "2 count"
+          },
+          {
+            "source_id": "PX-1",
+            "metric_code": "category_count",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": "category path: /cat/grundierung",
+            "value": "0 count"
+          }
+        ],
+        "availability": [
+          {
+            "source_id": "PX-1",
+            "metric_code": "free_access",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "1"
+          },
+          {
+            "source_id": "PX-1",
+            "metric_code": "page_sample_ok",
+            "value_numeric": 2.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": "2/2",
+            "value": "2 count"
+          },
+          {
+            "source_id": "PX-1",
+            "metric_code": "sds_sample_ok",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": "1/2",
+            "value": "1 count"
+          }
+        ]
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "catalog_count",
-      "value_numeric": 500.0,
-      "value_text": null,
-      "unit_code": "count",
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-2",
+      "class_code": "PE",
+      "name": "Robots-denied",
+      "url": "http://127.0.0.1:PORT/private/secret",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "robots deny",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "category_list",
-      "value_numeric": null,
-      "value_text": "[\"http://127.0.0.1:PORT/cat/wandfarben\", \"http://127.0.0.1:PORT/cat/grundierung\"]",
-      "unit_code": null,
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-3",
+      "class_code": "PE",
+      "name": "Blocked 403",
+      "url": "http://127.0.0.1:PORT/forbidden",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "403",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "free_access",
-      "value_numeric": 1.0,
-      "value_text": null,
-      "unit_code": null,
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-4",
+      "class_code": "PE",
+      "name": "Persistent 429",
+      "url": "http://127.0.0.1:PORT/ratelimited-always",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "429",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "languages",
-      "value_numeric": null,
-      "value_text": "[\"de\", \"fr\"]",
-      "unit_code": null,
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-5",
+      "class_code": "PE",
+      "name": "429 once",
+      "url": "http://127.0.0.1:PORT/ratelimited-once",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "429-then-ok",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "page_sample_ok",
-      "value_numeric": 2.0,
-      "value_text": null,
-      "unit_code": "count",
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-6",
+      "class_code": "PE",
+      "name": "Empty page",
+      "url": "http://127.0.0.1:PORT/empty.html",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "parse error",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "rate_limit",
-      "value_numeric": null,
-      "value_text": "unknown \u2014 polite default <= 1 req / 2 s",
-      "unit_code": null,
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-7",
+      "class_code": "PE",
+      "name": "Huge page",
+      "url": "http://127.0.0.1:PORT/huge.html",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "hostile",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "robots",
-      "value_numeric": null,
-      "value_text": "allowed",
-      "unit_code": null,
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-8",
+      "class_code": "PE",
+      "name": "Non-utf8",
+      "url": "http://127.0.0.1:PORT/non-utf8.html",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "hostile",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "sds_sample_ok",
-      "value_numeric": 1.0,
-      "value_text": null,
-      "unit_code": "count",
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "PX-9",
+      "class_code": "PE",
+      "name": "Missing page",
+      "url": "http://127.0.0.1:PORT/missing",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "404",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     },
     {
-      "source_id": "PX-1",
-      "metric_code": "terms",
-      "value_numeric": null,
-      "value_text": "link present: /terms",
-      "unit_code": null,
-      "method_code": "scrape",
-      "run_key": "probe-20260910-px1",
-      "started_at": "2026-09-10T12:00:00Z"
+      "id": "ST-1",
+      "class_code": "ST",
+      "name": "PCN stats",
+      "url": "http://127.0.0.1:PORT/missing",
+      "access_method_code": "manual",
+      "verification_status_code": "open",
+      "active": false,
+      "notes": "manual-web via probe record",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
+    },
+    {
+      "id": "SX-1",
+      "class_code": "ST",
+      "name": "Fixture spin",
+      "url": "http://127.0.0.1:PORT/spin",
+      "access_method_code": "download",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "mdbtools",
+      "run": null,
+      "status": null,
+      "matrix": {
+        "format": "\u2014",
+        "granularity": "\u2014",
+        "coverage_years": "\u2014",
+        "free_access": "\u2014",
+        "export_rows": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": []
+      }
     }
   ],
   "anchor_candidates": [
@@ -153,6 +734,20 @@
       "source_id": "PX-1",
       "metric_code": "catalog_count",
       "value_numeric": 500.0,
+      "unit_code": "count",
+      "run_key": "probe-20260910-px1"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "category_count",
+      "value_numeric": 2.0,
+      "unit_code": "count",
+      "run_key": "probe-20260910-px1"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "category_count",
+      "value_numeric": 0.0,
       "unit_code": "count",
       "run_key": "probe-20260910-px1"
     }
@@ -191,7 +786,7 @@
       "first_retrieved_at": "2026-09-10T12:00:00Z",
       "last_retrieved_at": "2026-09-10T12:00:00Z",
       "run_count": 1,
-      "finding_count": 9
+      "finding_count": 11
     },
     {
       "source_id": "PX-2",

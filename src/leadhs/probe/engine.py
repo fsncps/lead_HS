@@ -228,6 +228,12 @@ def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sampl
         raise
 
     doc_count, finding_count = persist(conn, store, source.id, run_id, result)
+    if result.parameters:
+        # od9: adapter-surfaced parameters (e.g. the CS-2 query constants)
+        # land in run.parameters_json — engine writes, adapter only drafts
+        merged = dict(parameters)
+        merged.update(result.parameters)
+        conn.execute("UPDATE run SET parameters_json=? WHERE id=?", (json.dumps(merged), run_id))
     _finish_run(conn, run_id, outcome, _now(), notes=notes)
     conn.commit()
     if logger:

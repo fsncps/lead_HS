@@ -8,14 +8,38 @@ import pytest
 from leadhs import db as dbmod
 
 
-def test_fresh_apply_both_migrations(conn):
+def test_fresh_apply_all_migrations(conn):
     applied = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
-    assert applied == {1, 2}
+    assert applied == {1, 2, 3}
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for table in ("source", "document", "run", "probe_run", "probe_finding", "probe_metric"):
         assert table in tables
     views = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='view'")}
     assert {"v_probe_latest", "v_anchor_candidates", "v_source_activity"} <= views
+
+
+def test_0003_metric_seeds_present(conn):
+    codes = {r[0] for r in conn.execute("SELECT code FROM probe_metric")}
+    assert {"records_hs3208", "records_hs3209", "records_hs3213", "census_status"} <= codes
+    types = dict(conn.execute("SELECT code, value_type FROM probe_metric WHERE code LIKE 'records_hs%' OR code = 'census_status'").fetchall())
+    assert types == {"records_hs3208": "numeric", "records_hs3209": "numeric",
+                     "records_hs3213": "numeric", "census_status": "text"}
+
+
+def test_0003_view_redefined(conn):
+    """v_anchor_candidates includes the records_hs* codes (od10)."""
+    conn.execute("INSERT INTO source (id, class_code, name, url, access_method_code) VALUES ('CS-9','CS','n','u','api')")
+    conn.execute(
+        "INSERT INTO run (run_key, kind_code, source_id, started_at, status_code) "
+        "VALUES ('probe-20260911-cs9','probe','CS-9','2026-09-11T00:00:00Z','done')"
+    )
+    conn.execute(
+        "INSERT INTO probe_finding (run_id, metric_code, value_numeric, method_code) "
+        "SELECT id, 'records_hs3208', 7, 'api' FROM run WHERE run_key = 'probe-20260911-cs9'"
+    )
+    conn.commit()
+    rows = conn.execute("SELECT metric_code FROM v_anchor_candidates WHERE source_id = 'CS-9'").fetchall()
+    assert [r[0] for r in rows] == ["records_hs3208"]
 
 
 def test_reinit_idempotent(conn, db_path):
@@ -25,14 +49,16 @@ def test_reinit_idempotent(conn, db_path):
 
 
 def test_migration_order_enforced(tmp_path):
-    """A gap in applied versions is detected: 0002 cannot be applied without 0001."""
+    """A gap in applied versions is detected: 0002/0003 apply in order on a
+    DB that claims only 0001 (whose tables really exist)."""
     conn = dbmod.connect(str(tmp_path / "x.sqlite"))
     try:
+        conn.executescript(next(sql for num, _, sql in dbmod.migration_files() if num == 1))
         conn.execute("CREATE TABLE schema_version (version INTEGER PRIMARY KEY, name TEXT NOT NULL, applied_at TEXT NOT NULL)")
         conn.execute("INSERT INTO schema_version VALUES (1, '0001__probe_base.sql', '2026-01-01T00:00:00Z')")
         conn.commit()
         applied, pending = dbmod.migrate(conn)
-        assert applied == ["0002__probe_core.sql"]
+        assert applied == ["0002__probe_core.sql", "0003__probe_metrics.sql"]
     finally:
         conn.close()
 
@@ -87,11 +113,11 @@ def test_backup_round_trip(conn, db_path):
     conn.close()
 
     orig = dbmod.migration_files
-    dbmod.migration_files = lambda: orig() + [(3, "0003__fake.sql", "CREATE TABLE fake (x INTEGER);")]
+    dbmod.migration_files = lambda: orig() + [(4, "0004__fake.sql", "CREATE TABLE fake (x INTEGER);")]
     try:
         conn2 = dbmod.connect(db_path)
         applied, _ = dbmod.migrate(conn2, db_path=db_path)
-        assert applied == ["0003__fake.sql"]
+        assert applied == ["0004__fake.sql"]
         conn2.close()
     finally:
         dbmod.migration_files = orig

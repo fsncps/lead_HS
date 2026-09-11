@@ -13,5 +13,6 @@ dist/
 build/
 __pycache__/
 .pytest_cache/
+.benchmarks/
 *.egg-info/
 data/

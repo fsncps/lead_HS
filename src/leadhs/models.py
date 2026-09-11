@@ -108,3 +108,4 @@ class ProbeResult:
     documents: list = field(default_factory=list)
     findings: list = field(default_factory=list)
     notes: list = field(default_factory=list)
+    parameters: dict = field(default_factory=dict)  # merged into run.parameters_json (od9)

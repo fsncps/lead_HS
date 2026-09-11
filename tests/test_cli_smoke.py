@@ -22,11 +22,31 @@ def test_cli_smoke(db_path, fixture_register, tmp_path):
     _lead(db_path, "source", "load", "--file", fixture_register, expect=0)
     _lead(db_path, "probe", "run", "--all", "--sample", "2", expect=2)  # blocked/failed present in fixtures
     report = _lead(db_path, "probe", "report", expect=0)
-    assert "Census findings" in report.stdout
+    assert "Source feasibility census report" in report.stdout
     csv_out = _lead(db_path, "probe", "report", "--format", "csv", expect=0)
-    assert csv_out.stdout.startswith("source_id,metric_code")
+    assert csv_out.stdout.startswith("source_id")
     _lead(db_path, "db", "audit", "--unreferenced", expect=0)
     _lead(db_path, "db", "status", expect=0)
+
+
+def test_cli_bare_groups_help():
+    env = dict(os.environ, LEADHS_CONTACT="test@example.com")
+    for group in ([], ["db"], ["source"], ["probe"]):
+        r = subprocess.run(
+            [sys.executable, "-m", "leadhs.cli", *group],
+            capture_output=True, text=True, env=env,
+        )
+        assert r.returncode == 0, group
+        assert "Usage:" in r.stdout and not r.stderr, group
+
+
+def test_cli_version_0_1_2():
+    env = dict(os.environ, LEADHS_CONTACT="test@example.com")
+    r = subprocess.run(
+        [sys.executable, "-m", "leadhs.cli", "--version"],
+        capture_output=True, text=True, env=env,
+    )
+    assert r.returncode == 0 and "0.1.2" in r.stdout
 
 
 def test_cli_probe_record_and_report(db_path, fixture_register, tmp_path):

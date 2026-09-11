@@ -185,23 +185,44 @@ concentrations, documents, counts. Legal texts are framing background
 for the study and live in the study documents; the tool never stores
 or reports them.
 
-The first build unit — **v0.1.1, "probe"** — is implemented and tested. It
-covers exactly this first step: set up the evidence database, load the
-register of planned sources, run the polite test visits, render the first
-census report. Nothing beyond that; later units add the full collection
-pipeline.
+The first build unit — **v0.1.1, "probe"** — and the second —
+**v0.1.2, "operator layer + census close-out"** — are implemented and
+tested (155 automated tests, offline suite). Together they cover:
+setting up the evidence database, loading the register of planned
+sources, the polite test visits, and structured per-source
+feasibility reports. Nothing beyond that; later units add the full
+collection pipeline.
 
-Install and first commands (Python 3.11+):
+## Using the tool
 
-    pip install -e .                   # install "leadhs" from this folder
-    leadhs --contact you@example.org   # optional, per run: contact for site operators
-    leadhs doctor                      # environment preflight (python, sqlite, data dir, contact)
-    leadhs db init                     # create/migrate the evidence database (data/leadhs.sqlite)
-    leadhs source load                 # load the source register (14 planned sources)
-    leadhs source list                 # show the register
-    leadhs probe run --all --dry-run   # plan every probe request; zero network calls
-    leadhs probe run --all             # the polite test visits (real network, paced)
-    leadhs probe report --format md    # census report from the recorded findings
+Two ways to install (Python 3.11+):
+
+- **In this repository** (development): `make setup` — installs the
+  tool, creates/migrates the database, loads the source register and
+  runs the environment preflight (idempotent; safe to re-run).
+- **Outside the repository** (installed wheel):
+  `uv tool install <leadhs-wheel>` and always work with an explicit
+  data directory: `leadhs --data-dir ~/leadhs-data db init` — the
+  tool never writes into the current directory implicitly.
+
+Day-to-day in the repository (one make target = one `leadhs` call):
+
+    make help                                 # the index of everything below
+    make probe-dry                            # census plan; zero network
+    GO=1 make probe                           # real census — requires the explicit GO=1
+    make record SOURCE=ST-1 METRIC=census_status VALUE_TEXT="…"   # manual finding
+    make report                               # render md/csv/json into data/report/
+    make report-publish WHICH=data/report/probe-report.md         # stage into docs/report/
+    make db-audit                             # provenance check (exit 3 on violations)
+    GO=1 make clobber                         # guarded wipe of local state
+
+The census (the real test visits over all active sources) runs as
+`GO=1 make census` — setup, probe, report and audit in sequence,
+gated behind `GO=1` because it touches real sites. Contact address
+for site operators comes from the environment (`LEADHS_CONTACT`);
+doctor warns when it is unset. Exit codes in one sentence: 0 ok ·
+1 usage/data error · 2 a run ended blocked/failed (findings still
+recorded) · 3 audit violations · 130 interrupted.
 
 `--help` on every command explains the options.
 
@@ -217,11 +238,11 @@ polite test visit — does the Swiss customs platform deliver usable
 exports? Which catalogues can be read? Is the Nordic product-register
 database processable? Every check is recorded; a refusal is a documented
 finding, never an obstacle pushed through. The probe workflow is
-diagrammed in the data-sources document. This is exactly what the probing
-unit above executes; the 2026-09-11 feasibility pass ran once and recorded
-the remaining gaps. Completing the census is the deliverable of the next
-unit (v0.1.2), which runs it through a make entrypoint with an explicit
-go-ahead gate — still only on explicit instruction.
+diagrammed in the data-sources document. The 2026-09-11 feasibility
+pass ran once and recorded the remaining gaps; completing the census is
+the deliverable of v0.1.2 (built), which runs it through the make
+entrypoint — an operational step that touches real sites and therefore
+waits for an explicit go-ahead (`GO=1 make census`).
 
 ## Roadmap
 
@@ -266,9 +287,12 @@ go-ahead gate — still only on explicit instruction.
 
     README.md                  this file
     AGENTS.md                  conventions for AI-assisted work on this repo
+    Makefile                   operator entrypoint (make help = index)
     pyproject.toml             Python packaging for the leadhs tool
-    src/leadhs/                source code of the tool (unit v0.1.1: probing)
+    src/leadhs/                source code of the tool (v0.1.1 probing + v0.1.2 operator layer)
     tests/                     automated offline test suite
+    data/                      local working state (gitignored): database, raw store, report intermediates
+    docs/report/               published report finals (committed deliberately)
     docs/management_summary.md bilingual management summary (DE/FR), always current
     docs/plan/3SM/             planning notes (3-stage system)
     ├── README.md              plain-language guide to the planning tree
@@ -282,13 +306,15 @@ go-ahead gate — still only on explicit instruction.
 
 Strategy, reviewed design and an ENG-reviewed implementation plan are
 in place for the first two build units. **v0.1.1, source probing** —
-implemented and tested: 101 automated tests pass on the offline suite;
-the census feasibility pass ran on 2026-09-11 and its recorded gaps
-move forward. **v0.1.2, operator layer + census close-out** — planned
-next: a repo-root make entrypoint with an explicit go-ahead gate
-(`GO=1`), small CLI operability fixes, per-heading count metrics
-(3208/3209/3213) and a structured per-source feasibility report; the
-completed census then runs as `GO=1 make census` — an operational step
-that touches real sites and therefore waits for an explicit go-ahead.
-Nothing is frozen — the methodology stays open to revision as Phase 0
-results come in.
+implemented and tested; the census feasibility pass ran on 2026-09-11
+and its recorded gaps moved forward. **v0.1.2, operator layer + census
+close-out** — implemented and tested: repo-root make entrypoint with
+the explicit go-ahead gate (`GO=1`), CLI operability and exit-code
+enforcement, database preflight, per-heading count metrics
+(3208/3209/3213), census-status manual records, and the structured
+per-source feasibility report (summary matrix, run status incl.
+blocked/failed, "—" vs 0 legend); 155 automated tests pass on the
+offline suite. The completed census itself runs as `GO=1 make census`
+— an operational step that touches real sites and therefore waits for
+an explicit go-ahead. Nothing is frozen — the methodology stays open
+to revision as Phase 0 results come in.

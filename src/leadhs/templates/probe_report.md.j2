@@ -1,24 +1,46 @@
-# Probe report — unit v0.1.1{% if source_filter %}
-**source filter: {{ source_filter }}**{% endif %}
+# {{ report.title }}{% if report.source_filter %}
+**source filter: {{ report.source_filter }}**{% endif %}
 
-Generated from the database views (v_probe_latest / v_anchor_candidates /
-v_source_activity). Counts come from the DB only (P7).
+{{ report.framing }}
 
-## Census findings (latest done run per source × metric)
+## Summary matrix
 
-{% if census %}
-{% for source_id, findings in census|dictsort %}
-### {{ source_id }}
+One row per registered source (active flag included; inactive rows carry no
+findings).
 
-| metric | value | method | run_key | started_at |
-|---|---|---|---|---|
-{% for f in findings %}| {{ f.metric_code }} | {{ fmt(f) }} | {{ f.method_code }} | {{ f.run_key }} | {{ f.started_at }} |
+| source | class | active | status | format | granularity | coverage | free | export rows | hs3208 | hs3209 | hs3213 | catalog | category | page ok | sds ok | last run |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+{% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.status or '—' }} | {{ s.matrix['format'] }} | {{ s.matrix['granularity'] }} | {{ s.matrix['coverage_years'] }} | {{ s.matrix['free_access'] }} | {{ s.matrix['export_rows'] }} | {{ s.matrix['records_hs3208'] }} | {{ s.matrix['records_hs3209'] }} | {{ s.matrix['records_hs3213'] }} | {{ s.matrix['catalog_count'] }} | {{ s.matrix['category_count'] }} | {{ s.matrix['page_sample_ok'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['last_run_key'] }} |
 {% endfor %}
-{% endfor %}
+
+## Run status (latest census run per source)
+
+{% if sources|selectattr("run")|list %}
+| source | run_key | status | started | finished | docs | findings | notes |
+|---|---|---|---|---|---|---|---|
+{% for s in sources %}{% if s.run %}| {{ s.id }} | {{ s.run.run_key }} | {{ s.run.status }} | {{ s.run.started_at or '—' }} | {{ s.run.finished_at or '—' }} | {{ s.run.documents }} | {{ s.run.findings }} | {{ s.run.notes or '—' }} |
+{% endif %}{% endfor %}
 {% else %}
-_No done-run findings yet — run `leadhs probe run` first._
+_{{ report.no_runs_line }}._
 {% endif %}
 
+## Sources
+
+{% for s in sources %}
+### {{ s.id }} — {{ s.name }}
+
+- identity: class {{ s.class_code }} · active {{ 'yes' if s.active else 'no' }} · verification {{ s.verification_status_code }} · {{ s.url }}
+{% if s.notes %}- register note: {{ s.notes }}
+{% endif %}{% if s.run %}- latest census run: {{ s.run.run_key }} ({{ s.run.status }}{% if s.run.notes %}; notes: {{ s.run.notes }}{% endif %})
+{% endif %}
+{% for section, rows in s.sections|dictsort %}{% if rows %}
+#### {{ section }}
+
+| metric | value | method | run_key | notes |
+|---|---|---|---|---|
+{% for r in rows %}| {{ r.metric_code }} | {{ r.value }} | {{ r.method_code }} | {{ r.run_key }} | {{ r.notes or '—' }} |
+{% endfor %}{% endif %}{% endfor %}
+{% endfor %}
 ## Anchor candidates (provisional — manual promotion, M1 decision)
 
 {% if anchors %}
@@ -26,8 +48,6 @@ _No done-run findings yet — run `leadhs probe run` first._
 |---|---|---|---|
 {% for a in anchors %}| {{ a.source_id }} | {{ a.metric_code }} | {{ a.value_numeric }} {{ a.unit_code or '' }} | {{ a.run_key }} |
 {% endfor %}
-> Provisional frame inputs only. Promotion to population_anchor is a
-> manual method decision (10_STRATEGY/MASTER D20), not automatic.
 {% else %}
 _None yet._
 {% endif %}
@@ -36,5 +56,12 @@ _None yet._
 
 | source_id | first retrieved | last retrieved | runs | findings |
 |---|---|---|---|---|
-{% for a in activity %}| {{ a.source_id }} | {{ a.first_retrieved_at or '-' }} | {{ a.last_retrieved_at or '-' }} | {{ a.run_count }} | {{ a.finding_count }} |
+{% for a in activity %}| {{ a.source_id }} | {{ a.first_retrieved_at or '—' }} | {{ a.last_retrieved_at or '—' }} | {{ a.run_count }} | {{ a.finding_count }} |
+{% endfor %}
+{% if activity %}> Raw counts — dry-run runs are included here (and only here).
+{% endif %}
+
+## Legend
+
+{% for line in report.legend %}- {{ line }}
 {% endfor %}

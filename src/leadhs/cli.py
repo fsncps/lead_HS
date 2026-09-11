@@ -3,15 +3,22 @@
 Exit-code convention (i1): 0 success; 1 usage/data error; 2 an
 operation ran but ended failed/blocked (findings recorded);
 3 audit found violations; 130 on KeyboardInterrupt.
+
+`main()` enforces the mapping itself (standalone_mode=False; i10):
+UsageError → 1 (hardcoded — click's default is 2), bare groups print
+help on stdout with exit 0, Abort/KeyboardInterrupt → 130, Exit → its
+code, anything else → `bug:` + 1 (LEADHS_DEBUG re-raises).
 """
 
 from __future__ import annotations
 
+import os
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 import click
+from click.exceptions import Abort, Exit, NoArgsIsHelpError, UsageError
 
 from . import __version__
 from .logutil import configure_logging
@@ -25,8 +32,6 @@ class Runtime:
     logger: object = None
 
     def store_root(self) -> str:
-        import os
-
         return os.path.join(os.path.dirname(os.path.abspath(self.db_path)), "raw")
 
 
@@ -34,42 +39,49 @@ def _runtime(ctx: click.Context) -> Runtime:
     return ctx.obj
 
 
-@click.group()
+@click.group(no_args_is_help=True)
 @click.version_option(__version__)
 @click.option("--verbose", is_flag=True, help="structured log lines")
-@click.option("--db", "db_path", default="data/leadhs.sqlite", show_default=True, help="SQLite database path")
+@click.option("--db", "db_path", default=None, help="SQLite database path (default: data/leadhs.sqlite)")
+@click.option("--data-dir", "data_dir", default=None, help="base directory for leadhs.sqlite + raw/ (exclusive with --db)")
 @click.option("--contact", envvar="LEADHS_CONTACT", default=None, help="user-agent contact (doctor warns when unset)")
 @click.pass_context
-def cli(ctx, verbose, db_path, contact):
+def cli(ctx, verbose, db_path, data_dir, contact):
     """leadhs — lead-in-paints evidence tool (HS 3208/3209/3213)."""
-    ctx.obj = Runtime(db_path=db_path, contact=contact, verbose=verbose, logger=configure_logging(verbose))
+    if db_path and data_dir:
+        raise UsageError("--db and --data-dir are mutually exclusive")
+    if data_dir:
+        db_path = os.path.join(data_dir, "leadhs.sqlite")
+    ctx.obj = Runtime(
+        db_path=db_path or "data/leadhs.sqlite",
+        contact=contact, verbose=verbose, logger=configure_logging(verbose),
+    )
 
 
-@click.group()
+@click.group(name="db", no_args_is_help=True)
 def db():
     """Database: migrate, status, audit."""
 
 
-@click.group()
+@click.group(name="source", no_args_is_help=True)
 def source():
     """Source register."""
 
 
-@click.group()
+@click.group(no_args_is_help=True)
 def probe():
     """Probe runs and reports."""
 
 
 @click.command()
 @click.option("--net", is_flag=True, help="check reachability of seeded sources")
-@click.option("--no-net", is_flag=True, default=True, help="skip reachability (default)")
 @click.pass_context
-def doctor(ctx, net, no_net):
+def doctor(ctx, net):
     """Environment preflight (python, sqlite, binaries, data dir, contact)."""
     from . import doctor as doctormod
 
     rt = _runtime(ctx)
-    ctx.exit(doctormod.main(rt, net=net or not no_net))
+    ctx.exit(doctormod.main(rt, net=net))
 
 
 # --- db -------------------------------------------------------------
@@ -83,8 +95,8 @@ def init(ctx, no_backup):
     from . import db as dbmod
 
     rt = _runtime(ctx)
-    os_parent = __import__("os").path.dirname(rt.db_path)
-    __import__("os").makedirs(os_parent, exist_ok=True) if os_parent else None
+    os_parent = os.path.dirname(rt.db_path)
+    os.makedirs(os_parent, exist_ok=True) if os_parent else None
     conn = dbmod.connect(rt.db_path)
     try:
         applied, pending = dbmod.migrate(conn, backup=not no_backup, db_path=rt.db_path)
@@ -102,6 +114,7 @@ def status(ctx):
     from . import db as dbmod
 
     rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
     conn = dbmod.connect(rt.db_path)
     try:
         dbmod.stale_run_reclaim(conn)
@@ -118,6 +131,7 @@ def audit(ctx, unreferenced):
     from . import db as dbmod, store as storemod
 
     rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
     conn = dbmod.connect(rt.db_path)
     try:
         violations = dbmod.audit(conn, storemod.RawStore(rt.store_root()), unreferenced=unreferenced)
@@ -141,6 +155,7 @@ def load(ctx, csv_path):
     from . import db as dbmod, source as sourcemod
 
     rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
     path = csv_path or sourcemod.default_register_path()
     conn = dbmod.connect(rt.db_path)
     try:
@@ -153,7 +168,7 @@ def load(ctx, csv_path):
         conn.close()
 
 
-@source.command()
+@source.command("list")
 @click.option("--class", "class_code", type=click.Choice(["CS", "PE", "LG", "ST", "LI"]), default=None)
 @click.pass_context
 def list_(ctx, class_code):
@@ -161,6 +176,7 @@ def list_(ctx, class_code):
     from . import db as dbmod, source as sourcemod
 
     rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
     conn = dbmod.connect(rt.db_path)
     try:
         sourcemod.list_(conn, class_code)
@@ -183,6 +199,7 @@ def run(ctx, source_id, all_sources, mode, sample_n, dry_run):
     from .probe import engine as probeengine
 
     rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
     if not source_id and not all_sources:
         click.echo("error: give --source ID or --all", err=True)
         ctx.exit(1)
@@ -237,6 +254,7 @@ def record(ctx, source_id, metric, value, value_text, unit, url, document_file, 
     from .probe import engine as probeengine
 
     rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
     conn = dbmod.connect(rt.db_path)
     store = storemod.RawStore(rt.store_root())
     try:
@@ -262,14 +280,13 @@ def report(ctx, source_id, fmt, out_path):
     from . import db as dbmod, report as reportmod
 
     rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
     conn = dbmod.connect(rt.db_path)
     try:
         output = reportmod.render(conn, format=fmt, source_id=source_id)
     finally:
         conn.close()
     if out_path:
-        import os
-
         os.makedirs(os.path.dirname(os.path.abspath(out_path)) or ".", exist_ok=True)
         with open(out_path, "w", encoding="utf-8") as fh:
             fh.write(output)
@@ -282,23 +299,64 @@ cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)
 cli.add_command(doctor)
-# list_ has a reserved-name clash with builtins under click; expose as 'list'
-source.add_command(list_, name="list")
 
 
-def main():
+def _ensure_initialized(ctx: click.Context, rt: Runtime) -> None:
+    """Guided-error preflight (i11): the DB must exist, be non-empty and
+    carry the schema_version table — checked read-only (mode=ro URI
+    never creates the file), BEFORE any connect() could create one."""
+    import sqlite3
+
+    ok = False
+    if os.path.isfile(rt.db_path) and os.path.getsize(rt.db_path) > 0:
+        conn = None
+        try:
+            conn = sqlite3.connect(f"file:{os.path.abspath(rt.db_path)}?mode=ro", uri=True)
+            row = conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='schema_version'"
+            ).fetchone()
+            ok = row is not None
+        except sqlite3.Error:
+            ok = False
+        finally:
+            if conn is not None:
+                conn.close()
+    if not ok:
+        click.echo(
+            "error: database not initialized — run `make setup` (repo) or "
+            "`leadhs db init` then `leadhs source load` first",
+            err=True,
+        )
+        ctx.exit(1)
+
+
+def main() -> int:
     try:
-        cli()
+        result = cli(standalone_mode=False)
+    except NoArgsIsHelpError as exc:
+        click.echo(exc.format_message())
+        return 0
+    except Exit as exc:
+        return exc.exit_code
+    except Abort:
+        click.echo("interrupted", err=True)
+        return 130
     except KeyboardInterrupt:
         click.echo("interrupted", err=True)
-        sys.exit(130)
-    except click.ClickException:
-        raise
-    except Exception as exc:  # anything else propagates as a bug (fail loudly)
-        click.echo(f"bug: {exc}", err=True)
-        if __import__("os").environ.get("LEADHS_DEBUG"):
+        return 130
+    except UsageError as exc:
+        exc.show()
+        return 1
+    except click.ClickException as exc:
+        exc.show()
+        return exc.exit_code
+    except Exception as exc:  # anything else is a bug (fail loudly)
+        if os.environ.get("LEADHS_DEBUG"):
             raise
-        sys.exit(1)
+        click.echo(f"bug: {exc}", err=True)
+        return 1
+    return result if isinstance(result, int) else 0
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
