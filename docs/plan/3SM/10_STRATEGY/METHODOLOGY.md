@@ -11,9 +11,10 @@ updated: 2026-09-11
 
 This document explains how the study measures the market — using only
 documents, at minimal cost, with no laboratory. The setting: paints under
-customs headings 3208 (solvent-borne) and 3209 (water-borne) on the Swiss
-**and** EU markets, plus a complete count of artists' oil colours (heading
-3213). In plain terms: Swiss trade statistics show what is imported, from
+customs headings 3208 (solvent-borne) and 3209 (water-borne) on the **EU
+market** (the primary object, with an implicit expectation of none), plus a
+complete count of artists' oil colours (heading 3213). In plain terms:
+Swiss trade statistics show what is imported, from
 where and in what quantities; producer and retailer catalogues — collected
 systematically from their websites and de-duplicated — provide the list of
 products to draw from (the "sampling frame"); because no official register
@@ -134,9 +135,9 @@ engineering reader and may be skipped.
 ## Population and definition
 
 - Target population: distinct paint/varnish formulations (HS 3208/3209)
-  available on the **Swiss market** (domestic production + imports), with
-  the **EU market as a parallel study leg** (the Cassis upstream: what
-  EU-lawful lead paints exist that could otherwise enter CH freely). EU/EEA
+  available on the **EU market** — the primary object — with the **Swiss
+  market as an additional metric** (domestic production + imports; the
+  Swiss 100 ppm rule sits on top of EU-lawful presence). EU/EEA
   population estimates also serve as scaling anchors.
 - **No registry counts these** — population size must be triangulated.
 - Unit = base formulation: colour shades co-notified as one (KemI practice);

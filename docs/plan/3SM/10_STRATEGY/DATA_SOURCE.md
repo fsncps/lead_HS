@@ -74,16 +74,49 @@ Five classes with stable IDs (the database `source.class` field):
   Eurostat PRODCOM/SBS — population proxies and scaling anchors.
 - **LI — literature & industry:** peer-reviewed studies, IPEN, CEPE.
 
+## PE — concrete source taxonomy and seed sites
+
+The PE class (product & SDS evidence) is where the actual MSDS/TDS corpus
+comes from. There is **no single free EU repository of product safety data
+sheets** — the large aggregators (MSDSonline, Chemwatch, SDS Europe) are
+paid and excluded by the cost constraint. The corpus is therefore built
+from public manufacturer and retailer sites. Four tiers:
+
+| Tier | Sources | What it gives | Lead-relevant streams |
+|---|---|---|---|
+| **A — Manufacturer/brand SDS libraries** (primary) | AkzoNobel (Dulux, International, Sikkens), PPG, Sherwin-Williams, Jotun, Hempel, Sika, Sto, Caparol/DAW, Alpina, Tikkurila, Teknos, Farrow & Ball | free public SDS PDFs on product pages / SDS portals | all |
+| **B — Niche manufacturers** (the lead-relevant ones) | Marine/anticorrosive: Epifanes, Veneziani, Boero, De IJssel, Seajet. Artists' colours: Old Holland, Zecchi, Kremer Pigmente, Michael Harding, Winsor & Newton, Sennelier, Schmincke, Talens, Maimeri, Blockx, Natural Pigments | SDS + TDS for the lead-relevant niches | red lead, artists' colours |
+| **C — Retail/B2B portals** | Marine: SVB (svb.de), toplicht.de. CH DIY: Coop Bau+Hobby, Migros Do-it+Garten, Hornbach, Bauhaus, Jumbo, OBI. EU DIY: B&Q, Leroy Merlin, Castorama, Gamma, Praxis, Toom. B2B trade portals (DE/FR/IT) | listings + SDS links, product spec | frame + SDS |
+| **D — Free SDS aggregators** | GESTIS (IFA) — substance-level only, not product SDS; a few free SDB sites | substance data, context | context |
+
+**Note on tier D:** GESTIS is substance-level (not product SDS); most
+product-level aggregators are paid. Tiers A + C are the practical free
+corpus; tier B covers the lead-relevant niches.
+
+**Seed site list** (enumerated/confirmed by the v0.1.1 probe; the register
+CSV is the register of record):
+
+- Marine: svb.de, toplicht.de
+- Artists': oldholland.com, zecchi.it, kremer-pigmente.com,
+  michaelharding.co.uk, winsornewton.com, sennelier.fr, schmincke.de,
+  talens.com, maimeri.it
+- DIY (CH): coop-bauundhobby.ch, migros-doitgarten.ch, hornbach.ch,
+  bauhaus.ch, jumbo.ch, obi.ch
+- DIY (EU): hornbach.de, obi.de, bauhaus.de, leroymerlin.fr,
+  castorama.fr, gamma.nl, praxis.nl, diy.com (B&Q)
+- Majors: akzonobel.com, ppg.com, sherwin-williams.com, jotun.com,
+  hempel.com, sika.com, sto.com, caparol.de, tikkurila.com, teknos.com
+
 ## Source register
 
 | ID | Class | Source | Provides | Access | Granularity | Status |
 |----|-------|--------|----------|--------|-------------|--------|
 | CS-1 | CS | swiss-impex.admin.ch (EZV) | CH imports/exports, 3208/3209 (+3213) | web UI / CSV export (to confirm) | CN8 × partner × year | OPEN — free access & granularity to confirm (Phase 0, high priority) |
 | CS-2 | CS | Eurostat Comext DS-045409 | EU27 extra-EU trade | public API | CN8 × partner × year | verified (2023 extracted) |
-| PE-1 | PE | manufacturer/brand sites | product catalogs, SDS PDFs | polite scraping | product/formulation | OPEN — site list built Phase 1–2 |
-| PE-2 | PE | DIY chains (CH candidates: Coop Bau+Hobby, Migros Do-it+Garten, Hornbach, Bauhaus, Jumbo, OBI; EU equivalents) | retail listings | polite scraping | SKU → formulation | OPEN |
-| PE-3 | PE | B2B / trade portals (DE/FR/IT) | professional listings, TDS | polite scraping | product | OPEN |
-| PE-4 | PE | marine chandlers, art-supply shops | niche streams (red lead, artists' colours) | polite scraping | product | partially verified (seed records exist) |
+| PE-1 | PE | manufacturer/brand sites | product catalogs, SDS PDFs | polite scraping | product/formulation | OPEN — tier A + B seed list; site list built Phase 1–2 |
+| PE-2 | PE | DIY chains (CH candidates: Coop Bau+Hobby, Migros Do-it+Garten, Hornbach, Bauhaus, Jumbo, OBI; EU equivalents: B&Q, Leroy Merlin, Castorama, Gamma, Praxis, Toom) | retail listings | polite scraping | SKU → formulation | OPEN — tier C |
+| PE-3 | PE | B2B / trade portals (DE/FR/IT) | professional listings, TDS | polite scraping | product | OPEN — tier C |
+| PE-4 | PE | marine chandlers, art-supply shops | niche streams (red lead, artists' colours) | polite scraping | product | partially verified (seed records exist) — tier B/C |
 | LG-1 | LG | fedlex / Lexaris | consolidated THG, VIPaV, ChemRRV | download | article | THG verified; current ChemRRV/VIPaV consolidation OPEN (fedlex JS-gated) |
 | LG-2 | LG | SECO (Negativliste, five-yearly review report, CdD pages) | exception catalogue, review practice | download | entry | verified |
 | LG-3 | LG | EUR-Lex / OJ | REACH consolidated, Annex XIV decisions, 2022 refusal | download | entry | mostly verified; 2022 OJ ref OPEN |
@@ -171,9 +204,9 @@ provisional frame inputs (MASTER D20).
 - CS-1 swiss-impex: confirm free access, CN8 × partner granularity,
   multi-year coverage (2019–2025), export format — Phase 0, high
   priority; probe target of v0.1.1.
-- PE site list: CH DIY chains + EU equivalents to enumerate and prioritize
-  in Phase 1–2 (frame construction); enumeration started by the v0.1.1
-  probe.
+- PE site list: tier A/B/C seed sites (see "PE — concrete source taxonomy
+  and seed sites") to enumerate and prioritize in Phase 1–2 (frame
+  construction); confirmation of scrapeability started by the v0.1.1 probe.
 - ST-2 SPIN Access DB: extraction path on Slackware (mdbtools?) — OPEN;
   checked during v0.1.1 probing.
 - ST-1 PCN: locate formulation-level aggregates (ECHA publishing practice).

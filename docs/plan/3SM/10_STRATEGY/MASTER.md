@@ -10,20 +10,23 @@ updated: 2026-09-11
 ## Abstract
 
 This is the strategy summary, in plain terms. The project asks whether
-paints on the Swiss and EU markets (customs headings 3208/3209, plus a
-census annex for artists' colours under 3213) contain lead, using only
-documents collectable for free from the web. It records the main decisions:
-what counts as one "product" (one base formulation), which parts of the
-market we look at (all segments, split by origin; EU-lawful presence is a
-study object in its own right because of the Cassis-de-Dijon import route),
-how many products we check (about 2,000–3,000 by statistical precision),
-how we detect lead (safety-data-sheet ingredients sections, cross-checked
-across documents — no laboratory), and the regulatory frame the evidence
-feeds into (Swiss ban at 100 ppm total Pb via ChemRRV Anhang 2.8, shielded
-from EU-lawful imports by the VIPaV exceptions catalogue — an autonomous
-Cassis-de-Dijon exception whose entire catalogue is reviewed every five
-years under SECO's lead, serving the exception's owner). Open questions
-and the phased roadmap follow.
+paints on the **EU market** (customs headings 3208/3209, plus a census
+annex for artists' colours under 3213) contain lead — the **primary
+object** — with the Swiss market and the Swiss 100 ppm rule as an
+*additional* metric, using only documents collectable for free from the
+web. The implicit expectation is that there are **none** on the EU market;
+the study tests that assumption against product documentation. It records
+the main decisions: what counts as one "product" (one base formulation),
+which parts of the market we look at (all segments, split by origin;
+EU-lawful presence is a study object in its own right because of the
+Cassis-de-Dijon import route), how many products we check (about 2,000–3,000
+by statistical precision), how we detect lead (safety-data-sheet ingredients
+sections, cross-checked across documents — no laboratory), and the
+regulatory frame the evidence feeds into (Swiss ban at 100 ppm total Pb via
+ChemRRV Anhang 2.8, shielded from EU-lawful imports by the VIPaV exceptions
+catalogue — an autonomous Cassis-de-Dijon exception whose entire catalogue
+is reviewed every five years under SECO's lead, serving the exception's
+owner). Open questions and the phased roadmap follow.
 
 ## DECISIONS
 

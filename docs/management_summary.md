@@ -20,6 +20,16 @@ und als Trockenstoff in lösemittelhaltigen Alkyd-Farben. Die EU hat die
 Pigmente weitgehend verboten; Rostschutz-Zusätze und Trockenstoffe bleiben
 jedoch auch in der EU zulässig. Für Europa — und erst recht für die Schweiz —
 existiert keine Messung, wie häufig bleihaltige Farben heute im Handel sind.
+
+**Hauptgegenstand dieser Studie ist der EU-Markt:** Welche bleihaltigen
+Farben stehen dort rechtskonform im Verkehr? Die stillschweigende Erwartung
+ist, dass es **keine** gibt — die EU-Annahme «im Wesentlichen keine, das ist
+reguliert» wird hier erstmals anhand der Produktdokumentation überprüft.
+Die **Schweizer 100-ppm-Regel** ist eine *zusätzliche* Messgrösse: Sie wird
+erwartungsgemäss über das kantonale Marktmonitoring vollzogen, und auch eine
+EU-rechtskonforme bleihaltige Farbe kann sie überschreiten — genau die Naht,
+welche die Ausnahme schützt.
+
 Die Schweiz ist nicht Mitglied der EU oder des EWR; ihr Farbenmarkt wird
 durch Inlandproduktion, EU-Importe und Drittland-Importe gespeist. Für
 Produkte aus der EU und dem EWR gilt das autonom übernommene
@@ -61,17 +71,33 @@ diese Studie mit Dokumentenbelegen klärt.
 
 ### Fragestellung
 
-Enthalten Farben und Lacke der Zollpositionen 3208 (lösemittelhaltig) und
-3209 (wässrig) auf dem schweizerischen und dem EU-Markt Blei? Wie häufig,
-in welchen Segmenten, aus welchen Herkünften? Und wie ist die
-Rechtslage beschaffen, unter der solche Produkte in die Schweiz gelangen
-können oder nicht?
+Welche bleihaltigen Farben und Lacke der Zollpositionen 3208 (lösemittelhaltig)
+und 3209 (wässrig) stehen auf dem **EU-Markt** — und welche davon sind
+EU-rechtskonform (und könnten also via Cassis de Dijon in die Schweiz
+gelangen) bzw. EU-rechtswidrig (und dürften dort gar nicht im Verkehr sein)?
+Wie häufig sind sie, in welchen Segmenten, aus welchen Herkünften? Und wie
+ist die Rechtslage beschaffen, unter der solche Produkte in die Schweiz
+gelangen können oder nicht?
 
 ### Vorgehen
 
 Die Studie arbeitet ausschliesslich mit öffentlich zugänglichen Dokumenten —
 Sicherheitsdatenblättern, Zollstatistiken und Rechtstexten. Keine
-Laboranalysen, keine gekauften Daten, minimale Kosten. Geplant: Auswertung
+Laboranalysen, keine gekauften Daten, minimale Kosten.
+
+**Die Methode ist ein Filter (ein «Netz»):** Wir sammeln Produktdokumente
+(Sicherheitsdatenblätter und technische Datenblätter) aus öffentlichen
+Quellen, prüfen jedes auf einen Blei-Inhaltsstoff und filtern dann nach
+EU-Rechtmässigkeit. Eine in der EU *unzulässige* Bleiverwendung kann nicht
+rechtskonform auf dem EU-Markt sein und fällt heraus — als
+Export-Artikel, veraltete Liste oder Compliance-Verstoss, jeweils als
+Befund festgehalten. Was übrig bleibt, sind *EU-rechtskonforme* bleihaltige
+Farben — genau die Population, um die es bei der Cassis-Ausnahme geht.
+Erwartung: die unzulässigen Verwendungen (Bleichromate, Bleiweiss) sind auf
+dem EU-Markt ≈ null; die zulässigen (Mennige-Grundierungen, Blei-Trockner,
+Künstlerölfarben) klein, aber nicht null.
+
+Geplant: Auswertung
 der Schweizer Aussenhandelsstatistik nach Herkunftsland; Aufbau eines
 Produktverzeichnisses aus Hersteller- und Händlerkatalogen (Schweiz und EU);
 Überprüfung von rund 2'000–3'000 Produkten (Stichprobe nach statistischer
@@ -145,11 +171,22 @@ formes : pigment de couleur (p. ex. chromate de plomb), additif antirouille
 (minium de plomb dans les primaires) et siccatif dans les peintures alkydes
 en solvant. L'UE a largement interdit les pigments ; en revanche, les
 additifs antirouille et les siccatifs restent autorisés, même au sein de
-l'UE. Aucune mesure n'existe pour l'Europe — et encore moins pour la Suisse
-— de la fréquence réelle des peintures au plomb sur le marché. La Suisse
-n'est membre ni de l'UE ni de l'EEE ; son marché des peintures est alimenté
-par la production indigène, les importations de l'UE et celles de pays
-tiers. Pour les produits de l'UE et de l'EEE s'applique le principe
+l'UE. Aucune mesure n'existe pour l'Europe — et encore moins pour la Suisse —
+de la fréquence réelle des peintures au plomb sur le marché.
+
+**L'objet principal de cette étude est le marché de l'UE :** quelles
+peintures au plomb y sont légalement mises sur le marché ? L'attente
+implicite est qu'il n'y en a **aucune** — l'hypothèse de l'UE « pour
+l'essentiel aucune, c'est réglementé » est ici vérifiée pour la première
+fois sur la base de la documentation des produits. La **règle suisse des
+100 ppm** est une mesure *supplémentaire* : elle est censée être appliquée
+via le contrôle cantonal du marché, et même une peinture au plomb conforme
+au droit de l'UE peut la dépasser — précisément la couture que l'exception
+protège.
+
+La Suisse n'est membre ni de l'UE ni de l'EEE ; son marché des peintures est
+alimenté par la production indigène, les importations de l'UE et celles de
+pays tiers. Pour les produits de l'UE et de l'EEE s'applique le principe
 Cassis de Dijon repris de manière autonome, mais pas pour les importations
 de pays tiers.
 
@@ -191,17 +228,34 @@ question que cette étude éclaire par des preuves documentaires.
 ### Question
 
 Les peintures et vernis des positions tarifaires 3208 (en solvant) et 3209
-(en phase aqueuse) présents sur le marché suisse et sur le marché de l'UE
-contiennent-ils du plomb ? À quelle fréquence, dans quels segments, de
-quelles provenances ? Et dans quel cadre juridique de tels produits
-peuvent-ils — ou non — entrer en Suisse ?
+(en phase aqueuse) présents sur le **marché de l'UE** contiennent-ils du
+plomb — et lesquels sont conformes au droit de l'UE (et pourraient donc
+entrer en Suisse par la voie Cassis de Dijon) ou contraires au droit de l'UE
+(et ne devraient dès lors pas être sur le marché du tout) ? À quelle
+fréquence, dans quels segments, de quelles provenances ? Et dans quel cadre
+juridique de tels produits peuvent-ils — ou non — entrer en Suisse ?
 
 ### Méthode
 
 L'étude repose exclusivement sur des documents accessibles au public —
 fiches de données de sécurité, statistiques douanières et textes
 juridiques. Aucune analyse de laboratoire, aucune donnée achetée, coûts
-minimaux. Prévu : exploitation des statistiques suisses du commerce
+minimaux.
+
+**La méthode est un filtre (un « tamis ») :** nous collectons les documents
+produits (fiches de données de sécurité et fiches techniques) auprès de
+sources publiques, contrôlons chacun pour un composé de plomb, puis filtrons
+selon la licéité au regard du droit de l'UE. Un usage du plomb *interdit*
+dans l'UE ne peut pas être légalement sur le marché de l'UE et en sort —
+article d'exportation, référence obsolète ou infraction, consigné dans les
+deux cas comme constat. Ce qui reste, ce sont les peintures au plomb
+*conformes au droit de l'UE* — précisément la population en jeu pour
+l'exception Cassis. Attente : les usages interdits (chromates de plomb,
+blanc de plomb) sont ≈ nuls sur le marché de l'UE ; les usages autorisés
+(primaires au minium, siccatifs au plomb, couleurs à l'huile d'artistes)
+sont faibles mais non nuls.
+
+Prévu : exploitation des statistiques suisses du commerce
 extérieur par pays de provenance ; constitution d'un répertoire de produits
 à partir des catalogues de fabricants et de détaillants (Suisse et UE) ;
 vérification d'environ 2 000 à 3 000 produits (échantillon à précision

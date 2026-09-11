@@ -2,9 +2,17 @@
 
 A **document-based** study building a discussion basis for decision makers:
 do lead-containing paints under tariff headings **3208** (solvent-borne) and
-**3209** (water-borne) reach the **Swiss market**, how common are they — and
-does the **Cassis-de-Dijon exception** for lead paints still have a factual
-field of application?
+**3209** (water-borne) reach the **EU and Swiss markets**, how common are
+they — and does the **Cassis-de-Dijon exception** for lead paints still have
+a factual field of application?
+
+The **primary object is the EU market**: which lead paints are lawfully on
+it. The implicit expectation is that there are **none** — that the EU's
+"essentially none, it's regulated" assumption holds — and the study tests
+that against product documentation. The **Swiss 100 ppm rule** is an
+*additional* metric on top: it is expected to be working via cantonal market
+monitoring, and even an EU-lawful lead paint may exceed it — the seam the
+exception protects.
 
 Everything rests on publicly retrievable documents — safety data sheets,
 customs statistics, legal texts, producer catalogues. **No laboratory, no
@@ -25,18 +33,75 @@ Switzerland is not in the EU or the EEA. Its paint market is fed by domestic
 production, EU imports and third-country imports — each governed
 differently. The study asks:
 
-1. What does Swiss external trade in paints (3208/3209) look like —
+1. Which paint products on the **EU market** contain lead **according to
+   their own documentation** — as pigment, rust-inhibitor or drying agent?
+2. Which of those are **EU-lawful** (and could therefore flow into
+   Switzerland under Cassis de Dijon) versus **EU-illegal** (and should not
+   be on the market at all)?
+3. What does Swiss external trade in paints (3208/3209) look like —
    volumes, values, and above all *origins*?
-2. Which products on the Swiss market contain lead **according to their own
-   documentation** — as pigment, rust-inhibitor or drying agent?
-3. What share is that — and where are the seams between EU-lawful goods,
-   the Swiss lead exception, and third-country imports?
+4. Where are the seams between EU-lawful goods, the Swiss lead exception,
+   and third-country imports?
 
 Lead-in-paint surveys exist for many countries (a 2026 Mexican study found
 55% of paints above 90 ppm lead) — **but none for the EU/EEA, and none for
 Switzerland**. Europe's "essentially none, it's regulated" assumption has
 never been tested against product documentation — and Switzerland sits
 partly outside the EU rules that assumption rests on.
+
+## The method, in plain terms: a mesh that separates what can be there from what shouldn't
+
+The study works like a filter. We collect product documents — safety data
+sheets (SDS) and technical data sheets (TDS) — from public sources, and run
+each through a mesh:
+
+1. **Collect.** We scrape SDS and product spec sheets from manufacturer
+   sites, retailer and B2B portals, and niche suppliers (marine chandlers,
+   art-supply shops). No laboratory, no purchased samples.
+2. **Screen for lead.** Each sheet is checked against a fixed dictionary of
+   lead compounds — pigments, rust-inhibitors, drying agents.
+3. **Filter by EU legality.** This is the mesh. A lead use that is *illegal
+   in the EU* cannot lawfully be on the EU market, so it drops out — either
+   it's an export-only listing from an EU supplier, a stale listing, or a
+   compliance violation. Each is recorded as a finding, never silently
+   discarded.
+4. **What survives** = lead paints that are *EU-lawful*. That is exactly the
+   population the Cassis-de-Dijon exception is about.
+
+We expect the two streams to behave differently:
+
+| Stream | Expectation | Why |
+|---|---|---|
+| **EU-illegal lead uses** (lead chromates, white lead in paints) | **≈ zero** on the EU market since 2022 | authorisations refused; banned in paints |
+| **EU-lawful lead uses** (red-lead primers, lead driers, artists' lead colours) | **small but non-zero** | not restricted in the EU; already documented in niches |
+
+The **Swiss 100 ppm rule** is then an *additional* metric on top: even an
+EU-lawful lead paint may exceed the Swiss ban — the seam the exception
+protects.
+
+**One honest limitation, stated up front:** SDS declare classified lead
+compounds from **0.1%**, while the Swiss ban engages at **0.01% (100 ppm)**.
+The mesh therefore sees *declared* lead, not *total* lead — a paint can be
+EU-lawful, fully documented, and still exceed the Swiss ban invisibly. This
+blind spot is carried in every deliverable.
+
+### How the study is organised
+
+- **Trade statistics** (the customs administration's swiss-impex platform,
+  broken down by partner country) structure the market and its origins.
+- **Product catalogues** (producers, retailers, B2B portals — web shops for
+  professional customers), collected politely and de-duplicated, become the
+  list of products to draw from.
+- **Sampling by precision, not percentage**: roughly 2,000–3,000 products
+  across eight market segments, each split by origin (Swiss / EU /
+  third-country).
+- **Cross-checking instead of a laboratory**: every suspected lead product
+  is corroborated against independent documents about the same product;
+  blind spots are stated openly as limitations.
+
+Full detail, in plain language with a glossary:
+[methodology document](docs/plan/3SM/10_STRATEGY/METHODOLOGY.md). The
+decision logic for a single product is diagrammed there.
 
 ## Why lead is (still) plausible
 
@@ -88,32 +153,21 @@ many colour shades or tin sizes are sold from it) and estimates how many
 exist by combining several independent sources — producer catalogues,
 Nordic product registers, production statistics.
 
-## How the study works
+## Where the data comes from
 
-1. **Swiss trade statistics** (the customs administration's swiss-impex
-   platform, broken down by partner country) structure the market and its
-   origins.
-2. **Product catalogues** (producers, retailers, B2B portals — web shops
-   for professional customers), collected politely and de-duplicated,
-   become the list of products to draw from.
-3. **Safety data sheets** (SDS — the standardized hazard-information sheets
-   that accompany professional chemical products) are checked against a
-   fixed dictionary of lead substances. A sheet also reveals whether a
-   paint is water- or solvent-borne — in effect the customs code the
-   product never carried.
-4. **Cross-checking instead of a laboratory**: every suspected lead product
-   is corroborated against independent documents about the same product;
-   blind spots are stated openly as limitations.
-5. **Sampling by precision, not percentage**: roughly 2,000–3,000 products
-   across eight market segments, each split by origin (Swiss / EU /
-   third-country).
+There is **no single free EU repository of product safety data sheets** — the
+large aggregators are paid and thus excluded by the cost constraint. The
+study therefore builds its own corpus from public sources:
 
-Full detail, in plain language with a glossary:
-[methodology document](docs/plan/3SM/10_STRATEGY/METHODOLOGY.md).
+| Source | What it gives | Lead-relevant streams |
+|---|---|---|
+| **Manufacturer/brand SDS libraries** (primary) — AkzoNobel (Dulux, International, Sikkens), PPG, Sherwin-Williams, Jotun, Hempel, Sika, Sto, Caparol/DAW, Tikkurila, Teknos | free public SDS PDFs on product pages / SDS portals | all |
+| **Niche manufacturers** — Epifanes, Veneziani, Boero, De IJssel (marine); Old Holland, Zecchi, Kremer Pigmente, Michael Harding, Winsor & Newton, Sennelier, Schmincke, Talens, Maimeri (artists') | SDS + TDS for the lead-relevant niches | red lead, artists' colours |
+| **Retail/B2B portals** — SVB, toplicht.de (marine); CH DIY: Coop Bau+Hobby, Migros Do-it+Garten, Hornbach, Bauhaus, Jumbo, OBI; EU DIY: B&Q, Leroy Merlin, Castorama, Gamma, Praxis | listings + SDS links, product spec | frame + SDS |
+| **Registers (counts, not SDS)** — SPIN, PCN (gated), PRODCOM, Comext, swiss-impex | population proxies | — |
 
-How a single product is judged:
-
-![How a product is judged: does its safety data sheet list a lead compound, is it declared at 0.1% or more, does the Swiss 100 ppm ban plausibly apply, and do independent documents agree?](docs/plan/3SM/10_STRATEGY/charts/lead-decision-tree.png)
+The full register, with access rules and provenance discipline, in plain
+language: [data sources document](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
 
 ## The evidence engine: a small, honest program
 
@@ -124,8 +178,6 @@ with its source, retrieval date and a digital fingerprint of its content;
 every observation is tied to the run that produced it; nothing is ever
 overwritten — corrections are new entries, so every number in the final
 report traces back to a specific document.
-
-![The evidence engine: the program's parts, the raw document archive and the evidence database](docs/plan/3SM/10_STRATEGY/charts/architecture-components.png)
 
 Working documents:
 [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) and
@@ -138,12 +190,8 @@ Before any large-scale collection, each planned source gets one small,
 polite test visit — does the Swiss customs platform deliver usable
 exports? Which catalogues can be read? Is the Nordic product-register
 database processable? Every check is recorded; a refusal is a documented
-finding, never an obstacle pushed through:
-
-![How each source is checked: robots and terms are respected, requests are spaced at least two seconds apart, blocks and surprises are documented as findings, samples are archived untouched](docs/plan/3SM/10_STRATEGY/charts/probe-process.png)
-
-The register of all sources and the access rules, in plain language:
-[data sources document](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
+finding, never an obstacle pushed through. The probe workflow is
+diagrammed in the data-sources document.
 
 ## Legal workstream
 
@@ -164,11 +212,12 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 
 ## Expected result (hypotheses to test, not conclusions)
 
+- **EU-illegal lead uses** (lead chromates, white lead in paints): ≈ 0 on
+  the EU market — the "none left" hypothesis.
+- **EU-lawful lead uses**: niche documented presence in marine/anticorrosive
+  (red lead); lead driers unknown; artists' oil colours the clearest case.
 - Consumer decorative paints: ≈ 0% intentional lead.
-- Professional/industrial solvent-borne segments: niche documented presence;
-  lead driers unknown.
 - Third-country imports: markedly higher, mirroring source markets.
-- Artists' oil colours: the clearest case of lawful lead presence.
 - A documented gap map EU vs Switzerland — every claim traceable to a
   public document, including the caveat that the Swiss 100 ppm ban sits
   *below* the EU safety-data-sheet declaration floor (0.1%): a paint can be
@@ -186,7 +235,7 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams used above, with their sources |
+| [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
 ## Repository layout
@@ -198,7 +247,7 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
     ├── README.md              plain-language guide to the planning tree
     ├── MASTER.md, LOG.md      project dashboard, lifecycle log
     ├── 10_STRATEGY/           research findings and decisions (what & why)
-    │   └── charts/            rendered diagrams (three in active use)
+    │   └── charts/            rendered diagrams (referenced from the detail docs)
     ├── 20_DESIGN/             technical design (how exactly)
     └── _archive/              superseded material
 
