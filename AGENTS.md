@@ -13,9 +13,13 @@ scope). Deliverable: a decision basis for the actors around the lead-paint
 exception (regulation owner, review lead; commissioning context stays
 implicit in public documents) plus a reusable product/SDS evidence
 database. Research study + light data-engineering hybrid (document
-scraping, database). Currently in 3SM stage STRATEGY; active unit
-v0.1.1 (source probing — slim CLI), on top of the v0.1 foundational
-strategy pass.
+scraping, database). Currently in 3SM stage IMPLEMENTATION: unit
+v0.1.1 (source probing — slim CLI) is built and gate-verified
+(PHASE01–07; the PHASE08 census feasibility pass ran 2026-09-11, its
+close-out transferred to v0.1.2 per D26); unit v0.1.2 (operator layer
++ census close-out) has ENG-reviewed phase plans
+(`30_IMPLEMENTATION/v0.1.2/`, PHASE01–07) and awaits the build
+go-ahead — on top of the v0.1 foundational strategy pass.
 
 **Hard constraints:** no laboratory work, no physical samples, no paid data
 sources — publicly retrievable documents only, minimal cost.

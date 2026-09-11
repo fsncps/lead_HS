@@ -120,7 +120,7 @@ Arbeitsdokumente: [Architektur](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) und [
 
 ## Erster Schritt: die Quellen prüfen
 
-Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt. Genau das führt die obige Sondierungseinheit aus; übrig bleibt der echte Lauf, der auf ausdrückliche Anweisung startet.
+Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt. Genau das führt die obige Sondierungseinheit aus; der Sondierungs-Lauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert. Den Zensus abschliessen ist die Aufgabe der nächsten Einheit (v0.1.2), die ihn über einen Make-Einstiegspunkt mit explizitem Go-Gate führt — ebenfalls nur auf ausdrückliche Anweisung.
 
 ## Der rechtliche Arbeitsstrang
 
@@ -156,7 +156,7 @@ Parallel kompiliert ein Dossier — rein aus öffentlichen Rechtstexten — die 
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der aktuellen Einheit (v0.1.1) — Phasenverfolgung, Abnahme-Gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der aktuellen Einheiten (v0.1.1 gebaut; v0.1.2 geplant) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -182,4 +182,4 @@ Parallel kompiliert ein Dossier — rein aus öffentlichen Rechtstexten — die 
 
 ## Status
 
-Strategie und begutachtetes Design der ersten Baueinheit sind abgeschlossen (11. September 2026; Begutachtungsbefunde gemäss [Fixplan](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md) (EN) umgesetzt). Die Einheit selbst — **v0.1.1, Quellensondierung** — ist implementiert und getestet: 101 automatisierte Tests bestehen (Offline-Suite); Code und Implementierungsdokumente liegen im Repository (Installationsschritte siehe oben). Als nächstes: der echte Zensuslauf über alle Registerquellen — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet. Nichts ist eingefroren — die Methodik bleibt offen für Revision, während die Phase-0-Ergebnisse eintreffen.
+Strategie, begutachtetes Design und ein im Engineering begutachteter Implementierungsplan liegen für die ersten beiden Baueinheiten vor. **v0.1.1, Quellensondierung** — implementiert und getestet: 101 automatisierte Tests bestehen (Offline-Suite); der Zensus-Erprobungslauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert. **v0.1.2, Operator-Schicht + Zensus-Abschluss** — als nächstes geplant: ein Make-Einstiegspunkt im Repo-Root mit explizitem Go-Gate («GO=1»), kleine CLI-Bedienungsfixes, Zollpositions-Zählmetriken (3208/3209/3213) und ein strukturierter Feasibility-Bericht je Quelle; der vollständige Zensus läuft dann als «GO=1 make census» — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet. Nichts ist eingefroren — die Methodik bleibt offen für Revision, während die Phase-0-Ergebnisse eintreffen.

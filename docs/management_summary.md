@@ -133,13 +133,19 @@ der EU vollkommen rechtskonform deklariert sein und trotzdem die
 schweizerische Grenze überschreiten — für die rein dokumentbasierte Methode
 unsichtbar. Dieser blinde Fleck wird in allen Resultaten ausgewiesen.
 
-Projektstand (11.09.2026): Die Strategie für die erste Ausbaustufe
-(«v0.1.1 — Quellenprüfung») ist abgeschlossen. Der technische Entwurf für
-das Erhebungswerkzeug — ein kleines eigenes Programm («leadhs»), das
-Dokumente sammelt, unangetastet archiviert und jeden Befund nachvollziehbar
-macht — und für die zugehörige Evidence-Datenbank liegt vor und wurde am
-11.09.2026 zweistufig geprüft (inhaltlich-kritische Überprüfung und
-Engineering-Review; die Befunde werden in einem Korrekturplan nachgefahren).
+Projektstand (11.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
+Programm («leadhs»), das Dokumente sammelt, unangetastet archiviert und
+jeden Befund nachvollziehbar macht — ist gebaut und getestet (101
+automatisierte Tests, Offline-Suite); der technische Entwurf von Werkzeug
+und Evidence-Datenbank wurde am 11.09.2026 zweistufig geprüft
+(inhaltlich-kritische Überprüfung und Engineering-Review). Ein erster
+Sondierungslauf über die Quellen (Feasibility-Pass) wurde am selben Tag
+ausgeführt; die dabei protokollierten Lücken wandern weiter. Für die
+nächste Ausbaustufe — **«v0.1.2», Operator-Schicht plus
+Zensus-Abschluss** (Make-Einstiegspunkt mit Go-Gate, Bedienungsfixes,
+Zollpositions-Metriken 3208/3209/3213, strukturierter Feasibility-Bericht
+je Quelle, dann der vollständige Zensus) — liegen Strategie, geprüftes
+Design und ein im Engineering begutachteter Implementierungsplan vor.
 Vereinfachte Diagramme zum Vorgehen (Entscheidungsbaum je Produkt,
 Quellenprüfung) und zum Werkzeug sind im Projekt-README enthalten.
 
@@ -154,9 +160,11 @@ sie werden als klar ausgewiesene Einschränkungen dokumentiert.
 
 ### Nächste Schritte
 
-Sofort: Bau des Erhebungswerkzeugs und Quellenprüfung (Phase 0) —
-Beschaffung der Schweizer Handelsdaten (EZV) und Verifikation der geltenden
-Rechtstexte (ChemRRV Anhang 2.8, VIPaV im konsolidierten Wortlaut); danach
+Sofort: Bau der Einheit «v0.1.2» (Operator-Schicht und
+Zensus-Abschluss; Phase 0) — der vollständige Quellenzensus läuft über
+den Make-Einstiegspunkt mit explizitem Go. Begleitend: Beschaffung der
+Schweizer Handelsdaten (EZV) und Verifikation der geltenden Rechtstexte
+(ChemRRV Anhang 2.8, VIPaV im konsolidierten Wortlaut); danach
 Piloterhebung, Erhebung (inkl. 3213-Census), Bericht
 (Diskussionsgrundlage) und Abschluss der Produkt-Datenbank.
 
@@ -293,16 +301,21 @@ peut être parfaitement déclaré conformément au droit de l'UE et dépasser
 malgré tout la limite suisse — de manière invisible pour la méthode purement
 documentaire. Cet angle mort est signalé dans tous les résultats.
 
-État du projet (11.09.2026) : la stratégie de la première étape
-(« v0.1.1 — vérification des sources ») est achevée. La conception
-technique de l'outil de collecte — un petit programme propre
-(« leadhs ») qui rassemble, archive sans modification et rend traçables
-les documents — et de la base de données de preuves correspondante est
-établie et a été vérifiée en deux étapes le 11.09.2026 (examen critique
-de contenu et revue d'ingénierie ; les constats sont suivis dans un plan
-de correction). Des schémas simplifiés de la démarche (arbre de décision
-par produit, vérification des sources) et de l'outil figurent dans le
-README du projet.
+État du projet (11.09.2026) : l'outil de collecte — un petit programme
+propre (« leadhs ») qui rassemble, archive sans modification et rend
+traçables les documents — est construit et testé (101 tests automatisés,
+suite hors ligne) ; la conception technique de l'outil et de la base de
+preuves a été vérifiée en deux étapes le 11.09.2026 (examen critique de
+contenu et revue d'ingénierie). Une première passe de sondage des sources
+(passe de faisabilité) a été exécutée le même jour ; les lacunes
+consignées sont reportées. Pour la prochaine étape — **« v0.1.2 », couche
+opérateur plus achèvement du recensement** (point d'entrée make avec feu
+vert, corrections d'ergonomie, métriques par position tarifaire
+3208/3209/3213, rapport de faisabilité structuré par source, puis le
+recensement complet) — la stratégie, la conception revue et un plan
+d'implémentation revu par l'ingénierie sont en place. Des schémas
+simplifiés de la démarche (arbre de décision par produit, vérification
+des sources) et de l'outil figurent dans le README du projet.
 
 ### Limites de l'étude
 
@@ -315,9 +328,11 @@ sont documentés comme restrictions explicitement signalées.
 
 ### Prochaines étapes
 
-Immédiatement : construction de l'outil de collecte et vérification des
-sources (phase 0) — obtention des statistiques du commerce extérieur suisse
-(AFD) et vérification des textes juridiques en vigueur (ORRChim annexe 2.8,
+Immédiatement : construction de l'unité « v0.1.2 » (couche opérateur et
+achèvement du recensement ; phase 0) — le recensement complet des sources
+s'exécute via le point d'entrée make avec feu vert explicite. En
+parallèle : obtention des statistiques du commerce extérieur suisse (AFD)
+et vérification des textes juridiques en vigueur (ORRChim annexe 2.8,
 OPPr au libellé consolidé) ; puis collecte pilote, collecte (y compris
-recensement 3213), rapport (base de discussion) et finalisation de la base
-de données produits.
+recensement 3213), rapport (base de discussion) et finalisation de la
+base de données produits.

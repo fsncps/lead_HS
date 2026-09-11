@@ -214,8 +214,10 @@ exports? Which catalogues can be read? Is the Nordic product-register
 database processable? Every check is recorded; a refusal is a documented
 finding, never an obstacle pushed through. The probe workflow is
 diagrammed in the data-sources document. This is exactly what the probing
-unit above executes; only the real run remains, and it starts on explicit
-instruction.
+unit above executes; the 2026-09-11 feasibility pass ran once and recorded
+the remaining gaps. Completing the census is the deliverable of the next
+unit (v0.1.2), which runs it through a make entrypoint with an explicit
+go-ahead gate — still only on explicit instruction.
 
 ## Legal workstream
 
@@ -259,7 +261,7 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the current unit (v0.1.1) — phase tracking, exit gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the current units (v0.1.1 built; v0.1.2 planned) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -281,12 +283,15 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 
 ## Status
 
-Strategy and reviewed design for the first build unit are complete
-(2026-09-11; review findings applied per the
-[fix plan](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md)). The unit
-itself — **v0.1.1, source probing** — is implemented and tested: 101
-automated tests pass on the offline suite; code and implementation docs
-are in the repository (install steps above). Next: the real census run
-across all register sources — an operational step that touches real sites
-and therefore waits for an explicit go-ahead. Nothing is frozen — the
-methodology stays open to revision as Phase 0 results come in.
+Strategy, reviewed design and an ENG-reviewed implementation plan are
+in place for the first two build units. **v0.1.1, source probing** —
+implemented and tested: 101 automated tests pass on the offline suite;
+the census feasibility pass ran on 2026-09-11 and its recorded gaps
+move forward. **v0.1.2, operator layer + census close-out** — planned
+next: a repo-root make entrypoint with an explicit go-ahead gate
+(`GO=1`), small CLI operability fixes, per-heading count metrics
+(3208/3209/3213) and a structured per-source feasibility report; the
+completed census then runs as `GO=1 make census` — an operational step
+that touches real sites and therefore waits for an explicit go-ahead.
+Nothing is frozen — the methodology stays open to revision as Phase 0
+results come in.

@@ -118,7 +118,7 @@ Documents de travail : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md)
 
 ## Première étape : vérifier les sources
 
-Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données. C'est précisément ce que l'unité de sondage ci-dessus exécute ; il reste l'exécution réelle, qui démarre sur instruction explicite.
+Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données. C'est précisément ce que l'unité de sondage ci-dessus exécute ; la passe de faisabilité du 11 septembre 2026 a été exécutée une fois et a consigné les lacunes restantes. Achever le recensement est le livrable de la prochaine unité (v0.1.2), qui l'exécute via un point d'entrée make avec un feu vert explicite — toujours uniquement sur instruction explicite.
 
 ## Le volet juridique
 
@@ -154,7 +154,7 @@ En parallèle, un dossier compile — purement à partir de textes juridiques pu
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction de l'unité en cours (v0.1.1) — suivi des phases, critères de sortie |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités en cours (v0.1.1 construite ; v0.1.2 planifiée) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -180,4 +180,4 @@ En parallèle, un dossier compile — purement à partir de textes juridiques pu
 
 ## État
 
-La stratégie et la conception revue de la première unité de construction sont complètes (11 septembre 2026 ; constats de revue appliqués selon le [plan de corrections](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md) (EN)). L'unité elle-même — **v0.1.1, sondage des sources** — est implémentée et testée : 101 tests automatisés passent (suite hors ligne) ; le code et ses documents d'implémentation sont dans le dépôt (étapes d'installation ci-dessus). Prochaine étape : la vraie exécution de recensement sur toutes les sources du registre — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite. Rien n'est gelé — la méthodologie reste ouverte à révision à mesure que les résultats de la phase 0 arrivent.
+La stratégie, la conception revue et un plan d'implémentation revu par l'ingénierie sont en place pour les deux premières unités de construction. **v0.1.1, sondage des sources** — implémentée et testée : 101 tests automatisés passent (suite hors ligne) ; la passe de faisabilité du recensement du 11 septembre 2026 a été exécutée et ses lacunes consignées. **v0.1.2, couche opérateur + achèvement du recensement** — planifiée ensuite : un point d'entrée make à la racine du dépôt avec un feu vert explicite (« GO=1 »), de petites corrections d'ergonomie CLI, des métriques de comptage par position tarifaire (3208/3209/3213) et un rapport de faisabilité structuré par source ; le recensement complet s'exécutera ensuite comme « GO=1 make census » — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite. Rien n'est gelé — la méthodologie reste ouverte à révision à mesure que les résultats de la phase 0 arrivent.
