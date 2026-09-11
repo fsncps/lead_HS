@@ -57,6 +57,16 @@ explicit user instruction.
 - `docs/management_summary.md` — bilingual (DE/FR) management summary for
   decision makers: always keep it current whenever the project's substance
   changes; it is linked early in the README.
+- Multilingual documentation: English is canonical. Translations live in
+  sibling files with a language suffix (`README.de.md`, `README.fr.md`,
+  `METHODOLOGY.de.md`, …) next to the English original. Each translation
+  carries frontmatter `language`, `translation_of`, `source_updated` plus
+  a language-switcher line at the top. The binding term map is
+  `docs/terminology.md`; official act/institution names are never
+  re-translated. Tranche 1 covers README, METHODOLOGY, DATA_SOURCE (DE/FR);
+  planning, design and implementation documents remain EN-only. When the
+  English original changes substantively, update translations in the same
+  change set or leave `source_updated` behind as a visible drift marker.
 
 ## Research/data discipline
 

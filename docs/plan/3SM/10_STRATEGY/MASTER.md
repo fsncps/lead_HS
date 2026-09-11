@@ -143,6 +143,18 @@ owner). Open questions and the phased roadmap follow.
     coverage bias is real). Probing obeys the DATA_SOURCE.md scraping
     discipline.
 
+23. **Multilingual documentation (i18n):** English is canonical; DE/FR
+    translations live in sibling files with a language suffix
+    (`README.de.md`, `README.fr.md`, `METHODOLOGY.de.md`, …) next to the
+    English original, with frontmatter `language`, `translation_of`,
+    `source_updated` and a language-switcher line. Binding term map:
+    `docs/terminology.md` (official act/institution names never
+    re-translated; SR/CELEX cites identical across languages). Tranche 1:
+    README, METHODOLOGY, DATA_SOURCE. Planning/design/implementation
+    documents remain EN-only. Substantive EN edits update translations in
+    the same change set or leave `source_updated` behind as a visible
+    drift marker.
+
 ## OPEN ITEMS
 
 - OPEN/NON-BLOCKING: EZV/swiss-impex — confirm free access and granularity

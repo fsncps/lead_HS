@@ -1,5 +1,7 @@
 # lead_HS — Lead in Paints: Swiss External Trade and the Cassis-de-Dijon Context (HS 3208 / 3209)
 
+Sprachen / Languages / Langues: **[EN](README.md)** · [DE](README.de.md) · [FR](README.fr.md)
+
 A **document-based** study building a discussion basis for decision makers:
 do lead-containing paints under tariff headings **3208** (solvent-borne) and
 **3209** (water-borne) reach the **EU and Swiss markets**, how common are
