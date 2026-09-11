@@ -94,7 +94,7 @@ engineering reader and may be skipped.
 - **NACE 20.30:** the statistical classification code for "manufacture of
   paints, varnishes and similar coatings".
 
-## Regulatory frame and legal categorization
+## Regulatory frame (background)
 
 - **Cassis de Dijon (CH — autonomous, not bilateral):** products lawfully
   marketed in the EU/EEA may be placed on the Swiss market without Swiss
@@ -121,11 +121,13 @@ engineering reader and may be skipped.
 - **Chemicals/CdD boundary (Anmeldestelle Chemikalien):** a product enters
   the market either under Swiss chemicals law or under CdD — not mixed;
   follow-up duties (product register, SDS) survive CdD.
-- **Design consequence — legal-category field:** every database record
-  carries: HS/CN code (inferred), legal category (Anstrichfarbe /
-  Malfarbe / pigment / treated article), origin (CH/EU/third-country), and
-  whether the Swiss 100 ppm total-Pb ban is plausibly engaged (declared
-  compounds and ranges) — the SDS method cannot measure total Pb.
+- **Design consequence — product data only (MASTER D27):** every
+  database record carries: HS/CN code (inferred) and origin
+  (CH/EU/third-country). No legal-category field and no ban-engagement
+  flag are stored — the lawful/illegal lens and the Swiss-ban
+  relevance are analytical conclusions drawn in this documentation
+  (LEAD_SDS.md), never database fields. The SDS method cannot measure
+  total Pb regardless.
 - **Headline caveat:** Swiss ban threshold 100 ppm total Pb < EU SDS
   declaration floor 0.1% (1000 ppm, classified compounds). EU-lawful,
   fully documented products can still exceed the Swiss ban invisibly to

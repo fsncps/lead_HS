@@ -184,7 +184,8 @@ count grows. Split on pain, not before (minimal-diff preference).
 - **ST-1 PCN** (access_check): manual-web findings recorded via
   `leadhs probe record` (method=manual), like any probe finding.
 - **LG**: not probed (Strategy — legal-text verification is a manual
-  document workstream).
+  document workstream; register rows stay inactive and never reach
+  reports — MASTER D27).
 
 All classes: blocked/robots_denied → findings with a manual-fallback
 note; never hammering (10_STRATEGY/DATA_SOURCE.md discipline).

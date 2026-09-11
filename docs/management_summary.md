@@ -83,7 +83,11 @@ gelangen können oder nicht?
 
 Die Studie arbeitet ausschliesslich mit öffentlich zugänglichen Dokumenten —
 Sicherheitsdatenblättern, Zollstatistiken und Rechtstexten. Keine
-Laboranalysen, keine gekauften Daten, minimale Kosten.
+Laboranalysen, keine gekauften Daten, minimale Kosten. Werkzeug, Datenbank
+und Berichte erfassen ausschliesslich Produktdaten (Inhaltsstoffe,
+Konzentrationen, Dokumente, Zählungen); Rechtstexte dienen als
+Hintergrundrahmen der Studiendokumentation und werden vom Werkzeug weder
+gespeichert noch ausgewiesen.
 
 **Die Methode ist ein Filter (ein «Netz»):** Wir sammeln Produktdokumente
 (Sicherheitsdatenblätter und technische Datenblätter) aus öffentlichen
@@ -248,7 +252,10 @@ juridique de tels produits peuvent-ils — ou non — entrer en Suisse ?
 L'étude repose exclusivement sur des documents accessibles au public —
 fiches de données de sécurité, statistiques douanières et textes
 juridiques. Aucune analyse de laboratoire, aucune donnée achetée, coûts
-minimaux.
+minimaux. L'outil, la base de données et les rapports ne capturent que des
+données produit (composés, concentrations, documents, dénombrements) ; les
+textes juridiques servent de cadre contextuel dans la documentation de
+l'étude — l'outil ne les stocke ni ne les présente.
 
 **La méthode est un filtre (un « tamis ») :** nous collectons les documents
 produits (fiches de données de sécurité et fiches techniques) auprès de

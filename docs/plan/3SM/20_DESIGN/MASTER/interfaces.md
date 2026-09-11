@@ -48,14 +48,14 @@ All groups print help on bare invocation (`no_args_is_help`; exit 0).
 
 | Command | Effect | Exit codes |
 |---|---|---|
-| `db init` | apply pending migrations (0001–0002 in this unit); backup existing DB first unless `--no-backup` | 0 ok; 1 no/invalid DB path |
+| `db init` | apply pending migrations (0001–0003 in this unit); backup existing DB first unless `--no-backup` | 0 ok; 1 no/invalid DB path |
 | `db status` | applied/pending migrations, table row counts, file path+size | 0 |
 | `db audit` | run rules R1–R9, print report; `--unreferenced` also lists raw-store orphans | 0 clean; 3 violations |
 | `source load` | upsert register from `src/leadhs/dict/sources.csv` (or `--file`); register of record is the CSV in git | 0; 1 malformed CSV / bad row |
 | `source list` | table of sources with class, status, active | 0 |
 | `probe run` | one run per source (see run semantics); findings + documents written; per-source summary line | 0 all done; 2 any run failed/blocked (findings still recorded) |
 | `probe record` | create a manual run (kind=probe, method=manual) + one finding; optionally attach a raw file as document | 0; 1 bad metric/value |
-| `probe report` | render census from v_probe_latest + v_anchor_candidates; md default | 0 |
+| `probe report` | render the source-feasibility census (od8 content layer): md (framing, summary matrix, per-source sections, run status incl. blocked/failed, anchors, activity), csv (summary matrix, all registered sources), json (full structure); md default | 0 |
 | `doctor` | environment preflight (python, sqlite, binaries as warnings, data dir, contact, optional reachability) | 0 (warnings allowed); 1 errors |
 
 Global flags: `--verbose` (structured logging); `--db PATH`
@@ -162,11 +162,16 @@ no `rescue StandardError` equivalent).
 | access_blocked | Access blocked | text | detail when blocked (403/429/paywall/login) |
 | robots_denied | Robots denial | text | detail when robots.txt disallows |
 | free_access | Free access confirmed | numeric | 0/1 — no account/paywall needed |
+| records_hs3208 | Records HS 3208 | numeric | rows for HS 3208 in the parameterized query (absent = not queried; 0 = queried, empty) |
+| records_hs3209 | Records HS 3209 | numeric | same, for HS 3209 |
+| records_hs3213 | Records HS 3213 | numeric | same, for HS 3213 (census annex) |
+| census_status | Census status | text | manual/deferral record on a source's census state (PCN aggregates, deferral notes, manual export mechanics; method=manual) |
 
 Extension rule: new metrics are added by a migration INSERT (code
 never renamed; value_type fixed at insert). `metrics.py` is the
-runtime source of truth; a sync test pins migration 0001's seeds to
-it (0001 is static SQL and cannot call Python).
+runtime source of truth; a sync test pins the migration seeds
+(0001 + 0003) to it (migrations are static SQL and cannot call
+Python).
 
 ## Run semantics
 
@@ -270,11 +275,21 @@ attempted action — full context, never message-only).
   groups print help (`no_args_is_help`) (v0.1.2; HOLD-SCOPE review).
 - i11: DB-initialization preflight contract — guided error, exit 1,
   never `bug:`, for all schema-reading commands (v0.1.2).
+- i12: report content contract (od8) — one DB-only assembly, three
+  renderers from the same data; run status and notes visible incl.
+  blocked/failed; dry-run runs excluded from census sections
+  (malformed parameters_json fails open); matrix covers all
+  registered sources; legend distinguishes "—" (not queried) from
+  0 (queried, empty); framing states source-feasibility ≠
+  product/lead (M2+) (v0.1.2; HOLD-SCOPE review).
 
 ## OPEN ITEMS
 
 - swiss-impex query/export mechanics (URL parameters, CSV dialect) —
   CS adapter detail; probe answers.
+- CS-2 exact Comext query parameters (reporter/product/period/flow)
+  — pinned at census execution; the archived response verifies
+  (od9).
 - Sample-page selection: seeded random preferred (reproducible);
   finalize at implementation.
 - `db query` output formats (table vs csv flag) — trivial, at M4.

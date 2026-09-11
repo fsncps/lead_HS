@@ -96,7 +96,7 @@ Le registre complet, avec règles d'accès et discipline de provenance, en langa
 
 ## Le moteur de preuves : un petit programme honnête
 
-La collecte est automatisée par un petit programme en ligne de commande (« leadhs ») — pas de site web, pas de serveur, une machine. Sa mission : garder la chaîne de preuves étanche — chaque document récupéré est archivé comme original intact, avec sa source, sa date de récupération et une empreinte numérique de son contenu ; chaque observation est liée à l'exécution qui l'a produite ; rien n'est jamais écrasé — les corrections sont de nouvelles entrées, de sorte que chaque chiffre du rapport final remonte à un document précis.
+La collecte est automatisée par un petit programme en ligne de commande (« leadhs ») — pas de site web, pas de serveur, une machine. Sa mission : garder la chaîne de preuves étanche — chaque document récupéré est archivé comme original intact, avec sa source, sa date de récupération et une empreinte numérique de son contenu ; chaque observation est liée à l'exécution qui l'a produite ; rien n'est jamais écrasé — les corrections sont de nouvelles entrées, de sorte que chaque chiffre du rapport final remonte à un document précis. L'outil, la base de données et tous les rapports générés ne contiennent que des **données produit** — composés du plomb, concentrations, documents, dénombrements. Les textes juridiques sont le cadre contextuel de l'étude et vivent dans les documents de l'étude ; l'outil ne les stocke ni ne les rapporte jamais.
 
 La première unité de construction — **v0.1.1, « sondage »** — est implémentée et testée. Elle couvre exactement cette première étape : mettre en place la base de preuves, charger le registre des sources prévues, exécuter les visites de test respectueuses, produire le premier rapport de recensement. Rien de plus ; la chaîne de collecte complète viendra avec les unités suivantes.
 
@@ -119,10 +119,6 @@ Documents de travail : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md)
 ## Première étape : vérifier les sources
 
 Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données. C'est précisément ce que l'unité de sondage ci-dessus exécute ; la passe de faisabilité du 11 septembre 2026 a été exécutée une fois et a consigné les lacunes restantes. Achever le recensement est le livrable de la prochaine unité (v0.1.2), qui l'exécute via un point d'entrée make avec un feu vert explicite — toujours uniquement sur instruction explicite.
-
-## Le volet juridique
-
-En parallèle, un dossier compile — purement à partir de textes juridiques publics — les restrictions européennes sur le plomb et leur statut, les équivalents suisses, le cadre Cassis-de-Dijon et son réexamen quinquennal, et où se trouvent les coutures. Substance : [document plomb & FDS](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN).
 
 ## La feuille de route
 

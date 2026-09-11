@@ -152,7 +152,10 @@ Per class:
   Slackware); PCN (ST-1) — locate formulation-level aggregates
   (manual-web, recorded like any probe finding).
 - **LG:** not probed — legal-text verification stays a manual document
-  workstream (Phase-0 legal dossier).
+  workstream (framing background only). The register rows stay
+  inactive; they are never probed and never reach reports — reports
+  draw from probe views, and LG rows carry no probe runs
+  (MASTER D27).
 
 Probing obeys the access & scraping discipline below — light by design
 (counts and constraints, not bulk collection). Probe outputs are

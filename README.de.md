@@ -98,7 +98,7 @@ Das vollständige Register mit Zugriffsregeln und Provenienzdisziplin, in einfac
 
 ## Die Beweis-Engine: ein kleines, ehrliches Programm
 
-Das Sammeln automatisiert ein kleines Kommandozeilenprogramm («leadhs») — keine Website, kein Server, eine Maschine. Seine Aufgabe ist es, die Beweiskette lückenlos zu halten: Jedes abgerufene Dokument wird als unverändertes Original archiviert, mit Quelle, Abrufdatum und digitalem Fingerabdruck seines Inhalts; jede Beobachtung ist an den Lauf gebunden, der sie erzeugt; nichts wird je überschrieben — Korrekturen sind neue Einträge, sodass jede Zahl im Schlussbericht auf ein konkretes Dokument zurückverfolgt werden kann.
+Das Sammeln automatisiert ein kleines Kommandozeilenprogramm («leadhs») — keine Website, kein Server, eine Maschine. Seine Aufgabe ist es, die Beweiskette lückenlos zu halten: Jedes abgerufene Dokument wird als unverändertes Original archiviert, mit Quelle, Abrufdatum und digitalem Fingerabdruck seines Inhalts; jede Beobachtung ist an den Lauf gebunden, der sie erzeugt; nichts wird je überschrieben — Korrekturen sind neue Einträge, sodass jede Zahl im Schlussbericht auf ein konkretes Dokument zurückverfolgt werden kann. Werkzeug, Datenbank und alle erzeugten Berichte enthalten ausschliesslich **Produktdaten** — Bleiverbindungen, Konzentrationen, Dokumente, Zählungen. Rechtstexte sind Hintergrundrahmen der Studie und leben in den Studiendokumenten; das Werkzeug speichert und berichtet sie nie.
 
 Die erste Baueinheit — **v0.1.1, «Sondierung»** — ist implementiert und getestet. Sie deckt genau diesen ersten Schritt ab: die Evidenzdatenbank einrichten, das Register der geplanten Quellen laden, die höflichen Testbesuche ausführen, den ersten Zensusbericht rendern. Nichts darüber hinaus; die vollständige Sammelpipeline kommt mit späteren Einheiten.
 
@@ -121,10 +121,6 @@ Arbeitsdokumente: [Architektur](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) und [
 ## Erster Schritt: die Quellen prüfen
 
 Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt. Genau das führt die obige Sondierungseinheit aus; der Sondierungs-Lauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert. Den Zensus abschliessen ist die Aufgabe der nächsten Einheit (v0.1.2), die ihn über einen Make-Einstiegspunkt mit explizitem Go-Gate führt — ebenfalls nur auf ausdrückliche Anweisung.
-
-## Der rechtliche Arbeitsstrang
-
-Parallel kompiliert ein Dossier — rein aus öffentlichen Rechtstexten — die EU-Bleibeschränkungen und ihren Stand, die Schweizer Pendants, den Cassis-de-Dijon-Rahmen und seine fünfjährige Überprüfung sowie die Nähte dazwischen. Substanz: [Blei-und-SDB-Dokument](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN).
 
 ## Der Fahrplan
 

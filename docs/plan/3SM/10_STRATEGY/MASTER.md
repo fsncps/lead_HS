@@ -104,7 +104,9 @@ owner). Open questions and the phased roadmap follow.
     design remains 3208/3209.
 14. **Legal-category dimension:** the database classifies each product by
     legal category (Anstrichfarbe/Malfarbe/treated article; Swiss total-Pb
-    ban threshold relevance), not only by HS/CN code.
+    ban threshold relevance), not only by HS/CN code. **(Superseded by
+    D27, 2026-09-11 — the database carries product data only; no legal
+    category, no ban-engagement flag.)**
 15. **Headline caveat:** the Swiss ban threshold (0.01% = 100 ppm total Pb,
     ChemRRV Anhang 2.8, 2005 wording — current text to verify) lies **below**
     the EU SDS declaration floor (0.1% for classified compounds). A paint
@@ -196,6 +198,19 @@ owner). Open questions and the phased roadmap follow.
     with the operator layer and executed through it; the v0.1.1
     PHASE08 feasibility pass (2026-09-11) is its empirical record.
     Supersedes the same-day census-first sequencing decision.
+27. **Product data only in tool, database and reports (2026-09-11;
+    scope correction, supersedes D14):** the `leadhs` tool, the
+    evidence database and all generated reports carry product data
+    only — no legal-category dimension, no compound legal-status or
+    Swiss-relevance fields, no legal-coded signal lookups, no
+    legal-text documents in the raw store. Lawful/illegal assessment
+    and Swiss-ban relevance are analytical conclusions drawn in the
+    study documentation (10_STRATEGY/LEAD_SDS.md, METHODOLOGY
+    regulatory frame), never database fields or report sections.
+    The LG source rows stay in the register (inactive, as built) and
+    never reach reports by construction — reports draw from probe
+    views, and LG rows carry no probe runs. Legal-text verification
+    remains a pure documentation workstream outside the tool.
 
 ## OPEN ITEMS
 

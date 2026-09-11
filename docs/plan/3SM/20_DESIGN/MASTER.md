@@ -26,10 +26,11 @@ topic documents below.
   (D26). Design docs LIVE.
 - Unit **v0.1.2** (operator layer + census close-out: make, CLI
   operability, report routing, structured source reports) — design
-  converged (units/v0.1.2.md, od1–od9; D25/D26 absorbed);
-  implementation plans written (30_IMPLEMENTATION/v0.1.2/,
-  PHASE01–07; ENG review 2026-09-11). Build awaits explicit go; the
-  census executes through it (`GO=1 make census`).
+  converged (units/v0.1.2.md, od1–od10; second-pass CEO review
+  HOLD SCOPE; D25/D26 absorbed, D27 applied);
+  implementation plans exist but predate od8–od10 (drift marker in
+  the unit doc — rescope at implementation activation). Build awaits
+  explicit go; the census executes through it (`GO=1 make census`).
 - Unit v0.1 (feasibility & study design) — foundational strategy
   pass, LIVE in STRATEGY.
 - Full-pipeline design: **present but not frozen** — freeze awaits
@@ -46,7 +47,7 @@ topic documents below.
   contracts, metric vocabulary, audit rules R1–R9, export contract
 - `MASTER/testing.md` — test matrix, key tests, flakiness rules
 - `units/v0.1.1.md` — the design delta for the active unit
-- `units/v0.1.2.md` — design delta for the operator-layer unit
+- `units/v0.1.2.md` — design delta for the census close-out unit
 
 (The canonical "design" subject is covered by architecture +
 interfaces together — consolidation decision, no separate
@@ -59,8 +60,10 @@ design.md.)
 - **Built in v0.1.2:** repo Makefile (operator entrypoint, GO=1
   guard), CLI exit-code enforcement + DB-init preflight, `source
   list`/doctor/`--data-dir` fixes, report routing, housekeeping;
-  migration 0003 per-HS count metrics (od9); structured census
-  report content (od8/D25); the census close-out execution (P7).
+  migration 0003 records_hs3208/3209/3213 + census_status (od10);
+  structured census report content (od8/D25); census completion
+  mechanics (od9); the census close-out execution. Schema carries
+  product data only (d27).
 - **Deferred from v0.1.2:** M1–M4 stages (stub targets only), wheel
   release mechanics (first external use). DE/FR README sync resolved:
   same change set (B6).
@@ -119,14 +122,25 @@ design.md.)
   `report-publish` copies to `docs/report/` (a13, od5; strategy D22).
 - **d24** `--data-dir` for installed use, exclusive with `--db`
   (od4; strategy D24).
-- **d25** structured census report content — per-source metadata
-  (identification/access/content/counts/availability/provenance) +
-  cross-source summary matrix; "source feasibility" framing
-  (od8; strategy D25).
-- **d26** M0 close-out lives in v0.1.2 — census completion delivered
-  and executed through the operator layer; per-HS count metrics via
-  migration 0003 INSERT, not deferred to M1 (od9 = OD-A; strategy
-  D26; supersedes census-first sequencing).
+- **d25** report content layer — one DB-only assembly, three
+  renderers (md narrative + matrix, csv summary matrix, json full
+  structure); run status incl. blocked/failed visible; dry-runs
+  excluded; legend "—" (not queried) vs 0 (queried, empty); framing
+  states source-feasibility ≠ product/lead metrics (i12, od8;
+  strategy D25).
+- **d26** census close-out design — migration 0003
+  (records_hs3208/3209/3213 + census_status; v_anchor_candidates
+  redefined; design-ahead migrations renumbered 0004–0010), census
+  mechanics (parameterized CS-2 query with recorded params, PE
+  category depth ≤ 3, manual records via census_status) (od9/od10,
+  dm16; strategy D26/U8–U10).
+- **d27** product data only in tool, database and reports — schema
+  drops the legal-category dimension, substance legal-status/
+  Swiss-relevance fields, the legal-coded sds_signal lookup and the
+  legal_text document kind; LG register rows stay inactive and carry
+  no findings — they appear in the summary matrix only as inactive
+  register rows, never as legal content (strategy D27; supersedes
+  the D14-derived fields).
 
 ## OPEN ITEMS
 

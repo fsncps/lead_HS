@@ -96,3 +96,19 @@ README EN/DE/FR same change set). v0.1.1 PHASE08 marked transferred;
 READMEs (EN/DE/FR), management summary, AGENTS and dashboards
 updated. Nothing frozen; build and census execution await explicit
 instruction (commits pending at time of writing).
+
+## 2026-09-11 — v0.1.2 — Scope correction: product data only (D27)
+
+User direction: no legal referencing at all in the tool, database or
+reports — legal texts are framing background only. Strategy decision
+D27 added (supersedes D14): the schema drops the legal-category
+dimension and the ban-engagement flag from `product`, the
+legal-status/Swiss-relevance fields from the compound dictionary, the
+legal-coded sds_signal lookup and the legal_text document kind;
+origin reworded to plain market provenance. METHODOLOGY (EN/DE/FR)
+regulatory-frame section retitled background; the design-consequence
+bullet now carries HS/CN + origin only. Design data_model.md aligned
+(d27); LG register rows stay inactive and carry no findings (matrix
+shows them only as inactive register rows). Public-facing docs
+(READMEs, management summary, AGENTS) still pending; commits pending
+at time of writing.

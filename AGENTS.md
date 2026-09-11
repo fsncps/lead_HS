@@ -83,6 +83,10 @@ explicit user instruction.
   as fact.
 - Web-scraped SDS/product data: record source URL and retrieval date per
   record; respect site terms; no bulk hammering.
+- No legal referencing in the tool, database or reports — product data
+  only (Strategy MASTER D27, supersedes D14). Legal context lives in the
+  10_STRATEGY documentation (LEAD_SDS.md, METHODOLOGY regulatory frame)
+  as framing background, never as DB fields or report sections.
 
 ## Git
 

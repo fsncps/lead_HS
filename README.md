@@ -179,7 +179,11 @@ airtight: every fetched document is archived as an untouched original,
 with its source, retrieval date and a digital fingerprint of its content;
 every observation is tied to the run that produced it; nothing is ever
 overwritten — corrections are new entries, so every number in the final
-report traces back to a specific document.
+report traces back to a specific document. The tool, the database and
+all generated reports carry **product data only** — lead compounds,
+concentrations, documents, counts. Legal texts are framing background
+for the study and live in the study documents; the tool never stores
+or reports them.
 
 The first build unit — **v0.1.1, "probe"** — is implemented and tested. It
 covers exactly this first step: set up the evidence database, load the
@@ -218,13 +222,6 @@ unit above executes; the 2026-09-11 feasibility pass ran once and recorded
 the remaining gaps. Completing the census is the deliverable of the next
 unit (v0.1.2), which runs it through a make entrypoint with an explicit
 go-ahead gate — still only on explicit instruction.
-
-## Legal workstream
-
-In parallel, a dossier compiles — purely from public legal texts — the EU
-lead restrictions and their status, the Swiss counterparts, the
-Cassis-de-Dijon frame and its five-yearly review, and where the seams are.
-Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 
 ## Roadmap
 

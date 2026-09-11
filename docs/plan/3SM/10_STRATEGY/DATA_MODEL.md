@@ -27,12 +27,15 @@ at strategy altitude: entities, fields and keys, not final DDL.
    collapse into one `product`; SKU sightings are separate rows, not
    products.
 3. **Declared ≠ total:** findings store the *declared* concentration
-   (value/range/floor); Swiss-ban relevance is a derived flag, never a
-   measurement.
+   (value/range/floor); Swiss-ban relevance is a documentation-layer
+   conclusion, never a stored field and never a measurement
+   (MASTER D27).
 4. **Reproducibility:** every sampling run stores its parameters and
    seed; the same run ID re-yields the same selection.
-5. **Verification flags:** unverified CAS/EC and unverified legal claims
-   stay flagged — the database inherits the project's discipline.
+5. **Verification flags:** unverified CAS/EC stay flagged. The
+   dictionary carries **no legal-status fields** (MASTER D27) — EU
+   legal status and Swiss relevance stay columns of the LEAD_SDS.md
+   documentation table only.
 6. **Multilingual by default:** product names and SDS text keep their
    language; the compound dictionary carries DE/FR/IT/EN synonyms.
 
@@ -60,9 +63,9 @@ type (producer/importer/private_label), source_id, notes.
 **product** — id, manufacturer_id, name_base (normalized), name_display,
 segment_stratum (S1–S8 | CENSUS_3213), cn_code (inferred) +
 cn_confidence (high/medium/low/manual), origin (CH/EU/THIRD/unknown),
-legal_category (Anstrichfarbe/Malfarbe/treated_article/pigment),
-swiss_ban_plausibly_engaged (derived flag), census_flag, first_seen,
-last_seen, delisted, source_id.
+census_flag, first_seen, last_seen, delisted, source_id. Product data
+only — no legal category, no ban-engagement flag (MASTER D27); the
+lawful/illegal lens lives in the study documentation.
 
 **sighting** — id, product_id, url, retailer/context, price, packaging,
 date, source_id. (One product, many sightings — the dedup layer.)
@@ -82,8 +85,10 @@ review_status (auto/confirmed/corrected/rejected).
 
 **lead_compound** (dictionary, seeded from LEAD_SDS.md) — cas_rn (key
 where available), ec_number, name, synonyms (multilingual), ci_number,
-function_class, eu_legal_status, swiss_relevance, sds_visible_floor,
-verification_status (verified/ECHA-pending), notes.
+function_class, sds_visible_floor, verification_status
+(verified/ECHA-pending), notes. No legal-status fields (MASTER D27) —
+EU legal status and Swiss relevance stay columns of the LEAD_SDS.md
+documentation table only.
 
 **corroboration** — id, product_id, finding_ref, document_type
 (tds/label/listing/older_sds/cross_market/declaration), url, raw_hash,
@@ -112,7 +117,7 @@ auditable.)
 
 ## Enumerations (taxonomies)
 
-- origin: CH | EU | THIRD | unknown (EU = EU/EEA-lawful marketing).
+- origin: CH | EU | THIRD | unknown (EU = marketed in the EU/EEA).
 - concentration_type: exact | range | declared_ge_0.1 | none_listed —
   the blind-spot taxonomy: `none_listed` ≠ lead-free.
 - match_method: cas_exact | ec_exact | name_synonym | manual.

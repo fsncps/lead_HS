@@ -17,12 +17,16 @@ Strategy schema (10_STRATEGY/DATA_MODEL.md) into a fully **normalized**
 form. Normalization here means: every fact is stored exactly once —
 provenance (source, URL, retrieval date, raw-file hash) lives in one
 `document` backbone instead of being repeated on every evidence row;
-classifications (origin, stratum, legal category …) are small lookup
+classifications (origin, stratum …) are small lookup
 tables instead of free text; multi-valued facts (synonyms, identifiers,
 H-codes, category assignments) are junction tables; what a safety data
 sheet literally says is kept separate from what we interpret it to
-mean; and every derived number (the "plausibly exceeds the Swiss ban"
-flag, prevalence rates) is a database *view*, never a stored column.
+mean; and every derived number (prevalence rates) is a database *view*,
+never a stored column. **Product data only (Strategy MASTER D27):** the
+schema carries no legal-category dimension, no compound legal-status or
+Swiss-relevance fields, no legal-coded signal lookups and no legal-text
+documents — lawful/illegal assessment and ban relevance stay
+documentation-layer (10_STRATEGY/LEAD_SDS.md).
 The schema is written to port to PostgreSQL with two documented
 variances (id generation, one partial index) and to be reusable for
 future substance-in-products studies via a `study` discriminator.
@@ -40,8 +44,10 @@ future substance-in-products studies via a `study` discriminator.
    H-codes, product–org roles, category assignments, anchor links.
 5. **Verbatim vs interpretation split** — `sds_ingredient` (what the
    sheet says) vs `sds_finding` (what we matched it to).
-6. **Derived values are views** — `swiss_ban_plausibly_engaged`,
-   consistency scores, prevalence; recomputable, never stale.
+6. **Derived values are views** — consistency scores, prevalence;
+   recomputable, never stale. No legal-derived views: the
+   ban-engagement assessment stays documentation-layer
+   (Strategy MASTER D27).
 7. **Append-only evidence, updatable reference data** — evidence rows
    (documents, findings, runs, sightings) are never deleted or
    value-updated; corrections are new rows or review-status
@@ -215,8 +221,7 @@ decision (10_STRATEGY/MASTER.md D20).
 **substance** — the Strategy `lead_compound` dictionary, generalized:
 study-agnostic, lead-target flagged.
 - id INTEGER PK; name TEXT NOT NULL (canonical)
-- function_code → substance_function; eu_legal_status_code →
-  eu_legal_status; swiss_relevance_code → swiss_relevance
+- function_code → substance_function
 - sds_visible_floor_ppm REAL; verification_status_code →
   verification_status NOT NULL
 - is_lead_target INTEGER NOT NULL DEFAULT 0; notes TEXT
@@ -239,13 +244,11 @@ study-agnostic, lead-target flagged.
 
 Lookups: **substance_function** (pigment, drier, anticorrosive,
 extender, intermediate, other, unknown); **identifier_type** (cas_rn,
-ec_number, index_number, ci_number); **eu_legal_status** (unrestricted,
-annex_xiv_sunset_refused, annex_xvii_banned_paint,
-annex_xvii_restricted, entry63_articles, unknown — description carries
-the verified legal detail from 10_STRATEGY/LEAD_SDS.md);
-**swiss_relevance** (ban_threshold_relevant, not_restricted, unknown);
+ec_number, index_number, ci_number);
 **hcode** (code, statement, severity_class) — H-statements as data,
-extensible without migration.
+extensible without migration. No legal-status lookups — EU legal
+status and Swiss relevance stay columns of the LEAD_SDS.md
+documentation table (Strategy MASTER D27).
 
 ### Catalog & frame group (0004, M1)
 
@@ -268,7 +271,7 @@ strings on sightings.
 - first_seen TEXT; last_seen TEXT; delisted INTEGER NOT NULL DEFAULT 0;
   notes TEXT
 - Index: (study_id), (name_base).
-- Classifications (stratum, legal category, CN) are NOT inline — they
+- Classifications (stratum, CN) are NOT inline — they
   live in product_classification with history.
 
 **product_org** — product ↔ organization relationships.
@@ -278,9 +281,9 @@ strings on sightings.
 - UNIQUE (product_id, org_id, role_code)
 
 **product_classification** — history-preserving classification
-(stratum, legal category, CN inference).
+(stratum, CN inference).
 - id INTEGER PK; product_id → product NOT NULL; stratum_code →
-  stratum; legal_category_code → legal_category; cn_code_id → cn_code;
+  stratum; cn_code_id → cn_code;
   confidence_code → confidence; method_note TEXT; source_id → source;
   document_id → document; assessed_at TEXT; active INTEGER NOT NULL
   DEFAULT 1; notes TEXT
@@ -330,8 +333,7 @@ was triangulated from.
 
 Lookups: **org_role** (producer, importer, private_label, retailer,
 brand_owner, distributor); **origin** (CH, EU, THIRD, unknown — EU =
-EU/EEA-lawful marketing, 10_STRATEGY/METHODOLOGY.md); **legal_category**
-(anstrichfarbe, malfarbe, treated_article, pigment, unknown);
+marketed in the EU/EEA);
 **confidence** (high, medium, low, manual); **stratum** (S1–S8,
 CENSUS_3213 with cn_prior/lead_prior description fields from
 10_STRATEGY/METHODOLOGY.md); **anchor_kind** (pcn, spin, prodcom,
@@ -408,7 +410,8 @@ validation rules open — pilot).
 **sds_section15** — Section 15 statements as anomaly signal
 (10_STRATEGY/MASTER.md D5), normalized to document level.
 - id INTEGER PK; sds_document_id → sds_document NOT NULL;
-  statement_raw TEXT NOT NULL; signal_code → sds_signal
+  statement_raw TEXT NOT NULL (the sheet's own text — kept as document
+  content; no legal-coded classification of it, Strategy MASTER D27)
 
 Lookups: **concentration_type** (exact, range, declared_ge_0.1,
 none_listed — the declared-vs-total blind-spot taxonomy,
@@ -416,8 +419,7 @@ none_listed — the declared-vs-total blind-spot taxonomy,
 (cas_exact, ec_exact, name_synonym, manual); **parse_status** (pending,
 parsed, failed, manual); **review_status** (auto, confirmed, corrected,
 rejected); **sds_format_vintage** (pre_2020_878, post_2020_878,
-unknown — staleness flag); **sds_signal** (annex_xiv_mentioned,
-restriction_mentioned, svhc_mentioned, other).
+unknown — staleness flag).
 
 ### Evidence group (0008, M2–M3)
 
@@ -437,7 +439,7 @@ session draft.
   document_type; agrees_code → agree_state; note TEXT
 
 Lookups: **document_type** (sds, tds, label, listing, older_sds,
-cross_market, declaration, sample_page, export, legal_text,
+cross_market, declaration, sample_page, export,
 statistics); **agree_state** (yes, no, partial).
 
 ### Views (0004 adds; 0009 completes)
@@ -517,7 +519,6 @@ exist per applied migrations.
   adjust after the probe checks mdbtools extraction.
 - Export format: CSV is stdlib; Parquet would add a dependency —
   default CSV, Parquet only if a consumer requires it (M4).
-- sds_signal vocabulary calibration — M2 pilot.
 - org dedup/merge workflow (same chain, name variants) — M2 ingest
   design.
 - run.parameters_json schema per kind — probe fixed now
