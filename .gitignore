@@ -10,4 +10,8 @@ Thumbs.db
 .envrc
 node_modules/
 dist/
+build/
 __pycache__/
+.pytest_cache/
+*.egg-info/
+data/

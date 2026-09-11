@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leadhs"
+version = "0.1.1"
+description = "Lead-in-paints evidence tool (HS 3208/3209/3213) — probe unit v0.1.1"
+requires-python = ">=3.11"
+dependencies = [
+    "click",
+    "requests",
+    "beautifulsoup4",
+    "jinja2",
+]
+
+[project.scripts]
+leadhs = "leadhs.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+leadhs = ["dict/*.csv", "migrations/*.sql", "templates/*.j2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "net: real-network checks (deselected by default)",
+    "mdbtools: requires the mdbtools binary (skipped when absent)",
+]
+addopts = "-m 'not net and not mdbtools'"
