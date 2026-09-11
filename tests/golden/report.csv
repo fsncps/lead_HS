@@ -1,0 +1,15 @@
+source_id,metric_code,value,unit_code,method_code,run_key,started_at
+CX-1,coverage_years,to confirm (year column present),,download,probe-20260910-cx1,2026-09-10T12:00:00Z
+CX-1,export_rows,3.0 count,count,download,probe-20260910-cx1,2026-09-10T12:00:00Z
+CX-1,format,"CSV; columns: hs_code, year, partner, value",,download,probe-20260910-cx1,2026-09-10T12:00:00Z
+CX-1,free_access,1.0,,download,probe-20260910-cx1,2026-09-10T12:00:00Z
+CX-1,granularity,CN8 x partner x year (observed columns),,download,probe-20260910-cx1,2026-09-10T12:00:00Z
+PX-1,catalog_count,500.0 count,count,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,category_list,"[""http://127.0.0.1:PORT/cat/wandfarben"", ""http://127.0.0.1:PORT/cat/grundierung""]",,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,free_access,1.0,,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,languages,"[""de"", ""fr""]",,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,page_sample_ok,2.0 count,count,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,rate_limit,unknown — polite default <= 1 req / 2 s,,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,robots,allowed,,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,sds_sample_ok,1.0 count,count,scrape,probe-20260910-px1,2026-09-10T12:00:00Z
+PX-1,terms,link present: /terms,,scrape,probe-20260910-px1,2026-09-10T12:00:00Z

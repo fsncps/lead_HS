@@ -1,0 +1,267 @@
+{
+  "census": [
+    {
+      "source_id": "CX-1",
+      "metric_code": "coverage_years",
+      "value_numeric": null,
+      "value_text": "to confirm (year column present)",
+      "unit_code": null,
+      "method_code": "download",
+      "run_key": "probe-20260910-cx1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "CX-1",
+      "metric_code": "export_rows",
+      "value_numeric": 3.0,
+      "value_text": null,
+      "unit_code": "count",
+      "method_code": "download",
+      "run_key": "probe-20260910-cx1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "CX-1",
+      "metric_code": "format",
+      "value_numeric": null,
+      "value_text": "CSV; columns: hs_code, year, partner, value",
+      "unit_code": null,
+      "method_code": "download",
+      "run_key": "probe-20260910-cx1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "CX-1",
+      "metric_code": "free_access",
+      "value_numeric": 1.0,
+      "value_text": null,
+      "unit_code": null,
+      "method_code": "download",
+      "run_key": "probe-20260910-cx1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "CX-1",
+      "metric_code": "granularity",
+      "value_numeric": null,
+      "value_text": "CN8 x partner x year (observed columns)",
+      "unit_code": null,
+      "method_code": "download",
+      "run_key": "probe-20260910-cx1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "catalog_count",
+      "value_numeric": 500.0,
+      "value_text": null,
+      "unit_code": "count",
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "category_list",
+      "value_numeric": null,
+      "value_text": "[\"http://127.0.0.1:PORT/cat/wandfarben\", \"http://127.0.0.1:PORT/cat/grundierung\"]",
+      "unit_code": null,
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "free_access",
+      "value_numeric": 1.0,
+      "value_text": null,
+      "unit_code": null,
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "languages",
+      "value_numeric": null,
+      "value_text": "[\"de\", \"fr\"]",
+      "unit_code": null,
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "page_sample_ok",
+      "value_numeric": 2.0,
+      "value_text": null,
+      "unit_code": "count",
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "rate_limit",
+      "value_numeric": null,
+      "value_text": "unknown \u2014 polite default <= 1 req / 2 s",
+      "unit_code": null,
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "robots",
+      "value_numeric": null,
+      "value_text": "allowed",
+      "unit_code": null,
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "sds_sample_ok",
+      "value_numeric": 1.0,
+      "value_text": null,
+      "unit_code": "count",
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "terms",
+      "value_numeric": null,
+      "value_text": "link present: /terms",
+      "unit_code": null,
+      "method_code": "scrape",
+      "run_key": "probe-20260910-px1",
+      "started_at": "2026-09-10T12:00:00Z"
+    }
+  ],
+  "anchor_candidates": [
+    {
+      "source_id": "CX-1",
+      "metric_code": "export_rows",
+      "value_numeric": 3.0,
+      "unit_code": "count",
+      "run_key": "probe-20260910-cx1"
+    },
+    {
+      "source_id": "PX-1",
+      "metric_code": "catalog_count",
+      "value_numeric": 500.0,
+      "unit_code": "count",
+      "run_key": "probe-20260910-px1"
+    }
+  ],
+  "source_activity": [
+    {
+      "source_id": "CX-1",
+      "first_retrieved_at": "2026-09-10T12:00:00Z",
+      "last_retrieved_at": "2026-09-10T12:00:00Z",
+      "run_count": 1,
+      "finding_count": 5
+    },
+    {
+      "source_id": "CX-2",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "CX-3",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "CX-4",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-1",
+      "first_retrieved_at": "2026-09-10T12:00:00Z",
+      "last_retrieved_at": "2026-09-10T12:00:00Z",
+      "run_count": 1,
+      "finding_count": 9
+    },
+    {
+      "source_id": "PX-2",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-3",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-4",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-5",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-6",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-7",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-8",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PX-9",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "ST-1",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "SX-1",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    }
+  ]
+}
