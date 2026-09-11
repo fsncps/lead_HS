@@ -181,19 +181,41 @@ every observation is tied to the run that produced it; nothing is ever
 overwritten — corrections are new entries, so every number in the final
 report traces back to a specific document.
 
+The first build unit — **v0.1.1, "probe"** — is implemented and tested. It
+covers exactly this first step: set up the evidence database, load the
+register of planned sources, run the polite test visits, render the first
+census report. Nothing beyond that; later units add the full collection
+pipeline.
+
+Install and first commands (Python 3.11+):
+
+    pip install -e .                   # install "leadhs" from this folder
+    leadhs --contact you@example.org   # optional, per run: contact for site operators
+    leadhs doctor                      # environment preflight (python, sqlite, data dir, contact)
+    leadhs db init                     # create/migrate the evidence database (data/leadhs.sqlite)
+    leadhs source load                 # load the source register (14 planned sources)
+    leadhs source list                 # show the register
+    leadhs probe run --all --dry-run   # plan every probe request; zero network calls
+    leadhs probe run --all             # the polite test visits (real network, paced)
+    leadhs probe report --format md    # census report from the recorded findings
+
+`--help` on every command explains the options.
+
 Working documents:
 [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) and
 [data model](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md); the reviewed
 technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
-## First step: checking the sources (next up)
+## First step: checking the sources
 
 Before any large-scale collection, each planned source gets one small,
 polite test visit — does the Swiss customs platform deliver usable
 exports? Which catalogues can be read? Is the Nordic product-register
 database processable? Every check is recorded; a refusal is a documented
 finding, never an obstacle pushed through. The probe workflow is
-diagrammed in the data-sources document.
+diagrammed in the data-sources document. This is exactly what the probing
+unit above executes; only the real run remains, and it starts on explicit
+instruction.
 
 ## Legal workstream
 
@@ -237,6 +259,7 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the current unit (v0.1.1) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -244,6 +267,9 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 
     README.md                  this file
     AGENTS.md                  conventions for AI-assisted work on this repo
+    pyproject.toml             Python packaging for the leadhs tool
+    src/leadhs/                source code of the tool (unit v0.1.1: probing)
+    tests/                     automated offline test suite
     docs/management_summary.md bilingual management summary (DE/FR), always current
     docs/plan/3SM/             planning notes (3-stage system)
     ├── README.md              plain-language guide to the planning tree
@@ -255,9 +281,12 @@ Substance: [lead & SDS document](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
 
 ## Status
 
-Strategy for the first build unit is complete; its technical design (tool +
-evidence database) is written and has passed a critical and an engineering
-review (2026-09-11; findings tracked in the
-[fix plan](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md)). Next: build the
-probing tool and run the source checks (roadmap Phase 0). Nothing is frozen
-— the methodology stays open to revision as Phase 0 results come in.
+Strategy and reviewed design for the first build unit are complete
+(2026-09-11; review findings applied per the
+[fix plan](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md)). The unit
+itself — **v0.1.1, source probing** — is implemented and tested: 101
+automated tests pass on the offline suite; code and implementation docs
+are in the repository (install steps above). Next: the real census run
+across all register sources — an operational step that touches real sites
+and therefore waits for an explicit go-ahead. Nothing is frozen — the
+methodology stays open to revision as Phase 0 results come in.

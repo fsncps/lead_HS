@@ -100,11 +100,27 @@ Das vollständige Register mit Zugriffsregeln und Provenienzdisziplin, in einfac
 
 Das Sammeln automatisiert ein kleines Kommandozeilenprogramm («leadhs») — keine Website, kein Server, eine Maschine. Seine Aufgabe ist es, die Beweiskette lückenlos zu halten: Jedes abgerufene Dokument wird als unverändertes Original archiviert, mit Quelle, Abrufdatum und digitalem Fingerabdruck seines Inhalts; jede Beobachtung ist an den Lauf gebunden, der sie erzeugt; nichts wird je überschrieben — Korrekturen sind neue Einträge, sodass jede Zahl im Schlussbericht auf ein konkretes Dokument zurückverfolgt werden kann.
 
+Die erste Baueinheit — **v0.1.1, «Sondierung»** — ist implementiert und getestet. Sie deckt genau diesen ersten Schritt ab: die Evidenzdatenbank einrichten, das Register der geplanten Quellen laden, die höflichen Testbesuche ausführen, den ersten Zensusbericht rendern. Nichts darüber hinaus; die vollständige Sammelpipeline kommt mit späteren Einheiten.
+
+Installation und erste Befehle (Python 3.11+):
+
+    pip install -e .                   # «leadhs» aus diesem Ordner installieren
+    leadhs --contact sie@beispiel.ch   # optional, pro Lauf: Kontaktangabe für Seitenbetreiber
+    leadhs doctor                      # Umgebungs-Vorprüfung (Python, SQLite, Datenverzeichnis, Kontakt)
+    leadhs db init                     # Evidenzdatenbank anlegen/migrieren (data/leadhs.sqlite)
+    leadhs source load                 # Quellenregister laden (14 geplante Quellen)
+    leadhs source list                 # Register anzeigen
+    leadhs probe run --all --dry-run   # alle Sondierungsanfragen planen; null Netzzugriffe
+    leadhs probe run --all             # die höflichen Testbesuche (echtes Netz, getaktet)
+    leadhs probe report --format md    # Zensusbericht aus den erfassten Befunden
+
+«--help» hinter jedem Befehl erklärt die Optionen.
+
 Arbeitsdokumente: [Architektur](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) und [Datenmodell](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (je EN); das begutachtete technische Design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
 
-## Erster Schritt: die Quellen prüfen (als nächstes)
+## Erster Schritt: die Quellen prüfen
 
-Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt.
+Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt. Genau das führt die obige Sondierungseinheit aus; übrig bleibt der echte Lauf, der auf ausdrückliche Anweisung startet.
 
 ## Der rechtliche Arbeitsstrang
 
@@ -140,6 +156,7 @@ Parallel kompiliert ein Dossier — rein aus öffentlichen Rechtstexten — die 
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der aktuellen Einheit (v0.1.1) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -149,6 +166,9 @@ Parallel kompiliert ein Dossier — rein aus öffentlichen Rechtstexten — die 
     README.de.md               deutsche Fassung
     README.fr.md               französische Fassung
     AGENTS.md                  Konventionen für KI-gestützte Arbeit an diesem Repo (EN)
+    pyproject.toml             Python-Paketierung des leadhs-Werkzeugs
+    src/leadhs/                Quellcode des Werkzeugs (Einheit v0.1.1: Sondierung)
+    tests/                     automatisierte Offline-Testsuite
     docs/management_summary.md zweisprachige Management-Zusammenfassung (DE/FR), stets aktuell
     docs/plan/3SM/             Planungsnotizen (3-Stufen-System, EN)
     ├── README.md              einfachsprachige Anleitung zum Planungsbaum (EN)
@@ -162,4 +182,4 @@ Parallel kompiliert ein Dossier — rein aus öffentlichen Rechtstexten — die 
 
 ## Status
 
-Die Strategie für die erste Baueinheit ist abgeschlossen; ihr technisches Design (Werkzeug + Evidenzdatenbank) ist geschrieben und hat eine kritische und eine technische Begutachtung durchlaufen (11. September 2026; Befunde werden im [Fixplan](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md) (EN) verfolgt). Als nächstes: das Sondierungswerkzeug bauen und die Quellprüfungen ausführen (Fahrplan Phase 0). Nichts ist eingefroren — die Methodik bleibt offen für Revision, während die Phase-0-Ergebnisse eintreffen.
+Strategie und begutachtetes Design der ersten Baueinheit sind abgeschlossen (11. September 2026; Begutachtungsbefunde gemäss [Fixplan](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md) (EN) umgesetzt). Die Einheit selbst — **v0.1.1, Quellensondierung** — ist implementiert und getestet: 101 automatisierte Tests bestehen (Offline-Suite); Code und Implementierungsdokumente liegen im Repository (Installationsschritte siehe oben). Als nächstes: der echte Zensuslauf über alle Registerquellen — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet. Nichts ist eingefroren — die Methodik bleibt offen für Revision, während die Phase-0-Ergebnisse eintreffen.

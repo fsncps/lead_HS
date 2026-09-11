@@ -98,11 +98,27 @@ Le registre complet, avec règles d'accès et discipline de provenance, en langa
 
 La collecte est automatisée par un petit programme en ligne de commande (« leadhs ») — pas de site web, pas de serveur, une machine. Sa mission : garder la chaîne de preuves étanche — chaque document récupéré est archivé comme original intact, avec sa source, sa date de récupération et une empreinte numérique de son contenu ; chaque observation est liée à l'exécution qui l'a produite ; rien n'est jamais écrasé — les corrections sont de nouvelles entrées, de sorte que chaque chiffre du rapport final remonte à un document précis.
 
+La première unité de construction — **v0.1.1, « sondage »** — est implémentée et testée. Elle couvre exactement cette première étape : mettre en place la base de preuves, charger le registre des sources prévues, exécuter les visites de test respectueuses, produire le premier rapport de recensement. Rien de plus ; la chaîne de collecte complète viendra avec les unités suivantes.
+
+Installation et premières commandes (Python 3.11+) :
+
+    pip install -e .                   # installe « leadhs » depuis ce dossier
+    leadhs --contact vous@exemple.ch   # facultatif, par exécution : contact pour les opérateurs de sites
+    leadhs doctor                      # contrôle préalable de l'environnement (python, sqlite, dossier de données, contact)
+    leadhs db init                     # créer/migrer la base de preuves (data/leadhs.sqlite)
+    leadhs source load                 # charger le registre des sources (14 sources prévues)
+    leadhs source list                 # afficher le registre
+    leadhs probe run --all --dry-run   # planifier toutes les requêtes de sondage ; zéro appel réseau
+    leadhs probe run --all             # les visites de test respectueuses (réseau réel, cadencé)
+    leadhs probe report --format md    # rapport de recensement à partir des constats enregistrés
+
+« --help » après chaque commande explique les options.
+
 Documents de travail : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) et [modèle de données](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (EN) ; la conception technique revue dans [20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
 
-## Première étape : vérifier les sources (à venir)
+## Première étape : vérifier les sources
 
-Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données.
+Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données. C'est précisément ce que l'unité de sondage ci-dessus exécute ; il reste l'exécution réelle, qui démarre sur instruction explicite.
 
 ## Le volet juridique
 
@@ -138,6 +154,7 @@ En parallèle, un dossier compile — purement à partir de textes juridiques pu
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction de l'unité en cours (v0.1.1) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -147,6 +164,9 @@ En parallèle, un dossier compile — purement à partir de textes juridiques pu
     README.de.md               version allemande
     README.fr.md               version française
     AGENTS.md                  conventions pour le travail assisté par IA (EN)
+    pyproject.toml             empaquetage Python de l'outil leadhs
+    src/leadhs/                code source de l'outil (unité v0.1.1 : sondage)
+    tests/                     suite de tests automatisés hors ligne
     docs/management_summary.md synthèse de gestion bilingue (DE/FR), toujours à jour
     docs/plan/3SM/             notes de planification (système à 3 étages, EN)
     ├── README.md              guide en langage clair (EN)
@@ -160,4 +180,4 @@ En parallèle, un dossier compile — purement à partir de textes juridiques pu
 
 ## État
 
-La stratégie de la première unité de construction est complète ; sa conception technique (outil + base de preuves) est rédigée et a passé une revue critique et une revue d'ingénierie (11 septembre 2026 ; constats suivis dans le [plan de corrections](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md) (EN)). Prochaines étapes : construire l'outil de sondage et exécuter les vérifications des sources (phase 0 de la feuille de route). Rien n'est gelé — la méthodologie reste ouverte à révision à mesure que les résultats de la phase 0 arrivent.
+La stratégie et la conception revue de la première unité de construction sont complètes (11 septembre 2026 ; constats de revue appliqués selon le [plan de corrections](docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md) (EN)). L'unité elle-même — **v0.1.1, sondage des sources** — est implémentée et testée : 101 tests automatisés passent (suite hors ligne) ; le code et ses documents d'implémentation sont dans le dépôt (étapes d'installation ci-dessus). Prochaine étape : la vraie exécution de recensement sur toutes les sources du registre — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite. Rien n'est gelé — la méthodologie reste ouverte à révision à mesure que les résultats de la phase 0 arrivent.
