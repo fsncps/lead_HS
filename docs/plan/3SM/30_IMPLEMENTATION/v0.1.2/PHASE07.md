@@ -7,8 +7,10 @@ updated: 2026-09-11
 
 # PHASE07 — Census close-out (execution, not code)
 
-Status: planned · Depends on: PHASE01–06 done + explicit go-ahead ·
-Governs: the unit's operational deliverable (U8/D26 — M0 close-out).
+Status: transferred 2026-09-12 → executed as v0.1.3 PHASE02 (after
+its PHASE01 lands the D28 rework; B8 precedent, d31) · Depends on:
+PHASE01–06 done + explicit go-ahead · Governs: the unit's
+operational deliverable (U8/D26 — M0 close-out).
 
 ## Objective
 

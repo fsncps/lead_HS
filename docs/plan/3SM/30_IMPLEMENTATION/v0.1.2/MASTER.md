@@ -49,7 +49,11 @@ the unit. Recorded build decisions beyond the phase text:
   applies 0001–0003 from a foreign CWD; doctor runs. No release
   artifacts committed (dist/ gitignored).
 - PHASE07 (census execution, real network) remains **planned** —
-  awaits the explicit go-ahead.
+  awaits the explicit go-ahead. **Transferred 2026-09-12:** the
+  outstanding D28 rework (register slim 0004, walk metrics,
+  product-first report — not yet in built code) and PHASE07 are
+  absorbed into unit v0.1.3's PHASE01–02 (B8 precedent; d31) —
+  PHASE07 is executed there, on top of the landed rework.
 
 ## Scope
 
