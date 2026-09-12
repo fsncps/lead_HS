@@ -56,6 +56,13 @@ class RateLimited(FetchError):
     pass
 
 
+class SizeLimit(FetchError):
+    """Response exceeded the caller's per-call streaming cap (v0.2.0
+    e3/3A): the download aborts mid-flight; callers record a 'floor
+    partial' note and move on. Census/statistics downloads stay
+    uncapped (a SPIN .mdb is legitimately ~100 MB)."""
+
+
 class ProbeNetworkError(FetchError):
     def __init__(self, url: str, detail: str, cause: BaseException | None = None):
         self.cause = cause
@@ -182,12 +189,25 @@ class Fetcher:
 
     # --- the request pipeline -------------------------------------------
 
-    def _request(self, url: str, log: bool = True) -> FetchResponse:
+    def _request(self, url: str, log: bool = True, max_bytes: Optional[int] = None) -> FetchResponse:
         domain = self._domain(url)
         self._wait_for_spacing(domain)
         started = time.monotonic()
 
         def do_attempt() -> requests.Response:
+            if max_bytes is not None:
+                resp = self._session.get(url, timeout=self.config.timeout, stream=True)
+                resp._leadhs_started = started  # type: ignore[attr-defined]
+                received = 0
+                chunks = []
+                for chunk in resp.iter_content(chunk_size=65536):
+                    received += len(chunk)
+                    if received > max_bytes:
+                        resp.close()
+                        raise SizeLimit(url, f"response exceeded the per-call cap of {max_bytes} bytes")
+                    chunks.append(chunk)
+                resp._content = b"".join(chunks)  # type: ignore[attr-defined]
+                return resp
             resp = self._session.get(url, timeout=self.config.timeout)
             resp._leadhs_started = started  # type: ignore[attr-defined]
             return resp
@@ -234,10 +254,15 @@ class Fetcher:
 
     # --- public API ------------------------------------------------------
 
-    def get(self, url: str) -> FetchResponse:
-        """Polite GET with robots check, spacing, retry, error taxonomy."""
+    def get(self, url: str, max_bytes: Optional[int] = None) -> FetchResponse:
+        """Polite GET with robots check, spacing, retry, error taxonomy.
+
+        ``max_bytes`` (v0.2.0 e3/3A) aborts a response past the cap with
+        :class:`SizeLimit` — used by the recon sitemap fetches; the
+        default (uncapped) leaves census/statistics downloads unchanged.
+        """
         self.check_robots(url)
-        return self._request(url)
+        return self._request(url, max_bytes=max_bytes)
 
     def plan(self, url: str, method: str = "GET") -> PlannedRequest:
         """Dry-run: log the would-be request; zero network calls (i7)."""

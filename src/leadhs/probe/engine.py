@@ -270,8 +270,11 @@ def run_all(conn, store, fetcher, mode: str = "census", sample_n: int = 5, dry_r
     return summaries, exit_code
 
 
-def record_manual(conn, store, source_id, metric, value=None, value_text=None, unit=None, url=None, document_file=None, note=None, logger=None, contact=None):
-    """`probe record`: manual run (kind=probe, method=manual) + one finding."""
+def record_manual(conn, store, source_id, metric, value=None, value_text=None, unit=None, url=None, document_file=None, note=None, logger=None, contact=None, mode: str = "census"):
+    """`probe record`: manual run (kind=probe, method=manual) + one finding.
+
+    ``mode`` (e8) labels the run honestly (census default; recon for the
+    v0.2.0 manual-web records) — must exist in the probe_mode lookup."""
     from .. import source as sourcemod
 
     source = sourcemod.get_source(conn, source_id)
@@ -299,7 +302,7 @@ def record_manual(conn, store, source_id, metric, value=None, value_text=None, u
     slug = ids.slug_for_source(source_id) + "manual"
     parameters = {"sample_n": None, "dry_run": False, "contact_set": bool(contact)}
     run_id, run_key, _ = _insert_run(conn, "probe", source_id, slug, parameters)
-    _insert_probe_run(conn, run_id, "census")
+    _insert_probe_run(conn, run_id, mode)
     conn.commit()
 
     doc_id = None

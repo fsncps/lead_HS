@@ -114,3 +114,31 @@ def test_user_agent_contact():
     assert "(+a@b.c)" in FetchConfig(contact="a@b.c").user_agent()
     ua = FetchConfig(contact=None).user_agent()
     assert "leadhs/" in ua and "(+" not in ua
+
+
+# --- v0.2.0 e3/3A: per-call streaming size cap ----------------------------
+
+
+def test_size_cap_aborts(site, make_fetcher):
+    from leadhs.fetch import SizeLimit
+
+    f = make_fetcher()
+    with pytest.raises(SizeLimit) as exc:
+        f.get(f"{site}/huge.html", max_bytes=1024)
+    assert "cap" in exc.value.detail
+
+
+def test_size_cap_uncapped_default_unchanged(site, make_fetcher):
+    """Census/statistics downloads stay uncapped (SPIN .mdb ~100 MB)."""
+    f = make_fetcher()
+    resp = f.get(f"{site}/huge.html")
+    assert len(resp.content) > 1024
+
+
+def test_size_limit_not_retried(site, make_fetcher, site_hits):
+    from leadhs.fetch import SizeLimit
+
+    f = make_fetcher()
+    with pytest.raises(SizeLimit):
+        f.get(f"{site}/huge.html", max_bytes=512)
+    assert site_hits["/huge.html"] == 1

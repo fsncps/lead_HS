@@ -11,6 +11,7 @@ block are preserved (outcome rule: reachable with findings -> done).
 from __future__ import annotations
 
 import csv
+import gzip
 import io
 import json
 import os
@@ -20,12 +21,13 @@ import shutil
 import subprocess
 import tempfile
 import urllib.parse
+import xml.etree.ElementTree as ET
 from typing import Optional, Protocol
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 
-from ..fetch import Blocked, FetchError, FetchResponse
+from ..fetch import Blocked, FetchError, FetchResponse, RobotsDisallowed, SizeLimit
 from ..logutil import log_event
 from ..models import DocumentDraft, FindingDraft, ProbeResult, SourceRef
 
@@ -35,6 +37,7 @@ __all__ = [
     "BinaryMissing",
     "ExtractionError",
     "ParseError",
+    "SizeLimit",
     "ProbeAdapter",
     "registry",
     "get_adapter",
@@ -132,17 +135,26 @@ _EXPECTED_EXPORT_COLUMNS = {"hs_code", "year", "partner"}
 _JSON_LIST_COUNTS = ("value", "obs", "records", "observations", "data")
 
 # od9: parameterized CS-2 query — documented constants with defaults
-# fixed here (exact values pinned at census execution); the parameters
-# land in run.parameters_json via ProbeResult.parameters, and every
-# response is archived as a document (verification artifact).
+# fixed here (pinned at census execution 2026-09-12 against the live
+# DS-045409 API: time dimension `time`, import flow code `1`,
+# indicators QUANTITY_IN_100KG / VALUE_IN_EUROS); the parameters land
+# in run.parameters_json via ProbeResult.parameters, and every response
+# is archived as a document (verification artifact).
 _CS_QUERY_DEFAULTS = {
     "format": "JSON",
     "freq": "A",
-    "period": "2024",
-    "flow": "IMP",
+    "time": "2024",
+    "flow": "1",
     "reporter": "EU27_2020",
 }
 _HS_CODES = ("3208", "3209", "3213")
+# nu2 aggregation: the four trade-sum anchors ride HS 3208/3209 only
+# (3213 stays the census annex).
+_AGG_HS_CODES = ("3208", "3209")
+_CS_AGG_INDICATORS = (
+    ("kg", "QUANTITY_IN_100KG"),
+    ("eur", "VALUE_IN_EUROS"),
+)
 
 
 def _query_url(base: str, params: dict) -> str:
@@ -150,6 +162,80 @@ def _query_url(base: str, params: dict) -> str:
 
     sep = "&" if "?" in base else "?"
     return f"{base}{sep}{urlencode(params)}"
+
+
+def _agg_params(hs: str, indicator: str, year: str) -> dict:
+    """Full-year import aggregation query (nu2): flow + resolved year
+    land in run.parameters_json; with reporter/product/flow/indicators/
+    time pinned, partner is the only free dimension (all partners)."""
+    return {
+        **_CS_QUERY_DEFAULTS,
+        "product": hs,
+        "indicators": indicator,
+        "time": year,
+    }
+
+
+def _local(tag: str) -> str:
+    """Namespace-local name (e5): '{http://www.sitemaps.org/...}loc' → 'loc'."""
+    return tag.rsplit("}", 1)[-1]
+
+
+def _jsonstat_one_dim(data: dict) -> list:
+    """Minimal JSON-stat decoder (e2/decision 2A): `value` is an object
+    keyed by flat row index (row-major over id×size); with exactly one
+    free dimension, map each index back to that dimension's label.
+    Deliberately NOT a general reader (TODOS.md) — PRODCOM/SBS callers
+    generalize it."""
+    try:
+        dim_ids = data["id"]
+        sizes = data["size"]
+        value_obj = data["value"]
+    except (KeyError, TypeError):
+        raise UnexpectedFormat("not a JSON-stat dataset payload (id/size/value missing)")
+    if not isinstance(value_obj, dict):
+        raise UnexpectedFormat("JSON-stat value is not an object keyed by flat index")
+    free = [(i, d) for i, (d, s) in enumerate(zip(dim_ids, sizes)) if s > 1]
+    if len(free) != 1:
+        raise UnexpectedFormat(
+            f"decoder supports exactly one free dimension, got {[d for _, d in free]}"
+        )
+    free_pos, free_dim = free[0]
+    labels = _jsonstat_category_labels(data, free_dim)
+    if len(labels) != sizes[free_pos]:
+        raise UnexpectedFormat(f"dimension {free_dim}: label count != declared size")
+    pairs = []
+    for key, raw in value_obj.items():
+        try:
+            flat = int(key)
+        except (TypeError, ValueError):
+            continue
+        if raw is None:
+            continue
+        rest = flat
+        coords = []
+        for s in reversed(sizes):
+            coords.append(rest % s)
+            rest //= s
+        coords.reverse()
+        label_pos = coords[free_pos]
+        if label_pos < len(labels):
+            pairs.append((labels[label_pos], float(raw)))
+    return pairs
+
+
+def _jsonstat_category_labels(data: dict, dim: str) -> list:
+    cat = data.get("dimension", {}).get(dim, {}).get("category", {})
+    index = cat.get("index", {})
+    if isinstance(index, dict):
+        return [k for k, _ in sorted(index.items(), key=lambda kv: kv[1])]
+    return list(index)
+
+
+def _jsonstat_sum(pairs: list) -> tuple:
+    total = sum(v for _, v in pairs)
+    tops = sorted(pairs, key=lambda kv: kv[1], reverse=True)[:5]
+    return total, tops
 
 
 class CSAdapter:
@@ -166,6 +252,10 @@ class CSAdapter:
             if self._is_query_api(source):
                 for hs in _HS_CODES:
                     ctx.fetcher.plan(_query_url(source.url, {**_CS_QUERY_DEFAULTS, "product": hs}))
+                # nu2/e7: the aggregation queries are part of the plan
+                for hs in _AGG_HS_CODES:
+                    for _, indicator in _CS_AGG_INDICATORS:
+                        ctx.fetcher.plan(_query_url(source.url, _agg_params(hs, indicator, _CS_QUERY_DEFAULTS["time"])))
             else:
                 ctx.fetcher.plan(source.url)
             return ProbeResult()
@@ -191,7 +281,9 @@ class CSAdapter:
 
     def _probe_query_api(self, source: SourceRef, ctx) -> ProbeResult:
         """od9: one parameterized JSON query per HS heading; each response
-        archived; empty result set is an honest 0."""
+        archived; empty result set is an honest 0. v0.2.0 (nu2): plus the
+        full-year import aggregation for HS 3208/3209 — trade_kg/eur sums
+        via the minimal one-dimension JSON-stat decoder (e2/2A)."""
         docs, findings, notes = [], [], []
         query_params = {}
         for hs in _HS_CODES:
@@ -209,6 +301,14 @@ class CSAdapter:
                     partial=ProbeResult(documents=docs, findings=findings),
                     url=url,
                 )
+            is_jsonstat = isinstance(data, dict) and "id" in data and "size" in data
+            findings.append(
+                FindingDraft(
+                    metric_code="format",
+                    method_code="api",
+                    value_text="JSON-stat dataset" if is_jsonstat else "JSON (API)",
+                )
+            )
             rows = self._rows_of(data)
             findings.append(
                 FindingDraft(
@@ -221,10 +321,95 @@ class CSAdapter:
                 )
             )
             notes.append(f"HS {hs}: {len(rows)} rows")
+        findings += self._aggregate(source, ctx, docs, query_params, notes)
         return ProbeResult(documents=docs, findings=findings, notes=notes, parameters={"query": query_params})
+
+    def _aggregate(self, source, ctx, docs, query_params, notes) -> list:
+        """nu2: per HS × indicator, full-year import sums with a bounded
+        year step-back (e7): empty → previous year, max 3 tries; exhausted
+        → documented-blocked. Partner tops + supplementary units land in
+        the finding notes; raw JSON is archived."""
+        findings = []
+        base_year = int(_CS_QUERY_DEFAULTS["time"])
+        for hs in _AGG_HS_CODES:
+            for unit_name, indicator in _CS_AGG_INDICATORS:
+                year = base_year
+                tries = 0
+                total, tops = None, []
+                while tries < 3:
+                    params = _agg_params(hs, indicator, str(year))
+                    query_params[f"{hs}_{unit_name}_{year}"] = params
+                    url = _query_url(source.url, params)
+                    resp = ctx.fetcher.get(url)
+                    _log(ctx, "cs_agg", url=url, status=resp.status_code, hs=hs, unit=unit_name, year=year)
+                    docs.append(_doc(url, resp, retrieval_method_code="api"))
+                    try:
+                        data = json.loads(resp.text)
+                    except ValueError:
+                        raise UnexpectedFormat(
+                            f"HS {hs} {unit_name}: expected JSON-stat but content not parseable",
+                            partial=ProbeResult(documents=docs, findings=findings),
+                            url=url,
+                        )
+                    try:
+                        pairs = _jsonstat_one_dim(data)
+                    except UnexpectedFormat as exc:
+                        exc.partial = ProbeResult(documents=docs, findings=findings)
+                        exc.url = url
+                        raise
+                    if pairs:
+                        total, tops = _jsonstat_sum(pairs)
+                        if indicator == "QUANTITY_IN_100KG":
+                            # the API's supplementary unit is 100 kg —
+                            # convert to the metric's kg and say so
+                            total = total * 100
+                        tops_txt = ", ".join(f"{lab}={val:.0f}" for lab, val in tops)
+                        notes.append(
+                            f"HS {hs} {unit_name} {year}: sum across partners "
+                            f"(indicators={indicator}); top partners: {tops_txt}"
+                        )
+                        break
+                    tries += 1
+                    if tries < 3:
+                        notes.append(f"HS {hs} {unit_name}: empty for {year} — stepping back a year (e7)")
+                        year -= 1
+                metric = f"trade_{unit_name}_hs{hs}"
+                if total is None:
+                    notes.append(f"HS {hs} {unit_name}: no data for {base_year}..{year} — documented blocked (e7)")
+                    findings.append(
+                        FindingDraft(
+                            metric_code=metric,
+                            method_code="api",
+                            value_numeric=0,
+                            unit_code=unit_name,
+                            notes=f"empty for {base_year}..{base_year - 2} (step-back exhausted) — query family blocked, verify at od9",
+                        )
+                    )
+                else:
+                    unit_note = "; quantity converted from QUANTITY_IN_100KG (×100)" if indicator == "QUANTITY_IN_100KG" else ""
+                    findings.append(
+                        FindingDraft(
+                            metric_code=metric,
+                            method_code="api",
+                            value_numeric=total,
+                            unit_code=unit_name,
+                            document=docs[-1],
+                            notes=f"flow=1 (import), year={year}, indicators={indicator}; sum across partners; top partners: {tops_txt}{unit_note}",
+                        )
+                    )
+        return findings
 
     @staticmethod
     def _rows_of(data) -> list:
+        # JSON-stat datasets: the record count is the number of queried
+        # cells (value object keyed by flat index, e2/2A shape)
+        if isinstance(data, dict) and "id" in data and "size" in data:
+            value = data.get("value")
+            if isinstance(value, dict):
+                return list(value.items())
+            if isinstance(value, list):
+                return value
+            return []
         if isinstance(data, list):
             return data
         if isinstance(data, dict):
@@ -309,6 +494,56 @@ _WALK_PAGE_BUDGET = 12
 # distinct absolute URLs are counted.
 _DOC_LINK_HINTS = ("sds", "msds", "sicherheitsdatenblatt", "datenblatt", "tds", "safety", "fiche")
 
+# v0.2.0 recon (nu1/i15): robots-compliant, counts-only sitemap
+# reconnaissance. 1A bound: at most 5 sitemap-index children; e3/3A:
+# ~25 MB streaming cap per sitemap fetch (census/ST stay uncapped);
+# e4: gzip magic-byte sniff; e5: namespace-local tag matching.
+_RECON_INDEX_CHILD_CAP = 5
+_RECON_MAX_BYTES = 25 * 1024 * 1024
+_RECON_PRODUCT_FALLBACK = ("/product", "/p/")
+_SITEMAP_URL_FALLBACK = "/sitemap.xml"
+
+
+def _pattern_of(source: SourceRef) -> str:
+    """The site's product-URL shape from the register notes token
+    ``product_pattern=`` (i13 extension); generic fallback otherwise."""
+    m = re.search(r"product_pattern=([^;]+)", source.notes or "")
+    return m.group(1).strip() if m else ""
+
+
+def _fetch_maybe_gzip(ctx, url: str, notes: list):
+    """Structured fetch with the recon size cap; gzip payloads are
+    decompressed via magic-byte sniff (e4). Returns (raw_bytes, resp)."""
+    resp = ctx.fetcher.get(url, max_bytes=_RECON_MAX_BYTES)
+    raw = resp.content
+    if raw[:2] == b"\x1f\x8b":
+        raw = gzip.decompress(raw)
+        notes.append(f"sitemap gzipped: {url}")
+    return raw, resp
+
+
+def _count_product_locs(raw: bytes, pattern: str) -> int:
+    """Count <loc> entries whose URL matches the product pattern
+    (e5: namespace-agnostic local-name matching — a namespaced sitemap
+    must never silently count 0)."""
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError:
+        raise
+    pat = pattern.lower()
+    fallback = not pat
+    count = 0
+    for el in root.iter():
+        if _local(el.tag) != "loc" or not el.text:
+            continue
+        url = el.text.strip().lower()
+        if fallback:
+            if any(h in url for h in _RECON_PRODUCT_FALLBACK):
+                count += 1
+        elif pat in url:
+            count += 1
+    return count
+
 
 class PEAdapter:
     key = "PE"
@@ -317,6 +552,8 @@ class PEAdapter:
         return source.class_code == "PE"
 
     def probe(self, source: SourceRef, ctx) -> ProbeResult:
+        if ctx.mode == "recon":
+            return self._probe_recon(source, ctx)
         if ctx.dry_run:
             ctx.fetcher.plan(source.url)
             return ProbeResult()
@@ -495,6 +732,139 @@ class PEAdapter:
             if digits:
                 return int(digits)
         return None
+
+    # --- v0.2.0 recon branch (nu1/i15) -----------------------------------
+
+    @staticmethod
+    def _robots_url_of(base: str) -> str:
+        parts = urllib.parse.urlparse(base)
+        return urllib.parse.urlunparse((parts.scheme, parts.netloc, "/robots.txt", "", "", ""))
+
+    def _probe_recon(self, source: SourceRef, ctx) -> ProbeResult:
+        """Robots-compliant, counts-only sitemap reconnaissance (D31):
+        no URL harvesting, no page walking. Dry-run plans robots + base
+        only — zero fetches (i7)."""
+        docs, findings, notes = [], [], []
+        base = source.url
+
+        if ctx.dry_run:
+            ctx.fetcher.plan(base)
+            ctx.fetcher.plan(self._robots_url_of(base))
+            return ProbeResult()
+
+        # robots policy — e6: unreachable → "unknown" → proceed with note
+        try:
+            policy = ctx.fetcher.robots_policy(base)
+        except FetchError as exc:
+            policy = "unknown"
+            notes.append(f"robots unreachable ({exc.__class__.__name__}) — proceeding with policy unknown (e6)")
+        findings.append(FindingDraft(metric_code="robots", method_code="scrape", value_text=policy))
+        if policy == "disallowed":
+            raise RobotsDisallowed(base, "robots.txt disallows our paths")
+
+        # sitemap discovery: robots-declared Sitemap: lines, else /sitemap.xml
+        sitemap_urls = self._declared_sitemaps(ctx, base, notes)
+        if not sitemap_urls:
+            parts = urllib.parse.urlparse(base)
+            sitemap_urls = [
+                urllib.parse.urlunparse((parts.scheme, parts.netloc, _SITEMAP_URL_FALLBACK, "", "", ""))
+            ]
+            notes.append(f"no robots-declared sitemap — trying {_SITEMAP_URL_FALLBACK}")
+
+        pattern = _pattern_of(source)
+        pattern_note = f"product_pattern={pattern}" if pattern else "generic product-URL fallback (no register token)"
+        total = 0
+        fetches = 0
+        children_fetched = 0
+        cap_hit = False
+        queue = [(u, 0) for u in sitemap_urls]
+        seen: set = set()
+        while queue:
+            if fetches >= 1 + _RECON_INDEX_CHILD_CAP:
+                cap_hit = True
+                notes.append(f"index expansion cap {_RECON_INDEX_CHILD_CAP} reached — floor partial (1A)")
+                break
+            surl, depth = queue.pop(0)
+            if surl in seen:
+                continue
+            seen.add(surl)
+            fetches += 1
+            try:
+                raw, resp = _fetch_maybe_gzip(ctx, surl, notes)
+            except SizeLimit:
+                cap_hit = True
+                notes.append(f"sitemap capped at {_RECON_MAX_BYTES} bytes — floor partial (e3): {surl}")
+                continue
+            if resp.status_code != 200:
+                notes.append(f"sitemap HTTP {resp.status_code}: {surl}")
+                continue
+            docs.append(_doc(surl, resp, retrieval_method_code="scrape"))
+            try:
+                root = ET.fromstring(raw)
+            except ET.ParseError as exc:
+                raise UnexpectedFormat(
+                    f"sitemap unparseable: {exc}",
+                    partial=ProbeResult(documents=docs, findings=findings),
+                    url=surl,
+                )
+            if _local(root.tag) == "sitemapindex":
+                if depth >= 1:
+                    # e7: a nested index child is noted, never recursed
+                    notes.append(f"nested sitemap index (child of an index) — not recursed: {surl}")
+                    continue
+                child_locs = [
+                    el.text.strip() for el in root.iter()
+                    if _local(el.tag) == "loc" and el.text and el.text.strip()
+                ]
+                remaining = _RECON_INDEX_CHILD_CAP - children_fetched
+                take = child_locs[:remaining]
+                children_fetched += len(take)
+                if len(child_locs) > len(take):
+                    cap_hit = True
+                    notes.append(
+                        f"sitemap index with {len(child_locs)} children — fetching {len(take)}, "
+                        f"cap {_RECON_INDEX_CHILD_CAP} — floor partial (1A)"
+                    )
+                else:
+                    notes.append(f"sitemap index: {len(take)} child sitemap(s) fetched")
+                queue.extend((urljoin(surl, c), depth + 1) for c in take)
+                continue
+            total += _count_product_locs(raw, pattern)
+
+        if not docs and not cap_hit:
+            notes.append("no sitemap")
+        findings.append(
+            FindingDraft(
+                metric_code="sitemap_products",
+                method_code="scrape",
+                value_numeric=total,
+                unit_code="count",
+                notes="; ".join([pattern_note] + ["floor partial (index/size cap)"] if cap_hit else [pattern_note]),
+            )
+        )
+        return ProbeResult(documents=docs, findings=findings, notes=notes)
+
+    def _declared_sitemaps(self, ctx, base: str, notes: list) -> list:
+        """Sitemap: lines from robots.txt (fetched once more for its
+        content; the parser itself is cached in the fetcher). Any fetch
+        problem here is not fatal — discovery falls back to /sitemap.xml."""
+        robots_url = self._robots_url_of(base)
+        try:
+            resp = ctx.fetcher.get(robots_url)
+        except FetchError as exc:
+            notes.append(f"robots content unavailable ({exc.__class__.__name__}) — discovery falls back")
+            return []
+        if resp.status_code != 200:
+            return []
+        urls = []
+        for line in resp.text.splitlines():
+            line = line.strip()
+            if line.lower().startswith("sitemap:"):
+                declared = line.split(":", 1)[1].strip()
+                if declared:
+                    urls.append(urljoin(base, declared))
+        return urls
+
 
 
 # --- ST adapter (SPIN download + extraction check) -------------------------

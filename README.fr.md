@@ -87,37 +87,48 @@ c'est une étude documentaire qui ne prend pas position sur la
 réglementation elle-même. La Suisse n'intervient dans l'étude que
 comme ce cadre réglementaire — le marché étudié est celui de l'UE.
 
-## Étape actuelle : reconnaissance du paysage des données
+## Étape actuelle : carte du paysage des données livrée (v0.2.0)
 
 Avant toute collecte de données produit, l'étude cartographie son
 **paysage des données** : quelles sources couvrent le marché de la
 peinture de l'UE, à quelle échelle, et avec quel accès à la
-documentation produit.
+documentation produit. Cette carte est maintenant établie et les trois
+chiffres phares sont documentés. Chaque résultat, y compris les refus
+d'accès, est consigné avec sa cause, et l'audit de provenance de la
+base passe.
 
-Une première passe de reconnaissance le 12 septembre 2026 a couvert
-les sources semences : trois achevées, une bloquée, trois en échec.
-Chaque résultat, y compris les refus d'accès, est consigné avec sa
-cause, et l'audit de provenance de la base passe.
-
-L'unité active (v0.2.0) établit trois chiffres phares :
+La passe de reconnaissance du 12 septembre 2026 a couvert les sources
+enregistrées (statistiques officielles, une association et un registre
+sectoriel, et 25 sites de peintures/revêtements/bricolage/couleurs
+d'artistes). **N1, N2 et N3** figurent dans le
+[rapport de reconnaissance](docs/report/probe-report.md) et sont
+résumés ci-dessous :
 
 - **N1 — combien de peintures sur le marché de l'UE :** un ordre de
-  grandeur assemblé à partir des statistiques officielles — flux
-  commerciaux, statistiques de production, notifications aux centres
-  antipoison, registres de produits, structure industrielle.
+  grandeur assemblé à partir des statistiques officielles. Les ancres
+  douanières 2024 (Eurostat Comext, importations UE hors UE, DS-045409)
+  chiffrent **HS 3208 à ≈2,5 Mt (≈12,2 Mrd €)** et **HS 3209 à ≈2,1 Mt
+  (≈6,2 Mrd €)**. Ancres côté offre : CEPE représente ≈800 entreprises
+  membres ; Eurostat SBS dénombre 3.200 entreprises en NACE 20.30
+  (2020, peintures + encres + mastics). La fourchette d'ordre de
+  grandeur reste une **estimation** — le rapport donne les ancres et la
+  méthode, jamais un chiffre unique présenté comme factuel.
 - **N2 — pour combien de produits nous avons un accès aux données,
-  sous une forme ou une autre.**
+  sous une forme ou une autre :** **204.693** URL produit observées sur
+  **23** sources comptées (visibles via les sitemaps ; un plancher,
+  dominé par quelques grands catalogues de bricolage).
 - **N3 — pour combien d'entre eux des spécifications détaillées, une
-  FDS par exemple, peuvent être obtenues.**
+  FDS par exemple, peuvent être obtenues :** **9** sites exposent
+  visiblement une bibliothèque de FDS/documents (un nombre de sites,
+  pas de produits) ; aucune documentation produit n'a encore été
+  collectée — cela attend le feu vert de collecte.
 
 Méthode à ce stade : reconnaissance uniquement — conditions
 d'utilisation et conditions d'accès, disponibilité d'API ou de
 téléchargements, comptage des URL produit dans les sitemaps,
 vérifications manuelles. Les parcours de catalogues et toute collecte
-au niveau produit attendent un feu vert distinct. En parallèle,
-découverte de sources : associations sectorielles et registres publics
-de produits (les registres nordiques en tête) rejoignent les
-statistiques officielles.
+au niveau produit attendent un feu vert distinct. Les registres
+nordiques restent ouverts (SPIN injoignable lors de cette passe).
 
 ## Ce que les recherches antérieures montrent
 
@@ -143,6 +154,13 @@ et à un document précis. L'outil ne stocke que des données produit.
 - Dans ce dépôt : `make setup` (installation, migration de la base,
   chargement du registre des sources, contrôle préalable de
   l'environnement) et `make help` (index de toutes les commandes).
+- Hors du dépôt : construire le wheel (`uv build`) et l'installer avec
+  un interpréteur géré (`uv tool install dist/leadhs-*.whl`), en
+  travaillant toujours avec un dossier de données explicite
+  (`leadhs --data-dir ~/leadhs-data …`). Cette voie est vérifiée par
+  construction ; les artefacts de version publiés restent à venir. Un
+  installateur pour Windows brut (sans make, sans Python
+  préinstallé) est un objectif affiché pour v0.3.
 - Les opérations qui touchent de vrais sites sont gardées derrière un
   `GO=1` explicite.
 
@@ -173,7 +191,7 @@ conception technique revue dans
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3 construites ; v0.2.0 en cours) — suivi des phases, critères de sortie |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3 et v0.2.0 construites) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -202,11 +220,12 @@ conception technique revue dans
 
 ## État
 
-Les unités outil v0.1.1–v0.1.3 sont construites et testées (165 tests
+Les unités outil v0.1.1–v0.2.0 sont construites et testées (205 tests
 automatisés hors ligne) : base de preuves, registre des sources,
-reconnaissance des sources, rapports de faisabilité par source, et
+reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente
-d'un feu vert de collecte). La première passe de reconnaissance a
-tourné le 12 septembre 2026. L'unité active v0.2.0 livre la carte du
-paysage des données et les trois chiffres. La méthodologie reste
-ouverte à révision à mesure que les résultats arrivent.
+d'un feu vert de collecte), et carte du paysage des données avec les
+trois chiffres phares. La passe de reconnaissance a tourné le
+12 septembre 2026 ; le rapport est publié sous `docs/report/`. La
+méthodologie reste ouverte à révision à mesure que les résultats
+arrivent.

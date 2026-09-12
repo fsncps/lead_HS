@@ -213,6 +213,25 @@ v_probe_latest unchanged by the aborted run.
   metric; channel subtotals; deferred lines; csv/json gains),
   migrations 0004/0005 + sync (0001+0003+0004+0005), per-site walk
   runs (HOLD-SCOPE review 2026-09-12; ENG review SMALL CHANGE).
+- t10: v0.2.0 — load validation (absorbed pe6), migrations
+  0005/0006 + sync (0001+0003+0004+0005+0006; 0005 carries no
+  population_anchor reference — hostile case), PE recon paths
+  (happy / index+3 / index+8-cap / no-sitemap / robots-deny /
+  malformed XML; zero-call dry-run invariant), CS-2 aggregation
+  sums (fixture JSON-stat, latest-year fallback, empty → 0, raw
+  archived), numbers-layout content tests (tiers a–d,
+  excluded-and-counted, zero-states, csv/json gains, N1 anchors,
+  bridge) + golden regeneration at PHASE06, make probe-recon/recon
+  guards + MODE var (v0.2.0 HOLD-SCOPE review, decision 1A);
+  ENG-review extensions (e1–e8): gzip sitemap fixture, namespaced
+  XML fixture, oversized-sitemap fixture (stream cap → 0 + floor-
+  partial note), robots-unreachable (unknown → proceed with note),
+  nested-index child (noted, not recursed), JSON-stat value-as-
+  object fixture with partner decode (sums + tops from one
+  payload), year step-back (empty → previous; 3 empties → blocked
+  note), CS-2 dry-run plans aggregation URLs, fetch `max_bytes`
+  cap tests (uncapped default unchanged), `probe record --mode`
+  label, chain exit-2 tolerance idiom in census/recon recipes.
 
 ## OPEN ITEMS
 

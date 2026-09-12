@@ -117,10 +117,10 @@ CSV is the register of record):
 |----|-------|--------|----------|--------|-------------|--------|
 | CS-1 | CS | swiss-impex.admin.ch (EZV) | CH imports/exports, 3208/3209 (+3213) | web UI / CSV export (to confirm) | CN8 × partner × year | OUT OF SCOPE (D31 — EU-only; TLS wall documented 2026-09-12) |
 | CS-2 | CS | Eurostat Comext DS-045409 | EU27 extra-EU trade | public API | CN8 × partner × year | verified (2023 extracted) |
-| PE-1 | PE | manufacturer/brand sites | product catalogs, SDS PDFs | polite scraping | product/formulation | OPEN — tier A + B seed list; site list built Phase 1–2 |
-| PE-2 | PE | DIY chains (EU: Hornbach, OBI, Bauhaus, Leroy Merlin, Castorama, Gamma, Praxis, Toom, B&Q) | retail listings | polite scraping | SKU → formulation | OPEN — tier C; CH seeds dropped (D31) |
-| PE-3 | PE | B2B / trade portals (DE/FR/IT) | professional listings, TDS | polite scraping | product | OPEN — tier C |
-| PE-4 | PE | marine chandlers, art-supply shops | niche streams (red lead, artists' colours) | polite scraping | product | partially verified (seed records exist) — tier B/C |
+| PE-1 | PE | manufacturer/brand sites | product catalogs, SDS PDFs | polite scraping | product/formulation | RETIRED (v0.2.0 nu6) — superseded by per-site rows PE-10..19 |
+| PE-2 | PE | DIY chains (EU: Hornbach, OBI, Bauhaus, Leroy Merlin, Castorama, Gamma, Praxis, Toom, B&Q) | retail listings | polite scraping | SKU → formulation | RETIRED (v0.2.0 nu6) — superseded by per-site rows PE-20..24; CH seeds dropped (D31) |
+| PE-3 | PE | B2B / trade portals (DE/FR/IT) | professional listings, TDS | polite scraping | product | RETIRED (v0.2.0 nu6) — channel unresolved (no confirmed portal URL; covered-channel line in report) |
+| PE-4 | PE | marine chandlers, art-supply shops | niche streams (red lead, artists' colours) | polite scraping | product | RETIRED (v0.2.0 nu6) — superseded by per-site rows PE-25..34 |
 | LG-1 | LG | fedlex / Lexaris | consolidated THG, VIPaV, ChemRRV | download | article | THG verified; current ChemRRV/VIPaV consolidation OPEN (fedlex JS-gated) |
 | LG-2 | LG | SECO (Negativliste, five-yearly review report, CdD pages) | exception catalogue, review practice | download | entry | verified |
 | LG-3 | LG | EUR-Lex / OJ | REACH consolidated, Annex XIV decisions, 2022 refusal | download | entry | mostly verified; 2022 OJ ref OPEN |
@@ -128,7 +128,7 @@ CSV is the register of record):
 | ST-1 | ST | ECHA PCN statistics | formulation counts (hazardous mixtures) | public stats | aggregate | OPEN — locate formulation-level aggregates |
 | ST-2 | ST | Nordic SPIN (DK/SE/NO/FI) | preparation counts, lead-CAS incidence | free Access-DB download | substance × use × country | available; extraction path OPEN |
 | ST-3 | ST | Eurostat PRODCOM / SBS | production values, producer counts | public API | NACE 20.30 | verified |
-| AS-1 | AS | CEPE + national paint associations | member lists → manufacturer counts | web (member directories) | association | OPEN — D31 candidate, access to verify |
+| AS-1 | AS | CEPE + national paint associations | member lists → manufacturer counts | web (member directories) | association | verified (URL live 2026-09-12; producers_registered recorded as ≈800 member companies) |
 | AS-2 | AS | national product registers (SE KemI; DK/NO/FI) | product counts per use category | public statistics | product × country | OPEN — D31 candidate, public statistics to verify |
 | LI-1 | LI | studies / IPEN / CEPE | calibration priors | DOI / web | study-level | verified |
 
@@ -152,6 +152,16 @@ lists; national product registers with public statistics), alongside
 activation of the count-bearing ST rows (ST-1 PCN, ST-2 SPIN, ST-3
 PRODCOM/SBS). Catalog scraping stays deferred until an explicit go
 (D31): web sources are characterized at reconnaissance level only.
+
+**Register expansion (v0.2.0, 2026-09-12):** the channel rows PE-1..4
+are retired (active=0, supersession notes) and replaced by per-site
+rows PE-10..34 (MFR≤12, EU-DIY≤5, MARINE≤5, ART≤6; each with a
+channel/linkage note and an inclusion cap). AS-1 (CEPE) is verified
+live and its producers_registered recorded; ST-3 (Eurostat SBS NACE
+20.30) recorded 3,200 enterprises (2020). The tool register is
+`sources.csv`, mirrored to the `source` table (34 rows). Recon is a
+floor: sitemap_products counts only product-URL matches and is partial
+where an index/size cap or a non-`product` URL scheme applies.
 
 ## Probing pass (unit v0.1.1)
 

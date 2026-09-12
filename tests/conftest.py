@@ -1,5 +1,6 @@
 """pytest fixtures: local fixture site, temp DB/register, fake clock."""
 
+import gzip
 import http.server
 import json
 import os
@@ -9,6 +10,38 @@ import threading
 import pytest
 
 from leadhs import db as dbmod
+
+
+def _urlset(locs) -> bytes:
+    items = "".join(f"<url><loc>{u}</loc></url>" for u in locs)
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"{items}</urlset>"
+    ).encode()
+
+
+def _sitemapindex(children) -> bytes:
+    items = "".join(f"<sitemap><loc>{u}</loc></sitemap>" for u in children)
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"{items}</sitemapindex>"
+    ).encode()
+
+
+# Recon fixture sitemaps (v0.2.0 t10): per-host robots declares the
+# sitemap; paths are unique across the fixture site.
+_RECON_DECLARED = {
+    "127.0.0.21": "/sitemap.xml.gz",  # gzipped urlset (e4)
+    "127.0.0.22": "/ns-sitemap.xml",  # namespaced urlset (e5)
+    "127.0.0.23": "/index.xml",       # index + 3 children
+    "127.0.0.24": "/index8.xml",      # index + 8 children → cap 5
+    "127.0.0.25": "/index-nested.xml",  # nested index → noted, not recursed
+    "127.0.0.27": "/sitemap-big.xml",   # oversized → SizeLimit (e3)
+    "127.0.0.28": "/sitemap-bad.xml",   # malformed XML
+}
+_SITEMAP_GZ = gzip.compress(_urlset([f"/product/g{i}" for i in range(2)]))
 
 
 class _FixtureSite(http.server.BaseHTTPRequestHandler):
@@ -21,11 +54,19 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
         _FixtureSite.hits[self.path] = _FixtureSite.hits.get(self.path, 0) + 1
         p, _, query = self.path.partition("?")
         if p == "/robots.txt":
+            host = self.headers.get("Host", "")
+            ip = host.rsplit(":", 1)[0]
+            body = b"User-agent: *\nDisallow: /private/\n"
+            if ip in _RECON_DECLARED:
+                body += f"Sitemap: http://{host}{_RECON_DECLARED[ip]}\n".encode()
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(b"User-agent: *\nDisallow: /private/\n")
+            self.wfile.write(body)
         elif p == "/empty-robots.txt":
             self.send_response(200)
+            self.end_headers()
+        elif p == "/robots-403.txt":
+            self.send_response(403)
             self.end_headers()
         elif p == "/":
             html = b"""<html lang="de"><head><link rel="alternate" hreflang="fr" href="/?lang=fr"/></head>
@@ -79,13 +120,84 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
         elif p == "/api.json":
-            # od9: parameterized CS query — empty result set for HS 3213
-            rows = [] if "product=3213" in query else [{"x": 1}, {"x": 2}, {"x": 3}]
-            data = json.dumps({"value": rows}).encode()
+            # od9: parameterized CS query — empty result set for HS 3213.
+            # v0.2.0 nu2: indicators queries get the JSON-stat aggregation
+            # shape (partner as the one free dimension).
+            if "indicators=" in query:
+                data = _jsonstat({"DE": 100.0, "FR": 250.0, "BE": 50.0})
+            else:
+                rows = [] if "product=3213" in query else [{"x": 1}, {"x": 2}, {"x": 3}]
+                data = {"value": rows}
+            self._json(data)
+        elif p == "/api-agg.json":
+            # nu2 fixture: JSON-stat with partner as the one free dimension;
+            # empty for 2024 (one step-back to 2023 supplies data) — an
+            # empty result keeps the full dimension shape, value {} only
+            if "indicators=" in query:
+                if "time=2024" in query:
+                    data = _jsonstat({}, labels=["DE", "FR", "IT"])
+                else:
+                    data = _jsonstat({"DE": 10.0, "FR": 30.0, "IT": 20.0})
+            else:
+                rows = [] if "product=3213" in query else [{"x": 1}]
+                data = {"value": rows}
+            self._json(data)
+        elif p == "/api-empty.json":
+            # nu2 fixture: aggregation always empty → step-back exhausted
+            if "indicators=" in query:
+                data = _jsonstat({}, labels=["DE", "FR", "IT"])
+            else:
+                data = {"value": [{"x": 1}]}
+            self._json(data)
+        elif p == "/api-bad.json":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
-            self.wfile.write(data)
+            self.wfile.write(b'{"value": "not-a-list"}')
+        elif p == "/sitemap.xml":
+            ip = (self.headers.get("Host") or "").rsplit(":", 1)[0]
+            if ip != "127.0.0.20":  # only the happy-path host serves the fallback
+                self.send_response(404)
+                self.end_headers()
+                return
+            host = self.headers.get("Host", "")
+            self._xml(_urlset([f"http://{host}/product/{i}" for i in range(3)] + [f"http://{host}/about"]))
+        elif p == "/sitemap.xml.gz":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/x-gzip")
+            self.end_headers()
+            self.wfile.write(_SITEMAP_GZ)
+        elif p == "/ns-sitemap.xml":
+            body = (
+                '<?xml version="1.0" encoding="UTF-8"?>'
+                '<ns:urlset xmlns:ns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                + "".join(f'<ns:url><ns:loc>/product/ns{i}</ns:loc></ns:url>' for i in range(2))
+                + "</ns:urlset>"
+            ).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/xml")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/index.xml":
+            self._xml(_sitemapindex([f"/c{i}.xml" for i in range(1, 4)]))
+        elif p == "/index8.xml":
+            self._xml(_sitemapindex([f"/d{i}.xml" for i in range(1, 9)]))
+        elif (p.startswith("/c") or p.startswith("/d")) and p.endswith(".xml"):
+            self._xml(_urlset([f"/product/{p[1:]}-a", f"/product/{p[1:]}-b"]))
+        elif p == "/index-nested.xml":
+            self._xml(_sitemapindex(["/sitemap-nested.xml"]))
+        elif p == "/sitemap-nested.xml":
+            self._xml(_sitemapindex(["/deep.xml"]))
+        elif p == "/sitemap-big.xml":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/xml")
+            self.end_headers()
+            self.wfile.write(b"<urlset>" + b"<url><loc>/product/x</loc></url>" * 3000 + b"</urlset>")
+        elif p == "/sitemap-bad.xml":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/xml")
+            self.end_headers()
+            self.wfile.write(b'<urlset><url><loc>/product/broken')
         elif p == "/private/secret":
             self.send_response(200)
             self.end_headers()
@@ -132,6 +244,34 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
         self.wfile.write(body)
+
+    def _xml(self, body: bytes):
+        self.send_response(200)
+        self.send_header("Content-Type", "application/xml")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _json(self, data):
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode())
+
+
+def _jsonstat(partner_values: dict, labels=None) -> dict:
+    """JSON-stat 2.0 payload with partner as the one free dimension
+    (value object keyed by flat index — the e2/2A shape). ``labels``
+    keeps the full dimension shape when the result set is empty."""
+    keys = labels or list(partner_values)
+    index = {k: i for i, k in enumerate(keys)}
+    return {
+        "version": "2.0",
+        "class": "dataset",
+        "id": ["partner"],
+        "size": [len(keys)],
+        "dimension": {"partner": {"category": {"index": index, "label": {}}}},
+        "value": {str(i): v for i, v in enumerate(partner_values.values())},
+    }
 
 
 @pytest.fixture(scope="session")

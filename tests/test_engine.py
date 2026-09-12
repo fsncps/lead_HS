@@ -202,3 +202,28 @@ def test_record_manual_numeric_metric_needs_value(loaded_conn, store):
 def test_record_manual_unknown_source(loaded_conn, store):
     with pytest.raises(engine.EngineError):
         engine.record_manual(loaded_conn, store, "ZZ-1", "catalog_count", value="1")
+
+
+# --- v0.2.0 e8: record_manual mode parameter -------------------------------
+
+
+def test_record_manual_mode_recon(loaded_conn, store):
+    summary = engine.record_manual(
+        loaded_conn, store, "ST-1", "sds_library_visible", value="1",
+        mode="recon", note="landing page shows SDS library",
+    )
+    assert summary["status"] == "done"
+    row = loaded_conn.execute(
+        "SELECT pr.mode_code FROM probe_run pr JOIN run r ON r.id = pr.run_id WHERE r.run_key = ?",
+        (summary["run_key"],),
+    ).fetchone()
+    assert row[0] == "recon"
+
+
+def test_record_manual_mode_default_census(loaded_conn, store):
+    summary = engine.record_manual(loaded_conn, store, "ST-1", "products_registered", value="1234")
+    row = loaded_conn.execute(
+        "SELECT pr.mode_code FROM probe_run pr JOIN run r ON r.id = pr.run_id WHERE r.run_key = ?",
+        (summary["run_key"],),
+    ).fetchone()
+    assert row[0] == "census"

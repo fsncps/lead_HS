@@ -42,7 +42,24 @@ topic documents below.
   extensions (aggregate floors, bridge), budget marker; absorbs the
   v0.1.2 close-out. Implementation plan written (ENG review
   2026-09-12, SMALL CHANGE); build awaits explicit go; the census
-  phases additionally need the real-network go-ahead.
+  phases additionally need the real-network go-ahead. **2026-09-12,
+  D31: the walk execution supersedes into v0.2.0 — walk machinery
+  stays built but idle; pe1/pe2/pe6 groundwork transfers to v0.2.0
+  PHASE01/PHASE03 (see units/v0.2.0.md nu7).**
+- Unit **v0.2.0** (market scale & data availability — the numbers
+  unit, the D31 strategy turn) — design converged 2026-09-12
+  (units/v0.2.0.md, nu1–nu8; CEO review HOLD SCOPE; user decision
+  1A bounded sitemap-index expansion): recon as new probe_mode
+  (i15), CS-2 full-year import aggregation (nu2), AS register model
+  with the producers/products metric split (nu3), numbers-first od8
+  layout with N1 md method sheet (nu4/nu5, i16), migrations 0005
+  (corrected view) / 0006 + design-ahead renumber 0007–0013 (nu6);
+  absorbs v0.1.3 pe1/pe2/pe6, supersedes the walk execution
+  (machinery idles). Implementation plans drafted
+  (30_IMPLEMENTATION/v0.2.0/PHASE01–07); **ENG review done
+  2026-09-12 (BIG CHANGE; e1–e8 folded — d39)**; build awaits
+  explicit go; PHASE04/PHASE05 additionally the
+  real-network go-ahead.
 - Unit v0.1 (feasibility & study design) — foundational strategy
   pass, LIVE in STRATEGY.
 - Full-pipeline design: **present but not frozen** — freeze awaits
@@ -61,6 +78,7 @@ topic documents below.
 - `units/v0.1.1.md` — the design delta for the active unit
 - `units/v0.1.2.md` — design delta for the census close-out unit
 - `units/v0.1.3.md` — design delta for the data-landscape map unit
+- `units/v0.2.0.md` — design delta for the numbers unit
 
 (The canonical "design" subject is covered by architecture +
 interfaces together — consolidation decision, no separate
@@ -174,6 +192,36 @@ design.md.)
 - **d31** v0.1.3 PHASE01–02 absorb the outstanding v0.1.2 D28
   rework + census execution (B8 precedent; transfer marked in both
   implementation trails).
+- **d32** recon machinery — probe_mode recon; PE adapter branch;
+  bounded sitemap-index expansion ≤ 5 children (user decision 1A);
+  counts only, no URL harvesting; ElementTree; product_pattern
+  notes token (nu1/i15/a19; v0.2.0 HOLD-SCOPE review).
+- **d33** CS-2 full-year import aggregation as four per-HS numeric
+  metric codes; export context + partner tops in notes; raw
+  archived (nu2/a20).
+- **d34** AS register model — URL-pinned candidate rows, active=0
+  manual-web default; producers_registered vs products_registered
+  split keeps N1 industry counts out of the N2 sum (nu3).
+- **d35** numbers-report layout — N1 headline (md method sheet +
+  DB-cited anchors), N2/N3 access tiers with explicit zero-states,
+  matrix column gains, bridge; i14 walk-floor sections deferred
+  with spec on file (nu4/nu5/i16/a21).
+- **d36** migration set — 0005 absorbed with the corrected view
+  (no population_anchor reference; promoted-exclusion lands 0008);
+  v0.2.0 delta takes 0006; design-ahead renumber 0007–0013; CS-1
+  retire-inactive (dm12 — differs from the D27-driven LG/LI prune);
+  CSV slim ordered after the migration (nu6).
+- **d37** absorption/supersession — v0.1.3 pe1/pe2/pe6 groundwork
+  into v0.2.0 PHASE01/PHASE03; walk execution and i14 render
+  superseded/deferred; transfer markers in the v0.1.3 trail (nu7).
+- **d38** C1/C2 lessons carried — active-only sums, numeric
+  metrics over note substrings (nu8).
+- **d39** ENG review (2026-09-12, BIG CHANGE) — e1–e8 folded:
+  chain tolerance for expected exit 2 (a22); one-dimension
+  JSON-stat decode (e2/2A); per-call fetch size cap (e3/3A); gzip
+  + namespace handling (e4/e5); robots-unknown proceeds (e6);
+  nested-index / year-step-back / dry-run mechanics (e7); record
+  mode parameter (e8); plain census_status matrix column (nu9).
 
 ## OPEN ITEMS
 
@@ -216,6 +264,15 @@ design.md.)
 - **Full pipeline: not ready.** Freeze awaits probe results (source
   counts, swiss-impex format, SDS corpus quality) and the
   legal-verification items in 10_STRATEGY/MASTER.md.
+- **v0.2.0: ready — implementation plans ENG-reviewed.** Design
+  converged (nu1–nu9; CEO review 2026-09-12 HOLD SCOPE; user
+  decision 1A; ENG review 2026-09-12 BIG CHANGE — e1–e8 folded,
+  d39). Phase plans: 30_IMPLEMENTATION/v0.2.0/PHASE01–07
+  (drafted + reviewed 2026-09-12). Build awaits
+  explicit go; PHASE04/PHASE05 additionally require the
+  real-network go-ahead. The governing strategy (`10_STRATEGY/
+  v0.2.md`) stays DRAFT — its freeze is a separate explicit user
+  action.
 
 ## Handoff note
 

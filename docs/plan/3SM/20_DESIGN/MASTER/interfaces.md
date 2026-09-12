@@ -25,8 +25,8 @@ disagree, this document wins.
     leadhs db audit [--unreferenced]
     leadhs source load [--file CSV]
     leadhs source list [--class CS|PE|LG|ST|LI]
-    leadhs probe run --source ID | --all
-                     [--mode census|format_check|access_check]
+     leadhs probe run --source ID | --all
+                      [--mode census|format_check|access_check|recon]
                      [--sample N] [--dry-run]
     leadhs probe record --source ID --metric M
                         [--value X | --value-text T] [--unit U]
@@ -170,6 +170,13 @@ no `rescue StandardError` equivalent).
 | doc_links_seen | Doc links seen (walk) | numeric | SDS/TDS-type links encountered during the same walk (0004, D28) |
 | walk_budget_exhausted | Walk budget exhausted | numeric | 0/1 — the page budget stopped the walk; the report flags such floors "≥ observed, budget-limited" (0004; ENG review 2A) |
 | products_registered | Products registered (prior) | numeric | coarse register prior: SPIN preparations / PCN formulations / PRODCOM producers, recorded manually per ST source (0005, v0.1.3) |
+| sitemap_products | Sitemap product URLs | numeric | product-URL count from a robots-compliant structured sitemap fetch (recon; bounded index expansion ≤ 5 children, counts only, no URL harvesting; cap flagged in notes) (0006, v0.2.0) |
+| sds_library_visible | SDS library visible | numeric | 0/1 — SDS/TDS library reachable from the site's landing pages (manual-web recon) (0006, v0.2.0) |
+| producers_registered | Producers registered (prior) | numeric | industry-structure counts (association members, SBS enterprises) — N1 anchors; never summed into N2 (0006, v0.2.0) |
+| trade_kg_hs3208 | Trade mass HS 3208 (import) | numeric | full-year import net-weight sum, JSON-stat aggregation, latest year (0006, v0.2.0) |
+| trade_eur_hs3208 | Trade value HS 3208 (import) | numeric | full-year import value sum, EUR (0006, v0.2.0) |
+| trade_kg_hs3209 | Trade mass HS 3209 (import) | numeric | as trade_kg_hs3208 (0006, v0.2.0) |
+| trade_eur_hs3209 | Trade value HS 3209 (import) | numeric | as trade_eur_hs3208 (0006, v0.2.0) |
 
 Extension rule: new metrics are added by a migration INSERT (code
 never renamed; value_type fixed at insert). `metrics.py` is the
@@ -311,8 +318,32 @@ attempted action — full context, never message-only).
   lines from products_registered / census_status; frame-decision
   bridge (md only, qualitative, evidence-cited) or its deferred
   line; csv matrix gains products_listed / doc_links_seen /
-  products_registered / walk_note; json carries the full
-  structure.
+   products_registered / walk_note; json carries the full
+   structure.
+- i15: recon contract (v0.2.0, nu1; ENG review e1–e8) — probe_mode
+  recon; PE adapter branch: robots → sitemap (robots-declared, else
+  /sitemap.xml) → counts only, no URL harvesting; bounded index
+  expansion ≤ 5 children (CEO review 1A; nested-index child noted,
+  not recursed); stdlib ElementTree with local-name matching (e5);
+  gzip payloads decompressed via magic-byte sniff (e4); sitemap
+  fetches carry a per-call ~25 MB streaming cap — cap hit = typed
+  SizeLimit → count 0 + "floor partial" note (e3); product_pattern
+  notes token + generic fallback; robots unreachable → policy
+  "unknown" → proceed with note (e6); cap hit flagged "floor
+  partial" in notes; shadow paths: no-sitemap/empty → 0, malformed
+  → format finding, network error → failed, robots deny → blocked;
+  sitemap archives as document; dry-run plans robots + base only,
+  zero network (i7); `probe record --mode` (default census) labels
+  manual runs honestly (e8).
+- i16: numbers-report contract (v0.2.0, nu4/nu5) — od8 layout: N1
+  headline (md method sheet + DB-cited anchors), N2/N3 totals with
+  access tiers (a)–(d), excluded-and-counted line, explicit
+   zero-states, per-source matrix with tier/sitemap/SDS/priors/
+   trade columns + plain census_status (no walk column — walk
+   idle, V4), trade-context + priors lines, access-decision
+  bridge (md); N2 sums products_registered only (never
+  producers_registered); i14 walk-floor sections deferred (spec on
+  file); csv/json carry the full structure.
 
 ## OPEN ITEMS
 

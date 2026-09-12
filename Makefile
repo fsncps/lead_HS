@@ -1,11 +1,11 @@
-# lead_HS — operator entrypoint (v0.1.3). One target = one `leadhs` call;
+# lead_HS — operator entrypoint (v0.2.0). One target = one `leadhs` call;
 # pipeline logic lives in the CLI (D21); make stays a thin wrapper.
 # Parameters are make variables until M1 (committed config file).
 
 .PHONY: help install doctor db-init db-status db-audit sources-load \
 	sources-list setup probe-dry probe-single record report \
-	report-publish probe census test smoke test-net clean clobber \
-	frame sample acquire ingest parse analyze full
+	report-publish probe census recon probe-recon test smoke test-net \
+	clean clobber frame sample acquire ingest parse analyze full
 .DEFAULT_GOAL := help
 
 PYTHON      ?= python3
@@ -81,7 +81,21 @@ guard-%:
 probe: guard-probe ## real census over all active sources (GO=1)
 	$(LEADHS) probe run --all --mode $(MODE) --sample $(SAMPLE)
 
-census: guard-census setup probe report db-audit ## setup → probe → report → audit (GO=1; guard runs before setup)
+# e1/1A: the probe step inside a chain tolerates exactly exit 2 —
+# expected blocked/failed sites must not abort report/audit (findings
+# persist; any other failure still aborts the chain).
+census: guard-census setup ## setup → probe → report → audit (GO=1; guard runs before setup)
+	$(LEADHS) probe run --all --mode census --sample $(SAMPLE) || test $$? -eq 2
+	$(MAKE) report
+	$(MAKE) db-audit
+
+probe-recon: guard-probe-recon ## recon sweep: robots-compliant, counts only (GO=1)
+	$(LEADHS) probe run --all --mode recon
+
+recon: guard-recon setup ## setup → recon → report → audit (GO=1)
+	$(LEADHS) probe run --all --mode recon || test $$? -eq 2
+	$(MAKE) report
+	$(MAKE) db-audit
 
 test: ## offline suite (net/mdbtools markers deselected)
 	$(PYTHON) -m pytest

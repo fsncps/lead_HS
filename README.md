@@ -72,33 +72,44 @@ documentation study and takes no position on the regulation itself.
 Switzerland enters the study only as this regulatory frame — the
 market under study is the EU's.
 
-## Current stage: probing the data landscape
+## Current stage: data-landscape map delivered (v0.2.0)
 
 Before any product data is collected, the study maps its **data
 landscape**: which sources cover the EU paints market, at what scale,
-and with what access to product documentation.
+and with what access to product documentation. That map is now built
+and the three headline numbers are documented. Every result, including
+access refusals, is recorded with its cause, and the database's
+provenance audit passes.
 
-A first probe round on 2026-09-12 covered the seed sources: three
-completed, one blocked, three failed. Every result, including access
-refusals, is recorded with its cause, and the database's provenance
-audit passes.
-
-The active unit (v0.2.0) establishes three headline numbers:
+The probe round on 2026-09-12 covered the registered sources (official
+statistics, a trade-association and industry register, and 25
+paint/coatings/DIY/artists'-colour sites). **N1, N2 and N3** are
+reported in the
+[probe report](docs/report/probe-report.md) and summarised below:
 
 - **N1 — how many paints are on the EU market:** an order of magnitude
-  assembled from official statistics — trade flows, production
-  statistics, poison-centre notifications, product registers, industry
-  structure.
-- **N2 — for how many products we have access to data in some form.**
+  assembled from official statistics. The 2024 trade anchors (Eurostat
+  Comext, extra-EU imports, DS-045409) put **HS 3208 at ≈2.5 Mt
+  (≈€12.2 bn)** and **HS 3209 at ≈2.1 Mt (≈€6.2 bn)**. Register anchors
+  frame the producer side: CEPE represents ≈800 member companies and
+  Eurostat SBS counts 3,200 enterprises in NACE 20.30 (2020, paints +
+  inks + mastics). The market-size range itself stays an *estimate* —
+  the report gives the anchors and the method, never a single number
+  presented as fact.
+- **N2 — for how many products we have access to data in some form:**
+  **204,693** product URLs observed across **23** counted sources
+  (sitemap-visible; a floor, dominated by a few large DIY catalogues).
 - **N3 — for how many of those detailed specifications such as an SDS
-  are obtainable.**
+  are obtainable:** **9** sites visibly expose an SDS/document
+  library (a site count, not a product count); no product-level
+  documentation has been collected yet — that awaits the collection
+  go-ahead.
 
 Method at this stage: reconnaissance only — terms of use and access
 conditions, availability of APIs or downloads, product-URL counts from
 sitemaps, manual checks. Catalogue walks and any product-level
-collection await a separate go-ahead. Source discovery runs in
-parallel: industry associations and public product registers (the
-Nordic registers lead) are being added alongside official statistics.
+collection await a separate go-ahead. The Norde registers remain
+open (SPIN unreachable this round).
 
 ## What earlier research shows
 
@@ -124,6 +135,12 @@ data only.
 - In this repository: `make setup` (install, migrate the database,
   load the source register, environment preflight) and `make help`
   (index of all commands).
+- Outside the repository: build the wheel (`uv build`) and install it
+  with a managed interpreter (`uv tool install dist/leadhs-*.whl`),
+  always working with an explicit data directory (`leadhs --data-dir
+  ~/leadhs-data …`). This path is build-verified; published release
+  assets are still pending. An installer for vanilla Windows (no
+  make, no preinstalled Python) is a stated goal for v0.3.
 - Operations that touch real sites are gated behind an explicit
   `GO=1`.
 
@@ -153,7 +170,7 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3 built; v0.2.0 current) — phase tracking, exit gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3 and v0.2.0 built) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -178,9 +195,10 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
 ## Status
 
-Tool units v0.1.1–v0.1.3 are built and tested (165 automated offline
-tests): evidence database, source register, source probing, per-source
-feasibility reports, and counting machinery for catalogue walks (idle
-until a collection go-ahead). The first probe round ran on 2026-09-12.
-The active unit v0.2.0 delivers the data-landscape map and the three
-numbers. The methodology stays open to revision as results come in.
+Tool units v0.1.1–v0.2.0 are built and tested (205 automated offline
+tests): evidence database, source register, source probing,
+per-source feasibility reports, counting machinery for catalogue walks
+(idle until a collection go-ahead), and the data-landscape map with the
+three headline numbers. The probe round ran on 2026-09-12; the report
+is published under `docs/report/`. The methodology stays open to
+revision as results come in.

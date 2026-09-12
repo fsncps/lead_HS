@@ -271,3 +271,118 @@ status brought up to v0.2.0 — superseding the D31 entry's "summary
 updates when v0.2 numbers land" deferral), strategy MASTER (abstract,
 D1/D3/D10 supersession markers, D11 wording), project MASTER dashboard
 (abstract, current stage), AGENTS.md project paragraph.
+
+## 2026-09-12 — v0.2.0 — Design converged; implementation plans drafted (CEO review HOLD SCOPE)
+
+Planning pass over the D31 numbers-first unit: design converged
+(`20_DESIGN/units/v0.2.0.md`, nu1–nu8; CEO review HOLD SCOPE; user
+decision 1A — bounded sitemap-index expansion ≤ 5 children within
+the no-scrape recon bound). Key decisions: recon as new probe_mode
+(no new commands, V9); CS-2 full-year import sums as four per-HS
+metric codes; AS candidate rows (active=0 manual-web, URL-pinned)
+with the producers_registered vs products_registered split;
+numbers-first od8 layout with access tiers and a md N1 method sheet
+(json anchors only); CS-1 retires inactive (dm12 — differs from the
+D27-driven LG/LI prune); migration 0005 absorbed with the corrected
+view (promoted-exclusion moves to 0008), the unit delta takes 0006,
+design-ahead block renumbered 0007–0013; v0.1.3 pe1/pe2/pe6
+groundwork absorbed, walk execution + i14 render superseded/
+deferred (machinery idles). Persistent topics updated: interfaces
+(i15/i16 + 7 vocabulary rows + recon mode), data_model (migration
+plan + corrected 0005 + renumbered headers), architecture (a19–
+a21), testing (t10), Design MASTER (d32–d38, state, readiness).
+Implementation plans drafted: `30_IMPLEMENTATION/v0.2.0/` MASTER +
+PHASE01–07; **ENG review pending** before build. v0.1.3 trail
+carries the supersession/transfer note. Strategy `v0.2.md` stays
+DRAFT — freeze untouched. No code executed; nothing committed.
+
+## 2026-09-12 — v0.2.0 — ENG review done (BIG CHANGE); findings e1–e8 folded
+
+ENG review of the phase plans (skill plan-eng-review, mode BIG
+CHANGE chosen at the scope challenge; Step 0 confirmed the plan
+reuses existing machinery, introduces no new classes). Architecture
+decisions by the user: **1A** make chains (census/recon) tolerate
+exactly the expected sweep exit 2 (`|| test $$? -eq 2` — blocked
+sites no longer abort report/audit); **2A** CS-2 JSON-stat responses
+decoded by a minimal one-dimension decoder (value object + flat
+index → partner via id/size; sums + partner tops from one archived
+payload — the old list heuristic would have silently counted 0);
+**3A** per-call `max_bytes` streaming cap at the fetch seam (typed
+SizeLimit; recon ~25 MB; census/ST uncapped — SPIN .mdb is
+legitimately ~100 MB). Stated fixes folded without questions: gzip
+magic-byte sniff before sitemap parsing; namespace-local tag
+matching (silent-0 trap); `record_manual` mode parameter (CLI
+--mode, default census); bounded year step-back (max 3 tries →
+document-blocked); CS-2 dry-run plans aggregation URLs; nested-index
+children noted, not recursed; robots-unknown proceeds with note;
+plain census_status matrix column (no walk column, V4). Tests: new
+fixtures added to t10 (gzip, namespaced XML, oversized, robots-
+unreachable, nested index, JSON-stat shape, step-back, cap, record
+--mode, chain idiom); no test gaps; no critical failure-mode gaps;
+test-plan artifact written. TODOS.md created with one item
+(generalize the JSON-stat decoder — PRODCOM/SBS future callers);
+conditional-GET caching skipped (one-shot sweeps). Docs updated:
+design doc ENG review section + nu9, PHASE02/05/06 step texts,
+interfaces i15/i16, architecture a19–a22, testing t10, Design
+MASTER d39, tracking MASTERs. Still no code executed; nothing
+committed; build awaits explicit go.
+
+## 2026-09-12 — v0.3 (goal noted) — Vanilla-Windows install as distribution goal (D32)
+
+User direction: PyPI publication is not needed, but the tool must
+become easily installable on vanilla Windows — no make, no preinstalled
+Python — via a self-contained artifact. Recorded as strategy decision
+**D32** (amends D24: per-OS bundling/PyInstaller promoted from
+contingency to planned v0.3 scope; GitHub release assets stay the
+channel, bundled Windows artifact alongside the wheel; mechanism choice
+deferred to v0.3 design). Strategy MASTER (D24 marker, D32, Active-unit
+v0.3 bullet) and ARCHITECTURE.md distribution section updated; READMEs
+state the current install truth (repo `make setup`; wheel+uv
+build-verified, release assets pending; Windows installer = v0.3 goal)
+in EN/DE/FR. No code executed.
+
+## 2026-09-12 — v0.2.0 built (market scale & data availability — the numbers unit)
+
+Explicit user go to implement 0.2.0, upgrade leadhs, run the probe and
+report, summarize, update docs, commit and push. All seven phases
+executed; offline suite green (205 passed, 2 deselected); leadhs
+upgraded to 0.2.0.
+
+- **PHASE01/02 (unit machinery):** migration 0005 (products_registered
+  priors metric) and 0006 (recon numbers: AS class, recon mode,
+  sitemap_products, CS-2 aggregation + JSON-stat one-dimension decoder,
+  CS-1 retirement); fetch SizeLimit streaming cap; PE recon branch
+  (declared sitemap discovery, gzip sniff, bounded index, nested-index
+  depth, size cap, robots-unknown → proceed); record --mode; make
+  probe-recon/recon targets with expected-exit-2 tolerance; version
+  0.2.0.
+- **PHASE03 (register rework):** sources.csv → per-site rows PE-10..34
+  (MFR≤12, EU-DIY≤5, MARINE≤5, ART≤6), PE-1..4 retired, AS-1 (CEPE)
+  + ST-3 (Eurostat SBS) added/verified, EU-only slim. 34 rows loaded;
+  probe-dry plans every active row; audit clean. PE-22 URL corrected
+  (bauhaus.de is the museum; DIY retailer is bauhaus.info).
+- **PHASE04 (statistics execution, GO=1):** CS-2 aggregation landed
+  real anchors — 2024 EU extra-EU imports: HS 3208 ≈2.47 Mt / ≈€12.21 bn;
+  HS 3209 ≈2.10 Mt / ≈€6.22 bn (query pinned to the live DS-045409
+  schema: time dimension `time`, import flow `1`, indicators pinned so
+  partner is the single free dimension; QUANTITY_IN_100KG ×100 → kg).
+  ST-3 producers_registered=3,200 (SBS NACE 20.30, 2020); AS-1
+  producers_registered=800 (CEPE member companies). ST-2 (SPIN)
+  unreachable (network); ST-1 PCN inactive in register.
+- **PHASE05 (recon execution, GO=1):** 25 PE sites swept (22 done,
+  PE-31 blocked, PE-24 failed); sds_library_visible assessed and
+  recorded for all 25 (9 visible). N2 = 204,693 sitemap-visible URLs
+  across 23 counted sources; N3 = 9 sites with a visible SDS library.
+- **PHASE06 (report):** numbers-first report rework (tiers a–d, N1
+  method sheet + anchors, N2/N3, trade/priors lines, access-decision
+  bridge, 26-column matrix, census_status); published
+  `docs/report/probe-report.{md,csv,json}`; audit exit 0.
+- **PHASE07 (docs & close-out):** management summary DE/FR (results
+  filled), READMEs EN/DE/FR current-stage + status updated,
+  DATA_SOURCE.md register table (PE-1..4 retired, AS-1/ST-3 verified,
+  caps note), unit MASTER phase table → done, root MASTER dashboard,
+  this LOG entry. N1 range stays an estimate (method sheet, nu5); the
+  report carries anchor values, never a computed range.
+
+Docs and report are committed and pushed with the tool changes; the
+strategy `v0.2.md` stays DRAFT (freeze untouched).

@@ -3,28 +3,92 @@
 
 {{ report.framing }}
 
-## The two numbers
+## N1 — market-size anchors
 
-Per registered source — Q1: observed product listings (a floor, never a
-market total); Q2: SDS-type documentation links seen.
+Anchor values from the database (every value cites the run it comes from).
+The estimate range built from them lives in the method sheet below — the
+DB carries anchor values, never a computed range.
 
-| source | class | active | status | products listed (Q1) | doc links seen (Q2) | sds sample | last run |
-|---|---|---|---|---|---|---|---|
-{% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.status or '—' }} | {{ s.matrix['products_listed'] }} | {{ s.matrix['doc_links_seen'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['last_run_key'] }} |
+{% if anchors %}
+| source | anchor | value | unit | run_key |
+|---|---|---|---|---|
+{% for a in anchors %}| {{ a.source_id }} | {{ a.label }} | {{ a.value_numeric }} | {{ a.unit_code or '—' }} | {{ a.run_key }} |
 {% endfor %}
+{% else %}_No N1 anchors recorded yet — run the statistics sources (CS-2 aggregation; ST/AS manual records)._{% endif %}
+
+{% for line in method_sheet %}{{ line }}
+{% endfor %}
+
+## N2/N3 — access coverage
+
+Tier composition over active sources: **(a)** dataset/register access
+counted · **(b)** sitemap-visible counted · **(c)** visible but uncounted
+without scraping · **(d)** blocked/unknown.
+
+| tier | meaning | sources | size |
+|---|---|---|---|
+| a | dataset/register access counted | {{ numbers.tier_sources.a|join(', ') or '—' }} | {{ numbers.tier_sizes.a }} |
+| b | sitemap-visible counted | {{ numbers.tier_sources.b|join(', ') or '—' }} | {{ numbers.tier_sizes.b }} |
+| c | visible, uncounted without scraping | {{ numbers.tier_sources.c|join(', ') or '—' }} | {{ numbers.tier_sizes.c }} |
+| d | blocked/unknown | {{ numbers.tier_sources.d|join(', ') or '—' }} | {{ numbers.tier_sizes.d }} |
+
+{% if numbers.zero_states.no_counted_sources %}
+**N2 (Σ tier a+b counts):** no counted sources yet — run the statistics
+and recon sweeps before reading a total here (never a bare 0).
+{% else %}
+**N2 (Σ tier a+b counts): {{ numbers.n2_total|int }}** across
+{{ numbers.n2_components|length }} counted source(s){% if numbers.n2_components|length == 1 %}{% endif %}.
+{% endif %}
+{% if numbers.zero_states.no_sds_sites %}
+**N3:** no site recorded sds_library_visible = 1 yet (manual-web records pending).{% else %}
+**N3:** {{ numbers.n3_sds_site_count }} site(s) with a visible SDS library
+(site count — not a product count); doc-bearing counts observed so far:
+{% if numbers.zero_states.no_doc_counts %}none (no walk/doc-bearing count yet — explicit zero, not a bare 0){% else %}{{ numbers.n3_doc_total|int }}{% endif %}.
+{% endif %}
+{% if numbers.excluded_counted %}
+Excluded-and-counted (inactive register rows carrying counts — never in
+the sums): {{ numbers.excluded_counted|join(', ') }}.
+{% endif %}
+
+## Trade context (volume only — never products)
+
+{% set trade_sources = sources|selectattr("trade_lines")|list %}
+{% if trade_sources %}
+{% for s in trade_sources %}{% for line in s.trade_lines %}- **{{ s.id }}** {{ line }}
+{% endfor %}{% endfor %}
+{% else %}_No trade-context lines yet (CS aggregation pending)._{% endif %}
+
+## Priors (registers & associations)
+
+{% set prior_sources = sources|selectattr("priors_lines")|list %}
+{% if prior_sources %}
+{% for s in prior_sources %}{% for line in s.priors_lines %}- **{{ s.id }}** {{ line }}
+{% endfor %}{% endfor %}
+{% else %}_No priors recorded yet (ST/AS manual records pending)._{% endif %}
+
+{{ bridge_intro }}
+
+- Would buy: the tier (c) sources ({{ numbers.tier_sources.c|join(', ') or 'none yet' }}) — size
+  characterized, uncounted without scraping; a scraping go would turn
+  these into floors.
+- Cost: blocked/failed evidence lives in the execution log (robots
+  denials, 403/429 walls, JS-gated libraries); each blocked site keeps
+  its manual fallback path (D4).
+- The bridge cites run evidence only; no decision is taken in this report.
 
 ## Summary matrix
 
-One row per registered source (active flag included; inactive rows carry no
-findings). The records_hs* columns are volume context — tariff-line flows,
-not products.
+One row per registered source (inactive rows visible, never in sums).
+New v0.2.0 columns are numbers-first; the census columns stay (walk
+machinery idle since D31). The records_hs*/trade_* columns are volume
+context — tariff-line flows, not products.
 
-| source | class | active | status | products | doc links | walk budget | catalog | category | page ok | sds ok | hs3208 | hs3209 | hs3213 | export rows | last run |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-{% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.status or '—' }} | {{ s.matrix['products_listed'] }} | {{ s.matrix['doc_links_seen'] }} | {{ s.matrix['walk_budget_exhausted'] }} | {{ s.matrix['catalog_count'] }} | {{ s.matrix['category_count'] }} | {{ s.matrix['page_sample_ok'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['records_hs3208'] }} | {{ s.matrix['records_hs3209'] }} | {{ s.matrix['records_hs3213'] }} | {{ s.matrix['export_rows'] }} | {{ s.matrix['last_run_key'] }} |
+| source | class | active | tier | status | sitemap | sds lib | products reg. | producers reg. | kg 3208 | EUR 3208 | kg 3209 | EUR 3209 | products | doc links | walk budget | catalog | category | page ok | sds ok | hs3208 | hs3209 | hs3213 | export rows | census status | last run |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+{% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.tier or '—' }} | {{ s.status or '—' }} | {{ s.matrix['sitemap_products'] }} | {{ s.matrix['sds_library_visible'] }} | {{ s.matrix['products_registered'] }} | {{ s.matrix['producers_registered'] }} | {{ s.matrix['trade_kg_hs3208'] }} | {{ s.matrix['trade_eur_hs3208'] }} | {{ s.matrix['trade_kg_hs3209'] }} | {{ s.matrix['trade_eur_hs3209'] }} | {{ s.matrix['products_listed'] }} | {{ s.matrix['doc_links_seen'] }} | {{ s.matrix['walk_budget_exhausted'] }} | {{ s.matrix['catalog_count'] }} | {{ s.matrix['category_count'] }} | {{ s.matrix['page_sample_ok'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['records_hs3208'] }} | {{ s.matrix['records_hs3209'] }} | {{ s.matrix['records_hs3213'] }} | {{ s.matrix['export_rows'] }} | {{ s.matrix['census_status'] }} | {{ s.matrix['last_run_key'] }} |
 {% endfor %}
 
-## Execution log (latest census run per source)
+## Execution log (latest census/recon run per source)
 
 {% if sources|selectattr("run")|list %}
 | source | run_key | status | started | finished | notes |
@@ -40,12 +104,14 @@ _{{ report.no_runs_line }}._
 {% for s in sources %}
 ### {{ s.id }} — {{ s.name }}
 
-- identity: class {{ s.class_code }} · active {{ 'yes' if s.active else 'no' }} · verification {{ s.verification_status_code }} · {{ s.url }}
+- identity: class {{ s.class_code }} · active {{ 'yes' if s.active else 'no' }} · tier {{ s.tier or '—' }} · verification {{ s.verification_status_code }} · {{ s.url }}
 - access: {{ s.access_line }}
 - content: {{ s.content_line }}
 - counts:{% if s.counts_line %} {{ s.counts_line }}{% endif %}
-{% if s.notes %}- register note: {{ s.notes }}
-{% endif %}{% if s.run %}- latest census run: {{ s.run.run_key }} ({{ s.run.status }}{% if s.run.notes %}; notes: {{ s.run.notes }}{% endif %})
+{% for line in s.trade_lines %}- {{ line }}
+{% endfor %}{% for line in s.priors_lines %}- {{ line }}
+{% endfor %}{% if s.notes %}- register note: {{ s.notes }}
+{% endif %}{% if s.run %}- latest run: {{ s.run.run_key }} ({{ s.run.status }}{% if s.run.notes %}; notes: {{ s.run.notes }}{% endif %})
 {% endif %}{% endfor %}
 ## Legend
 

@@ -10,7 +10,7 @@ from leadhs import db as dbmod
 
 def test_fresh_apply_all_migrations(conn):
     applied = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
-    assert applied == {1, 2, 3, 4}
+    assert applied == {1, 2, 3, 4, 5, 6}
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for table in ("source", "document", "run", "probe_run", "probe_finding", "probe_metric"):
         assert table in tables
@@ -92,7 +92,7 @@ def test_0004_prunes_lg_li_rows_with_evidence(tmp_path):
     conn.commit()
 
     applied, _ = dbmod.migrate(conn)
-    assert applied == ["0004__product_census.sql"]
+    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql"]
 
     ids = {r[0] for r in conn.execute("SELECT id FROM source")}
     assert "LG-9" not in ids and "LI-9" not in ids and "PE-9" in ids
@@ -135,7 +135,9 @@ def test_migration_order_enforced(tmp_path):
         conn.execute("INSERT INTO schema_version VALUES (1, '0001__probe_base.sql', '2026-01-01T00:00:00Z')")
         conn.commit()
         applied, pending = dbmod.migrate(conn)
-        assert applied == ["0002__probe_core.sql", "0003__probe_metrics.sql", "0004__product_census.sql"]
+        assert applied == ["0002__probe_core.sql", "0003__probe_metrics.sql",
+                           "0004__product_census.sql", "0005__priors_metric.sql",
+                           "0006__recon_numbers.sql"]
     finally:
         conn.close()
 
@@ -218,3 +220,108 @@ def test_backup_round_trip(conn, db_path):
 def test_no_backup_on_fresh_db(conn, db_path):
     backups_dir = os.path.join(os.path.dirname(db_path), "backups")
     assert not os.path.exists(backups_dir) or os.listdir(backups_dir) == []
+
+
+# --- v0.2.0: 0005 priors metric, 0006 recon/numbers ------------------------
+
+
+def test_0005_priors_metric_seeded(conn):
+    row = conn.execute(
+        "SELECT label, value_type FROM probe_metric WHERE code = 'products_registered'"
+    ).fetchone()
+    assert (row[0], row[1]) == ("Products registered (prior)", "numeric")
+
+
+def test_0005_view_includes_products_registered(conn):
+    conn.execute("INSERT INTO source (id, class_code, name, url, access_method_code) VALUES ('ST-9','ST','n','u','api')")
+    conn.execute(
+        "INSERT INTO run (run_key, kind_code, source_id, started_at, status_code) "
+        "VALUES ('probe-20260912-st9','probe','ST-9','2026-09-12T00:00:00Z','done')"
+    )
+    conn.execute(
+        "INSERT INTO probe_finding (run_id, metric_code, value_numeric, unit_code, method_code) "
+        "SELECT id, 'products_registered', 42, 'count', 'manual' FROM run WHERE run_key = 'probe-20260912-st9'"
+    )
+    conn.commit()
+    codes = {r[0] for r in conn.execute("SELECT metric_code FROM v_anchor_candidates WHERE source_id = 'ST-9'")}
+    assert codes == {"products_registered"}
+
+
+def test_0005_no_population_anchor_reference():
+    """nu6 hostile case: 0005 predates the population_anchor table (0008)
+    and must not reference it."""
+    import pathlib
+
+    import leadhs
+
+    mig = pathlib.Path(leadhs.__file__).parent / "migrations" / "0005__priors_metric.sql"
+    assert "population_anchor" not in mig.read_text(encoding="utf-8")
+
+
+def test_0006_recon_seeds_present(conn):
+    classes = {r[0] for r in conn.execute("SELECT code FROM source_class")}
+    assert "AS" in classes
+    modes = {r[0] for r in conn.execute("SELECT code FROM probe_mode")}
+    assert {"census", "format_check", "access_check", "recon"} <= modes
+    codes = {r[0] for r in conn.execute("SELECT code FROM probe_metric")}
+    assert {"sitemap_products", "sds_library_visible", "producers_registered",
+            "trade_kg_hs3208", "trade_eur_hs3208", "trade_kg_hs3209", "trade_eur_hs3209"} <= codes
+    types = dict(conn.execute(
+        "SELECT code, value_type FROM probe_metric WHERE code IN "
+        "('sitemap_products', 'sds_library_visible', 'producers_registered', "
+        "'trade_kg_hs3208', 'trade_eur_hs3208', 'trade_kg_hs3209', 'trade_eur_hs3209')"
+    ).fetchall())
+    assert set(types.values()) == {"numeric"}
+
+
+def test_0006_view_gains_sitemap_products(conn):
+    cols = conn.execute("SELECT metric_code FROM v_anchor_candidates LIMIT 0")
+    conn.execute("INSERT INTO source (id, class_code, name, url, access_method_code) VALUES ('PE-8','PE','n','u','scrape')")
+    conn.execute(
+        "INSERT INTO run (run_key, kind_code, source_id, started_at, status_code) "
+        "VALUES ('probe-20260912-pe8','probe','PE-8','2026-09-12T00:00:00Z','done')"
+    )
+    conn.execute(
+        "INSERT INTO probe_finding (run_id, metric_code, value_numeric, unit_code, method_code) "
+        "SELECT id, 'sitemap_products', 7, 'count', 'scrape' FROM run WHERE run_key = 'probe-20260912-pe8'"
+    )
+    conn.commit()
+    codes = {r[0] for r in conn.execute("SELECT metric_code FROM v_anchor_candidates WHERE source_id = 'PE-8'")}
+    assert codes == {"sitemap_products"}
+
+
+def _apply_scripts(conn, upto):
+    from leadhs import db as dbmod
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS schema_version (version INTEGER PRIMARY KEY, name TEXT NOT NULL, applied_at TEXT NOT NULL)"
+    )
+    done = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
+    conn.isolation_level = None
+    for number, name, sql in dbmod.migration_files():
+        if number > upto:
+            break
+        if number in done:
+            continue
+        conn.executescript("BEGIN;\n" + sql + "\nCOMMIT;\n")
+        conn.execute(
+            "INSERT INTO schema_version (version, name, applied_at) VALUES (?, ?, '2026-09-12T00:00:00Z')",
+            (number, name),
+        )
+
+
+def test_0006_retires_cs1(tmp_path):
+    """dm12: CS-1 is retired inactive with the D31 supersession note —
+    never deleted; pre-existing notes are preserved."""
+    conn = sqlite3.connect(str(tmp_path / "cs1.sqlite"))
+    _apply_scripts(conn, 5)
+    conn.execute(
+        "INSERT INTO source (id, class_code, name, url, access_method_code, active, notes) "
+        "VALUES ('CS-1','CS','swiss-impex','https://swiss-impex.admin.ch','download',1,'pre-existing note')"
+    )
+    _apply_scripts(conn, 6)
+    row = conn.execute("SELECT active, notes FROM source WHERE id = 'CS-1'").fetchone()
+    assert row[0] == 0
+    assert "pre-existing note" in row[1]
+    assert "out of scope D31" in row[1]
+    conn.close()

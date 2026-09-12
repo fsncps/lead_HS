@@ -200,6 +200,9 @@ lead). Open questions and the phased roadmap follow.
     (optional native tools runtime-detected via `leadhs doctor`);
     Docker/AppImage/bundling rejected; PyInstaller per-OS builds
     recorded as contingency only. Detail: ARCHITECTURE.md (D10/D11).
+    **(Amended 2026-09-12 by D32: vanilla-Windows ease of install
+    becomes a v0.3 goal — per-OS bundling is promoted from
+    contingency to planned; PyPI publication stays unnecessary.)**
 25. **Source-report structure & transparency (2026-09-11):** the
     census report presents structured per-source metadata
     (identification, access, content, counts, availability,
@@ -319,6 +322,16 @@ lead). Open questions and the phased roadmap follow.
     (`v0.2.md`, numbers-first); v0.1.3 stays FROZEN with a
     supersession note — its walk-based tape is not executed (the
     machinery idles).
+32. **Vanilla-Windows install is a v0.3 goal (2026-09-12; user
+    direction, amends D24):** the tool must be installable on vanilla
+    Windows — no make, no preinstalled Python — through a
+    self-contained artifact (per-OS bundled build, e.g. PyInstaller,
+    or an equivalent single-file installer; mechanism is a v0.3
+    design decision). PyPI publication stays unnecessary (D24);
+    GitHub release assets remain the delivery channel, with the
+    bundled Windows artifact delivered alongside the wheel. The
+    "bundling rejected" stance of D24 is thereby superseded for
+    v0.3 scope.
 
 ## OPEN ITEMS
 
@@ -428,7 +441,17 @@ lead). Open questions and the phased roadmap follow.
   v0.2.0; the D31 strategy turn): N1 market-size estimate from
   official statistics, N2/N3 access coverage (registers +
   reconnaissance), AS-class source discovery, numbers-first report.
-  Strategy DRAFT — converges on user validation.
+  Strategy DRAFT — freeze remains an explicit user action.
+  Planning pass 2026-09-12: design converged
+  (`20_DESIGN/units/v0.2.0.md`, nu1–nu9; CEO review HOLD SCOPE;
+  user decision 1A — bounded sitemap-index expansion);
+  implementation plans drafted + ENG-reviewed the same day
+  (30_IMPLEMENTATION/v0.2.0/, PHASE01–07; BIG CHANGE, findings
+  e1–e8 folded); build awaits explicit go.
+- **v0.3 (goal noted 2026-09-12, D32; unit not yet opened):**
+  distribution — easy install on **vanilla Windows** (no make, no
+  preinstalled Python) via a self-contained per-OS artifact; PyPI
+  publication not required. Design follows once v0.2.0 converges.
 - v0.1 (feasibility & study design) remains the foundational strategy
   pass; its legal-verification open items stay in OPEN ITEMS above.
 
@@ -451,7 +474,13 @@ number deliverable; caps and matrix columns pinned against the
 (PHASE01–07) exist; build executes on explicit go. The frame unit
 stays deferred behind the bridge.
 
-For unit v0.2.0: strategy DRAFT (the D31 turn, 2026-09-12) —
-converges on user validation of the numbers-first framing; Design
-then covers the recon probe shape, AS register rows + migration, the
-CS-2 parser/persistence fix and the numbers-report layout.
+For unit v0.2.0: the numbers-first framing was validated by the
+2026-09-12 planning pass (CEO review HOLD SCOPE; user decision 1A on
+bounded sitemap-index expansion within the no-scrape recon bound);
+Design converged (`20_DESIGN/units/v0.2.0.md`, nu1–nu9) and
+implementation plans are drafted + ENG-reviewed
+(`30_IMPLEMENTATION/v0.2.0/`, PHASE01–07; BIG CHANGE, findings
+e1–e8 folded). Build awaits explicit go (PHASE04/05 additionally
+GO=1). The strategy unit doc
+itself stays DRAFT — freezing it is a separate explicit user
+action.

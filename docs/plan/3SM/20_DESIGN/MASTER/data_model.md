@@ -100,14 +100,15 @@ substance dictionary (`dict load` — 10_STRATEGY/DATA_MODEL.md D6);
 | `0002__probe_core.sql` | M0 (v0.1.1) | source, document, run, probe_run, probe_finding | v_probe_latest, v_anchor_candidates, v_source_activity |
 | `0003__probe_metrics.sql` | M0 (v0.1.2) | — (probe_metric INSERTs: records_hs3208/3209/3213, census_status) | v_anchor_candidates (redefined) |
 | `0004__product_census.sql` | M0 (v0.1.2 rework, D28) | — (prune LG/LI source rows + their runs/findings/documents; probe_metric INSERTs: products_listed, doc_links_seen, walk_budget_exhausted) | v_anchor_candidates (redefined) |
-| `0005__priors_metric.sql` | M0 (v0.1.3) | — (probe_metric INSERT: products_registered) | v_anchor_candidates (redefined) |
-| `0006__dictionary.sql` | M1 | substance, compound_synonym, compound_identifier + 5 lookups | — |
-| `0007__catalog_frame.sql` | M1 | study, org, product, product_org, product_classification, category, product_category, population_anchor, frame_stratum, frame_stratum_anchor, cn_code + 8 lookups | v_anchor_candidates (redefined), v_product_current |
-| `0008__sampling.sql` | M1 | sampling_run, sample_selection + 2 lookups | — |
-| `0009__trade_stats.sql` | M1 | trade_stat + flow lookup | — |
-| `0010__sds.sql` | M2 | sds_document, product_ufi, sds_ingredient, sds_finding, sds_finding_hcode, sds_section15 + 6 lookups | — |
-| `0011__evidence.sql` | M2–M3 | sighting, corroboration + 2 lookups | — |
-| `0012__views.sql` | M4 | — | v_finding_full, v_product_dossier, v_trade_ch, v_census_3213 |
+| `0005__priors_metric.sql` | M0 (v0.1.3, landed by v0.2.0) | — (probe_metric INSERT: products_registered) | v_anchor_candidates (redefined — metric list only; promoted-exclusion NOT EXISTS moves to 0008) |
+| `0006__recon_numbers.sql` | M0 (v0.2.0) | — (source_class INSERT: AS; probe_mode INSERT: recon; probe_metric INSERTs: sitemap_products, sds_library_visible, producers_registered, trade_kg/eur_hs3208, trade_kg/eur_hs3209; source CS-1 retired inactive + supersession note) | v_anchor_candidates (redefined — gains sitemap_products) |
+| `0007__dictionary.sql` | M1 | substance, compound_synonym, compound_identifier + 5 lookups | — |
+| `0008__catalog_frame.sql` | M1 | study, org, product, product_org, product_classification, category, product_category, population_anchor, frame_stratum, frame_stratum_anchor, cn_code + 8 lookups | v_anchor_candidates (redefined — promoted-exclusion lands here), v_product_current |
+| `0009__sampling.sql` | M1 | sampling_run, sample_selection + 2 lookups | — |
+| `0010__trade_stats.sql` | M1 | trade_stat + flow lookup | — |
+| `0011__sds.sql` | M2 | sds_document, product_ufi, sds_ingredient, sds_finding, sds_finding_hcode, sds_section15 + 6 lookups | — |
+| `0012__evidence.sql` | M2–M3 | sighting, corroboration + 2 lookups | — |
+| `0013__views.sql` | M4 | — | v_finding_full, v_product_dossier, v_trade_ch, v_census_3213 |
 
 Renumbering note (unit v0.1.2, od10): the probe metric extension took
 `0003` — the cheapest moment, before any design-ahead file exists; the
@@ -116,7 +117,10 @@ design-ahead migrations shifted one number (`0003__dictionary` → `0004`
 (register slim + walk metrics) and unit v0.1.3's priors metric takes
 `0005`; the design-ahead block shifts again to `0006`–`0012`. Future
 probe-era metric INSERTs repeat this shift; accepted (docs-only,
-pre-build).
+pre-build). Unit v0.2.0's recon/numbers delta takes `0006` (AS
+class, recon mode, 7 metrics, CS-1 retire-inactive); the
+design-ahead block shifts to `0007`–`0013`, and the group headers
+below carry the current numbering (corrected 2026-09-12, nu6).
 
 Two corrections vs the session draft of this plan: `trade_stat` moves
 into the M1 set (frame weighting by EZV import shares happens at M1,
@@ -221,15 +225,18 @@ decision (10_STRATEGY/MASTER.md D20).
 - **v_anchor_candidates** — latest findings with metric in
   (catalog_count, category_count, export_rows) — candidate population
   anchors for manual promotion. Redefined by 0003 (adds the
-  records_hs* metrics) and by 0005 to also exclude
-  findings already promoted (NOT EXISTS on
-  population_anchor.promoted_from_finding_id).
+  records_hs* metrics), by 0005 (adds products_registered —
+  metric list only; the promoted-exclusion NOT EXISTS on
+  population_anchor.promoted_from_finding_id moves to 0008, where
+  the table ships — v0.2.0 nu6 correction of the v0.1.3 note), by
+  0006 (adds sitemap_products), and by 0008 (promoted-exclusion
+  lands here).
 - **v_source_activity** — per source: first/last document retrieved_at,
   run count, finding count.
 
-## Full schema (designed now; migrations 0004–0010)
+## Full schema (designed now; migrations 0007–0013)
 
-### Dictionary group (0004, M1)
+### Dictionary group (0007, M1)
 
 **substance** — the Strategy `lead_compound` dictionary, generalized:
 study-agnostic, lead-target flagged.
@@ -263,7 +270,7 @@ extensible without migration. No legal-status lookups — EU legal
 status and Swiss relevance stay columns of the LEAD_SDS.md
 documentation table (Strategy MASTER D27).
 
-### Catalog & frame group (0005, M1)
+### Catalog & frame group (0008, M1)
 
 **study** — the reuse discriminator (CEO review decision).
 - id INTEGER PK; code TEXT UNIQUE NOT NULL (`lead_hs`); name TEXT;
@@ -354,7 +361,7 @@ comext, sbs, literature, catalog_census); **frame_method**
 (catalog_count, triangulated, spin_proxy); **country** (code = ISO-2
 PK, iso3, name, name_de, name_fr).
 
-### Sampling group (0006, M1)
+### Sampling group (0009, M1)
 
 **sampling_run** — typed detail of a sampling run; parameters and seed
 live on `run` (single home).
@@ -372,7 +379,7 @@ Lookups: **screen_status** (pending, no_sds, not_a_paint, duplicate,
 screened_ok); **exclusion_reason** (no_sds_found, not_a_paint,
 duplicate_product, delisted, out_of_scope, other).
 
-### Trade statistics group (0007, M1)
+### Trade statistics group (0010, M1)
 
 **trade_stat** — EZV + Comext rows.
 - id INTEGER PK; run_id → run (import provenance); source_id → source
@@ -384,7 +391,7 @@ duplicate_product, delisted, out_of_scope, other).
 
 Lookup: **flow** (import, export).
 
-### SDS group (0008, M2)
+### SDS group (0011, M2)
 
 **sds_document** — an SDS is a typed document (document_id subtype).
 - document_id INTEGER PK → document; product_id → product NOT NULL;
@@ -434,7 +441,7 @@ parsed, failed, manual); **review_status** (auto, confirmed, corrected,
 rejected); **sds_format_vintage** (pre_2020_878, post_2020_878,
 unknown — staleness flag).
 
-### Evidence group (0009, M2–M3)
+### Evidence group (0012, M2–M3)
 
 **sighting** — one product appearance at one place/time; the dedup
 layer (Strategy D2/D17). Restored here after being dropped from the
@@ -455,22 +462,22 @@ Lookups: **document_type** (sds, tds, label, listing, older_sds,
 cross_market, declaration, sample_page, export,
 statistics); **agree_state** (yes, no, partial).
 
-### Views (0005 adds; 0010 completes)
+### Views (0008 adds; 0013 completes)
 
-- **v_product_current** (0005) — latest active classification per
+- **v_product_current** (0008) — latest active classification per
   product.
-- **v_finding_full** (0010) — finding joined through sds_document,
+- **v_finding_full** (0013) — finding joined through sds_document,
   product, current classification, substance, hcodes: the report join
   (single join, no per-row queries — N+1 guard); lead-finding filter
   on an is_lead_target substance with concentration_type in
   (exact, range, declared_ge_0.1). Derived, never stored; the
   declared-vs-total caveat (D15) is part of its definition.
-- **v_product_dossier** (0010) — per-product evidence dossier
+- **v_product_dossier** (0013) — per-product evidence dossier
   (sightings, SDS documents, findings, corroborations, provenance) —
   source of the M4 dossier annex (CEO review decision).
-- **v_trade_ch** (0010) — trade_stat joined cn_code/country for report
+- **v_trade_ch** (0013) — trade_stat joined cn_code/country for report
   tables.
-- **v_census_3213** (0010) — census-flagged products with their
+- **v_census_3213** (0013) — census-flagged products with their
   findings (artists' colours annex).
 
 ## db audit

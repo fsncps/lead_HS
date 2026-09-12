@@ -29,6 +29,17 @@ otherwise resurrect the pruned LG/LI rows. **PHASE01 is built
 real DB); PHASE02+ await explicit go, PHASE02/PHASE06 additionally
 the real-network go-ahead (`GO=1`).
 
+## Supersession note (2026-09-12, D31)
+
+The walk-based execution of this trail is superseded by unit
+v0.2.0: PHASE02 (census execution) and the PHASE06 walk part are
+**not executed** — the walk machinery stays built but idle (V4);
+the PHASE05 i14 walk-floor render defers with its spec on file;
+the still-needed groundwork (pe6 load validation, pe1 enumeration
+model, migration 0005) and the docs pass transfer to
+`../v0.2.0/` PHASE01/PHASE03/PHASE07 (B8/D26 precedent; design
+nu7). PHASE01 (D28 rework) remains this trail's delivered build.
+
 ## Scope
 
 Land the D28 rework (migration 0004 product census: LG/LI prune +

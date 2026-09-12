@@ -84,36 +84,48 @@ Dokumentstudie und bezieht keine Position zur Regelung selbst. Die
 Schweiz kommt in der Studie nur als dieser regulatorische Rahmen vor —
 untersuchter Markt ist der EU-Markt.
 
-## Aktueller Stand: Sondierung der Datenlandschaft
+## Aktueller Stand: Datenlandschaft-Karte geliefert (v0.2.0)
 
 Bevor irgendwelche Produktdaten gesammelt werden, kartiert die Studie
 ihre **Datenlandschaft**: welche Quellen den EU-Farbenmarkt abdecken,
 in welcher Grössenordnung, und mit welchem Zugang zur
-Produktdokumentation.
+Produktdokumentation. Diese Karte ist nun gebaut und die drei
+Leitgrössen sind dokumentiert. Jedes Ergebnis, inklusive
+Zugangsverweigerungen, ist mit seiner Ursache protokolliert, und die
+Provenienzprüfung der Datenbank besteht.
 
-Eine erste Sondierungsrunde am 12. September 2026 erfasste die
-gesetzten Quellen: drei abgeschlossen, eine blockiert, drei
-fehlgeschlagen. Jedes Ergebnis, inklusive Zugangsverweigerungen, ist
-mit seiner Ursache protokolliert, und die Provenienzprüfung der
-Datenbank besteht.
+Die Sondierungsrunde vom 12. September 2026 erfasste die registrierten
+Quellen (amtliche Statistiken, ein Branchen- und Industrieverband sowie
+25 Farben-/Beschichtungs-/Heimwerker-/Künstlerfarben-Seiten). **N1, N2
+und N3** stehen im
+[Sondierungsbericht](docs/report/probe-report.md) und sind hier
+zusammengefasst:
 
-Die aktive Einheit (v0.2.0) ermittelt drei Leitgrössen:
-
-- **N1 — wie viele Farben sind auf dem EU-Markt:** eine
-  Grössenordnung aus amtlichen Statistiken — Handelsflüsse,
-  Produktionsstatistiken, Giftzentren-Meldungen, Produktregister,
-  Industriestruktur.
+- **N1 — wie viele Farben sind auf dem EU-Markt:** eine Grössenordnung
+  aus amtlichen Statistiken. Die Handels-Anker 2024 (Eurostat Comext,
+  EU-Ausseneinfuhren, DS-045409) beziffern **HS 3208 auf rund 2,5 Mio. t
+  (rund 12,2 Mrd. €)** und **HS 3209 auf rund 2,1 Mio. t (rund 6,2 Mrd.
+  €)**. Register-Anker für die Anbieterseite: CEPE vertritt rund 800
+  Mitgliedsunternehmen, Eurostat SBS zählt 3.200 Unternehmen in der
+  NACE 20.30 (2020, Farben + Druckfarben + Kitte). Der
+  Grössenordnungsbereich selbst bleibt eine **Schätzung** — der Bericht
+  nennt die Anker und die Methode, nie eine einzelne Zahl als Fakt.
 - **N2 — für wie viele Produkte haben wir Zugang zu Daten in
-  irgendeiner Form.**
-- **N3 — für wie viele davon lassen sich detaillierte
-  Spezifikationen wie ein SDB beschaffen.**
+  irgendeiner Form:** **204.693** Produkt-URLs beobachtet über **23**
+  gezählte Quellen (über Sitemaps sichtbar; eine Untergrenze, dominiert
+  von wenigen grossen Heimwerker-Katalogen).
+- **N3 — für wie viele davon lassen sich detaillierte Spezifikationen
+  wie ein SDB beschaffen:** **9** Webseiten bieten sichtbar eine
+  SDB-/Dokumentbibliothek (eine Seitenzahl, keine Produktzahl); es
+  wurden noch keine Produktdokumente gesammelt — das wartet auf die
+  Sammel-Freigabe.
 
 Methode in dieser Phase: ausschliesslich Erkundung —
 Nutzungs- und Zugangsbedingungen, Verfügbarkeit von APIs oder
 Downloads, Zählung der Produkt-URLs in Sitemaps, manuelle Prüfungen.
 Katalogdurchläufe und jede Sammlung auf Produktebene warten auf eine
-separate Freigabe. Parallel läuft die Quellensuche: Branchenverbände
-und öffentliche Produktregister (die nordischen Register führen)
+separate Freigabe. Die nordischen Register bleiben offen (SPIN in
+dieser Runde nicht erreichbar).
 kommen neben die amtlichen Statistiken.
 
 ## Was frühere Recherchen zeigen
@@ -140,6 +152,13 @@ zurückführbar. Das Werkzeug erfasst ausschliesslich Produktdaten.
 - In diesem Repository: `make setup` (Installation, Datenbank-
   Migration, Quellenregister laden, Umgebungs-Vorprüfung) und
   `make help` (Verzeichnis aller Befehle).
+- Ausserhalb des Repositories: Wheel bauen (`uv build`) und mit einem
+  verwalteten Interpreter installieren
+  (`uv tool install dist/leadhs-*.whl`), stets mit explizitem
+  Datenverzeichnis (`leadhs --data-dir ~/leadhs-data …`). Dieser Weg
+  ist build-verifiziert; veröffentlichte Release-Artefakte stehen
+  noch aus. Ein Installer für nacktes Windows (ohne make, ohne
+  vorinstalliertes Python) ist ein erklärtes Ziel für v0.3.
 - Vorgänge, die echte Sites berühren, sind hinter einem expliziten
   `GO=1` abgesichert.
 
@@ -170,7 +189,7 @@ begutachtete technische Design in
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3 gebaut; v0.2.0 aktuell) — Phasenverfolgung, Abnahme-Gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3 und v0.2.0 gebaut) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -199,10 +218,11 @@ begutachtete technische Design in
 
 ## Status
 
-Die Werkzeug-Einheiten v0.1.1–v0.1.3 sind gebaut und getestet (165
+Die Werkzeug-Einheiten v0.1.1–v0.2.0 sind gebaut und getestet (205
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
-Quellensondierung, Feasibility-Berichte je Quelle sowie Zähl-Maschinerie
-für Katalogdurchläufe (wartet auf eine Sammel-Freigabe). Die erste
-Sondierungsrunde lief am 12. September 2026. Die aktive Einheit v0.2.0
-liefert die Datenlandschaft-Karte und die drei Leitgrössen. Die
-Methodik bleibt offen für Revision, während Ergebnisse eintreffen.
+Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
+Katalogdurchläufe (wartet auf eine Sammel-Freigabe) sowie die
+Datenlandschaft-Karte mit den drei Leitgrössen. Die Sondierungsrunde
+lief am 12. September 2026; der Bericht ist unter `docs/report/`
+veröffentlicht. Die Methodik bleibt offen für Revision, während
+Ergebnisse eintreffen.

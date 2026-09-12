@@ -72,3 +72,37 @@ def test_report_publish_requires_which():
     r = _make("report-publish")
     assert r.returncode != 0
     assert "WHICH" in r.stderr
+
+
+# --- v0.2.0: recon targets + chain exit-2 tolerance (e1/1A) ----------------
+
+
+def test_guard_probe_recon_blocks_without_go():
+    r = _make("probe-recon")
+    assert r.returncode != 0
+    assert "set GO=1" in r.stderr
+
+
+def test_recon_chain_dry_run():
+    r = _make("-n", "recon", env_extra={"GO": "1"})
+    assert r.returncode == 0
+    assert "probe run --all --mode recon" in r.stdout
+
+
+def test_probe_single_mode_passthrough():
+    r = _make("-n", "probe-single", env_extra={"SOURCE": "CS-2", "MODE": "recon"})
+    assert r.returncode == 0
+    assert "--mode recon" in r.stdout
+
+
+def test_chain_exit_2_tolerance_idiom():
+    """e1/1A: the census/recon chains tolerate exactly the expected
+    sweep exit 2 — the idiom is visible in the recipes."""
+    import pathlib
+
+    makefile = (REPO / "Makefile").read_text(encoding="utf-8")
+    tolerance = "|| test $$? -eq 2"
+    census_block = makefile.split("census:")[1].split("probe-recon:")[0]
+    recon_block = makefile.split("\nrecon:")[1].split("test:")[0]
+    assert tolerance in census_block
+    assert tolerance in recon_block

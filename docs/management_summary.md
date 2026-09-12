@@ -114,8 +114,33 @@ protokolliert; Provenienz-Audit bestanden).
 
 ### Zwischenstand / Resultate
 
-[PLATZHALTER — wird laufend ergänzt; Resultate folgen nach der Erhebung
-und der Auswertung.]
+Datenlandschaft-Karte und Leitgrössen (Einheit v0.2.0, Stand 12.09.2026)
+— die Sondierungsrunde ist abgeschlossen, der Bericht liegt unter
+`docs/report/probe-report.md` vor. **N1, N2, N3:**
+
+- **N1 (Marktgrösse, Grössenordnung):** Die Handels-Anker für 2024
+  (Eurostat Comext, EU-Ausseneinfuhren, DS-045409) beziffern **HS 3208
+  auf rund 2,5 Mio. t (rund 12,2 Mrd. €)** und **HS 3209 auf rund 2,1
+  Mio. t (rund 6,2 Mrd. €)**. Register-Anker für die Anbieterseite:
+  CEPE vertritt rund 800 Mitgliedsunternehmen; Eurostat SBS zählt 3.200
+  Unternehmen in der NACE 20.30 (2020, Farben + Druckfarben + Kitte).
+  Der Grössenordnungsbereich selbst bleibt eine **Schätzung** — der
+  Bericht nennt die Anker und die Methode, nie eine einzelne Zahl als
+  Fakt.
+- **N2 (Datenzugang in irgendeiner Form):** **204.693** Produkt-URLs
+  beobachtet über **23** gezählte Quellen (sichtbar über Sitemaps; eine
+  Untergrenze, dominiert von wenigen grossen DIY-Katalogen).
+- **N3 (detaillierte Spezifikationen wie ein SDB beschaffbar):**
+  **9** Webseiten bieten sichtbar eine SDB-/Dokumentbibliothek (eine
+  Seitenzahl, keine Produktzahl); Produktdokumente wurden noch keine
+  gesammelt — das wartet auf die Sammel-Freigabe.
+
+Tier-Zusammensetzung über die aktiven Quellen (27): (a) 0 —
+Datenzugriff gezählt · (b) 23 — über Sitemap sichtbar, gezählt · (c) 3
+— sichtbar, ungezählt ohne Scraping (CS-2, PE-24, PE-31) · (d) 1 —
+blockiert/unbekannt (ST-2, SPIN nicht erreichbar). Erkundung von 25
+Katalog-/Herstellerseiten: 22 abgeschlossen, 1 blockiert (PE-31), 1
+fehlgeschlagen (PE-24), 1 unerreichbar (ST-2).
 
 Marktbefunde (Stand 31.08.2026, EU, dokumentiert):
 
@@ -139,12 +164,12 @@ blinde Fleck wird in allen Resultaten ausgewiesen.
 
 Projektstand (12.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
-jeden Befund nachvollziehbar hält — ist in drei Ausbaustufen gebaut und
-getestet (165 automatisierte Offline-Tests): Evidenzdatenbank,
-Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle
-sowie Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine
-Sammel-Freigabe). Die aktive Einheit **v0.2.0** liefert die
-Datenlandschaft-Karte und die drei Leitgrössen.
+jeden Befund nachvollziehbar hält — ist in vier Ausbaustufen gebaut und
+getestet (205 automatisierte Offline-Tests): Evidenzdatenbank,
+Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
+Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe)
+sowie die Datenlandschaft-Karte mit den drei Leitgrössen. Die aktive
+Einheit **v0.2.0** ist damit abgeschlossen.
 
 ### Grenzen der Studie
 
@@ -278,8 +303,33 @@ consigné avec sa cause ; audit de provenance réussi).
 
 ### État / Résultats
 
-[PLACEHOLDER — complété au fil de l'eau ; résultats après la collecte et
-l'analyse.]
+Carte du paysage des données et chiffres phares (unité v0.2.0, état au
+12.09.2026) — la passe de reconnaissance est achevée, le rapport figure
+sous `docs/report/probe-report.md`. **N1, N2, N3 :**
+
+- **N1 (taille du marché, ordre de grandeur) :** les ancres douanières
+  2024 (Eurostat Comext, importations UE hors UE, DS-045409) chiffrent
+  **HS 3208 à ≈2,5 Mt (≈12,2 Mrd €)** et **HS 3209 à ≈2,1 Mt
+  (≈6,2 Mrd €)**. Ancres côté offre : CEPE représente ≈800 entreprises
+  membres ; Eurostat SBS dénombre 3.200 entreprises en NACE 20.30
+  (2020, peintures + encres + mastics). La fourchette d'ordre de
+  grandeur reste une **estimation** — le rapport donne les ancres et la
+  méthode, jamais un chiffre unique présenté comme factuel.
+- **N2 (accès aux données, sous une forme ou une autre) :** **204.693**
+  URL produit observées sur **23** sources comptées (visibles via les
+  sitemaps ; un plancher, dominé par quelques grands catalogues de
+  bricolage).
+- **N3 (spécifications détaillées, une FDS par exemple, obtenables) :**
+  **9** sites exposent visiblement une bibliothèque de FDS/documents
+  (un nombre de sites, pas de produits) ; aucune documentation produit
+  n'a encore été collectée — cela attend le feu vert de collecte.
+
+Composition par palier des sources actives (27) : (a) 0 — accès aux
+données compté · (b) 23 — visible par sitemap, compté · (c) 3 —
+visible, non compté sans scraping (CS-2, PE-24, PE-31) · (d) 1 —
+bloqué/inconnu (ST-2, SPIN injoignable). Reconnaissance de 25 sites de
+catalogues/fabricants : 22 achevés, 1 bloqué (PE-31), 1 en échec
+(PE-24), 1 injoignable (ST-2).
 
 Constats de marché (état au 31.08.2026, UE, documentés) :
 
@@ -304,12 +354,12 @@ documentaire. Cet angle mort est signalé dans tous les résultats.
 
 État du projet (12.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
-et rend chaque constat traçable — est construit et testé en trois étapes
-(165 tests automatisés hors ligne) : base de preuves, registre des
+et rend chaque constat traçable — est construit et testé en quatre étapes
+(205 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
-source, et machinerie de comptage pour les parcours de catalogues (en
-attente d'un feu vert de collecte). L'unité active **v0.2.0** livre la
-carte du paysage des données et les trois chiffres phares.
+source, machinerie de comptage pour les parcours de catalogues (en
+attente d'un feu vert de collecte), et carte du paysage des données avec
+les trois chiffres phares. L'unité active **v0.2.0** est ainsi achevée.
 
 ### Limites de l'étude
 

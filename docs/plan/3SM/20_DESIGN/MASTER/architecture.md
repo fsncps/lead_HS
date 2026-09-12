@@ -407,6 +407,30 @@ Test strategy, matrix and key tests: testing.md.
 - a18: coarse priors as one generic metric `products_registered`
   (migration 0005; manual records; anchor promotion manual, D20)
   (i4 extension rule; v0.1.3).
+- a19: recon machinery — probe_mode recon; PE adapter branch
+  (robots → sitemap, bounded index expansion ≤ 5 children, counts
+  only, no URL harvesting, stdlib ElementTree with local-name
+  matching, gzip magic-byte sniff, product_pattern notes token);
+  per-call `max_bytes` streaming cap at the single fetch seam
+  (typed SizeLimit; recon ~25 MB, census/ST uncapped); no new CLI
+  commands (nu1/i15; HOLD-SCOPE review 1A + ENG review e3–e6,
+  v0.2.0).
+- a20: CS-2 aggregation — full-year import sums as per-HS numeric
+  metric codes (trade_kg/eur_hs3208/3209); JSON-stat responses
+  decoded by a minimal one-dimension decoder (value object + flat
+  index → partner via id/size; e2/2A — no general reader, TODOS);
+  raw JSON archived; bounded year step-back (max 3 tries →
+  document-blocked note), resolved year in parameters_json;
+  dry-run plans the aggregation URLs; partner tops in notes
+  (nu2/i15).
+- a21: numbers report — od8 numbers-first layout with access tiers
+  and N1 md method sheet; i14 walk-floor sections deferred with
+  spec on file; matrix carries plain census_status (no walk
+  column, V4) (nu4/nu5/i16).
+- a22: make chain tolerance — the probe step inside the `census`/
+  `recon` chain targets tolerates exactly exit 2 (`|| test $$? -eq
+  2`; findings persisted on expected blocks); other failures abort
+  the chain (e1; operator layer).
 
 ## OPEN ITEMS
 

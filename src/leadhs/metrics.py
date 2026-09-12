@@ -42,6 +42,14 @@ METRIC_CENSUS_STATUS = "census_status"
 METRIC_PRODUCTS_LISTED = "products_listed"
 METRIC_DOC_LINKS_SEEN = "doc_links_seen"
 METRIC_WALK_BUDGET_EXHAUSTED = "walk_budget_exhausted"
+METRIC_PRODUCTS_REGISTERED = "products_registered"
+METRIC_SITEMAP_PRODUCTS = "sitemap_products"
+METRIC_SDS_LIBRARY_VISIBLE = "sds_library_visible"
+METRIC_PRODUCERS_REGISTERED = "producers_registered"
+METRIC_TRADE_KG_HS3208 = "trade_kg_hs3208"
+METRIC_TRADE_EUR_HS3208 = "trade_eur_hs3208"
+METRIC_TRADE_KG_HS3209 = "trade_kg_hs3209"
+METRIC_TRADE_EUR_HS3209 = "trade_eur_hs3209"
 
 
 PROBE_METRIC_SEEDS = (
@@ -71,6 +79,16 @@ PROBE_METRIC_SEEDS = (
     Metric(METRIC_PRODUCTS_LISTED, "Products listed (walk)", "numeric"),
     Metric(METRIC_DOC_LINKS_SEEN, "Doc links seen (walk)", "numeric"),
     Metric(METRIC_WALK_BUDGET_EXHAUSTED, "Walk budget exhausted", "numeric"),
+    # 0005__priors_metric.sql (v0.1.3 pe2, landed by v0.2.0 PHASE01)
+    Metric(METRIC_PRODUCTS_REGISTERED, "Products registered (prior)", "numeric"),
+    # 0006__recon_numbers.sql (v0.2.0)
+    Metric(METRIC_SITEMAP_PRODUCTS, "Products sitemap-visible", "numeric"),
+    Metric(METRIC_SDS_LIBRARY_VISIBLE, "SDS library visible (manual)", "numeric"),
+    Metric(METRIC_PRODUCERS_REGISTERED, "Producers registered (prior)", "numeric"),
+    Metric(METRIC_TRADE_KG_HS3208, "EU imports HS 3208 (kg)", "numeric"),
+    Metric(METRIC_TRADE_EUR_HS3208, "EU imports HS 3208 (EUR)", "numeric"),
+    Metric(METRIC_TRADE_KG_HS3209, "EU imports HS 3209 (kg)", "numeric"),
+    Metric(METRIC_TRADE_EUR_HS3209, "EU imports HS 3209 (EUR)", "numeric"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)

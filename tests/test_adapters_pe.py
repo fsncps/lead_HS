@@ -107,3 +107,148 @@ def test_pe_dry_run_plans_only(site, conn, store, make_fetcher, monkeypatch):
     monkeypatch.setattr(ctx.fetcher._session, "get", no_network)
     result = PEAdapter().probe(_source(site), ctx)
     assert result.documents == [] and result.findings == []
+
+
+# --- v0.2.0 recon branch (nu1/i15; e1–e8) ---------------------------------
+
+
+def _recon_ctx(make_fetcher, conn, store, **kw):
+    return ProbeContext(fetcher=make_fetcher(**kw.get("fetch_cfg", {})), store=store, conn=conn,
+                        mode="recon", dry_run=kw.get("dry_run", False))
+
+
+def _host(site, i):
+    port = site.rsplit(":", 1)[1]
+    return f"127.0.0.{i}", f"http://127.0.0.{i}:{port}"
+
+
+def _make_recon_source(site, i, notes=None, path="/"):
+    ip, base = _host(site, i)
+    return SourceRef(id="PR-1", class_code="PE", name="recon", url=f"{base}{path}",
+                     access_method_code="scrape", active=1, notes=notes)
+
+
+def test_recon_happy_path(site, conn, store, make_fetcher):
+    """robots + declared sitemap fetched only; pattern token counts;
+    sitemap archived; no cap flags."""
+    src = _make_recon_source(site, 20, notes="channel=mfr; product_pattern=/product")
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["robots"].value_text == "allowed"
+    assert m["sitemap_products"].value_numeric == 3
+    assert "product_pattern=/product" in m["sitemap_products"].notes
+    assert "floor partial" not in m["sitemap_products"].notes
+    assert len(result.documents) == 1  # the sitemap
+    assert result.documents[0].url.endswith("/sitemap.xml")
+
+
+def test_recon_generic_fallback(site, conn, store, make_fetcher):
+    src = _make_recon_source(site, 20)
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["sitemap_products"].value_numeric == 3
+    assert "generic product-URL fallback" in m["sitemap_products"].notes
+
+
+def test_recon_gzip_sitemap(site, conn, store, make_fetcher):
+    """e4: gzipped sitemap decompressed via magic-byte sniff, counted."""
+    src = _make_recon_source(site, 21)
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["sitemap_products"].value_numeric == 2
+    assert any("gzipped" in n for n in result.notes)
+
+
+def test_recon_namespaced_sitemap(site, conn, store, make_fetcher):
+    """e5: namespaced tags counted via local names — never a silent 0."""
+    src = _make_recon_source(site, 22)
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["sitemap_products"].value_numeric == 2
+
+
+def test_recon_index_three_children(site, conn, store, make_fetcher):
+    """1A: index + 3 children — children fetched, counts summed, one note."""
+    src = _make_recon_source(site, 23)
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["sitemap_products"].value_numeric == 6
+    assert any("index" in n for n in result.notes)
+    assert "floor partial" not in m["sitemap_products"].notes
+    assert len(result.documents) == 4  # index + 3 children
+
+
+def test_recon_index_cap_at_five(site, conn, store, make_fetcher):
+    """1A: index + 8 children — cap 5, floor-partial flag."""
+    src = _make_recon_source(site, 24)
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["sitemap_products"].value_numeric == 10  # 5 children × 2
+    assert "floor partial" in m["sitemap_products"].notes
+    assert len(result.documents) == 6  # index + 5 children
+
+
+def test_recon_nested_index_not_reursed(site, conn, store, make_fetcher):
+    """e7: a nested sitemap-index child is noted, never recursed."""
+    src = _make_recon_source(site, 25)
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    # the nested index yields no product counts (not recursed)
+    assert m["sitemap_products"].value_numeric == 0
+    assert any("nested" in n or "sitemap index" in n for n in result.notes)
+    assert all(not d.url.endswith("/deep.xml") for d in result.documents)
+
+
+def test_recon_no_sitemap(site, conn, store, make_fetcher):
+    src = _make_recon_source(site, 26)
+    result = PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["sitemap_products"].value_numeric == 0
+    assert any("no sitemap" in n for n in result.notes)
+
+
+def test_recon_robots_deny_blocks(site, conn, store, make_fetcher):
+    from leadhs.fetch import RobotsDisallowed
+
+    src = _make_recon_source(site, 2, path="/private/secret")
+    with pytest.raises(RobotsDisallowed):
+        PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+
+
+def test_recon_robots_unreachable_proceeds(site, conn, store, make_fetcher):
+    """e6: robots fetch fails (403 on robots_path) → policy unknown →
+    proceed with note."""
+    src = _make_recon_source(site, 20)
+    ctx = _recon_ctx(make_fetcher, conn, store, fetch_cfg={"robots_path": "/robots-403.txt"})
+    result = PEAdapter().probe(src, ctx)
+    m = {f.metric_code: f for f in result.findings}
+    assert m["robots"].value_text == "unknown"
+    assert any("unknown" in n for n in result.notes)
+    assert m["sitemap_products"].value_numeric == 3
+
+
+def test_recon_malformed_sitemap(site, conn, store, make_fetcher):
+    from leadhs.probe.adapters import UnexpectedFormat
+
+    src = _make_recon_source(site, 28)
+    with pytest.raises(UnexpectedFormat):
+        PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+
+
+def test_recon_size_cap_floor_partial(site, conn, store, monkeypatch, make_fetcher):
+    """e3: oversized sitemap → SizeLimit → count 0 + floor-partial note."""
+    from leadhs.probe import adapters
+
+    monkeypatch.setattr(adapters, "_RECON_MAX_BYTES", 1024)
+    src = _make_recon_source(site, 27)
+    result = adapters.PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
+    m = {f.metric_code: f for f in result.findings}
+    assert m["sitemap_products"].value_numeric == 0
+    assert "floor partial" in m["sitemap_products"].notes
+
+
+def test_recon_dry_run_zero_fetches(site, conn, store, make_fetcher, site_hits):
+    """i7: dry-run plans robots + base only — zero network calls."""
+    src = _make_recon_source(site, 20)
+    PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store, dry_run=True))
+    assert site_hits == {}

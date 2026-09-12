@@ -1,0 +1,4036 @@
+{
+  "report": {
+    "title": "Source feasibility census report",
+    "framing": "This report answers two study questions: (Q1) how many paint/varnish products each registered source exposes \u2014 observed listings, a floor, never a market total \u2014 and (Q2) for how many of them SDS-type documentation is reachable. The N1 block adds market-size anchors (trade sums, register counts); the N1 range itself is an estimate stated in the method sheet, never a DB count. Trade-statistics rows are volume context: tariff-line flows, never products. These remain source-feasibility metrics only: product and lead prevalence are M2+ deliverables and are never implied here. The tool, the database and the reports carry product data only (Strategy MASTER D27): inactive register rows appear in the matrix without findings.",
+    "legend": [
+      "\u201c\u2014\u201d = metric absent (source not queried for it); 0 = queried, empty result.",
+      "Metric values cite the run_key of the done run they come from.",
+      "Status reflects the latest census/recon run per source (dry-run runs excluded); blocked/failed runs are shown with their notes.",
+      "Access tiers (active sources): (a) dataset/register access counted \u00b7 (b) sitemap-visible counted \u00b7 (c) visible but uncounted without scraping \u00b7 (d) blocked/unknown. N2 sums tiers (a)+(b) only.",
+      "N3 pairs doc-bearing counts with the site count of sds_library_visible = 1 \u2014 a site count, not a product count (labeled as such).",
+      "sitemap_products is a recon floor (robots-compliant, counts only; index/size caps render it partial \u2014 \u201cfloor partial\u201d in the notes).",
+      "records_hs*/trade_* columns are volume context: tariff-line flows, not products (D28 grain rule); trade quantities carry the API's supplementary unit (see finding notes).",
+      "Inactive register rows never enter N2/N3 sums; counted-but-excluded sources are listed explicitly."
+    ],
+    "no_runs_line": "No census runs yet \u2014 run `make probe-dry` to plan or `GO=1 make probe` to execute.",
+    "source_filter": null
+  },
+  "numbers": {
+    "tier_sources": {
+      "a": [],
+      "b": [
+        "PE-10",
+        "PE-11",
+        "PE-12",
+        "PE-13",
+        "PE-14",
+        "PE-15",
+        "PE-16",
+        "PE-17",
+        "PE-18",
+        "PE-19",
+        "PE-20",
+        "PE-21",
+        "PE-22",
+        "PE-23",
+        "PE-25",
+        "PE-26",
+        "PE-27",
+        "PE-28",
+        "PE-29",
+        "PE-30",
+        "PE-32",
+        "PE-33",
+        "PE-34"
+      ],
+      "c": [
+        "CS-2",
+        "PE-24",
+        "PE-31"
+      ],
+      "d": [
+        "ST-2"
+      ]
+    },
+    "tier_sizes": {
+      "a": 0,
+      "b": 23,
+      "c": 3,
+      "d": 1
+    },
+    "n2_total": 204693.0,
+    "n2_components": [
+      {
+        "source_id": "PE-10",
+        "tier": "b",
+        "counted": 2.0
+      },
+      {
+        "source_id": "PE-11",
+        "tier": "b",
+        "counted": 146.0
+      },
+      {
+        "source_id": "PE-12",
+        "tier": "b",
+        "counted": 9.0
+      },
+      {
+        "source_id": "PE-13",
+        "tier": "b",
+        "counted": 1953.0
+      },
+      {
+        "source_id": "PE-14",
+        "tier": "b",
+        "counted": 3.0
+      },
+      {
+        "source_id": "PE-15",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-16",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-17",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-18",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-19",
+        "tier": "b",
+        "counted": 1619.0
+      },
+      {
+        "source_id": "PE-20",
+        "tier": "b",
+        "counted": 199354.0
+      },
+      {
+        "source_id": "PE-21",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-22",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-23",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-25",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-26",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-27",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-28",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-29",
+        "tier": "b",
+        "counted": 4.0
+      },
+      {
+        "source_id": "PE-30",
+        "tier": "b",
+        "counted": 60.0
+      },
+      {
+        "source_id": "PE-32",
+        "tier": "b",
+        "counted": 0.0
+      },
+      {
+        "source_id": "PE-33",
+        "tier": "b",
+        "counted": 1541.0
+      },
+      {
+        "source_id": "PE-34",
+        "tier": "b",
+        "counted": 2.0
+      }
+    ],
+    "n3_doc_total": 0,
+    "n3_doc_sources": [
+      {
+        "source_id": "PE-1",
+        "value": 0
+      },
+      {
+        "source_id": "PE-4",
+        "value": 0
+      }
+    ],
+    "n3_sds_site_count": 9,
+    "n3_sds_sites": [
+      "PE-12",
+      "PE-13",
+      "PE-14",
+      "PE-17",
+      "PE-19",
+      "PE-24",
+      "PE-29",
+      "PE-32",
+      "PE-34"
+    ],
+    "excluded_counted": [],
+    "zero_states": {
+      "no_counted_sources": false,
+      "no_sds_sites": false,
+      "no_doc_counts": false
+    }
+  },
+  "anchors": [
+    {
+      "source_id": "AS-1",
+      "metric_code": "producers_registered",
+      "label": "Producers registered (priors)",
+      "value_numeric": 800.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-as1manual"
+    },
+    {
+      "source_id": "CS-2",
+      "metric_code": "trade_kg_hs3208",
+      "label": "EU imports HS 3208 (kg)",
+      "value_numeric": 2471311314.0,
+      "unit_code": "kg",
+      "run_key": "probe-20260912-cs2-10"
+    },
+    {
+      "source_id": "CS-2",
+      "metric_code": "trade_eur_hs3208",
+      "label": "EU imports HS 3208 (EUR)",
+      "value_numeric": 12211227434.0,
+      "unit_code": "eur",
+      "run_key": "probe-20260912-cs2-10"
+    },
+    {
+      "source_id": "CS-2",
+      "metric_code": "trade_kg_hs3209",
+      "label": "EU imports HS 3209 (kg)",
+      "value_numeric": 2099166223.9999998,
+      "unit_code": "kg",
+      "run_key": "probe-20260912-cs2-10"
+    },
+    {
+      "source_id": "CS-2",
+      "metric_code": "trade_eur_hs3209",
+      "label": "EU imports HS 3209 (EUR)",
+      "value_numeric": 6221811666.0,
+      "unit_code": "eur",
+      "run_key": "probe-20260912-cs2-10"
+    },
+    {
+      "source_id": "ST-3",
+      "metric_code": "producers_registered",
+      "label": "Producers registered (priors)",
+      "value_numeric": 3200.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-st3manual"
+    }
+  ],
+  "sources": [
+    {
+      "id": "AS-1",
+      "class_code": "AS",
+      "name": "CEPE (European paints association)",
+      "url": "https://www.cepe.org",
+      "access_method_code": "manual",
+      "verification_status_code": "open",
+      "active": false,
+      "notes": "producers_registered via manual record (member counts / national-association list); URL verified live 2026-09-12; candidate-row semantics nu3",
+      "run": {
+        "run_key": "probe-20260912-as1manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:38:25Z",
+        "finished_at": "2026-09-12T09:38:25Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "800 count",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-as1manual"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: producers_registered=800 [probe-20260912-as1manual]"
+      ],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": [
+          {
+            "source_id": "AS-1",
+            "metric_code": "producers_registered",
+            "value_numeric": 800.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-as1manual",
+            "started_at": "2026-09-12T09:38:25Z",
+            "notes": "CEPE (European Council of the Paint, Printing Ink and Artists' Colours Industry): represents about 800 member companies across Europe, 85% of market value, est. annual turnover \u20ac17bn. Source: CEPE 'About The Industry' (https://cepe.org/about-the-industry), accessed 2026-09-12. CAVEAT: includes printing ink + artists' colours; not lead-specific.",
+            "value": "800 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "CS-1",
+      "class_code": "CS",
+      "name": "swiss-impex (EZV)",
+      "url": "https://swiss-impex.admin.ch",
+      "access_method_code": "download",
+      "verification_status_code": "open",
+      "active": false,
+      "notes": "CH imports/exports 3208/3209 (+3213); granularity CN8 x partner x year; free access & granularity high-priority probe target; out of scope D31 (EU-only; TLS wall documented 2026-09-12)",
+      "run": {
+        "run_key": "probe-20260912-cs1-3",
+        "status": "failed",
+        "started_at": "2026-09-12T04:52:10Z",
+        "finished_at": "2026-09-12T04:52:16Z",
+        "notes": "https://swiss-impex.admin.ch/robots.txt: network error after retries",
+        "documents": 0,
+        "findings": 0
+      },
+      "status": "failed",
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-cs1-3"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      }
+    },
+    {
+      "id": "CS-2",
+      "class_code": "CS",
+      "name": "Eurostat Comext DS-045409",
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409",
+      "access_method_code": "api",
+      "verification_status_code": "verified",
+      "active": true,
+      "notes": "EU27 extra-EU trade; CN8 x partner x year; full-year import aggregation (nu2): trade_kg/eur_hs3208/3209",
+      "run": {
+        "run_key": "probe-20260912-cs2-10",
+        "status": "done",
+        "started_at": "2026-09-12T09:40:44Z",
+        "finished_at": "2026-09-12T09:40:58Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 10
+      },
+      "status": "done",
+      "tier": "c",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "2471311314 kg",
+        "trade_eur_hs3208": "12211227434 eur",
+        "trade_kg_hs3209": "2099166223.9999998 kg",
+        "trade_eur_hs3209": "6221811666 eur",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "278 count",
+        "records_hs3209": "264 count",
+        "records_hs3213": "228 count",
+        "export_rows": "1 count",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-cs2-10"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access 1",
+      "content_line": "format JSON-stat dataset \u00b7 granularity to confirm from JSON structure (probe) \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "export rows 1 count",
+      "trade_lines": [
+        "trade context: trade_kg_hs3208: 2471311314 kg (year=2024; top: INT_EU27_2020=11062630, DE=2953908, IT=1537397, EXT_EU27_2020=1293926, FR=1285140; quantity converted from QUANTITY_IN_100KG (\u00d7100)) \u00b7 trade_eur_hs3208: 12211227434 eur (year=2024; top: INT_EU27_2020=5318389302, DE=1681115353, EXT_EU27_2020=787224415, IT=684529899, BE=496100145) \u00b7 trade_kg_hs3209: 2099166223.9999998 kg (year=2024; top: INT_EU27_2020=9478613, DE=2574421, NL=1209558, EXT_EU27_2020=1017218, FR=870095; quantity converted from QUANTITY_IN_100KG (\u00d7100)) \u00b7 trade_eur_hs3209: 6221811666 eur (year=2024; top: INT_EU27_2020=2798057454, DE=882764356, EXT_EU27_2020=312848379, NL=294368451, FR=244552218)"
+      ],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [
+          {
+            "source_id": "CS-2",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "JSON-stat dataset",
+            "unit_code": null,
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": null,
+            "value": "JSON-stat dataset"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "JSON-stat dataset",
+            "unit_code": null,
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": null,
+            "value": "JSON-stat dataset"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "JSON-stat dataset",
+            "unit_code": null,
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": null,
+            "value": "JSON-stat dataset"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "granularity",
+            "value_numeric": null,
+            "value_text": "to confirm from JSON structure (probe)",
+            "unit_code": null,
+            "method_code": "api",
+            "run_key": "probe-20260911-cs2-2",
+            "started_at": "2026-09-11T03:49:50Z",
+            "notes": null,
+            "value": "to confirm from JSON structure (probe)"
+          }
+        ],
+        "counts": [
+          {
+            "source_id": "CS-2",
+            "metric_code": "export_rows",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "api",
+            "run_key": "probe-20260911-cs2-2",
+            "started_at": "2026-09-11T03:49:50Z",
+            "notes": null,
+            "value": "1 count"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "records_hs3208",
+            "value_numeric": 278.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": "query params: {\"flow\": \"1\", \"format\": \"JSON\", \"freq\": \"A\", \"product\": \"3208\", \"reporter\": \"EU27_2020\", \"time\": \"2024\"}",
+            "value": "278 count"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "records_hs3209",
+            "value_numeric": 264.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": "query params: {\"flow\": \"1\", \"format\": \"JSON\", \"freq\": \"A\", \"product\": \"3209\", \"reporter\": \"EU27_2020\", \"time\": \"2024\"}",
+            "value": "264 count"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "records_hs3213",
+            "value_numeric": 228.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": "query params: {\"flow\": \"1\", \"format\": \"JSON\", \"freq\": \"A\", \"product\": \"3213\", \"reporter\": \"EU27_2020\", \"time\": \"2024\"}",
+            "value": "228 count"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "trade_kg_hs3208",
+            "value_numeric": 2471311314.0,
+            "value_text": null,
+            "unit_code": "kg",
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": "flow=1 (import), year=2024, indicators=QUANTITY_IN_100KG; sum across partners; top partners: INT_EU27_2020=11062630, DE=2953908, IT=1537397, EXT_EU27_2020=1293926, FR=1285140; quantity converted from QUANTITY_IN_100KG (\u00d7100)",
+            "value": "2471311314 kg"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "trade_eur_hs3208",
+            "value_numeric": 12211227434.0,
+            "value_text": null,
+            "unit_code": "eur",
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": "flow=1 (import), year=2024, indicators=VALUE_IN_EUROS; sum across partners; top partners: INT_EU27_2020=5318389302, DE=1681115353, EXT_EU27_2020=787224415, IT=684529899, BE=496100145",
+            "value": "12211227434 eur"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "trade_kg_hs3209",
+            "value_numeric": 2099166223.9999998,
+            "value_text": null,
+            "unit_code": "kg",
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": "flow=1 (import), year=2024, indicators=QUANTITY_IN_100KG; sum across partners; top partners: INT_EU27_2020=9478613, DE=2574421, NL=1209558, EXT_EU27_2020=1017218, FR=870095; quantity converted from QUANTITY_IN_100KG (\u00d7100)",
+            "value": "2099166223.9999998 kg"
+          },
+          {
+            "source_id": "CS-2",
+            "metric_code": "trade_eur_hs3209",
+            "value_numeric": 6221811666.0,
+            "value_text": null,
+            "unit_code": "eur",
+            "method_code": "api",
+            "run_key": "probe-20260912-cs2-10",
+            "started_at": "2026-09-12T09:40:44Z",
+            "notes": "flow=1 (import), year=2024, indicators=VALUE_IN_EUROS; sum across partners; top partners: INT_EU27_2020=2798057454, DE=882764356, EXT_EU27_2020=312848379, NL=294368451, FR=244552218",
+            "value": "6221811666 eur"
+          }
+        ],
+        "availability": [
+          {
+            "source_id": "CS-2",
+            "metric_code": "free_access",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": null,
+            "method_code": "api",
+            "run_key": "probe-20260911-cs2-2",
+            "started_at": "2026-09-11T03:49:50Z",
+            "notes": null,
+            "value": "1"
+          }
+        ],
+        "priors": []
+      }
+    },
+    {
+      "id": "PE-1",
+      "class_code": "PE",
+      "name": "Manufacturer/brand sites (seed)",
+      "url": "https://www.epifanes.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": false,
+      "notes": "superseded by per-site rows PE-10+ (v0.2.0 nu6); site lives on as PE-25",
+      "run": {
+        "run_key": "probe-20260912-pe1-3",
+        "status": "done",
+        "started_at": "2026-09-12T04:52:23Z",
+        "finished_at": "2026-09-12T04:52:26Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 9
+      },
+      "status": "done",
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "0 count",
+        "doc_links_seen": "0 count",
+        "walk_budget_exhausted": "0",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe1-3"
+      },
+      "access_line": "robots allowed \u00b7 terms not found \u00b7 rate limit unknown \u2014 polite default <= 1 req / 2 s \u00b7 free access 1",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages []",
+      "counts_line": "walk budget: within budget",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-1",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe1-3",
+            "started_at": "2026-09-12T04:52:23Z",
+            "notes": null,
+            "value": "allowed"
+          },
+          {
+            "source_id": "PE-1",
+            "metric_code": "terms",
+            "value_numeric": null,
+            "value_text": "not found",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe1-3",
+            "started_at": "2026-09-12T04:52:23Z",
+            "notes": null,
+            "value": "not found"
+          },
+          {
+            "source_id": "PE-1",
+            "metric_code": "rate_limit",
+            "value_numeric": null,
+            "value_text": "unknown \u2014 polite default <= 1 req / 2 s",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe1-3",
+            "started_at": "2026-09-12T04:52:23Z",
+            "notes": null,
+            "value": "unknown \u2014 polite default <= 1 req / 2 s"
+          }
+        ],
+        "content": [
+          {
+            "source_id": "PE-1",
+            "metric_code": "languages",
+            "value_numeric": null,
+            "value_text": "[]",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe1-3",
+            "started_at": "2026-09-12T04:52:23Z",
+            "notes": null,
+            "value": "[]"
+          },
+          {
+            "source_id": "PE-1",
+            "metric_code": "category_list",
+            "value_numeric": null,
+            "value_text": "[]",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe1-3",
+            "started_at": "2026-09-12T04:52:23Z",
+            "notes": null,
+            "value": "[]"
+          }
+        ],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-1",
+            "metric_code": "free_access",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe1-3",
+            "started_at": "2026-09-12T04:52:23Z",
+            "notes": null,
+            "value": "1"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-1",
+            "metric_code": "doc_links_seen",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe1-3",
+            "started_at": "2026-09-12T04:52:23Z",
+            "notes": null,
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-10",
+      "class_code": "PE",
+      "name": "AkzoNobel",
+      "url": "https://www.akzonobel.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe10manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:38:54Z",
+        "finished_at": "2026-09-12T09:38:54Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 2.0,
+      "matrix": {
+        "sitemap_products": "2 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe10manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=2 [probe-20260912-pe10-3]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-10",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe10-3",
+            "started_at": "2026-09-12T08:36:13Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-10",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe10manual",
+            "started_at": "2026-09-12T09:38:54Z",
+            "notes": "AkzoNobel corporate homepage no SDS-library link exposed at root (brand microsites Sikkens/Dulux separate; not assessed)",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-10",
+            "metric_code": "sitemap_products",
+            "value_numeric": 2.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe10-3",
+            "started_at": "2026-09-12T08:36:13Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "2 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-11",
+      "class_code": "PE",
+      "name": "PPG",
+      "url": "https://www.ppg.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe11manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:38:54Z",
+        "finished_at": "2026-09-12T09:38:54Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 146.0,
+      "matrix": {
+        "sitemap_products": "146 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe11manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=146 [probe-20260912-pe11-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-11",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe11-2",
+            "started_at": "2026-09-12T08:36:18Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-11",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe11manual",
+            "started_at": "2026-09-12T09:38:54Z",
+            "notes": "PPG corporate homepage no SDS-library link exposed at root",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-11",
+            "metric_code": "sitemap_products",
+            "value_numeric": 146.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe11-2",
+            "started_at": "2026-09-12T08:36:18Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "146 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-12",
+      "class_code": "PE",
+      "name": "Sherwin-Williams",
+      "url": "https://www.sherwin-williams.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe12manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:38:54Z",
+        "finished_at": "2026-09-12T09:38:54Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 9.0,
+      "matrix": {
+        "sitemap_products": "9 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe12manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=9 [probe-20260912-pe12-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-12",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe12-2",
+            "started_at": "2026-09-12T08:36:32Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-12",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe12manual",
+            "started_at": "2026-09-12T09:38:54Z",
+            "notes": "Sherwin-Williams Professional>Resources>Data Sheets link exposed",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-12",
+            "metric_code": "sitemap_products",
+            "value_numeric": 9.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe12-2",
+            "started_at": "2026-09-12T08:36:32Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "9 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-13",
+      "class_code": "PE",
+      "name": "Jotun",
+      "url": "https://www.jotun.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe13manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:38:55Z",
+        "finished_at": "2026-09-12T09:38:55Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 1953.0,
+      "matrix": {
+        "sitemap_products": "1953 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe13manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=1953 [probe-20260912-pe13-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-13",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe13-2",
+            "started_at": "2026-09-12T08:36:36Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-13",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe13manual",
+            "started_at": "2026-09-12T09:38:55Z",
+            "notes": "Jotun Products and services>Technical documents link exposed",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-13",
+            "metric_code": "sitemap_products",
+            "value_numeric": 1953.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe13-2",
+            "started_at": "2026-09-12T08:36:36Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "1953 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-14",
+      "class_code": "PE",
+      "name": "Hempel",
+      "url": "https://www.hempel.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe14manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:38:55Z",
+        "finished_at": "2026-09-12T09:38:55Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 3.0,
+      "matrix": {
+        "sitemap_products": "3 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe14manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=3 [probe-20260912-pe14-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-14",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe14-2",
+            "started_at": "2026-09-12T08:36:50Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-14",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe14manual",
+            "started_at": "2026-09-12T09:38:55Z",
+            "notes": "Hempel product pages offer Download Safety data sheet + Product data sheet",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-14",
+            "metric_code": "sitemap_products",
+            "value_numeric": 3.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe14-2",
+            "started_at": "2026-09-12T08:36:50Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "3 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-15",
+      "class_code": "PE",
+      "name": "Sika",
+      "url": "https://www.sika.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe15manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:37Z",
+        "finished_at": "2026-09-12T09:39:37Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe15manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe15-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-15",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe15-2",
+            "started_at": "2026-09-12T08:36:54Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-15",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe15manual",
+            "started_at": "2026-09-12T09:39:37Z",
+            "notes": "Sika corporate homepage: no SDS/document-library link in nav (only Document Basket)",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-15",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe15-2",
+            "started_at": "2026-09-12T08:36:54Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-16",
+      "class_code": "PE",
+      "name": "Sto",
+      "url": "https://www.sto.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe16manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:37Z",
+        "finished_at": "2026-09-12T09:39:37Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe16manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe16-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-16",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe16-2",
+            "started_at": "2026-09-12T08:37:08Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-16",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe16manual",
+            "started_at": "2026-09-12T09:39:37Z",
+            "notes": "STO homepage: no SDS/datasheet affordance in nav or homepage",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-16",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe16-2",
+            "started_at": "2026-09-12T08:37:08Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-17",
+      "class_code": "PE",
+      "name": "Caparol (DAW)",
+      "url": "https://www.caparol.de",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe17manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:38Z",
+        "finished_at": "2026-09-12T09:39:38Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe17manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe17-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-17",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe17-2",
+            "started_at": "2026-09-12T08:37:12Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-17",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe17manual",
+            "started_at": "2026-09-12T09:39:38Z",
+            "notes": "Caparol: 'Technische Informationen' category + Productfinder for technical data sheets",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-17",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe17-2",
+            "started_at": "2026-09-12T08:37:12Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-18",
+      "class_code": "PE",
+      "name": "Tikkurila",
+      "url": "https://www.tikkurila.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe18manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:38Z",
+        "finished_at": "2026-09-12T09:39:38Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe18manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe18-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-18",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe18-2",
+            "started_at": "2026-09-12T08:37:18Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-18",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe18manual",
+            "started_at": "2026-09-12T09:39:38Z",
+            "notes": "Tikkurila: no SDS/document-library link in nav or homepage",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-18",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe18-2",
+            "started_at": "2026-09-12T08:37:18Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-19",
+      "class_code": "PE",
+      "name": "Teknos",
+      "url": "https://www.teknos.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
+      "run": {
+        "run_key": "probe-20260912-pe19manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:38Z",
+        "finished_at": "2026-09-12T09:39:38Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 1619.0,
+      "matrix": {
+        "sitemap_products": "1619 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe19manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=1619 [probe-20260912-pe19-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-19",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe19-2",
+            "started_at": "2026-09-12T08:37:33Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-19",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe19manual",
+            "started_at": "2026-09-12T09:39:38Z",
+            "notes": "Teknos: 'Industrial products \u2014 Product information and data sheets'",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-19",
+            "metric_code": "sitemap_products",
+            "value_numeric": 1619.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe19-2",
+            "started_at": "2026-09-12T08:37:33Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "1619 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-2",
+      "class_code": "PE",
+      "name": "DIY chains (seed)",
+      "url": "https://www.coop.ch",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": false,
+      "notes": "superseded by per-site rows PE-20+ (v0.2.0 nu6); CH-DIY seeds dropped (D31 EU-only)",
+      "run": {
+        "run_key": "probe-20260912-pe2-3",
+        "status": "blocked",
+        "started_at": "2026-09-12T04:52:26Z",
+        "finished_at": "2026-09-12T04:52:26Z",
+        "notes": "https://www.coop.ch/robots.txt: HTTP 403",
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "blocked",
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe2-3"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      }
+    },
+    {
+      "id": "PE-20",
+      "class_code": "PE",
+      "name": "Hornbach DE",
+      "url": "https://www.hornbach.de",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=5",
+      "run": {
+        "run_key": "probe-20260912-pe20manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:39Z",
+        "finished_at": "2026-09-12T09:39:39Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 199354.0,
+      "matrix": {
+        "sitemap_products": "199354 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe20manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=199354 [probe-20260912-pe20-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-20",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe20-2",
+            "started_at": "2026-09-12T08:37:38Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-20",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe20manual",
+            "started_at": "2026-09-12T09:39:39Z",
+            "notes": "Hornbach homepage blocked (JS-only / bots); not assessable from root",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-20",
+            "metric_code": "sitemap_products",
+            "value_numeric": 199354.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe20-2",
+            "started_at": "2026-09-12T08:37:38Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "199354 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-21",
+      "class_code": "PE",
+      "name": "OBI DE",
+      "url": "https://www.obi.de",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=5",
+      "run": {
+        "run_key": "probe-20260912-pe21manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:39Z",
+        "finished_at": "2026-09-12T09:39:39Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe21manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe21-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-21",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe21-2",
+            "started_at": "2026-09-12T08:37:53Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-21",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe21manual",
+            "started_at": "2026-09-12T09:39:39Z",
+            "notes": "OBI: no SDS/datasheet library in nav or homepage",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-21",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe21-2",
+            "started_at": "2026-09-12T08:37:53Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-22",
+      "class_code": "PE",
+      "name": "Bauhaus DE",
+      "url": "https://www.bauhaus.info",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=5; URL corrected 2026-09-12 (bauhaus.de resolves to Bauhaus-Archiv museum)",
+      "run": {
+        "run_key": "probe-20260912-pe22manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:39Z",
+        "finished_at": "2026-09-12T09:39:39Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe22manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe22-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-22",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe22-2",
+            "started_at": "2026-09-12T08:37:59Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-22",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe22manual",
+            "started_at": "2026-09-12T09:39:39Z",
+            "notes": "www.bauhaus.de resolves to Bauhaus-Archiv museum, not the DIY retailer (bauhaus.info) - REGISTER URL LIKELY WRONG; no SDS affordance",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-22",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe22-2",
+            "started_at": "2026-09-12T08:37:59Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-23",
+      "class_code": "PE",
+      "name": "Leroy Merlin FR",
+      "url": "https://www.leroymerlin.fr",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=5",
+      "run": {
+        "run_key": "probe-20260912-pe23manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:39Z",
+        "finished_at": "2026-09-12T09:39:39Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe23manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe23-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-23",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe23-2",
+            "started_at": "2026-09-12T08:38:13Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-23",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe23manual",
+            "started_at": "2026-09-12T09:39:39Z",
+            "notes": "Leroy Merlin homepage HTTP 403; not assessable from root",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-23",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe23-2",
+            "started_at": "2026-09-12T08:38:13Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-24",
+      "class_code": "PE",
+      "name": "B&Q (diy.com)",
+      "url": "https://www.diy.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=5",
+      "run": {
+        "run_key": "probe-20260912-pe24manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:40Z",
+        "finished_at": "2026-09-12T09:39:40Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "c",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe24manual"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-24",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe24manual",
+            "started_at": "2026-09-12T09:39:40Z",
+            "notes": "diy.com footer: 'Health & safety data sheets' + 'Product information' links",
+            "value": "1 count"
+          }
+        ],
+        "priors": []
+      }
+    },
+    {
+      "id": "PE-25",
+      "class_code": "PE",
+      "name": "Epifanes",
+      "url": "https://www.epifanes.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=5",
+      "run": {
+        "run_key": "probe-20260912-pe25manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:40Z",
+        "finished_at": "2026-09-12T09:39:40Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe25manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe25-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-25",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe25-2",
+            "started_at": "2026-09-12T08:38:51Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-25",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe25manual",
+            "started_at": "2026-09-12T09:39:40Z",
+            "notes": "Epifanes: minimal homepage; no SDS/datasheet link",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-25",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe25-2",
+            "started_at": "2026-09-12T08:38:51Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-26",
+      "class_code": "PE",
+      "name": "SVB",
+      "url": "https://www.svb.de",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=5",
+      "run": {
+        "run_key": "probe-20260912-pe26manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:40Z",
+        "finished_at": "2026-09-12T09:39:40Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe26manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe26-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-26",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe26-2",
+            "started_at": "2026-09-12T08:38:55Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-26",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe26manual",
+            "started_at": "2026-09-12T09:39:40Z",
+            "notes": "svb.de: no SDS/datasheet library in nav or homepage",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-26",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe26-2",
+            "started_at": "2026-09-12T08:38:55Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-27",
+      "class_code": "PE",
+      "name": "Toplicht",
+      "url": "https://www.toplicht.de",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=5",
+      "run": {
+        "run_key": "probe-20260912-pe27manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:41Z",
+        "finished_at": "2026-09-12T09:39:41Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe27manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe27-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-27",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe27-2",
+            "started_at": "2026-09-12T08:39:09Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-27",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe27manual",
+            "started_at": "2026-09-12T09:39:41Z",
+            "notes": "Toplicht: no SDS/datasheet affordance in nav",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-27",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe27-2",
+            "started_at": "2026-09-12T08:39:09Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-28",
+      "class_code": "PE",
+      "name": "Raseglarhuset",
+      "url": "https://www.raseglarhuset.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=marine; listed_by=PE-4 seed note (BRAVA SE); listed_date=2026-09-12; inclusion=cap MARINE<=5",
+      "run": {
+        "run_key": "probe-20260912-pe28manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:41Z",
+        "finished_at": "2026-09-12T09:39:41Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe28manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe28-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-28",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe28-2",
+            "started_at": "2026-09-12T08:39:16Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-28",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe28manual",
+            "started_at": "2026-09-12T09:39:41Z",
+            "notes": "Raseglarhuset: no SDS/datasheet link on homepage",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-28",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe28-2",
+            "started_at": "2026-09-12T08:39:16Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-29",
+      "class_code": "PE",
+      "name": "Old Holland",
+      "url": "https://www.oldholland.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=6",
+      "run": {
+        "run_key": "probe-20260912-pe29manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:41Z",
+        "finished_at": "2026-09-12T09:39:41Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 4.0,
+      "matrix": {
+        "sitemap_products": "4 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe29manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=4 [probe-20260912-pe29-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-29",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe29-2",
+            "started_at": "2026-09-12T08:39:20Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-29",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe29manual",
+            "started_at": "2026-09-12T09:39:41Z",
+            "notes": "Old Holland: nav 'Library' submenu: MSDS, Health & Safety, Brochures",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-29",
+            "metric_code": "sitemap_products",
+            "value_numeric": 4.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe29-2",
+            "started_at": "2026-09-12T08:39:20Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "4 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-3",
+      "class_code": "PE",
+      "name": "B2B / trade portals (placeholder)",
+      "url": "https://example.invalid",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": false,
+      "notes": "unresolved channel \u2014 left OPEN (v0.2.0 nu3/V6); no confirmed portal URL, uncovered-channel line in the report",
+      "run": {
+        "run_key": "probe-20260912-pe3-3",
+        "status": "failed",
+        "started_at": "2026-09-12T04:52:26Z",
+        "finished_at": "2026-09-12T04:52:32Z",
+        "notes": "https://example.invalid/robots.txt: network error after retries",
+        "documents": 0,
+        "findings": 0
+      },
+      "status": "failed",
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe3-3"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      }
+    },
+    {
+      "id": "PE-30",
+      "class_code": "PE",
+      "name": "Zecchi",
+      "url": "https://www.zecchi.it",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=6",
+      "run": {
+        "run_key": "probe-20260912-pe30manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:42Z",
+        "finished_at": "2026-09-12T09:39:42Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 60.0,
+      "matrix": {
+        "sitemap_products": "60 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe30manual"
+      },
+      "access_line": "robots allow-all (404/empty) \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=60 [probe-20260912-pe30-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-30",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allow-all (404/empty)",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe30-2",
+            "started_at": "2026-09-12T08:39:34Z",
+            "notes": null,
+            "value": "allow-all (404/empty)"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-30",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe30manual",
+            "started_at": "2026-09-12T09:39:42Z",
+            "notes": "Zecchi: no SDS/datasheet link on homepage",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-30",
+            "metric_code": "sitemap_products",
+            "value_numeric": 60.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe30-2",
+            "started_at": "2026-09-12T08:39:34Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "60 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-31",
+      "class_code": "PE",
+      "name": "Kremer Pigmente",
+      "url": "https://www.kremer-pigmente.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=6",
+      "run": {
+        "run_key": "probe-20260912-pe31manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:42Z",
+        "finished_at": "2026-09-12T09:39:42Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "c",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe31manual"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-31",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe31manual",
+            "started_at": "2026-09-12T09:39:42Z",
+            "notes": "Kremer-Pigmente homepage HTTP 403; not assessable from root",
+            "value": "0 count"
+          }
+        ],
+        "priors": []
+      }
+    },
+    {
+      "id": "PE-32",
+      "class_code": "PE",
+      "name": "Michael Harding",
+      "url": "https://www.michaelharding.co.uk",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=6",
+      "run": {
+        "run_key": "probe-20260912-pe32manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:42Z",
+        "finished_at": "2026-09-12T09:39:42Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 0.0,
+      "matrix": {
+        "sitemap_products": "0 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe32manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=0 [probe-20260912-pe32-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-32",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe32-2",
+            "started_at": "2026-09-12T08:39:51Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-32",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe32manual",
+            "started_at": "2026-09-12T09:39:42Z",
+            "notes": "Michael Harding: nav 'Safety Data Sheets' page",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-32",
+            "metric_code": "sitemap_products",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe32-2",
+            "started_at": "2026-09-12T08:39:51Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-33",
+      "class_code": "PE",
+      "name": "Winsor & Newton",
+      "url": "https://www.winsornewton.com",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=6",
+      "run": {
+        "run_key": "probe-20260912-pe33manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:42Z",
+        "finished_at": "2026-09-12T09:39:42Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 1541.0,
+      "matrix": {
+        "sitemap_products": "1541 count",
+        "sds_library_visible": "0 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe33manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=1541 [probe-20260912-pe33-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-33",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe33-2",
+            "started_at": "2026-09-12T08:39:56Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-33",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe33manual",
+            "started_at": "2026-09-12T09:39:42Z",
+            "notes": "Winsor & Newton: no SDS/datasheet link in nav or footer (only generic Resources)",
+            "value": "0 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-33",
+            "metric_code": "sitemap_products",
+            "value_numeric": 1541.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe33-2",
+            "started_at": "2026-09-12T08:39:56Z",
+            "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
+            "value": "1541 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-34",
+      "class_code": "PE",
+      "name": "Sennelier",
+      "url": "https://www.sennelier.fr",
+      "access_method_code": "scrape",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=6",
+      "run": {
+        "run_key": "probe-20260912-pe34manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:39:43Z",
+        "finished_at": "2026-09-12T09:39:43Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": "b",
+      "counted": 2.0,
+      "matrix": {
+        "sitemap_products": "2 count",
+        "sds_library_visible": "1 count",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe34manual"
+      },
+      "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: sitemap_products=2 [probe-20260912-pe34-2]"
+      ],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-34",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe34-2",
+            "started_at": "2026-09-12T08:40:10Z",
+            "notes": null,
+            "value": "allowed"
+          }
+        ],
+        "content": [],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-34",
+            "metric_code": "sds_library_visible",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-pe34manual",
+            "started_at": "2026-09-12T09:39:43Z",
+            "notes": "Sennelier: 'Le Centre de Ressources' resource/technical-information library",
+            "value": "1 count"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-34",
+            "metric_code": "sitemap_products",
+            "value_numeric": 2.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe34-2",
+            "started_at": "2026-09-12T08:40:10Z",
+            "notes": "generic product-URL fallback (no register token)",
+            "value": "2 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "PE-4",
+      "class_code": "PE",
+      "name": "Marine chandlers & art-supply shops (seed)",
+      "url": "https://www.toplicht.de",
+      "access_method_code": "scrape",
+      "verification_status_code": "partially_verified",
+      "active": false,
+      "notes": "superseded by per-site rows PE-25+ (v0.2.0 nu6); sites live on as PE-26/PE-27/PE-29+",
+      "run": {
+        "run_key": "probe-20260912-pe4-3",
+        "status": "done",
+        "started_at": "2026-09-12T04:52:32Z",
+        "finished_at": "2026-09-12T04:52:34Z",
+        "notes": null,
+        "documents": 1,
+        "findings": 9
+      },
+      "status": "done",
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "0 count",
+        "doc_links_seen": "0 count",
+        "walk_budget_exhausted": "0",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-pe4-3"
+      },
+      "access_line": "robots allowed \u00b7 terms link present: https://www.toplicht.de/informationen/agb/ \u00b7 rate limit unknown \u2014 polite default <= 1 req / 2 s \u00b7 free access 1",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages [\"de\", \"en\", \"nl\"]",
+      "counts_line": "walk budget: within budget",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [
+          {
+            "source_id": "PE-4",
+            "metric_code": "robots",
+            "value_numeric": null,
+            "value_text": "allowed",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe4-3",
+            "started_at": "2026-09-12T04:52:32Z",
+            "notes": null,
+            "value": "allowed"
+          },
+          {
+            "source_id": "PE-4",
+            "metric_code": "terms",
+            "value_numeric": null,
+            "value_text": "link present: https://www.toplicht.de/informationen/agb/",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe4-3",
+            "started_at": "2026-09-12T04:52:32Z",
+            "notes": null,
+            "value": "link present: https://www.toplicht.de/informationen/agb/"
+          },
+          {
+            "source_id": "PE-4",
+            "metric_code": "rate_limit",
+            "value_numeric": null,
+            "value_text": "unknown \u2014 polite default <= 1 req / 2 s",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe4-3",
+            "started_at": "2026-09-12T04:52:32Z",
+            "notes": null,
+            "value": "unknown \u2014 polite default <= 1 req / 2 s"
+          }
+        ],
+        "content": [
+          {
+            "source_id": "PE-4",
+            "metric_code": "languages",
+            "value_numeric": null,
+            "value_text": "[\"de\", \"en\", \"nl\"]",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe4-3",
+            "started_at": "2026-09-12T04:52:32Z",
+            "notes": null,
+            "value": "[\"de\", \"en\", \"nl\"]"
+          },
+          {
+            "source_id": "PE-4",
+            "metric_code": "category_list",
+            "value_numeric": null,
+            "value_text": "[]",
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe4-3",
+            "started_at": "2026-09-12T04:52:32Z",
+            "notes": null,
+            "value": "[]"
+          }
+        ],
+        "counts": [],
+        "availability": [
+          {
+            "source_id": "PE-4",
+            "metric_code": "free_access",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": null,
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe4-3",
+            "started_at": "2026-09-12T04:52:32Z",
+            "notes": null,
+            "value": "1"
+          }
+        ],
+        "priors": [
+          {
+            "source_id": "PE-4",
+            "metric_code": "doc_links_seen",
+            "value_numeric": 0.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260912-pe4-3",
+            "started_at": "2026-09-12T04:52:32Z",
+            "notes": null,
+            "value": "0 count"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ST-1",
+      "class_code": "ST",
+      "name": "ECHA PCN statistics",
+      "url": "https://echa.europa.eu",
+      "access_method_code": "manual",
+      "verification_status_code": "open",
+      "active": false,
+      "notes": "formulation counts (hazardous mixtures); manual-web via probe record (locate aggregates) - active=0 per ENG review A1",
+      "run": null,
+      "status": null,
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      }
+    },
+    {
+      "id": "ST-2",
+      "class_code": "ST",
+      "name": "Nordic SPIN (DK/SE/NO/FI)",
+      "url": "http://spin2000.net/?page_id=54",
+      "access_method_code": "download",
+      "verification_status_code": "partially_verified",
+      "active": true,
+      "notes": "preparation counts, lead-CAS incidence; register URL = DB download page ?page_id=54 (od9 fix); extraction path OPEN (mdbtools)",
+      "run": {
+        "run_key": "probe-20260912-st2-7",
+        "status": "failed",
+        "started_at": "2026-09-12T08:40:14Z",
+        "finished_at": "2026-09-12T08:41:50Z",
+        "notes": "http://spin2000.net/robots.txt: network error after retries",
+        "documents": 0,
+        "findings": 0
+      },
+      "status": "failed",
+      "tier": "d",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-st2-7"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      }
+    },
+    {
+      "id": "ST-3",
+      "class_code": "ST",
+      "name": "Eurostat PRODCOM / SBS",
+      "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sbs_na_ind_r2",
+      "access_method_code": "api",
+      "verification_status_code": "verified",
+      "active": false,
+      "notes": "NACE 20.30 production values/producer counts; producers_registered via manual record this unit; full PRODCOM/SBS integration deferred (TODOS.md)",
+      "run": {
+        "run_key": "probe-20260912-st3manual",
+        "status": "done",
+        "started_at": "2026-09-12T09:38:11Z",
+        "finished_at": "2026-09-12T09:38:11Z",
+        "notes": null,
+        "documents": 0,
+        "findings": 1
+      },
+      "status": "done",
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "3200 count",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "probe-20260912-st3manual"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [
+        "priors: producers_registered=3200 [probe-20260912-st3manual]"
+      ],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": [
+          {
+            "source_id": "ST-3",
+            "metric_code": "producers_registered",
+            "value_numeric": 3200.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "manual",
+            "run_key": "probe-20260912-st3manual",
+            "started_at": "2026-09-12T09:38:11Z",
+            "notes": "Eurostat sbs_na_ind_r2, NACE C20.30 manufacture of paints/varnishes/similar coatings, printing ink and mastics; indic_sb=V11110 (number of enterprises); geo=EU27_2020; time=2020 (latest available). CAVEAT: superset \u2014 includes printing ink and mastics; not lead-specific.",
+            "value": "3200 count"
+          }
+        ]
+      }
+    }
+  ],
+  "anchor_candidates": [
+    {
+      "source_id": "CS-2",
+      "metric_code": "export_rows",
+      "value_numeric": 1.0,
+      "unit_code": "count",
+      "run_key": "probe-20260911-cs2-2"
+    },
+    {
+      "source_id": "CS-2",
+      "metric_code": "records_hs3208",
+      "value_numeric": 278.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-cs2-10"
+    },
+    {
+      "source_id": "CS-2",
+      "metric_code": "records_hs3209",
+      "value_numeric": 264.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-cs2-10"
+    },
+    {
+      "source_id": "CS-2",
+      "metric_code": "records_hs3213",
+      "value_numeric": 228.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-cs2-10"
+    },
+    {
+      "source_id": "PE-1",
+      "metric_code": "products_listed",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe1-3"
+    },
+    {
+      "source_id": "PE-10",
+      "metric_code": "sitemap_products",
+      "value_numeric": 2.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe10-3"
+    },
+    {
+      "source_id": "PE-11",
+      "metric_code": "sitemap_products",
+      "value_numeric": 146.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe11-2"
+    },
+    {
+      "source_id": "PE-12",
+      "metric_code": "sitemap_products",
+      "value_numeric": 9.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe12-2"
+    },
+    {
+      "source_id": "PE-13",
+      "metric_code": "sitemap_products",
+      "value_numeric": 1953.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe13-2"
+    },
+    {
+      "source_id": "PE-14",
+      "metric_code": "sitemap_products",
+      "value_numeric": 3.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe14-2"
+    },
+    {
+      "source_id": "PE-15",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe15-2"
+    },
+    {
+      "source_id": "PE-16",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe16-2"
+    },
+    {
+      "source_id": "PE-17",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe17-2"
+    },
+    {
+      "source_id": "PE-18",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe18-2"
+    },
+    {
+      "source_id": "PE-19",
+      "metric_code": "sitemap_products",
+      "value_numeric": 1619.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe19-2"
+    },
+    {
+      "source_id": "PE-20",
+      "metric_code": "sitemap_products",
+      "value_numeric": 199354.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe20-2"
+    },
+    {
+      "source_id": "PE-21",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe21-2"
+    },
+    {
+      "source_id": "PE-22",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe22-2"
+    },
+    {
+      "source_id": "PE-23",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe23-2"
+    },
+    {
+      "source_id": "PE-25",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe25-2"
+    },
+    {
+      "source_id": "PE-26",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe26-2"
+    },
+    {
+      "source_id": "PE-27",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe27-2"
+    },
+    {
+      "source_id": "PE-28",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe28-2"
+    },
+    {
+      "source_id": "PE-29",
+      "metric_code": "sitemap_products",
+      "value_numeric": 4.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe29-2"
+    },
+    {
+      "source_id": "PE-30",
+      "metric_code": "sitemap_products",
+      "value_numeric": 60.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe30-2"
+    },
+    {
+      "source_id": "PE-32",
+      "metric_code": "sitemap_products",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe32-2"
+    },
+    {
+      "source_id": "PE-33",
+      "metric_code": "sitemap_products",
+      "value_numeric": 1541.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe33-2"
+    },
+    {
+      "source_id": "PE-34",
+      "metric_code": "sitemap_products",
+      "value_numeric": 2.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe34-2"
+    },
+    {
+      "source_id": "PE-4",
+      "metric_code": "products_listed",
+      "value_numeric": 0.0,
+      "unit_code": "count",
+      "run_key": "probe-20260912-pe4-3"
+    }
+  ],
+  "source_activity": [
+    {
+      "source_id": "AS-1",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 1,
+      "finding_count": 1
+    },
+    {
+      "source_id": "CS-1",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 7,
+      "finding_count": 0
+    },
+    {
+      "source_id": "CS-2",
+      "first_retrieved_at": "2026-09-11T03:49:20Z",
+      "last_retrieved_at": "2026-09-12T08:33:35Z",
+      "run_count": 14,
+      "finding_count": 39
+    },
+    {
+      "source_id": "PE-1",
+      "first_retrieved_at": "2026-09-11T03:49:55Z",
+      "last_retrieved_at": "2026-09-11T03:49:55Z",
+      "run_count": 7,
+      "finding_count": 21
+    },
+    {
+      "source_id": "PE-10",
+      "first_retrieved_at": "2026-09-12T08:35:44Z",
+      "last_retrieved_at": "2026-09-12T08:35:44Z",
+      "run_count": 5,
+      "finding_count": 5
+    },
+    {
+      "source_id": "PE-11",
+      "first_retrieved_at": "2026-09-12T08:36:32Z",
+      "last_retrieved_at": "2026-09-12T08:36:32Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-12",
+      "first_retrieved_at": "2026-09-12T08:36:36Z",
+      "last_retrieved_at": "2026-09-12T08:36:36Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-13",
+      "first_retrieved_at": "2026-09-12T08:36:50Z",
+      "last_retrieved_at": "2026-09-12T08:36:50Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-14",
+      "first_retrieved_at": "2026-09-12T08:36:54Z",
+      "last_retrieved_at": "2026-09-12T08:36:54Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-15",
+      "first_retrieved_at": "2026-09-12T08:37:08Z",
+      "last_retrieved_at": "2026-09-12T08:37:08Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-16",
+      "first_retrieved_at": "2026-09-12T08:37:12Z",
+      "last_retrieved_at": "2026-09-12T08:37:12Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-17",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-18",
+      "first_retrieved_at": "2026-09-12T08:37:33Z",
+      "last_retrieved_at": "2026-09-12T08:37:33Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-19",
+      "first_retrieved_at": "2026-09-12T08:37:38Z",
+      "last_retrieved_at": "2026-09-12T08:37:38Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-2",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 7,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-20",
+      "first_retrieved_at": "2026-09-12T08:37:53Z",
+      "last_retrieved_at": "2026-09-12T08:37:53Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-21",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-22",
+      "first_retrieved_at": "2026-09-12T08:38:13Z",
+      "last_retrieved_at": "2026-09-12T08:38:13Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-23",
+      "first_retrieved_at": "2026-09-12T08:38:32Z",
+      "last_retrieved_at": "2026-09-12T08:38:32Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-24",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 4,
+      "finding_count": 1
+    },
+    {
+      "source_id": "PE-25",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-26",
+      "first_retrieved_at": "2026-09-12T08:39:09Z",
+      "last_retrieved_at": "2026-09-12T08:39:09Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-27",
+      "first_retrieved_at": "2026-09-12T08:39:16Z",
+      "last_retrieved_at": "2026-09-12T08:39:16Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-28",
+      "first_retrieved_at": "2026-09-12T08:39:20Z",
+      "last_retrieved_at": "2026-09-12T08:39:20Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-29",
+      "first_retrieved_at": "2026-09-12T08:39:34Z",
+      "last_retrieved_at": "2026-09-12T08:39:34Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-3",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 7,
+      "finding_count": 0
+    },
+    {
+      "source_id": "PE-30",
+      "first_retrieved_at": "2026-09-12T08:39:47Z",
+      "last_retrieved_at": "2026-09-12T08:39:47Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-31",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 4,
+      "finding_count": 2
+    },
+    {
+      "source_id": "PE-32",
+      "first_retrieved_at": "2026-09-12T08:39:56Z",
+      "last_retrieved_at": "2026-09-12T08:39:56Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-33",
+      "first_retrieved_at": "2026-09-12T08:40:10Z",
+      "last_retrieved_at": "2026-09-12T08:40:10Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-34",
+      "first_retrieved_at": "2026-09-12T08:40:14Z",
+      "last_retrieved_at": "2026-09-12T08:40:14Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "PE-4",
+      "first_retrieved_at": "2026-09-11T03:50:04Z",
+      "last_retrieved_at": "2026-09-12T04:52:34Z",
+      "run_count": 7,
+      "finding_count": 21
+    },
+    {
+      "source_id": "ST-1",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "ST-2",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 11,
+      "finding_count": 0
+    },
+    {
+      "source_id": "ST-3",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 1,
+      "finding_count": 1
+    }
+  ]
+}

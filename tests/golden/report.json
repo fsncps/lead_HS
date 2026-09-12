@@ -1,17 +1,68 @@
 {
   "report": {
     "title": "Source feasibility census report",
-    "framing": "This report answers two study questions: (Q1) how many paint/varnish products each registered source exposes \u2014 observed listings, a floor, never a market total \u2014 and (Q2) for how many of them SDS-type documentation is reachable. Trade-statistics rows are volume context: tariff-line flows, never products. These remain source-feasibility metrics only: product and lead prevalence are M2+ deliverables and are never implied here. The tool, the database and the reports carry product data only (Strategy MASTER D27): inactive register rows appear in the matrix without findings.",
+    "framing": "This report answers two study questions: (Q1) how many paint/varnish products each registered source exposes \u2014 observed listings, a floor, never a market total \u2014 and (Q2) for how many of them SDS-type documentation is reachable. The N1 block adds market-size anchors (trade sums, register counts); the N1 range itself is an estimate stated in the method sheet, never a DB count. Trade-statistics rows are volume context: tariff-line flows, never products. These remain source-feasibility metrics only: product and lead prevalence are M2+ deliverables and are never implied here. The tool, the database and the reports carry product data only (Strategy MASTER D27): inactive register rows appear in the matrix without findings.",
     "legend": [
       "\u201c\u2014\u201d = metric absent (source not queried for it); 0 = queried, empty result.",
       "Metric values cite the run_key of the done run they come from.",
-      "Status reflects the latest census run per source (dry-run runs excluded); blocked/failed runs are shown with their notes.",
-      "products_listed / doc_links_seen are walk floors (BFS depth \u2264 3, page budget \u2264 12 incl. homepage); walk budget: exhausted marks a budget-limited walk \u2014 the floor is then a weaker lower bound.",
-      "records_hs* columns are volume context: tariff-line flows, not products (D28 grain rule)."
+      "Status reflects the latest census/recon run per source (dry-run runs excluded); blocked/failed runs are shown with their notes.",
+      "Access tiers (active sources): (a) dataset/register access counted \u00b7 (b) sitemap-visible counted \u00b7 (c) visible but uncounted without scraping \u00b7 (d) blocked/unknown. N2 sums tiers (a)+(b) only.",
+      "N3 pairs doc-bearing counts with the site count of sds_library_visible = 1 \u2014 a site count, not a product count (labeled as such).",
+      "sitemap_products is a recon floor (robots-compliant, counts only; index/size caps render it partial \u2014 \u201cfloor partial\u201d in the notes).",
+      "records_hs*/trade_* columns are volume context: tariff-line flows, not products (D28 grain rule); trade quantities carry the API's supplementary unit (see finding notes).",
+      "Inactive register rows never enter N2/N3 sums; counted-but-excluded sources are listed explicitly."
     ],
     "no_runs_line": "No census runs yet \u2014 run `make probe-dry` to plan or `GO=1 make probe` to execute.",
     "source_filter": null
   },
+  "numbers": {
+    "tier_sources": {
+      "a": [],
+      "b": [],
+      "c": [
+        "CX-1",
+        "PX-1"
+      ],
+      "d": [
+        "CX-2",
+        "CX-3",
+        "CX-4",
+        "PX-2",
+        "PX-3",
+        "PX-4",
+        "PX-5",
+        "PX-6",
+        "PX-7",
+        "PX-8",
+        "PX-9",
+        "SX-1"
+      ]
+    },
+    "tier_sizes": {
+      "a": 0,
+      "b": 0,
+      "c": 2,
+      "d": 12
+    },
+    "n2_total": null,
+    "n2_components": [],
+    "n3_doc_total": 1.0,
+    "n3_doc_sources": [
+      {
+        "source_id": "PX-1",
+        "value": 1.0
+      }
+    ],
+    "n3_sds_site_count": 0,
+    "n3_sds_sites": [],
+    "excluded_counted": [],
+    "zero_states": {
+      "no_counted_sources": true,
+      "no_sds_sites": true,
+      "no_doc_counts": false
+    }
+  },
+  "anchors": [],
   "sources": [
     {
       "id": "CX-1",
@@ -32,7 +83,17 @@
         "findings": 5
       },
       "status": "done",
+      "tier": "c",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -44,11 +105,14 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "3 count",
+        "census_status": "\u2014",
         "last_run_key": "probe-20260910-cx1"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access 1",
       "content_line": "format CSV; columns: hs_code, year, partner, value \u00b7 granularity CN8 x partner x year (observed columns) \u00b7 coverage to confirm (year column present) \u00b7 languages \u2014",
       "counts_line": "export rows 3 count",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [
@@ -116,7 +180,8 @@
             "notes": null,
             "value": "1"
           }
-        ]
+        ],
+        "priors": []
       }
     },
     {
@@ -130,7 +195,17 @@
       "notes": "bad layout",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -142,16 +217,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -165,7 +244,17 @@
       "notes": "json",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -177,16 +266,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -200,7 +293,17 @@
       "notes": "network fail",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -212,16 +315,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -243,7 +350,17 @@
         "findings": 14
       },
       "status": "done",
+      "tier": "c",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "6 count",
         "doc_links_seen": "1 count",
         "walk_budget_exhausted": "0",
@@ -255,11 +372,14 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "probe-20260910-px1"
       },
       "access_line": "robots allowed \u00b7 terms link present: /terms \u00b7 rate limit unknown \u2014 polite default <= 1 req / 2 s \u00b7 free access 1",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages [\"de\", \"fr\"]",
       "counts_line": "catalog 500 count \u00b7 categories: /cat/wandfarben=2, /cat/grundierung=0 \u00b7 walk budget: within budget",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [
           {
@@ -400,6 +520,20 @@
             "notes": "1/2",
             "value": "1 count"
           }
+        ],
+        "priors": [
+          {
+            "source_id": "PX-1",
+            "metric_code": "doc_links_seen",
+            "value_numeric": 1.0,
+            "value_text": null,
+            "unit_code": "count",
+            "method_code": "scrape",
+            "run_key": "probe-20260910-px1",
+            "started_at": "2026-09-10T12:00:00Z",
+            "notes": null,
+            "value": "1 count"
+          }
         ]
       }
     },
@@ -414,7 +548,17 @@
       "notes": "robots deny",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -426,16 +570,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -449,7 +597,17 @@
       "notes": "403",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -461,16 +619,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -484,7 +646,17 @@
       "notes": "429",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -496,16 +668,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -519,7 +695,17 @@
       "notes": "429-then-ok",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -531,16 +717,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -554,7 +744,17 @@
       "notes": "parse error",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -566,16 +766,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -589,7 +793,17 @@
       "notes": "hostile",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -601,16 +815,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -624,7 +842,17 @@
       "notes": "hostile",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -636,16 +864,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -659,7 +891,17 @@
       "notes": "404",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -671,16 +913,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -694,7 +940,17 @@
       "notes": "manual-web via probe record",
       "run": null,
       "status": null,
+      "tier": null,
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -706,16 +962,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     },
     {
@@ -729,7 +989,17 @@
       "notes": "mdbtools",
       "run": null,
       "status": null,
+      "tier": "d",
+      "counted": null,
       "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
         "products_listed": "\u2014",
         "doc_links_seen": "\u2014",
         "walk_budget_exhausted": "\u2014",
@@ -741,16 +1011,20 @@
         "records_hs3209": "\u2014",
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
+        "census_status": "\u2014",
         "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
       "sections": {
         "access": [],
         "content": [],
         "counts": [],
-        "availability": []
+        "availability": [],
+        "priors": []
       }
     }
   ],

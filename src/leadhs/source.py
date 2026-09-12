@@ -17,7 +17,7 @@ from typing import Optional
 from urllib.parse import urlparse
 
 _ID_RE = re.compile(r"^[A-Z]{2}-[0-9]+$")
-_VALID_CLASSES = {"CS", "PE", "LG", "ST", "LI"}
+_VALID_CLASSES = {"CS", "PE", "LG", "ST", "LI", "AS"}
 _REQUIRED = {
     "id",
     "class_code",

@@ -165,6 +165,15 @@ bundle.**
   notarization costs (Apple Developer ~USD 99/yr). Built only then,
   never speculatively.
 
+**Update 2026-09-12 (D32):** that recipient has materialized as an
+explicit goal — **vanilla Windows must be served in v0.3**: an install
+that needs no make and no preinstalled Python, via a self-contained
+per-OS artifact (PyInstaller bundle or equivalent single-file
+installer; mechanism decided in v0.3 design). The contingency above is
+thereby promoted to planned scope; PyPI publication stays unnecessary
+and GitHub release assets remain the channel — the bundled Windows
+artifact ships alongside the wheel.
+
 ## Report concept
 
 - **Generated technical report** (jinja2 → Markdown; PDF via pandoc when
