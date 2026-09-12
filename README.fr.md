@@ -6,163 +6,160 @@ source_updated: 2026-09-12
 
 Sprachen / Languages / Langues : [EN](README.md) · [DE](README.de.md) · **FR**
 
-# lead_HS — Le plomb dans les peintures : commerce extérieur suisse et contexte Cassis-de-Dijon (HS 3208 / 3209)
+# lead_HS — Le plomb dans les peintures sur le marché de l'UE (HS 3208 / 3209)
 
-Une étude **fondée sur les documents**, qui construit une base de discussion à l'attention des décideurs : les peintures contenant du plomb sous les positions tarifaires **3208** (en phase solvant) et **3209** (en phase aqueuse) parviennent-elles sur les **marchés de l'UE et de la Suisse**, quelle est leur fréquence — et l'**exception Cassis-de-Dijon** pour les peintures au plomb a-t-elle encore un champ d'application factuel ?
+Une **étude fondée sur les documents** consacrée au **marché de l'UE**
+des peintures et vernis sous les positions tarifaires **3208** (en
+phase solvant) et **3209** (en phase aqueuse) : combien de produits y
+sont proposés, pour combien d'entre eux une documentation détaillée —
+au premier chef les **fiches de données de sécurité (FDS)** — peut
+être obtenue, et ce que cette documentation révèle de la **teneur en
+plomb**.
 
-**L'objet principal est le marché de l'UE** : quelles peintures au plomb s'y trouvent légalement. L'attente implicite est qu'il n'y en a **aucune** — que l'hypothèse européenne « pratiquement aucune, c'est réglementé » se vérifie — et l'étude la teste à l'aune de la documentation produit. La **règle suisse des 100 ppm** constitue une métrique *additionnelle* par-dessus : on s'attend à ce qu'elle soit effective via le contrôle cantonal du marché, et même une peinture au plomb conforme au droit de l'UE peut la dépasser — la couture que l'exception protège.
-
-Tout repose sur des documents accessibles au public — fiches de données de sécurité, statistiques douanières, textes juridiques, catalogues de producteurs. **Pas de laboratoire, pas d'échantillons achetés, pas d'études de marché payantes.** Coût minimal par conception.
+L'étude s'inscrit dans le contexte de l'**exception
+Cassis-de-Dijon** suisse pour les peintures contenant du plomb et de
+la législation et des processus décisionnels associés, auxquels elle
+apporte des chiffres de marché documentés. Elle repose exclusivement
+sur des documents accessibles au public : **pas de laboratoire, pas
+d'échantillons physiques, pas de sources de données payantes.**
 
 > **Kurzfassung / Résumé (DE/FR) :**
-> [`docs/management_summary.md`](docs/management_summary.md) — synthèse de gestion bilingue à l'attention des décideurs ; document vivant, maintenu en permanence à jour.
+> [`docs/management_summary.md`](docs/management_summary.md) — synthèse
+> de gestion bilingue à l'attention des décideurs.
 
-*Les termes spécialisés sont expliqués à leur première utilisation. Les documents d'approfondissement liés ci-dessous portent le détail ; les documents méthodologie et sources de données sont eux aussi rédigés pour des lecteurs non techniques, chacun avec un glossaire en langage clair.*
+*Les documents méthodologie et sources de données liés ci-dessous sont
+rédigés en langage clair pour des lecteurs non spécialistes, chacun
+avec un glossaire ; les termes spécialisés sont également expliqués à
+leur première utilisation.*
 
-## La question
+## Les questions
 
-La Suisse n'est ni dans l'UE ni dans l'EEE. Son marché de la peinture est alimenté par la production nationale, les importations de l'UE et les importations de pays tiers — chacune régie différemment. L'étude demande :
+1. **Combien** de produits de peinture le marché de l'UE compte-t-il
+   sous HS 3208/3209 ? Les statistiques douanières comptent des tonnes
+   et des euros, et aucun registre de produits n'existe — l'étude
+   compte donc les **formulations de base** (une recette, quel que
+   soit le nombre de teintes ou de contenants vendus) et reconstitue
+   la taille du marché à partir de plusieurs sources officielles
+   indépendantes.
+2. **Pour combien de produits une documentation détaillée peut-elle
+   être obtenue** — FDS et spécifications comparables — et par
+   quelles sources ?
+3. **Que révèle cette documentation sur le plomb** — comme pigment de
+   couleur, inhibiteur de rouille ou siccatif — sur un échantillon
+   significatif de produits ?
 
-1. Quels produits de peinture sur le **marché de l'UE** contiennent du plomb **selon leur propre documentation** — comme pigment, inhibiteur de rouille ou agent siccatif ?
-2. Lesquels sont **conformes au droit de l'UE** (et pourraient donc entrer en Suisse sous Cassis de Dijon) par opposition à **non conformes au droit de l'UE** (et ne devraient pas être sur le marché du tout) ?
-3. Combien de produits de peinture y a-t-il réellement sur le **marché de l'UE** — et combien sont atteignables par la documentation publique ?
-4. Où se trouvent les coutures entre marchandises conformes au droit de l'UE, l'exception suisse au plomb et les importations de pays tiers ?
+## Méthode
 
-Des enquêtes sur le plomb dans les peintures existent pour de nombreux pays (une étude mexicaine de 2026 a trouvé 55 % des peintures au-dessus de 90 ppm de plomb) — **mais aucune pour l'UE/l'EEE, et aucune pour la Suisse**. L'hypothèse européenne « pratiquement aucune, c'est réglementé » n'a jamais été testée contre la documentation produit — et la Suisse se situe en partie en dehors des règles de l'UE sur lesquelles cette hypothèse repose.
+L'étude procède en trois temps : établir la taille du marché, obtenir
+la documentation d'un échantillon significatif, analyser.
 
-## La méthode en termes simples : un tamis qui sépare ce qui peut être là de ce qui ne devrait pas l'être
+- Les documents produit sont collectés auprès de sources publiques —
+  pages de fabricants et de détaillants, registres publics,
+  statistiques officielles — et chaque FDS est vérifiée contre un
+  dictionnaire fixe de composés du plomb.
+- Les constats suspects sont recoupés avec des documents indépendants
+  concernant le même produit (fiches techniques, textes d'étiquetage,
+  versions antérieures de FDS). Pas de laboratoire : la documentation
+  constitue la preuve.
+- **Une limite est énoncée d'emblée :** les FDS ne déclarent les
+  composés de plomb classifiés qu'à partir de 0,1 %, alors que
+  l'interdiction suisse s'applique dès 0,01 % (100 ppm — parties par
+  million) de plomb total. La méthode documentaire ne voit donc que le
+  plomb *déclaré*, pas le plomb *total* ; cet angle mort accompagne
+  chaque livrable.
 
-L'étude fonctionne comme un filtre. Nous collectons des documents produit — fiches de données de sécurité (FDS) et fiches techniques — auprès de sources publiques et passons chacun au tamis :
+Méthode complète, en langage clair avec glossaire :
+[document méthodologie](docs/plan/3SM/10_STRATEGY/METHODOLOGY.fr.md).
 
-1. **Collecter.** Nous lisons les FDS et les fiches de spécifications produit sur les sites des fabricants, les portails de détaillants et B2B, et chez les fournisseurs de niche (accastillage marine, boutiques d'art) — collecte respectueuse. Pas de laboratoire, pas d'échantillons achetés.
-2. **Dépister le plomb.** Chaque fiche est vérifiée contre un dictionnaire fixe de composés du plomb — pigments, inhibiteurs de corrosion, siccatifs.
-3. **Filtrer selon la légalité UE.** C'est le tamis. Un usage du plomb *illégal dans l'UE* ne peut pas se trouver légalement sur le marché de l'UE ; il sort du tamis — soit c'est un listing réservé à l'export chez un fournisseur de l'UE, un listing obsolète, ou une violation de conformité. Chaque cas est enregistré comme constat, jamais écarté en silence.
-4. **Ce qui survit** = les peintures au plomb *conformes au droit de l'UE*. C'est exactement la population visée par l'exception Cassis-de-Dijon.
+## Contexte juridique
 
-Nous attendons des deux flux des comportements différents :
+Le **principe Cassis-de-Dijon** (repris unilatéralement par la Suisse
+en 2010, LOTC art. 16a) : les produits légalement vendus dans l'UE
+peuvent en règle générale aussi être vendus en Suisse. Ses exceptions
+sont cataloguées dans l'**OPPr** (RS 946.513.8) ; la première rubrique
+concerne les **peintures contenant du plomb** et maintient la limite
+suisse plus stricte pour les importations (ORRChim, annexe 2.8 :
+interdiction dès 0,01 % de plomb total). Le catalogue est réexaminé
+tous les cinq ans, la dernière fois en 2023, sous la conduite du SECO.
 
-| Flux | Attente | Pourquoi |
-|---|---|---|
-| **Usages du plomb illégaux dans l'UE** (chromates de plomb, blanc de plomb dans les peintures) | **≈ zéro** sur le marché de l'UE depuis 2022 | autorisations refusées ; interdits dans les peintures |
-| **Usages du plomb légaux dans l'UE** (primaires au minium, siccatifs au plomb, couleurs au plomb artistiques) | **petit mais non nul** | non restreints dans l'UE ; déjà documentés dans des niches |
+L'étude fournit dans ce contexte des chiffres de marché documentés ;
+c'est une étude documentaire qui ne prend pas position sur la
+réglementation elle-même. La Suisse n'intervient dans l'étude que
+comme ce cadre réglementaire — le marché étudié est celui de l'UE.
 
-La **règle suisse des 100 ppm** est ensuite une métrique *additionnelle* : même une peinture au plomb conforme au droit de l'UE peut dépasser l'interdiction suisse — la couture que l'exception protège.
+## Étape actuelle : reconnaissance du paysage des données
 
-**Une limite honnête, dite d'emblée :** les FDS déclarent les composés de plomb classifiés à partir de **0,1 %**, tandis que l'interdiction suisse s'applique dès **0,01 % (100 ppm)**. Le tamis ne voit donc que le plomb *déclaré*, pas le plomb *total* — une peinture peut être conforme au droit de l'UE, entièrement documentée, et dépasser invisiblement l'interdiction suisse. Cet angle mort accompagne chaque livrable.
+Avant toute collecte de données produit, l'étude cartographie son
+**paysage des données** : quelles sources couvrent le marché de la
+peinture de l'UE, à quelle échelle, et avec quel accès à la
+documentation produit.
 
-### Comment l'étude est organisée
+Une première passe de reconnaissance le 12 septembre 2026 a couvert
+les sources semences : trois achevées, une bloquée, trois en échec.
+Chaque résultat, y compris les refus d'accès, est consigné avec sa
+cause, et l'audit de provenance de la base passe.
 
-- **Les statistiques commerciales de l'UE** (flux d'importation/exportation pour 3208/3209) structurent le marché et ses provenances.
-- **Les catalogues de produits** (producteurs, détaillants, portails B2B — boutiques en ligne pour clients professionnels), collectés avec respect et dédupliqués, deviennent la liste des produits sur laquelle le tirage s'effectue.
-- **Échantillonnage à précision constante, pas à pourcentage fixe** : environ 2 000–3 000 produits sur huit segments de marché, chacun ventilé par provenance (Suisse / UE / pays tiers).
-- **Recoupement au lieu d'un laboratoire** : chaque produit suspect de plomb est recoupé avec des documents indépendants concernant le même produit ; les angles morts sont déclarés ouvertement comme limites.
+L'unité active (v0.2.0) établit trois chiffres phares :
 
-Le détail complet, en langage clair avec glossaire : [document méthodologie](docs/plan/3SM/10_STRATEGY/METHODOLOGY.fr.md). La logique de décision pour un produit unique y est schématisée.
+- **N1 — combien de peintures sur le marché de l'UE :** un ordre de
+  grandeur assemblé à partir des statistiques officielles — flux
+  commerciaux, statistiques de production, notifications aux centres
+  antipoison, registres de produits, structure industrielle.
+- **N2 — pour combien de produits nous avons un accès aux données,
+  sous une forme ou une autre.**
+- **N3 — pour combien d'entre eux des spécifications détaillées, une
+  FDS par exemple, peuvent être obtenues.**
 
-## Pourquoi le plomb reste (encore) plausible
+Méthode à ce stade : reconnaissance uniquement — conditions
+d'utilisation et conditions d'accès, disponibilité d'API ou de
+téléchargements, comptage des URL produit dans les sitemaps,
+vérifications manuelles. Les parcours de catalogues et toute collecte
+au niveau produit attendent un feu vert distinct. En parallèle,
+découverte de sources : associations sectorielles et registres publics
+de produits (les registres nordiques en tête) rejoignent les
+statistiques officielles.
 
-| Rôle dans la peinture | Composés typiques | Situation juridique dans l'UE |
-|---|---|---|
-| Pigment de couleur | chromate de plomb (« jaune de chrome »), blanc de plomb (historique) | interdit dans les peintures |
-| Additif antirouille | minium de plomb, dans les primaires anticorrosion | **non restreint** — l'usage résiduel classique |
-| Agent siccatif | octoate de plomb, naphténate de plomb, dans les peintures glycéro en phase solvant | **non restreint** |
+## Ce que les recherches antérieures montrent
 
-Donc même à l'intérieur de l'UE, les voies anticorrosion et siccatif restent ouvertes — le signal, s'il existe, vit dans les revêtements professionnels et industriels en phase solvant (3208). Et le droit suisse est plus strict : les peintures avec **0,01 % (100 ppm — parties par million) de plomb total ou plus** sont interdites en Suisse (ORRChim, annexe 2.8) — bien en dessous de tout ce que l'UE interdit pour ces usages.
-
-## La couture réglementaire : Cassis de Dijon
-
-Le **principe Cassis-de-Dijon** : les produits légalement vendus dans l'UE peuvent, en règle générale, aussi être vendus en Suisse sans nouvelle approbation suisse (adopté unilatéralement en 2010, LOTC art. 16a). Ses exceptions sont cataloguées dans l'**OPPr** (RS 946.513.8) — et la toute première entrée concerne les **peintures et vernis contenant du plomb**. C'est cette entrée qui empêche qu'un primaire au minium conforme au droit de l'UE (légalement vendu en Allemagne, par exemple) puisse simplement affluer en Suisse, alors même qu'il enfreint l'interdiction suisse des 100 ppm.
-
-Le catalogue des exceptions est **réexaminé tous les cinq ans** (dernier réexamen 2023 : maintien ; prochain vers 2028, sous la conduite du SECO ; l'exécution relève de l'OFEV). Le bureau qui a demandé une exception reste responsable du suivi et de la révision de sa réglementation — c'est là que la base de discussion de cette étude est destinée à aboutir. Que l'exception plomb ait un **champ d'application factuel** — s'il existe des peintures au plomb sur le marché de l'UE — est précisément la question à laquelle personne ne peut actuellement répondre, et celle que cette étude aborde avec des preuves documentées.
-
-## Ce que nous savons déjà (première passe de recherche, 31 août 2026)
-
-| Flux | Situation sur le marché de l'UE |
+| Usage du plomb | Situation documentée sur le marché de l'UE |
 |---|---|
-| Pigments au chromate de plomb | **aucun approvisionnement légal depuis le 17 mars 2022** (la Commission a refusé les dernières autorisations) |
-| Primaires au minium de plomb | **présence documentée dans des niches** (fournisseurs marins en Allemagne ; Suède : professionnels autorisés uniquement) |
-| Siccatifs au plomb dans les glycéro | **inconnu** — la principale question empirique ouverte |
-| Couleurs à l'huile artistiques (blanc de plomb) | **présence documentée** (NL, IT) — mais position tarifaire 3213, invisible dans les statistiques de la peinture |
-| Peintures routières anciennes | 63 % de 236 peintures routières européennes échantillonnées contenaient du plomb (Turner & Filella 2022) |
+| Pigments au chromate de plomb | aucun approvisionnement légal depuis le 17 mars 2022 (dernières autorisations refusées) |
+| Primaires au minium de plomb | présence documentée dans des niches (fournisseurs marins en DE ; professionnels SE uniquement) |
+| Siccatifs au plomb dans les peintures alkydes | inconnu — la principale question ouverte de l'enquête |
+| Couleurs à l'huile au blanc de plomb | documentées (NL, IT) — position tarifaire 3213 |
 
-Un problème structurel cadre tout : **personne ne compte les produits de peinture**. Les statistiques douanières comptent des tonnes et des euros, pas des produits ; aucun registre n'existe. L'étude compte donc les **formulations de base** (une recette de peinture, quel que soit le nombre de teintes ou de tailles de pot vendues) et estime combien il en existe en combinant plusieurs sources indépendantes — catalogues de producteurs, registres nordiques de produits, statistiques de production.
+Détails et sources :
+[LEAD_SDS.md](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN).
 
-## D'où viennent les données
+## L'outil
 
-Il n'existe **aucun répertoire européen gratuit unique de fiches de données de sécurité produit** — les grands agrégateurs sont payants et donc exclus par la contrainte de coût. L'étude construit donc son propre corpus à partir de sources publiques :
+La collecte des données et leur traçabilité reposent sur **`leadhs`**,
+un petit programme en ligne de commande — pas de serveur, une machine,
+une base SQLite locale. Chaque document récupéré est archivé à
+l'identique, avec sa source, sa date de récupération et une empreinte
+de son contenu ; chaque chiffre d'un rapport remonte à une exécution
+et à un document précis. L'outil ne stocke que des données produit.
 
-| Source | Ce qu'elle apporte | Flux pertinents pour le plomb |
-|---|---|---|
-| **Bibliothèques FDS fabricants/marques** (primaire) — AkzoNobel (Dulux, International, Sikkens), PPG, Sherwin-Williams, Jotun, Hempel, Sika, Sto, Caparol/DAW, Tikkurila, Teknos | PDF FDS publics gratuits sur les pages produit / portails FDS | tous |
-| **Fabricants de niche** — Epifanes, Veneziani, Boero, De IJssel (marine) ; Old Holland, Zecchi, Kremer Pigmente, Michael Harding, Winsor & Newton, Sennelier, Schmincke, Talens, Maimeri (artistes) | FDS + fiches techniques pour les niches pertinentes pour le plomb | minium, couleurs d'artistes |
-| **Portails détaillants/B2B** — SVB, toplicht.de (marine) ; bricolage CH : Coop Bau+Hobby, Migros Do-it+Garten, Hornbach, Bauhaus, Jumbo, OBI ; bricolage UE : B&Q, Leroy Merlin, Castorama, Gamma, Praxis | annonces + liens FDS, spécification produit | base d'échantillonnage + FDS |
-| **Registres (comptages, pas de FDS)** — SPIN, PCN (accès restreint), PRODCOM, Comext, swiss-impex | approximations de la population | — |
+- Dans ce dépôt : `make setup` (installation, migration de la base,
+  chargement du registre des sources, contrôle préalable de
+  l'environnement) et `make help` (index de toutes les commandes).
+- Les opérations qui touchent de vrais sites sont gardées derrière un
+  `GO=1` explicite.
 
-Le registre complet, avec règles d'accès et discipline de provenance, en langage clair : [document sources de données](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.fr.md).
+Détails : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) et
+[modèle de données](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (EN) ;
+conception technique revue dans
+[20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
 
-Depuis le tournant stratégique du 12 septembre 2026, les métriques sont **UE uniquement** : la plateforme douanière suisse et les enseignes de bricolage suisses ont quitté le registre des sources de l'outil ; la Suisse reste le cadre réglementaire de l'étude — la règle des 100 ppm et l'exception Cassis-de-Dijon — et non un marché mesuré. Les entrées ci-dessus restent listées pour le contexte.
-
-## Le moteur de preuves : un petit programme honnête
-
-La collecte est automatisée par un petit programme en ligne de commande (« leadhs ») — pas de site web, pas de serveur, une machine. Sa mission : garder la chaîne de preuves étanche — chaque document récupéré est archivé comme original intact, avec sa source, sa date de récupération et une empreinte numérique de son contenu ; chaque observation est liée à l'exécution qui l'a produite ; rien n'est jamais écrasé — les corrections sont de nouvelles entrées, de sorte que chaque chiffre du rapport final remonte à un document précis. L'outil, la base de données et tous les rapports générés ne contiennent que des **données produit** — composés du plomb, concentrations, documents, dénombrements. Les textes juridiques sont le cadre contextuel de l'étude et vivent dans les documents de l'étude ; l'outil ne les stocke ni ne les rapporte jamais.
-
-Les unités de construction à ce jour — **v0.1.1, « sondage »**, **v0.1.2, « couche opérateur + achèvement du recensement »** et **v0.1.3, « carte du paysage des données »** — sont implémentées et testées (165 tests automatisés, suite hors ligne). Ensemble, elles couvrent : la mise en place de la base de preuves, le chargement du registre des sources prévues, les visites de test respectueuses, les rapports de faisabilité structurés par source, et la machinerie de comptage pour les parcours de catalogues par catégorie de marché (construite, en attente d'un feu vert). L'unité en cours, **v0.2.0**, ajoute la couche chiffrée décrite plus bas ; la chaîne de collecte complète des FDS viendra plus tard.
-
-## Utiliser l'outil
-
-Deux voies d'installation (Python 3.11+) :
-
-- **Dans ce dépôt** (développement) : `make setup` — installe l'outil, crée/migre la base, charge le registre des sources et exécute le contrôle préalable de l'environnement (idempotent ; peut être relancé sans risque).
-- **Hors du dépôt** (wheel installé) : `uv tool install <leadhs-wheel>` et travailler systématiquement avec un dossier de données explicite : `leadhs --data-dir ~/leadhs-data db init` — l'outil n'écrit jamais implicitement dans le répertoire courant.
-
-Au quotidien (dans le dépôt ; une cible make = un appel « leadhs ») :
-
-    make help                                 # l'index de tout ce qui suit
-    make probe-dry                            # plan du recensement ; zéro appel réseau
-    GO=1 make probe                           # recensement réel — exige le GO=1 explicite
-    make record SOURCE=ST-1 METRIC=census_status VALUE_TEXT="…"   # constat manuel
-    make report                               # rend md/csv/json dans data/report/
-    make report-publish WHICH=data/report/probe-report.md         # dépose dans docs/report/
-    make db-audit                             # contrôle de provenance (exit 3 en cas de violation)
-    GO=1 make clobber                         # remise à zéro gardée du état local
-
-Le recensement (les vraies visites de test sur toutes les sources actives) s'exécute comme « GO=1 make census » — setup, sondage, rapport et audit en séquence, gardé derrière « GO=1 » car il touche de vrais sites. L'adresse de contact pour les opérateurs de sites vient de l'environnement (« LEADHS_CONTACT ») ; doctor avertit si elle est absente. Codes de sortie en une phrase : 0 ok · 1 erreur d'usage/données · 2 une exécution s'est terminée bloquée/échouée (constats conservés) · 3 violations d'audit · 130 interrompu.
-
-« --help » après chaque commande explique les options.
-
-Documents de travail : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) et [modèle de données](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (EN) ; la conception technique revue dans [20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
-
-## Première étape : vérifier les sources
-
-Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — le registre ou la plateforme délivre-t-il des données exploitables ? Quels catalogues sont lisibles, ne serait-ce que ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données.
-
-**Le recensement de référence a tourné.** Le 12 septembre 2026, les sources semences ont été sondées : trois achevées, une bloquée, trois en échec — chaque blocage étant lui-même un constat documenté (une plateforme douanière refuse l'accès machine au niveau TLS, un détaillant opère un mur anti-robot, un registre n'a pas répondu) — et l'audit de provenance passe proprement.
-
-**La stratégie de sondage actuelle (depuis le 12 septembre 2026) : compter, ne pas collecter.** L'unité active, v0.2.0, oriente les sondages vers trois chiffres phares :
-
-- **N1 — combien de peintures y a-t-il sur le marché de l'UE ?** Pas des tableaux clairsemés mais un ordre de grandeur, assemblé à partir des statistiques officielles : flux commerciaux, statistiques de production, notifications au portail des centres antipoison (PCN), registres de produits, structure industrielle (environ 3 200 producteurs dans l'UE ; les ~800 membres de l'association sectorielle couvrant ~85 % d'un marché de 17 Md€).
-- **N2 — pour combien de produits avons-nous un accès, sous une forme ou une autre ?** Compté là où les sources exposent des comptages (registres, jeux de données, annonces visibles via sitemap) ; honnêtement signalé là où seul un feu vert de collecte pourrait mesurer.
-- **N3 — pour combien peut-on obtenir des données détaillées, une FDS ?** Même règle : compté là où c'est atteignable, caractérisé ailleurs.
-
-Méthode : reconnaissance seulement — statut robots/conditions, existence et forme des points d'accès API ou de téléchargement, comptage des URL produit via un unique appel structuré au sitemap, vérifications manuelles du web. Les parcours de catalogues et toute collecte au niveau produit restent différés jusqu'à un feu vert explicite ; la machinerie de parcours est déjà construite et patiente. En parallèle, la découverte de sources : une nouvelle classe de sources **associations & registres** (associations européennes et nationales de la peinture, registres nationaux de produits avec statistiques publiques — les registres nordiques en tête) rejoint les sources statistiques à comptage. L'annexe couleurs d'artistes (3213) est rétrogradée en priorité basse. Le rapport chiffré doit montrer des ordres de grandeur — chaque chiffre avec sa provenance.
-
-## La feuille de route
+## Feuille de route
 
 | Phase | Contenu |
 |---|---|
-| 0 | Combler les lacunes de recherche — les chiffres d'abord : estimation de la taille du marché (N1) et couverture d'accès (N2/N3) à partir des statistiques officielles, des registres et de la reconnaissance ; vérifier les textes juridiques actuels ; référence du refus UE ; statistiques PCN ; requête SPIN |
-| 1 | Pilote : figer le dictionnaire du plomb, tester la collecte et l'analyse des FDS |
-| 2 | Construire la base d'échantillonnage produit, tirer l'échantillon, collecte à pleine échelle ; annexe couleurs d'artistes (3213) en parallèle, selon la capacité restante |
+| 0 — en cours | Cartographier le paysage des données ; les trois chiffres N1/N2/N3 |
+| 1 | Pilote : figer le dictionnaire du plomb ; collecte et analyse des FDS sur un premier échantillon |
+| 2 | Base d'échantillonnage et tirage ; collecte de documentation à pleine échelle ; annexe couleurs d'artistes (3213), selon la capacité |
 | 3 | Recoupement inter-documents et assurance qualité |
-| 4 | Analyse ; la base de discussion des décideurs ; gel de la base de données |
-
-## Résultat attendu (hypothèses à tester, pas des conclusions)
-
-- **Usages du plomb illégaux dans l'UE** (chromates de plomb, blanc de plomb dans les peintures) : ≈ 0 sur le marché de l'UE — l'hypothèse « plus rien ».
-- **Usages du plomb légaux dans l'UE** : présence documentée de niche dans le marine/anticorrosion (minium) ; siccatifs au plomb inconnus ; les couleurs à l'huile artistiques le cas le plus clair.
-- Peintures décoratives grand public : ≈ 0 % de plomb intentionnel.
-- Importations de pays tiers : nettement plus élevées, en miroir des marchés d'origine.
-- Une carte des écarts documentée UE vs Suisse — chaque affirmation traçable à un document public, y compris l'avertissement que l'interdiction suisse des 100 ppm se situe *en dessous* du seuil de déclaration des FDS européennes (0,1 %) : une peinture peut être conforme au droit de l'UE, entièrement documentée, et dépasser invisiblement l'interdiction suisse.
+| 4 | Analyse ; base de discussion ; gel de la base de données |
 
 ## Pour en savoir plus
 
@@ -205,4 +202,11 @@ Méthode : reconnaissance seulement — statut robots/conditions, existence et f
 
 ## État
 
-La stratégie, la conception revue et des plans d'implémentation revus sont en place jusqu'à l'unité en cours. **v0.1.1, sondage des sources** — construite et vérifiée contre les critères de sortie ; la passe de faisabilité du recensement a tourné le 11 septembre 2026. **v0.1.2, couche opérateur + achèvement du recensement** — construite : point d'entrée make à la racine du dépôt avec feu vert explicite (« GO=1 »), ergonomie CLI et application des codes de sortie, contrôle préalable de la base, métriques de comptage par position tarifaire (3208/3209/3213), constats manuels census_status et le rapport de faisabilité structuré par source (matrice récapitulative, statut des exécutions y compris bloquées/échouées, légende « — » vs 0) ; 155 tests automatisés hors ligne passent. **v0.1.3, carte du paysage des données** — la machinerie de parcours des catalogues construite (compteurs de produits et de liens documentaires par catégorie ; 165 tests hors ligne) et le recensement de référence exécuté le 12 septembre 2026 (trois sources achevées, une bloquée, trois en échec — chaque échec un constat documenté ; audit de provenance propre) ; son plan d'exécution par parcours est surpassé, l'unité est gelée, la machinerie attend un feu vert. **v0.2.0, ampleur du marché & disponibilité des données** — l'unité en cours (stratégie esquissée le 12 septembre 2026) : le sondage décrit plus haut, chiffres d'abord, en mode reconnaissance uniquement, UE uniquement. La méthodologie reste ouverte à révision à mesure que les résultats arrivent.
+Les unités outil v0.1.1–v0.1.3 sont construites et testées (165 tests
+automatisés hors ligne) : base de preuves, registre des sources,
+reconnaissance des sources, rapports de faisabilité par source, et
+machinerie de comptage pour les parcours de catalogues (en attente
+d'un feu vert de collecte). La première passe de reconnaissance a
+tourné le 12 septembre 2026. L'unité active v0.2.0 livre la carte du
+paysage des données et les trois chiffres. La méthodologie reste
+ouverte à révision à mesure que les résultats arrivent.
