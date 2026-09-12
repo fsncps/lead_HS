@@ -1,15 +1,20 @@
-"""Source feasibility census report — od8 content layer.
+"""Source feasibility census report — od8 content layer as amended by
+D28 (product-first; U11–U13).
 
-One DB-only assembly, three renderers (D25/i12): md — narrative +
-summary matrix + per-source sections + run status incl. blocked/failed;
-csv — the summary matrix only; json — the full structure. Dry-run runs
-are excluded from census sections (malformed parameters_json fails
-open toward inclusion). Legend: "—" = metric absent (not queried);
-0 = queried, empty. Product data only (Strategy MASTER D27): inactive
-register rows appear in the matrix, never as findings. P7: every
-user-facing count comes from the DB only. Anchor candidates are
-provisional — promotion is a manual M1 method decision, never
-automatic (D20).
+One DB-only assembly, three renderers (D25/i12): md — the two study
+numbers lead (Q1 products available as an observed floor, Q2 reachable
+SDS-type documentation), one product-first summary matrix, the
+execution log (latest census run per source incl. blocked/failed with
+notes), compact per-source blocks, legend; csv — the summary matrix
+only; json — the full structure (incl. anchor candidates and source
+activity). Dry-run runs are excluded from census sections (malformed
+parameters_json fails open toward inclusion). Trade rows are volume
+context — tariff-line flows, never products (D28 grain rule). Legend:
+"—" = metric absent (not queried); 0 = queried, empty. Product data
+only (Strategy MASTER D27): inactive register rows appear in the
+matrix, never as findings. P7: every user-facing count comes from the
+DB only. Anchor candidates are provisional — promotion is a manual M1
+method decision, never automatic (D20).
 """
 
 from __future__ import annotations
@@ -25,24 +30,29 @@ _TEMPLATE = "probe_report.md.j2"
 
 TITLE = "Source feasibility census report"
 FRAMING = (
-    "This report documents what each registered source delivers for the "
-    "census — access, formats, granularity, counts and availability. These "
-    "are source-feasibility metrics only: product and lead prevalence are "
-    "M2+ deliverables and are never implied here. The tool, the database "
-    "and the reports carry product data only (Strategy MASTER D27): "
-    "inactive register rows appear in the matrix without findings."
+    "This report answers two study questions: (Q1) how many paint/varnish "
+    "products each registered source exposes — observed listings, a floor, "
+    "never a market total — and (Q2) for how many of them SDS-type "
+    "documentation is reachable. Trade-statistics rows are volume context: "
+    "tariff-line flows, never products. These remain source-feasibility "
+    "metrics only: product and lead prevalence are M2+ deliverables and are "
+    "never implied here. The tool, the database and the reports carry "
+    "product data only (Strategy MASTER D27): inactive register rows appear "
+    "in the matrix without findings."
 )
 LEGEND = [
     "\u201c\u2014\u201d = metric absent (source not queried for it); 0 = queried, empty result.",
     "Metric values cite the run_key of the done run they come from.",
     "Status reflects the latest census run per source (dry-run runs excluded); blocked/failed runs are shown with their notes.",
+    "products_listed / doc_links_seen are walk floors (BFS depth \u2264 3, page budget \u2264 12 incl. homepage); walk budget: exhausted marks a budget-limited walk — the floor is then a weaker lower bound.",
+    "records_hs* columns are volume context: tariff-line flows, not products (D28 grain rule).",
 ]
 NO_RUNS_LINE = "No census runs yet — run `make probe-dry` to plan or `GO=1 make probe` to execute."
 
 MATRIX_METRICS = (
-    "format", "granularity", "coverage_years", "free_access", "export_rows",
-    "records_hs3208", "records_hs3209", "records_hs3213",
+    "products_listed", "doc_links_seen", "walk_budget_exhausted",
     "catalog_count", "category_count", "page_sample_ok", "sds_sample_ok",
+    "records_hs3208", "records_hs3209", "records_hs3213", "export_rows",
 )
 
 SECTIONS = {
@@ -70,6 +80,58 @@ def _fmt_value(row) -> str:
         s = str(int(v)) if float(v).is_integer() else str(v)
         return s + (f" {row['unit_code']}" if row["unit_code"] else "")
     return row["value_text"] if row["value_text"] is not None else "\u2014"
+
+
+def _int_or_dash(value) -> str:
+    if value is None:
+        return "\u2014"
+    v = float(value)
+    return str(int(v)) if v.is_integer() else str(v)
+
+
+def _compact_lines(by_metric: dict) -> tuple:
+    """The one-line-per-source compact blocks (U11): access / content /
+    counts. Values are display strings ("—" when absent)."""
+
+    def val(code):
+        rows = by_metric.get(code)
+        return rows[0]["value"] if rows else "\u2014"
+
+    access = [
+        f"robots {val('robots')}",
+        f"terms {val('terms')}",
+        f"rate limit {val('rate_limit')}",
+        f"free access {val('free_access')}",
+    ]
+    for code in ("access_blocked", "robots_denied"):
+        for r in by_metric.get(code, []):
+            access.append(f"{code}: {r['value']}")
+    content = [
+        f"format {val('format')}",
+        f"granularity {val('granularity')}",
+        f"coverage {val('coverage_years')}",
+        f"languages {val('languages')}",
+    ]
+    for r in by_metric.get("extraction_path", []):
+        content.append(f"extraction path: {r['value']}")
+    for r in by_metric.get("census_status", []):
+        content.append(f"census status: {r['value']}")
+    counts = []
+    if by_metric.get("catalog_count"):
+        counts.append(f"catalog {val('catalog_count')}")
+    cats = by_metric.get("category_count", [])
+    if cats:
+        parts = []
+        for r in cats:
+            path = (r.get("notes") or "").removeprefix("category path: ") or "\u2014"
+            parts.append(f"{path}={_int_or_dash(r.get('value_numeric'))}")
+        counts.append("categories: " + ", ".join(parts))
+    if by_metric.get("export_rows"):
+        counts.append(f"export rows {val('export_rows')}")
+    if by_metric.get("walk_budget_exhausted"):
+        exhausted = int(by_metric["walk_budget_exhausted"][0]["value_numeric"] or 0)
+        counts.append("walk budget: exhausted" if exhausted else "walk budget: within budget")
+    return " · ".join(access), " · ".join(content), " · ".join(counts)
 
 
 def _fetch_sources(conn, source_id: Optional[str] = None) -> list:
@@ -176,6 +238,7 @@ def build(conn, source_id: Optional[str] = None) -> dict:
         entry["status"] = run["status"] if run else None
         entry["matrix"] = {code: (by_metric[code][0]["value"] if by_metric.get(code) else "\u2014") for code in MATRIX_METRICS}
         entry["matrix"]["last_run_key"] = run["run_key"] if run else "\u2014"
+        entry["access_line"], entry["content_line"], entry["counts_line"] = _compact_lines(by_metric)
         entry["sections"] = {
             name: [dict(r) for code in codes for r in by_metric.get(code, [])]
             for name, codes in SECTIONS.items()

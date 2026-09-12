@@ -22,7 +22,8 @@ def test_pe_census(site, conn, store, make_fetcher):
     result = PEAdapter().probe(_source(site), _ctx(make_fetcher, conn, store))
     metrics = {f.metric_code for f in result.findings}
     assert {"robots", "free_access", "rate_limit", "languages", "terms", "category_list",
-            "category_count", "catalog_count", "page_sample_ok", "sds_sample_ok"} <= metrics
+            "category_count", "catalog_count", "page_sample_ok", "sds_sample_ok",
+            "products_listed", "doc_links_seen", "walk_budget_exhausted"} <= metrics
     catalog = _findings(result, "catalog_count")[0]
     assert catalog.value_numeric == 500
     # od9: category depth — /cat/wandfarben (2 products), /cat/grundierung
@@ -44,6 +45,43 @@ def test_pe_census(site, conn, store, make_fetcher):
     # blocked sample page degrades, run continues
     sds = _findings(result, "sds_sample_ok")[0]
     assert sds.value_numeric >= 0
+    # D28 walk metrics: 4 landing + 2 wandfarben product links (distinct);
+    # SDS links seen on the two sampled product pages share one URL;
+    # the fixture walk stays within the page budget.
+    products = _findings(result, "products_listed")[0]
+    assert products.value_numeric == 6
+    docs_seen = _findings(result, "doc_links_seen")[0]
+    assert docs_seen.value_numeric == 1
+    assert _findings(result, "walk_budget_exhausted")[0].value_numeric == 0
+
+
+def test_pe_budget_exhausted(site, conn, store, make_fetcher):
+    """D28: a walk that hits the 12-page budget (incl. homepage) emits
+    walk_budget_exhausted = 1 and stops fetching category pages."""
+    result = PEAdapter().probe(_source(site, "/many-cats"), _ctx(make_fetcher, conn, store))
+    budget = _findings(result, "walk_budget_exhausted")[0]
+    assert budget.value_numeric == 1
+    assert any("walk budget exhausted" in n for n in result.notes)
+    # homepage + 11 category pages fetched (budget incl. homepage)
+    assert len(result.documents) == 12
+    # one product link per fetched category page; c12+ never visited
+    assert _findings(result, "products_listed")[0].value_numeric == 11
+    assert any("c12" in n for n in result.notes)
+
+
+def test_pe_walk_depth_limit(site, conn, store, make_fetcher, site_hits):
+    """D28: BFS depth <= 3 — the depth-4 category discovered on a depth-3
+    page is never fetched."""
+    result = PEAdapter().probe(_source(site, "/nested-cats"), _ctx(make_fetcher, conn, store))
+    fetched_cats = {d.url for d in result.documents}
+    assert any(u.endswith("/cat/n1") for u in fetched_cats)
+    assert any(u.endswith("/cat/n1sub") for u in fetched_cats)
+    assert any(u.endswith("/cat/n1subsub") for u in fetched_cats)
+    assert not any(u.endswith("/cat/n1subsubsub") for u in fetched_cats)
+    assert all(not u.endswith("/cat/n1subsubsub") for u in site_hits)
+    # n1, n1sub, n1subsub each expose one product link
+    assert _findings(result, "products_listed")[0].value_numeric == 3
+    assert _findings(result, "walk_budget_exhausted")[0].value_numeric == 0
 
 
 def test_pe_category_failure_continues(site, conn, store, make_fetcher):

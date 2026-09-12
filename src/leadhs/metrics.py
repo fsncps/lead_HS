@@ -1,9 +1,9 @@
 """probe-metric vocabulary — the runtime source of truth.
 
 Authoritative table: 20_DESIGN/MASTER/interfaces.md §probe_metric
-vocabulary. Migration 0001 + 0003 seeds are pinned to this list by a
-sync test (t6); new metrics enter via a migration INSERT, codes are
-never renamed, value_type is fixed at insert (i4).
+vocabulary. Migration 0001 + 0003 + 0004 seeds are pinned to this
+list by a sync test (t6); new metrics enter via a migration INSERT,
+codes are never renamed, value_type is fixed at insert (i4).
 """
 
 from __future__ import annotations
@@ -39,6 +39,9 @@ METRIC_RECORDS_HS3208 = "records_hs3208"
 METRIC_RECORDS_HS3209 = "records_hs3209"
 METRIC_RECORDS_HS3213 = "records_hs3213"
 METRIC_CENSUS_STATUS = "census_status"
+METRIC_PRODUCTS_LISTED = "products_listed"
+METRIC_DOC_LINKS_SEEN = "doc_links_seen"
+METRIC_WALK_BUDGET_EXHAUSTED = "walk_budget_exhausted"
 
 
 PROBE_METRIC_SEEDS = (
@@ -64,6 +67,10 @@ PROBE_METRIC_SEEDS = (
     Metric(METRIC_RECORDS_HS3209, "Records HS 3209", "numeric"),
     Metric(METRIC_RECORDS_HS3213, "Records HS 3213", "numeric"),
     Metric(METRIC_CENSUS_STATUS, "Census status", "text"),
+    # 0004__product_census.sql (v0.1.2 rework, D28)
+    Metric(METRIC_PRODUCTS_LISTED, "Products listed (walk)", "numeric"),
+    Metric(METRIC_DOC_LINKS_SEEN, "Doc links seen (walk)", "numeric"),
+    Metric(METRIC_WALK_BUDGET_EXHAUSTED, "Walk budget exhausted", "numeric"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)

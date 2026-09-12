@@ -3,22 +3,33 @@
 
 {{ report.framing }}
 
+## The two numbers
+
+Per registered source — Q1: observed product listings (a floor, never a
+market total); Q2: SDS-type documentation links seen.
+
+| source | class | active | status | products listed (Q1) | doc links seen (Q2) | sds sample | last run |
+|---|---|---|---|---|---|---|---|
+{% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.status or '—' }} | {{ s.matrix['products_listed'] }} | {{ s.matrix['doc_links_seen'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['last_run_key'] }} |
+{% endfor %}
+
 ## Summary matrix
 
 One row per registered source (active flag included; inactive rows carry no
-findings).
+findings). The records_hs* columns are volume context — tariff-line flows,
+not products.
 
-| source | class | active | status | format | granularity | coverage | free | export rows | hs3208 | hs3209 | hs3213 | catalog | category | page ok | sds ok | last run |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-{% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.status or '—' }} | {{ s.matrix['format'] }} | {{ s.matrix['granularity'] }} | {{ s.matrix['coverage_years'] }} | {{ s.matrix['free_access'] }} | {{ s.matrix['export_rows'] }} | {{ s.matrix['records_hs3208'] }} | {{ s.matrix['records_hs3209'] }} | {{ s.matrix['records_hs3213'] }} | {{ s.matrix['catalog_count'] }} | {{ s.matrix['category_count'] }} | {{ s.matrix['page_sample_ok'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['last_run_key'] }} |
+| source | class | active | status | products | doc links | walk budget | catalog | category | page ok | sds ok | hs3208 | hs3209 | hs3213 | export rows | last run |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+{% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.status or '—' }} | {{ s.matrix['products_listed'] }} | {{ s.matrix['doc_links_seen'] }} | {{ s.matrix['walk_budget_exhausted'] }} | {{ s.matrix['catalog_count'] }} | {{ s.matrix['category_count'] }} | {{ s.matrix['page_sample_ok'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['records_hs3208'] }} | {{ s.matrix['records_hs3209'] }} | {{ s.matrix['records_hs3213'] }} | {{ s.matrix['export_rows'] }} | {{ s.matrix['last_run_key'] }} |
 {% endfor %}
 
-## Run status (latest census run per source)
+## Execution log (latest census run per source)
 
 {% if sources|selectattr("run")|list %}
-| source | run_key | status | started | finished | docs | findings | notes |
-|---|---|---|---|---|---|---|---|
-{% for s in sources %}{% if s.run %}| {{ s.id }} | {{ s.run.run_key }} | {{ s.run.status }} | {{ s.run.started_at or '—' }} | {{ s.run.finished_at or '—' }} | {{ s.run.documents }} | {{ s.run.findings }} | {{ s.run.notes or '—' }} |
+| source | run_key | status | started | finished | notes |
+|---|---|---|---|---|---|
+{% for s in sources %}{% if s.run %}| {{ s.id }} | {{ s.run.run_key }} | {{ s.run.status }} | {{ s.run.started_at or '—' }} | {{ s.run.finished_at or '—' }} | {{ s.run.notes or '—' }} |
 {% endif %}{% endfor %}
 {% else %}
 _{{ report.no_runs_line }}._
@@ -30,37 +41,12 @@ _{{ report.no_runs_line }}._
 ### {{ s.id }} — {{ s.name }}
 
 - identity: class {{ s.class_code }} · active {{ 'yes' if s.active else 'no' }} · verification {{ s.verification_status_code }} · {{ s.url }}
+- access: {{ s.access_line }}
+- content: {{ s.content_line }}
+- counts:{% if s.counts_line %} {{ s.counts_line }}{% endif %}
 {% if s.notes %}- register note: {{ s.notes }}
 {% endif %}{% if s.run %}- latest census run: {{ s.run.run_key }} ({{ s.run.status }}{% if s.run.notes %}; notes: {{ s.run.notes }}{% endif %})
-{% endif %}
-{% for section, rows in s.sections|dictsort %}{% if rows %}
-#### {{ section }}
-
-| metric | value | method | run_key | notes |
-|---|---|---|---|---|
-{% for r in rows %}| {{ r.metric_code }} | {{ r.value }} | {{ r.method_code }} | {{ r.run_key }} | {{ r.notes or '—' }} |
-{% endfor %}{% endif %}{% endfor %}
-{% endfor %}
-## Anchor candidates (provisional — manual promotion, M1 decision)
-
-{% if anchors %}
-| source_id | metric | value | run_key |
-|---|---|---|---|
-{% for a in anchors %}| {{ a.source_id }} | {{ a.metric_code }} | {{ a.value_numeric }} {{ a.unit_code or '' }} | {{ a.run_key }} |
-{% endfor %}
-{% else %}
-_None yet._
-{% endif %}
-
-## Source activity
-
-| source_id | first retrieved | last retrieved | runs | findings |
-|---|---|---|---|---|
-{% for a in activity %}| {{ a.source_id }} | {{ a.first_retrieved_at or '—' }} | {{ a.last_retrieved_at or '—' }} | {{ a.run_count }} | {{ a.finding_count }} |
-{% endfor %}
-{% if activity %}> Raw counts — dry-run runs are included here (and only here).
-{% endif %}
-
+{% endif %}{% endfor %}
 ## Legend
 
 {% for line in report.legend %}- {{ line }}

@@ -46,7 +46,7 @@ def test_cli_version_0_1_2():
         [sys.executable, "-m", "leadhs.cli", "--version"],
         capture_output=True, text=True, env=env,
     )
-    assert r.returncode == 0 and "0.1.2" in r.stdout
+    assert r.returncode == 0 and "0.1.3" in r.stdout
 
 
 def test_cli_probe_record_and_report(db_path, fixture_register, tmp_path):
@@ -56,7 +56,7 @@ def test_cli_probe_record_and_report(db_path, fixture_register, tmp_path):
           "--value", "17", "--unit", "count", "--url", "https://echa.europa.eu/x", expect=0)
     _lead(db_path, "db", "audit", expect=0)
     report = _lead(db_path, "probe", "report", "--source", "ST-1", expect=0)
-    assert "ST-1" in report.stdout and "catalog_count" in report.stdout
+    assert "ST-1" in report.stdout and "counts:" in report.stdout  # compact block (U11)
 
 
 def test_cli_bad_usage(db_path):

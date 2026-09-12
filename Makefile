@@ -1,4 +1,4 @@
-# lead_HS — operator entrypoint (v0.1.2). One target = one `leadhs` call;
+# lead_HS — operator entrypoint (v0.1.3). One target = one `leadhs` call;
 # pipeline logic lives in the CLI (D21); make stays a thin wrapper.
 # Parameters are make variables until M1 (committed config file).
 

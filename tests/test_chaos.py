@@ -25,7 +25,7 @@ def test_chaos_interrupt(loaded_conn, store, make_fetcher, monkeypatch):
         engine.run_one(loaded_conn, store, fetcher, source, sample_n=2)
 
     aborted = loaded_conn.execute(
-        "SELECT status_code FROM run WHERE run_key = 'probe-20260911-px1-2'"
+        "SELECT status_code FROM run WHERE run_key = ?", (done["run_key"] + "-2",)
     ).fetchone()[0]
     assert aborted == "aborted"
 
@@ -39,5 +39,5 @@ def test_chaos_interrupt(loaded_conn, store, make_fetcher, monkeypatch):
     monkeypatch.undo()
     again = engine.run_one(loaded_conn, store, fetcher, source, sample_n=2)
     assert again["status"] == "done"
-    assert again["run_key"] == "probe-20260911-px1-3"
+    assert again["run_key"] == done["run_key"] + "-3"
     assert dbmod.audit(loaded_conn, store) == []

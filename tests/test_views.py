@@ -44,7 +44,9 @@ def test_anchor_candidates(loaded_conn, store, fetcher):
     ).fetchall()
     assert rows[0][0] == "PX-1" and rows[0][2] == 500.0
     metrics = {r[0] for r in loaded_conn.execute("SELECT metric_code FROM v_anchor_candidates").fetchall()}
-    assert metrics == {"catalog_count", "category_count"}  # count-metrics from the PE census
+    # count-metrics from the PE census; products_listed joins via 0004 (U13),
+    # doc_links_seen / walk_budget_exhausted are not anchor candidates
+    assert metrics == {"catalog_count", "category_count", "products_listed"}
 
 
 def test_anchor_candidates_includes_records_hs(loaded_conn, store):

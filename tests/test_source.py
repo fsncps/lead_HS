@@ -1,5 +1,7 @@
 """register CSV -> source rows; hostile cases."""
 
+import os
+
 import pytest
 
 from leadhs.source import SourceLoadError, all_sources, get_source, list_, load
@@ -47,7 +49,8 @@ def test_malformed_missing_url(conn, tmp_path):
 
 
 def test_malformed_duplicate_id(conn, tmp_path, site):
-    path = _write(tmp_path, f"PX-1,PE,Name,{site}/,scrape,,open,1,\nPZ-1,PE,Name2,{site}/,scrape,,open,1,\nPZ-1,PE,Dup,{site}/terms,scrape,,open,1,\n")
+    alt = site.replace("127.0.0.1", "127.0.0.2")  # distinct host: only the id dups here
+    path = _write(tmp_path, f"PX-1,PE,Name,{site}/,scrape,,open,1,\nPZ-1,PE,Name2,{alt}/,scrape,,open,1,\nPZ-1,PE,Dup,{alt}/terms,scrape,,open,1,\n")
     with pytest.raises(SourceLoadError) as exc:
         load(conn, path)
     assert "duplicate" in str(exc.value)
@@ -57,6 +60,37 @@ def test_malformed_bad_id(conn, tmp_path, site):
     path = _write(tmp_path, f"PE1,PE,Name,{site}/,scrape,,open,1,\n")
     with pytest.raises(SourceLoadError):
         load(conn, path)
+
+
+def test_malformed_non_http_url(conn, tmp_path):
+    """i13/pe6: url must be http(s) with a host; the failing row is named."""
+    path = _write(tmp_path, "PX-1,PE,Name,ftp://example.com/x,scrape,,open,1,\n")
+    with pytest.raises(SourceLoadError) as exc:
+        load(conn, path)
+    assert "PX-1" in str(exc.value) and "http" in str(exc.value)
+
+
+def test_duplicate_active_host_rejected(conn, tmp_path, site):
+    """i13/pe6: one site must not be double-counted; both ids are named."""
+    path = _write(tmp_path, f"PX-1,PE,Name,{site}/,scrape,,open,1,\nPZ-1,PE,Name2,{site}/catalog,scrape,,open,1,\n")
+    with pytest.raises(SourceLoadError) as exc:
+        load(conn, path)
+    assert "PX-1" in str(exc.value) and "PZ-1" in str(exc.value)
+
+
+def test_duplicate_host_with_inactive_row_loads(conn, tmp_path, site):
+    path = _write(tmp_path, f"PX-1,PE,Name,{site}/,scrape,,open,1,\nPZ-9,PE,Retired,{site}/old,scrape,,open,0,\n")
+    assert load(conn, path) == 2
+
+
+def test_preslim_register_still_loads(conn):
+    """D28/U12: the pre-slim 14-row register remains loadable via --file
+    (inactive LG/LI rows are exempt from the duplicate-host check)."""
+    preslim = os.path.join(os.path.dirname(__file__), "data", "register_preslim.csv")
+    assert load(conn, preslim) == 14
+    ids = {r[0] for r in conn.execute("SELECT id FROM source")}
+    assert {"CS-1", "CS-2", "PE-1", "PE-2", "PE-3", "PE-4", "ST-1", "ST-2", "ST-3"} <= ids
+    assert "LG-1" in ids and "LI-1" in ids
 
 
 def test_empty_register(conn, tmp_path):

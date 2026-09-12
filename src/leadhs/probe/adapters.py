@@ -298,6 +298,17 @@ _SDS_HINTS = ("sds", "sicherheitsdatenblatt", "fiche", "safety", "msds")
 _TERMS_HINTS = ("terms", "agb", "cgv", "bedingungen", "conditions", "imprint", "impressum")
 _COUNT_RE = re.compile(r"(\d{1,3}(?:[\s'.\u2019]\d{3})*)\s+(?:products|produkte|artikel|items|results|resultats)", re.IGNORECASE)
 
+# D28 walk mechanics: BFS over category pages, depth <= 3, page budget
+# <= 12 pages including the homepage. Every fetch attempt (success or
+# not) consumes budget; sample-page fetches stay governed by sample_n.
+_WALK_MAX_DEPTH = 3
+_WALK_PAGE_BUDGET = 12
+
+# Doc-link heuristic for doc_links_seen (U13: "SDS/TDS-type links"):
+# a link counts when its href or text contains one of these hints;
+# distinct absolute URLs are counted.
+_DOC_LINK_HINTS = ("sds", "msds", "sicherheitsdatenblatt", "datenblatt", "tds", "safety", "fiche")
+
 
 class PEAdapter:
     key = "PE"
@@ -334,12 +345,36 @@ class PEAdapter:
         findings.append(FindingDraft(metric_code="category_list", method_code="scrape", value_text=json.dumps(categories)))
 
         product_links = self._product_links(soup, base)
+        product_urls: set = set()
+        doc_urls: set = set()
+        self._scan(soup, base, product_urls, doc_urls)
 
-        # od9: category depth ≤ 3 — one category_count per category
-        # (value_text = category path); a failing category page appends
-        # a note and continues (sample-page pattern). Polite spacing is
-        # enforced by the fetcher.
-        for cat_url in categories[:3]:
+        # D28 walk: BFS over category pages, depth <= 3, page budget
+        # <= 12 pages incl. homepage; polite spacing is enforced by the
+        # fetcher. A failing category page appends a note and continues
+        # (sample-page pattern); budget exhaustion is recorded as the
+        # numeric walk_budget_exhausted metric (ENG review 2A — no note
+        # substrings), the note only carries context.
+        queue = [(u, 1) for u in categories]
+        visited = {base}
+        fetched = 1  # the homepage
+        budget_exhausted = False
+        while queue:
+            cat_url, depth = queue.pop(0)
+            if cat_url in visited:
+                continue
+            if depth > _WALK_MAX_DEPTH:
+                continue
+            if fetched >= _WALK_PAGE_BUDGET:
+                budget_exhausted = True
+                skipped = [u for u, _ in queue if u not in visited]
+                notes.append(
+                    f"walk budget exhausted ({fetched} pages incl. homepage); "
+                    f"{len(skipped) + 1} category page(s) not visited, e.g. {cat_url}"
+                )
+                break
+            visited.add(cat_url)
+            fetched += 1
             try:
                 cat_resp = ctx.fetcher.get(cat_url)
             except FetchError as exc:
@@ -349,7 +384,9 @@ class PEAdapter:
                 notes.append(f"category {cat_url}: HTTP {cat_resp.status_code}")
                 continue
             docs.append(_doc(cat_url, cat_resp, retrieval_method_code="scrape"))
-            cat_products = self._product_links(_soup(cat_resp), base)
+            cat_soup = _soup(cat_resp)
+            self._scan(cat_soup, base, product_urls, doc_urls)
+            cat_products = self._product_links(cat_soup, base)
             findings.append(
                 FindingDraft(
                     metric_code="category_count",
@@ -363,11 +400,19 @@ class PEAdapter:
                     document=docs[-1],
                 )
             )
+            if depth < _WALK_MAX_DEPTH:
+                queue.extend((u, depth + 1) for u in self._categories(cat_soup, base))
 
         catalog_count = self._catalog_count(soup) or (len(product_links) if product_links else None)
         if catalog_count:
             findings.append(FindingDraft(metric_code="catalog_count", method_code="scrape", value_numeric=catalog_count, unit_code="count"))
-        notes.append(f"categories={len(categories)} product_links={len(product_links)}")
+        notes.append(f"walk: {fetched} page(s) fetched, categories={len(categories)}")
+
+        # D28 walk metrics (numeric, per pe4/U13): products_listed and
+        # doc_links_seen are floors over the pages actually visited;
+        # walk_budget_exhausted flags a budget-limited (weaker) floor.
+        findings.append(FindingDraft(metric_code="products_listed", method_code="scrape", value_numeric=len(product_urls), unit_code="count"))
+        findings.append(FindingDraft(metric_code="walk_budget_exhausted", method_code="scrape", value_numeric=1 if budget_exhausted else 0))
 
         if product_links and not ctx.dry_run:
             rng = random.Random(f"pe-sample-{source.id}")
@@ -379,7 +424,9 @@ class PEAdapter:
                     page = ctx.fetcher.get(url)
                     docs.append(_doc(url, page, retrieval_method_code="scrape"))
                     ok += 1
-                    if _match_link(_soup(page), _SDS_HINTS):
+                    page_soup = _soup(page)
+                    self._scan(page_soup, base, product_urls, doc_urls)
+                    if _match_link(page_soup, _SDS_HINTS):
                         sds_ok += 1
                 except FetchError as exc:
                     notes.append(f"sample {url}: {exc.__class__.__name__}")
@@ -390,7 +437,24 @@ class PEAdapter:
                 ctx.fetcher.plan(url)
             notes.append("dry-run: planned sample page fetches")
 
+        findings.append(FindingDraft(metric_code="doc_links_seen", method_code="scrape", value_numeric=len(doc_urls), unit_code="count"))
+
         return ProbeResult(documents=docs, findings=findings, notes=notes)
+
+    def _scan(self, soup, base, product_urls: set, doc_urls: set) -> None:
+        """Accumulate the distinct product/doc links seen on one page.
+
+        Doc-link heuristic (U13 "SDS/TDS-type links"): the link's href
+        or text contains one of _DOC_LINK_HINTS; distinct absolute URLs
+        are counted.
+        """
+        for a in soup.find_all("a", href=True):
+            href = a["href"].lower()
+            text = a.get_text(" ", strip=True).lower()
+            if any(h in href for h in _PRODUCT_HINTS):
+                product_urls.add(urljoin(base, a["href"]))
+            if any(h in href or h in text for h in _DOC_LINK_HINTS):
+                doc_urls.add(urljoin(base, a["href"]))
 
     def _languages(self, soup, resp) -> list:
         langs = set()

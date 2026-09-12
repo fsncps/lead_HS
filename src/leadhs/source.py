@@ -1,4 +1,12 @@
-"""Source register load/list (i2: register of record = repo CSV)."""
+"""Source register load/list (i2: register of record = repo CSV).
+
+Load validation (i13/pe6): id matches ``^[A-Z]{2}-[0-9]+$``; url
+non-empty http(s) with a host; no duplicate host among active rows
+(netloc lowercased, ``www.`` stripped — one site must not be
+double-counted into a floor). Inactive rows are exempt from the
+host check (historical rows may share hosts). A failing row is named,
+exit 1.
+"""
 
 from __future__ import annotations
 
@@ -6,6 +14,7 @@ import csv
 import importlib.resources
 import re
 from typing import Optional
+from urllib.parse import urlparse
 
 _ID_RE = re.compile(r"^[A-Z]{2}-[0-9]+$")
 _VALID_CLASSES = {"CS", "PE", "LG", "ST", "LI"}
@@ -30,6 +39,11 @@ def default_register_path() -> str:
     return str(importlib.resources.files("leadhs").joinpath("dict", "sources.csv"))
 
 
+def _host_of(url: str) -> str:
+    host = urlparse(url).netloc.lower()
+    return host[4:] if host.startswith("www.") else host
+
+
 def _validate_row(row: dict, line: int) -> None:
     missing = _REQUIRED - set(row.keys())
     if missing:
@@ -39,8 +53,12 @@ def _validate_row(row: dict, line: int) -> None:
         raise SourceLoadError(f"line {line}: bad source id {sid!r} (need CS-1 style)")
     if row["class_code"] not in _VALID_CLASSES:
         raise SourceLoadError(f"line {line}: {sid} bad class_code {row['class_code']!r}")
-    if not row["url"].strip():
+    url = row["url"].strip()
+    if not url:
         raise SourceLoadError(f"line {line}: {sid} empty url")
+    parts = urlparse(url)
+    if parts.scheme not in ("http", "https") or not parts.netloc:
+        raise SourceLoadError(f"line {line}: {sid} url must be http(s) with a host, got {url!r}")
     if row["access_method_code"] not in ("api", "scrape", "download", "manual"):
         raise SourceLoadError(f"line {line}: {sid} bad access_method_code {row['access_method_code']!r}")
     if row["verification_status_code"] not in ("verified", "partially_verified", "open", "unverified"):
@@ -61,6 +79,7 @@ def load(conn, path: str) -> int:
         raise SourceLoadError(f"{path}: empty register")
 
     seen: set = set()
+    active_hosts: dict = {}
     count = 0
     for lineno, row in enumerate(rows, start=2):  # 1 = header
         _validate_row(row, lineno)
@@ -68,6 +87,14 @@ def load(conn, path: str) -> int:
         if sid in seen:
             raise SourceLoadError(f"line {lineno}: duplicate source id {sid}")
         seen.add(sid)
+        if row["active"].strip() == "1":
+            host = _host_of(row["url"])
+            other = active_hosts.get(host)
+            if other is not None:
+                raise SourceLoadError(
+                    f"line {lineno}: duplicate active host {host} — {sid} conflicts with {other}"
+                )
+            active_hosts[host] = sid
         conn.execute(
             """
             INSERT INTO source (id, class_code, name, url, access_method_code,

@@ -47,6 +47,23 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
                        b'<a href="/p/11.html">Produkt 11</a></body></html>')
         elif p == "/cat/grundierung":
             self._html(b"<html><body>Grundierung category</body></html>")
+        elif p == "/many-cats":
+            links = "".join(f'<a href="/cat/c{i}">Cat {i}</a>' for i in range(1, 16))
+            self._html(f"<html><body>{links}</body></html>".encode())
+        elif p == "/nested-cats":
+            self._html(b'<html><body><a href="/cat/n1">N1</a></body></html>')
+        elif p == "/cat/n1":
+            self._html(b'<html><body><a href="/cat/n1sub">Sub</a>'
+                       b'<a href="/p/n1.html">Produkt n1</a></body></html>')
+        elif p == "/cat/n1sub":
+            self._html(b'<html><body><a href="/cat/n1subsub">Sub2</a>'
+                       b'<a href="/p/n1sub.html">Produkt n1sub</a></body></html>')
+        elif p == "/cat/n1subsub":
+            self._html(b'<html><body><a href="/cat/n1subsubsub">Sub3</a>'
+                       b'<a href="/p/n1subsub.html">Produkt n1subsub</a></body></html>')
+        elif p.startswith("/cat/c"):
+            self._html(f"<html><body>Category {p} "
+                       f"<a href=\"/p{p}.html\">Produkt</a></body></html>".encode())
         elif p == "/terms":
             self._html(b"<html><body>AGB</body></html>")
         elif p == "/export.csv":
@@ -119,8 +136,13 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
 
 @pytest.fixture(scope="session")
 def site():
+    # Binds all interfaces (not just 127.0.0.1) so the loopback aliases
+    # 127.0.0.2..127.0.0.15 (all of 127.0.0.0/8 routes to localhost on
+    # Linux) reach the fixture server — the fixture register gives every
+    # active row its own host because the duplicate-active-host load
+    # validation (i13) requires one host per active register row.
     _FixtureSite.hits.clear()
-    srv = socketserver.TCPServer(("127.0.0.1", 0), _FixtureSite)
+    srv = socketserver.TCPServer(("", 0), _FixtureSite)
     port = srv.server_address[1]
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     yield f"http://127.0.0.1:{port}"
@@ -155,24 +177,29 @@ def store(db_path):
 
 @pytest.fixture()
 def fixture_register(tmp_path, site):
+    port = site.rsplit(":", 1)[1]
+
+    def h(i: int) -> str:
+        return f"http://127.0.0.{i}:{port}"
+
     path = tmp_path / "register.csv"
     rows = [
         "id,class_code,name,url,access_method_code,license_note,verification_status_code,active,notes",
-        f"PX-1,PE,Fixture catalog,{site}/,scrape,,open,1,census good catalog",
-        f"PX-2,PE,Robots-denied,{site}/private/secret,scrape,,open,1,robots deny",
-        f"PX-3,PE,Blocked 403,{site}/forbidden,scrape,,open,1,403",
-        f"PX-4,PE,Persistent 429,{site}/ratelimited-always,scrape,,open,1,429",
-        f"PX-5,PE,429 once,{site}/ratelimited-once,scrape,,open,1,429-then-ok",
-        f"PX-6,PE,Empty page,{site}/empty.html,scrape,,open,1,parse error",
-        f"PX-7,PE,Huge page,{site}/huge.html,scrape,,open,1,hostile",
-        f"PX-8,PE,Non-utf8,{site}/non-utf8.html,scrape,,open,1,hostile",
-        f"PX-9,PE,Missing page,{site}/missing,scrape,,open,1,404",
-        f"CX-1,CS,Fixture export,{site}/export.csv,download,,open,1,good csv",
-        f"CX-2,CS,Fixture bad export,{site}/export-bad.csv,download,,open,1,bad layout",
-        f"CX-3,CS,Fixture api,{site}/api.json,api,,open,1,json",
-        f"CX-4,CS,Fixture 500,{site}/error500,api,,open,1,network fail",
-        f"SX-1,ST,Fixture spin,{site}/spin,download,,open,1,mdbtools",
-        f"ST-1,ST,PCN stats,{site}/missing,manual,,open,0,manual-web via probe record",
+        f"PX-1,PE,Fixture catalog,{h(1)}/,scrape,,open,1,census good catalog",
+        f"PX-2,PE,Robots-denied,{h(2)}/private/secret,scrape,,open,1,robots deny",
+        f"PX-3,PE,Blocked 403,{h(3)}/forbidden,scrape,,open,1,403",
+        f"PX-4,PE,Persistent 429,{h(4)}/ratelimited-always,scrape,,open,1,429",
+        f"PX-5,PE,429 once,{h(5)}/ratelimited-once,scrape,,open,1,429-then-ok",
+        f"PX-6,PE,Empty page,{h(6)}/empty.html,scrape,,open,1,parse error",
+        f"PX-7,PE,Huge page,{h(7)}/huge.html,scrape,,open,1,hostile",
+        f"PX-8,PE,Non-utf8,{h(8)}/non-utf8.html,scrape,,open,1,hostile",
+        f"PX-9,PE,Missing page,{h(9)}/missing,scrape,,open,1,404",
+        f"CX-1,CS,Fixture export,{h(10)}/export.csv,download,,open,1,good csv",
+        f"CX-2,CS,Fixture bad export,{h(11)}/export-bad.csv,download,,open,1,bad layout",
+        f"CX-3,CS,Fixture api,{h(12)}/api.json,api,,open,1,json",
+        f"CX-4,CS,Fixture 500,{h(13)}/error500,api,,open,1,network fail",
+        f"SX-1,ST,Fixture spin,{h(14)}/spin,download,,open,1,mdbtools",
+        f"ST-1,ST,PCN stats,{h(15)}/missing,manual,,open,0,manual-web via probe record",
     ]
     path.write_text("\n".join(rows) + "\n", encoding="utf-8")
     return str(path)

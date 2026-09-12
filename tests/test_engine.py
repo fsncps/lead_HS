@@ -1,6 +1,8 @@
 """Engine: per-source runs, loop survival, re-run keys, stale reclaim,
 outcomes, record_manual."""
 
+import re
+
 import pytest
 
 from leadhs import db as dbmod
@@ -86,8 +88,8 @@ def test_run_one_unexpected_format_done_with_finding(loaded_conn, store, fetcher
 def test_rerun_new_run_key(loaded_conn, store, fetcher):
     s1 = engine.run_one(loaded_conn, store, fetcher, _get(loaded_conn, "PX-1"), sample_n=1)
     s2 = engine.run_one(loaded_conn, store, fetcher, _get(loaded_conn, "PX-1"), sample_n=1)
-    assert s1["run_key"] == "probe-20260911-px1"
-    assert s2["run_key"] == "probe-20260911-px1-2"
+    assert re.fullmatch(r"probe-\d{8}-px1", s1["run_key"])
+    assert s2["run_key"] == s1["run_key"] + "-2"
     assert s2["status"] == "done"
 
 
@@ -160,7 +162,7 @@ def test_record_manual(loaded_conn, store):
         "SELECT r.run_key, pf.value_numeric, pf.method_code FROM probe_finding pf JOIN run r ON r.id=pf.run_id WHERE r.run_key=?",
         (summary["run_key"],),
     ).fetchone()
-    assert row[0] == "probe-20260911-st1manual"
+    assert re.fullmatch(r"probe-\d{8}-st1manual", row[0])
     assert row[1] == 42.0
     assert row[2] == "manual"
 

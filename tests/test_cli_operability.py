@@ -47,7 +47,7 @@ def test_help_and_version_exit_0_stdout():
 
 def test_version_is_0_1_2():
     r = _lead("--version")
-    assert "0.1.2" in r.stdout
+    assert "0.1.3" in r.stdout
 
 
 @pytest.mark.parametrize("group", [[], ["db"], ["source"], ["probe"]])

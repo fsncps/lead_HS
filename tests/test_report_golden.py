@@ -39,8 +39,9 @@ import re
 
 
 def _normalize(text: str) -> str:
-    """The fixture site port varies per session — normalize it for goldens."""
-    return re.sub(r"127\.0\.0\.1:\d+", "127.0.0.1:PORT", text)
+    """The fixture site port varies per session (and the fixture register
+    uses 127.0.0.N loopback aliases) — normalize host:port for goldens."""
+    return re.sub(r"127\.0\.0\.\d+:\d+", "127.0.0.1:PORT", text)
 
 
 def _golden(name: str, content: str) -> str:
