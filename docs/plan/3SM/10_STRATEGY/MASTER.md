@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Strategy MASTER — lead_HS
@@ -211,12 +211,105 @@ owner). Open questions and the phased roadmap follow.
     never reach reports by construction — reports draw from probe
     views, and LG rows carry no probe runs. Legal-text verification
     remains a pure documentation workstream outside the tool.
+28. **Product-first census; register carries product sources only
+    (2026-09-11; user direction, refines D25, applies D27 to the
+    register):** the census report answers exactly two questions —
+    (Q1) how many paint/varnish products each registered source
+    exposes, where "products observed" = distinct product listings
+    found in a polite walk, a floor never a market total; and (Q2)
+    for how many of them SDS-type documentation is reachable. Trade
+    statistics are volume context only: trade rows (`records_hs*`)
+    count tariff-line flows, never products. The tool register slims
+    to product sources (CS-1, CS-2, PE-1..4, ST-1..3 — nine rows);
+    the LG/LI rows leave the tool (migration 0004 prunes the rows and
+    any runs/findings recorded against them), and their context
+    remains in the 10_STRATEGY documents. The od8 per-source
+    feasibility sections are superseded by: the two numbers up front,
+    one product-first matrix, the execution log, compact per-source
+    blocks, legend — mechanics unchanged (single DB-only assembly,
+    md/csv/json; R4 provenance; GO=1 discipline; P7 counts from the
+    DB only). Access checks (robots/terms/rate) stay in the database
+    and appear as one line per source. PE probing gains
+    `products_listed` / `doc_links_seen` (category walk depth ≤ 3,
+    page budget); CS-2 per-HS parameterized queries unchanged. Census
+    execution (v0.1.2 PHASE07) re-sequenced after the rework:
+    verified on one or two sources, then full `GO=1 make census`
+    (user-approved 2026-09-11).
+29. **v0.1.3 refocus — data-landscape map first (2026-09-12; user
+    direction):** before any sizing or sampling, the study needs a
+    general map of the data landscape — what is available from which
+    source, at what scale, with what access to specifications —
+    deliberately coarse ("don't go into detail"); legal references
+    and legal data are of no concern in this unit (D27/D28
+    discipline). Unit v0.1.3 becomes the data-landscape mapping
+    unit: channel enumeration, census-walk extension
+    (`products_listed` / `doc_links_seen`), coarse SPIN/PCN/PRODCOM
+    priors, latest-year trade context, and one cross-source
+    availability map answering Q1 (products identifiable under the
+    HS headings, observed floor) and Q2 (spec documents reachable).
+    The sampling-frame apparatus (stratification, seeded draw,
+    precision targets), the config-file migration and the full
+    historical trade import defer to a later unit, chosen via the
+    unit's frame-decision bridge. Strategy DRAFT; converges after
+    the v0.1.2 census execution.
+30. **Three-number deliverable (2026-09-12; user ratification — "this
+    is the TOTAL PROJECT"):** the unit's product is the triad
+    **N1** market size (paint products on the EU market, HS 3208+3209 —
+    REACH registers substances, not products; anchors: ECHA PCN
+    statistics as official proxy, CEPE industry structure, PRODCOM
+    producer counts; manual records on ST-1/ST-3, provenance-pinned),
+    **N2** the total data pool (Σ `products_listed` over the enumerated
+    register — products with any reachable listing), **N3** the
+    detailed-data pool (Σ `doc_links_seen` — SDS/TDS reachable, per
+    channel). Everything else stays but is not the focus. The
+    seed-register census executed 2026-09-12 stands as baseline (3 done
+    / 1 blocked / 3 failed; `db audit` clean; CS-1 = server-side TLS
+    wall confirmed via curl handshake_failure — honest-UA discipline
+    holds, no browser impersonation; coop.ch 403 bot wall;
+    spin2000.net timeout; example.invalid = the PE-3 placeholder).
+    PHASE02's remainder re-scopes to manual `census_status` records +
+    the real sweep over the enumerated register (PHASE06). Priority:
+    PHASE01 walk counters + PHASE03 enumeration pulled ahead.
+    Enumeration bucket caps: MFR ≤12, CH-DIY ≤4, EU-DIY ≤5, MARINE ≤5,
+    ART ≤6; B2B portals carried OPEN (no confirmed portal — the PE-3
+    placeholder defers to candidate identification at review). Version
+    0.1.3 was bumped early at user request (LOG 2026-09-12); PHASE03
+    step 1 is verification-only.
+31. **Access census; no-scrape reconnaissance; EU-only (2026-09-12;
+    user clarification on D29/D30):** the triad stands, re-weighted —
+    N1 ("how many are there") is accepted as an estimate and is not
+    the unit's operational target; the core is **access coverage**:
+    N2 — to how many products do we have access in some form — and
+    N3 — for how many can we get detailed data, and for how many an
+    MSDS. Method constraint: sound out the data landscape WITHOUT
+    starting to scrape — reconnaissance level only (robots/terms,
+    existence and shape of API/download endpoints, sitemap presence
+    and product-URL counts via a single structured fetch, manual-web
+    checks); catalog walks and any product-level collection defer
+    until an explicit go. Count-bearing statistical sources (SPIN,
+    PCN, PRODCOM/SBS, national product registers) carry the
+    measurable part of N2/N3; web channels are characterized, not
+    walked. Source discovery is first-class: the register is expected
+    to need more / different EU sources — new class AS (CEPE +
+    national association member lists; national product registers
+    with public statistics) alongside activating ST-1/ST-3. Market
+    scope: the Swiss market is of little concern — metrics are
+    EU-only (CS-1 and CH-DIY seeds leave the register); Switzerland
+    stays the regulatory frame of the study and nothing more. HS 3213
+    demotes from full census (D13) to a low-priority annex, worked
+    only if free capacity. Deliverable emphasis (user): the report
+    must show LARGE NUMBERS — magnitudes of paints on the market and
+    data availability for them — not sparse tables. The clarification
+    materializes as the new minor-version unit **v0.2.0**
+    (`v0.2.md`, numbers-first); v0.1.3 stays FROZEN with a
+    supersession note — its walk-based tape is not executed (the
+    machinery idles).
 
 ## OPEN ITEMS
 
-- OPEN/NON-BLOCKING: EZV/swiss-impex — confirm free access and granularity
-  (CN8 by partner country, multi-year) for 3208/3209 (+ 3213); extract 2019–2025.
-  Probe target of unit v0.1.1 (D19).
+- CLOSED 2026-09-12 (scope, D31): EZV/swiss-impex — Swiss market
+  metrics dropped (EU-only); the TLS handshake failure is documented
+  in the census baseline; no further work.
 - OPEN: current consolidated ChemRRV Anhang 2.8 (SR 814.81) wording — the
   0.01% threshold, treated articles, and any exceptions verified only on the
   2005 snapshot; verify on fedlex.
@@ -237,9 +330,10 @@ owner). Open questions and the phased roadmap follow.
   commissioning context 2026-09-10) — verify against public record (e.g.
   the 2010 VIPaV explanatory report/Botschaft) before naming BBL in any
   deliverable.
-- OPEN/NON-BLOCKING: Swiss product-notification landscape (no PCN membership;
-  poison-centre/product-register equivalents and any public statistics);
-  Swiss producer statistics (BFS).
+- CLOSED 2026-09-12 (scope, D31): Swiss product-notification landscape
+  and BFS producer statistics — Swiss market metrics dropped
+  (EU-only); the Swiss layer stays as regulatory framing only
+  (LEAD_SDS.md, METHODOLOGY regulatory frame).
 - OPEN/NON-BLOCKING: ECHA PCN universe totals + EuPCS paint share (EU context).
 - OPEN/NON-BLOCKING: SPIN Access DB extraction; PRODCOM sold production 20.30.1x.
 - OPEN: verify CAS for lead naphthenate (61790-14-5?) and lead neodecanoate
@@ -252,7 +346,7 @@ owner). Open questions and the phased roadmap follow.
 
 ## ROADMAP (strategy altitude)
 
-- Phase 0 — close gaps: Swiss customs extraction (EZV); verify current legal
+- Phase 0 — close gaps: verify current legal
   texts (ChemRRV Anhang 2.8, consolidated VIPaV); document the CdD
   governance chain for the lead exception from public sources (requester/
   owner, review procedure, 2010 inception record); 2022 refusal OJ ref;
@@ -262,8 +356,19 @@ owner). Open questions and the phased roadmap follow.
   feasibility pass executed the same day (gaps: CS-1 fetch, CS-2
   query params, ST-2 fetch, PE catalog level, manual sources). v0.1.2
   (D26) is the census close-out — full source probing, structured
-  source reports, operator layer — and delivers the census through
+   source reports, operator layer — and delivers the census through
   `GO=1 make census`.
+ User review of the 2026-09-11 report output reframed the census
+ product-first (D28): the report now leads with the two study numbers
+ (products available; products with reachable SDS), trade rows demote
+ to volume context, and the register slims to product sources. Unit
+  v0.1.3 (DRAFT, `v0.1.3.md`, refocused 2026-09-12 per D29) turns the
+  census floors into the data-landscape map — availability, scale and
+  spec access per source, the two study numbers as measured floors;
+  the sampling-frame apparatus defers until the map justifies it.
+ The 2026-09-12 user clarification (D31) turns the landscape work
+ into unit v0.2.0 — market scale & data availability, numbers-first,
+ no-scrape reconnaissance, EU-only (`v0.2.md`).
 - Phase 1 — pilot: freeze lead dictionary + SDS scrape/parsing on 1–2 strata
   (lead-driers stream first); validate hit-rate prior and CN-assignment
   heuristics; build the `leadhs` CLI skeleton (acquire → ingest → parse →
@@ -296,6 +401,19 @@ owner). Open questions and the phased roadmap follow.
 - `v0.1.2.md` — census close-out (full source probing, structured
   source reports, operator layer per D25/D26): strategy converged
   (D21/D22/D25/D26); unit doc LIVE.
+- `v0.1.3.md` — data-landscape map (refocused 2026-09-12, D29):
+  what is available from which source, at what scale, with what spec
+  access — Q1/Q2 as measured floors per source; coarse priors,
+  latest-year trade context, frame-decision bridge. Strategy
+  converged 2026-09-12 on D30 (three-number deliverable N1/N2/N3);
+  design and implementation plans live; build follows the prepared
+  tape. 2026-09-12, D31: superseded in part by v0.2.0 — walk
+  execution idles, unit stays FROZEN; see `v0.2.md`.
+- `v0.2.md` — market scale & data availability (the numbers unit,
+  v0.2.0; the D31 strategy turn): N1 market-size estimate from
+  official statistics, N2/N3 access coverage (registers +
+  reconnaissance), AS-class source discovery, numbers-first report.
+  Strategy DRAFT — converges on user validation.
 - v0.1 (feasibility & study design) remains the foundational strategy
   pass; its legal-verification open items stay in OPEN ITEMS above.
 
@@ -311,3 +429,14 @@ legal-text verification items in OPEN ITEMS.
 For unit v0.1.2 (census close-out): strategy converged
 (D21/D22/D25/D26); Design proceeds on od1–od7 plus od8 (report
 content) and the OD-A decision (per-HS metrics vs M1 deferral).
+
+For unit v0.1.3: yes — strategy converged 2026-09-12 on D30 (three-
+number deliverable; caps and matrix columns pinned against the
+2026-09-12 baseline census). Design (pe1–pe7) and phase plans
+(PHASE01–07) exist; build executes on explicit go. The frame unit
+stays deferred behind the bridge.
+
+For unit v0.2.0: strategy DRAFT (the D31 turn, 2026-09-12) —
+converges on user validation of the numbers-first framing; Design
+then covers the recon probe shape, AS register rows + migration, the
+CS-2 parser/persistence fix and the numbers-report layout.

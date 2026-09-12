@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Architecture — pipeline, CLI, reporting
@@ -98,9 +98,15 @@ grows matching commands.
   provisional population anchors; nothing else is implemented.
 - **v0.1.2 — operator layer (between M0 and M1):** Makefile, CLI
   operability fixes, report routing; no new pipeline stages.
-- **M1 — frame & sample:** `frame set`, `sample plan`, `sample draw`
-  (probe counts + trade stats → strata; parameters p/precision/
-  confidence/FPC/seed).
+- **v0.1.3 — data-landscape map (between M0 and M1, D29):** census
+  close-out execution, channel enumeration, census-walk extension
+  (`products_listed` / `doc_links_seen`), coarse SPIN/PCN/PRODCOM
+  priors, latest-year trade context; reuses the od8 report layer —
+  no new CLI commands, no new pipeline stages.
+- **M1 — frame & sample (deferred until the landscape map justifies
+  a frame; gated by its frame-decision bridge):** `frame set`,
+  `sample plan`, `sample draw` (probe counts + trade stats → strata;
+  parameters p/precision/confidence/FPC/seed).
 - **M2 — acquire & parse:** `acquire run`, `ingest sightings`,
   `parse sds`, `review` — pilot on 1–2 strata (lead driers first),
   then full n.

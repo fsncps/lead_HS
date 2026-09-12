@@ -1,8 +1,8 @@
 ---
-unit: v0.1.1
-stage: STRATEGY
+unit: v0.1.3
+stage: IMPLEMENTATION
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # lead_HS — MASTER
@@ -22,13 +22,17 @@ cycle. It
 works purely from documents — chiefly safety data sheets (SDS) and trade
 statistics — with no laboratory and at minimal cost. The outcome is a
 discussion basis for decision makers plus a reusable database of checked
-products. This file is the project dashboard. Current stage: v0.1.1
-built (probe CLI gate-verified; census feasibility pass executed
-2026-09-11); unit v0.1.2 — operator layer + census close-out (D26) —
-**built 2026-09-11** (PHASE01–06 done; trail rescoped to the
-second-pass design od8–od10; 155 offline tests pass); the census
-execution (PHASE07, `GO=1 make census`, real network) awaits explicit
-go.
+products. This file is the project dashboard. Current stage: v0.1.3 —
+the data-landscape map (D29), converged 2026-09-12 on D30, the
+three-number deliverable (N1 market size, N2 total data pool, N3
+detailed-data pool). Unit v0.1.1 built (probe CLI gate-verified;
+census feasibility pass executed 2026-09-11); unit v0.1.2 — operator
+layer + census close-out (D26) — **built 2026-09-11** (PHASE01–06
+done; trail rescoped to the second-pass design od8–od10; 155 offline
+tests pass); its census execution transferred to v0.1.3 PHASE02 (B8
+precedent). For v0.1.3: design (pe1–pe7) and phase plans (PHASE01–07)
+written; baseline census executed 2026-09-12 (3 done / 1 blocked / 3
+failed; audit clean); build awaits explicit go.
 
 **Project:** Identify which paint/varnish products (HS/CN 3208/3209, plus a
 3213 artists' colours census annex) on the Swiss and EU markets contain
@@ -48,7 +52,8 @@ no paid data sources, minimal cost.
 |---|---|---|
 | v0.1 (feasibility & study design) | STRATEGY | foundational pass; legal-verification open items carried in Strategy MASTER |
 | v0.1.1 (source probing — slim CLI) | IMPLEMENTATION | PHASE01–07 built & gate-verified 2026-09-11; PHASE08 feasibility pass executed 2026-09-11; census close-out transferred to v0.1.2 (D26) |
-| v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | built 2026-09-11 (PHASE01–06; rescoped to second-pass od8–od10; 155 tests offline); PHASE07 census execution awaits explicit go |
+| v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | built 2026-09-11 (PHASE01–06; rescoped to second-pass od8–od10; 155 tests offline); PHASE07 census execution transferred to v0.1.3 PHASE02 (B8/D26) |
+| v0.1.3 (data-landscape map) | IMPLEMENTATION | strategy converged on D30 2026-09-12; design pe1–pe7 + PHASE01–07 written (CEO HOLD + ENG SMALL CHANGE re-review 2026-09-12, findings E1/E2 folded); baseline census 2026-09-12 (3/1/3, audit clean); PHASE01 (D28 rework) built 2026-09-12 — 165 offline tests, audit clean; PHASE02+ await explicit go |
 
 ## Documents
 

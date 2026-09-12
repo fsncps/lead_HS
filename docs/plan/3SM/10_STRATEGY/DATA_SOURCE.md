@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Data sources — register, access, provenance
@@ -61,7 +61,7 @@ glossed at first use and summarized in the glossary below.
 
 ## Source classes
 
-Five classes with stable IDs (the database `source.class` field):
+Six classes with stable IDs (the database `source.class` field):
 
 - **CS — customs & trade statistics:** Swiss EZV/swiss-impex (primary:
   structures the Swiss market by origin); Eurostat Comext (EU context).
@@ -72,6 +72,10 @@ Five classes with stable IDs (the database `source.class` field):
   Negativliste, REACH Annexes XIV/XVII, OJ decisions, ECHA registers.
 - **ST — structural & product statistics:** ECHA PCN, Nordic SPIN,
   Eurostat PRODCOM/SBS — population proxies and scaling anchors.
+- **AS — associations & registers (D31):** CEPE/national association
+  member lists; national product registers with public statistics
+  (e.g. Swedish Products Register/KemI; DK/NO/FI equivalents) —
+  manufacturer and product-count anchors without scraping.
 - **LI — literature & industry:** peer-reviewed studies, IPEN, CEPE.
 
 ## PE — concrete source taxonomy and seed sites
@@ -111,10 +115,10 @@ CSV is the register of record):
 
 | ID | Class | Source | Provides | Access | Granularity | Status |
 |----|-------|--------|----------|--------|-------------|--------|
-| CS-1 | CS | swiss-impex.admin.ch (EZV) | CH imports/exports, 3208/3209 (+3213) | web UI / CSV export (to confirm) | CN8 × partner × year | OPEN — free access & granularity to confirm (Phase 0, high priority) |
+| CS-1 | CS | swiss-impex.admin.ch (EZV) | CH imports/exports, 3208/3209 (+3213) | web UI / CSV export (to confirm) | CN8 × partner × year | OUT OF SCOPE (D31 — EU-only; TLS wall documented 2026-09-12) |
 | CS-2 | CS | Eurostat Comext DS-045409 | EU27 extra-EU trade | public API | CN8 × partner × year | verified (2023 extracted) |
 | PE-1 | PE | manufacturer/brand sites | product catalogs, SDS PDFs | polite scraping | product/formulation | OPEN — tier A + B seed list; site list built Phase 1–2 |
-| PE-2 | PE | DIY chains (CH candidates: Coop Bau+Hobby, Migros Do-it+Garten, Hornbach, Bauhaus, Jumbo, OBI; EU equivalents: B&Q, Leroy Merlin, Castorama, Gamma, Praxis, Toom) | retail listings | polite scraping | SKU → formulation | OPEN — tier C |
+| PE-2 | PE | DIY chains (EU: Hornbach, OBI, Bauhaus, Leroy Merlin, Castorama, Gamma, Praxis, Toom, B&Q) | retail listings | polite scraping | SKU → formulation | OPEN — tier C; CH seeds dropped (D31) |
 | PE-3 | PE | B2B / trade portals (DE/FR/IT) | professional listings, TDS | polite scraping | product | OPEN — tier C |
 | PE-4 | PE | marine chandlers, art-supply shops | niche streams (red lead, artists' colours) | polite scraping | product | partially verified (seed records exist) — tier B/C |
 | LG-1 | LG | fedlex / Lexaris | consolidated THG, VIPaV, ChemRRV | download | article | THG verified; current ChemRRV/VIPaV consolidation OPEN (fedlex JS-gated) |
@@ -124,10 +128,30 @@ CSV is the register of record):
 | ST-1 | ST | ECHA PCN statistics | formulation counts (hazardous mixtures) | public stats | aggregate | OPEN — locate formulation-level aggregates |
 | ST-2 | ST | Nordic SPIN (DK/SE/NO/FI) | preparation counts, lead-CAS incidence | free Access-DB download | substance × use × country | available; extraction path OPEN |
 | ST-3 | ST | Eurostat PRODCOM / SBS | production values, producer counts | public API | NACE 20.30 | verified |
+| AS-1 | AS | CEPE + national paint associations | member lists → manufacturer counts | web (member directories) | association | OPEN — D31 candidate, access to verify |
+| AS-2 | AS | national product registers (SE KemI; DK/NO/FI) | product counts per use category | public statistics | product × country | OPEN — D31 candidate, public statistics to verify |
 | LI-1 | LI | studies / IPEN / CEPE | calibration priors | DOI / web | study-level | verified |
 
 The register grows during Phase 0–2; the database `source` table mirrors
 it (see DATA_MODEL.md).
+
+**Register slim (D28, 2026-09-11):** the tool register
+(`sources.csv`) carries product sources only — CS-1, CS-2, PE-1..4,
+ST-1..3 (nine rows). The legal (LG) and literature (LI) rows
+described under source classes remain study context in this
+document; they are not loaded into the tool, and migration 0004
+removes them from databases created before the change. Legal-text
+and literature workstreams stay documentation-only (D27).
+
+**Register scope (D31, 2026-09-12):** metrics are EU-only — the
+Swiss market is of little concern. CS-1 (swiss-impex) leaves the
+tool scope (TLS wall documented 2026-09-12); PE-2 loses its CH-DIY
+seeds. Source discovery is a first-class v0.2.0 task: expected
+additions form the new AS class (CEPE + national association member
+lists; national product registers with public statistics), alongside
+activation of the count-bearing ST rows (ST-1 PCN, ST-2 SPIN, ST-3
+PRODCOM/SBS). Catalog scraping stays deferred until an explicit go
+(D31): web sources are characterized at reconnaissance level only.
 
 ## Probing pass (unit v0.1.1)
 
@@ -175,6 +199,30 @@ documents). Framing: these are source-feasibility metrics; product
 and lead prevalence are M2+ deliverables and are never implied by
 this report (D25).
 
+#### Product-first census report (D28, 2026-09-11)
+
+The census report leads with the two study numbers: products
+available (observed listings per source — a floor, never a market
+total) and products with reachable SDS-type documentation (sample
+metrics plus doc links seen). One product-first matrix covers all
+registered sources; the `records_hs*` columns of trade sources are
+labelled volume context — trade rows are tariff-line flows, not
+products. PE sources gain `products_listed` (distinct product detail
+links from a depth-≤ 3 walk with a page budget) and `doc_links_seen`
+(SDS/TDS-type links encountered); access metadata (robots/terms/
+rate) appears as one line per source. csv = matrix, json = full
+structure; every value cites its run_key.
+
+**Data-landscape map (D29, 2026-09-12):** unit v0.1.3 extends this
+report into the study's data-landscape map — the aggregate floors
+Σ `products_listed` / Σ `doc_links_seen` over completed walks
+(blocked/failed/not-yet-walked sources excluded from the sum and
+counted; budget-limited walks annotated), coarse SPIN/PCN/PRODCOM
+priors (`products_registered`), latest-year trade context, and a
+frame-decision bridge. Channel enumeration grows the register with
+per-site PE rows (documented growth only — inclusion criteria,
+provenance, caps). Detail: 10_STRATEGY/v0.1.3.md.
+
 ## Provenance rules (binding)
 
 1. Every scraped record stores `source_id`, `url`, `retrieved_at`.
@@ -215,12 +263,16 @@ this report (D25).
   site blocks, recorded per record.
 - D5: every OPEN register row is probed once before collection (unit
   v0.1.1) and its Status updated from probe findings (MASTER D19).
+- (2026-09-11) Product-first census and register slim per MASTER
+  D28: nine product sources in the tool; LG/LI documentation-only.
+- (2026-09-12) D31: EU-only register (CS-1 and CH-DIY seeds out); new
+  AS class; reconnaissance-only access characterization until an
+  explicit scraping go; numbers-first deliverable (v0.2.0).
 
 ## OPEN ITEMS
 
-- CS-1 swiss-impex: confirm free access, CN8 × partner granularity,
-  multi-year coverage (2019–2025), export format — Phase 0, high
-  priority; probe target of v0.1.1.
+- CLOSED 2026-09-12 (D31): CS-1 swiss-impex — out of scope (EU-only
+  metrics); TLS wall documented in the census baseline.
 - PE site list: tier A/B/C seed sites (see "PE — concrete source taxonomy
   and seed sites") to enumerate and prioritize in Phase 1–2 (frame
   construction); confirmation of scrapeability started by the v0.1.1 probe.

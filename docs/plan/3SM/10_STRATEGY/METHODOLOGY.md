@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Methodology — population, sampling, corroboration
@@ -137,17 +137,18 @@ engineering reader and may be skipped.
 ## Population and definition
 
 - Target population: distinct paint/varnish formulations (HS 3208/3209)
-  available on the **EU market** — the primary object — with the **Swiss
-  market as an additional metric** (domestic production + imports; the
-  Swiss 100 ppm rule sits on top of EU-lawful presence). EU/EEA
-  population estimates also serve as scaling anchors.
+  available on the **EU market** — the study's object. Swiss figures
+  are not a metric: the Swiss market is of little concern (D31,
+  2026-09-12); Switzerland stays the regulatory frame (the Swiss 100
+  ppm rule sits on top of EU-lawful presence as framing context).
+  EU/EEA population estimates also serve as scaling anchors.
 - **No registry counts these** — population size must be triangulated.
 - Unit = base formulation: colour shades co-notified as one (KemI practice);
   point-of-sale tinting variants are not separate PCN entries (Reg (EU)
   2020/1676). SKU-level counting is explicitly rejected (inflates N by 1–3
   orders of magnitude without adding information).
-- Working hypothesis: **10⁴–10⁵ formulations EEA-wide**; Swiss-market frame
-  plausibly one order of magnitude smaller (to be pinned in Phase 0).
+- Working hypothesis: **10⁴–10⁵ formulations EEA-wide** (estimate;
+  D31 — accepted as an estimate, not the operational target).
   EU-side anchors: ~3,200 EU27 producers (NACE 20.30, Eurostat SBS 2019–20);
   CEPE ~800 members ≈ 85% of €17 bn; EU27 extra-EU trade €1.1 bn in /
   €4.3 bn out, ~860 kt (2023, Comext DS-045409, CN8 sums computed).
@@ -183,7 +184,47 @@ engineering reader and may be skipped.
 4. **Swiss structural statistics** (BFS/SBS): domestic producer counts and
    production values.
 
-## Stratification (draft: 8 segment strata × origin)
+### Census-to-landscape handoff (D28; updated 2026-09-12 per D29/D31)
+
+The census (v0.1.2) and the numbers unit (v0.2.0, `v0.2.md`, D31)
+deliver the study numbers per source:
+
+- **Q1 — products identifiable:** Σ over enumerated channels of
+  observed distinct product listings (`products_listed` walks,
+  v0.1.2 mechanics — execution deferred: D31 no-scrape reconnaissance
+  until an explicit go; carrying unit v0.2.0) — an observed floor,
+  never a market total;
+  reported per source and as an aggregate sum with overlap caveats.
+  Estimation beyond the floor (bottom-up availability factors,
+  top-down trade bounds, ranges) defers to the frame unit; trade
+  rows stay volume context (D28 grain rule). The working hypothesis
+  of 10⁴–10⁵ formulations EEA-wide is tested against these floors.
+  The 3213 artists'-colours annex demotes to a low-priority annex
+  (D31; D13 superseded).
+- **Q2 — documentation coverage:** for how many of the identified
+  products SDS/TDS-type documentation is reachable — measured in
+  the walks (`doc_links_seen`, `sds_sample_ok` now; M2 acquisition
+  later), never assumed. The SDS declaration-floor blind spot
+  (MASTER D15) applies to Q2 interpretations.
+
+Method re-scope (D31, 2026-09-12): the landscape is sounded out
+without starting to scrape — reconnaissance-level checks (robots/
+terms, API/download endpoints, sitemap product-URL counts,
+manual-web) plus count-bearing statistical sources (SPIN, PCN,
+PRODCOM/SBS, national product registers) carry the measurable part
+of Q1/Q2; catalog walks defer until an explicit go. N1 ("how many
+are there") is accepted as an estimate, not the operational target;
+the core is access coverage — to how many products we have access in
+some form, and for how many we can get detailed data / an MSDS.
+Market scope is EU-only; Swiss figures serve as downstream context
+only. This work materializes in unit v0.2.0 (`v0.2.md`).
+
+The sampling frame (stratification below, seeded draw) is built only
+after the landscape map justifies it — the frame-decision bridge in
+`10_STRATEGY/v0.1.3.md` gates that unit. Census counts become frame
+strata only by recorded manual promotion (MASTER D20).
+
+## Stratification (draft material for the deferred frame unit: 8 segment strata × origin)
 
 | # | Stratum | CN prior | Lead prior |
 |---|---|---|---|
@@ -196,9 +237,10 @@ engineering reader and may be skipped.
 | S7 | Third-country imported brands | both | **high** (source-market prevalence) |
 | S8 | Residual (wood, floor, specialty) | both | low |
 
-Plus the **3213 census annex** (artists' colours, no sampling). Each stratum
-is split by origin — CH production / EU import / third-country import — with
-draws weighted by EZV import shares (Phase 0).
+The 3213 artists'-colours annex is low-priority (D31). Each stratum
+is split by origin — EU production / third-country import — with
+draws weighted by Eurostat (Comext/PRODCOM) shares in the deferred
+frame unit; EZV weighting is dropped (D31).
 
 ## Sample size (precision-based)
 
