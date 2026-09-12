@@ -4,43 +4,48 @@ stage: IMPLEMENTATION
 lifecycle: LIVE
 updated: 2026-09-12
 ---
-
 # lead_HS — MASTER
 
 ## Abstract
 
-This project asks whether paints and varnishes on the **Swiss and EU
-markets** (customs headings 3208, solvent-borne, and 3209, water-borne,
-plus a census annex for artists' colours under 3213) contain lead, and how
-the regulatory seam of the autonomously adopted Cassis-de-Dijon principle
-works in practice: the principle admits EU-lawful products, while the VIPaV
-exceptions catalogue (Art. 2 Bst. a Ziff. 1) shields the stricter Swiss
-lead-paint ban (ChemRRV Anhang 2.8, ≥ 0.01% total Pb) from imports; the
-entire exception catalogue is reviewed every five years under SECO's lead,
-and the study's decision basis serves the exception's owner within that
-cycle. It
-works purely from documents — chiefly safety data sheets (SDS) and trade
-statistics — with no laboratory and at minimal cost. The outcome is a
-discussion basis for decision makers plus a reusable database of checked
-products. This file is the project dashboard. Current stage: v0.1.3 —
-the data-landscape map (D29), converged 2026-09-12 on D30, the
-three-number deliverable (N1 market size, N2 total data pool, N3
-detailed-data pool). Unit v0.1.1 built (probe CLI gate-verified;
-census feasibility pass executed 2026-09-11); unit v0.1.2 — operator
-layer + census close-out (D26) — **built 2026-09-11** (PHASE01–06
-done; trail rescoped to the second-pass design od8–od10; 155 offline
-tests pass); its census execution transferred to v0.1.3 PHASE02 (B8
-precedent). For v0.1.3: design (pe1–pe7) and phase plans (PHASE01–07)
-written; baseline census executed 2026-09-12 (3 done / 1 blocked / 3
-failed; audit clean); build awaits explicit go.
+This project researches the **EU market** for paints and varnishes
+(customs headings 3208, solvent-borne, and 3209, water-borne, plus a
+low-priority annex for artists' colours under 3213): how many products
+the market holds, for how many of them detailed documentation —
+chiefly safety data sheets (SDS) — is obtainable, and what that
+documentation shows about lead. The study is situated in the context
+of the autonomous Swiss Cassis-de-Dijon frame: the principle admits
+EU-lawful products, while the VIPaV exceptions catalogue (Art. 2 Bst. a
+Ziff. 1) shields the stricter Swiss lead-paint ban (ChemRRV Anhang 2.8,
+≥ 0.01% total Pb) from imports; the entire exception catalogue is
+reviewed every five years under SECO's lead, and the study supplies
+documented market numbers within that cycle, without taking a position
+on the regulation itself. Switzerland is the regulatory frame of the
+study, never a studied market (D31). It
+works purely from documents — chiefly safety data sheets (SDS) and
+statistics — with no laboratory and at minimal cost. The outcome is
+documented market numbers for the surrounding decision-making plus a
+reusable database of checked products. This file is the project
+dashboard. Current stage: **v0.2.0 — market scale & data
+availability** (the D31 strategy turn, `v0.2.md`: numbers-first
+N1 market size, N2 access coverage, N3 detailed-data reachability;
+reconnaissance-only, EU-only; strategy DRAFT pending user validation).
+Unit v0.1.1 built (probe CLI gate-verified; census feasibility pass
+executed 2026-09-11); unit v0.1.2 — operator layer + census close-out
+(D26) — **built 2026-09-11** (PHASE01–06 done; 155 offline tests
+pass); unit v0.1.3 — data-landscape map (D29/D30) — built
+(walk counters, migration 0004; 165 offline tests; baseline probe
+round executed 2026-09-12: 3 done / 1 blocked / 3 failed, audit
+clean); its walk-based execution is superseded by v0.2.0 and the unit
+stands FROZEN with the walk machinery idle.
 
-**Project:** Identify which paint/varnish products (HS/CN 3208/3209, plus a
-3213 artists' colours census annex) on the Swiss and EU markets contain
-lead, via documentation-only screening (SDS), framed by Swiss external trade
-statistics and the autonomous Swiss Cassis-de-Dijon regulatory frame
-(THG/VIPaV; not an EU-bilateral matter). Deliverable:
-discussion basis for decision makers + reusable product/SDS evidence
-database.
+**Project:** Establish how many paint/varnish products (HS/CN 3208/3209,
+plus a low-priority 3213 artists' colours annex) are on the **EU
+market**, for how many of them detailed documentation (SDS) is
+obtainable, and what it shows about lead — via documentation-only
+screening, situated in the autonomous Swiss Cassis-de-Dijon regulatory
+frame (THG/VIPaV; not an EU-bilateral matter). Deliverable:
+documented market numbers + reusable product/SDS evidence database.
 
 **Type:** research study + light data-engineering hybrid (document
 scraping, evidence database). Hard constraints: no lab, no physical samples,

@@ -4,24 +4,31 @@ Project-specific instructions for all agents in this repository.
 
 ## Project
 
-Documentation-only study of lead in paints under HS/CN 3208 + 3209 (plus a
-census annex for artists' colours under 3213) on the **Swiss and EU
-markets**, framed by Swiss external trade and the autonomous Swiss
+Documentation-only study of the **EU market** for lead in paints under
+HS/CN 3208 + 3209 (artists' colours under 3213 as a low-priority
+annex): how many products the market holds, for how many of them
+detailed documentation (SDS) is obtainable, and what that documentation
+shows about lead — situated in the context of the autonomous Swiss
 Cassis-de-Dijon regulatory frame (THG Art. 16a, VIPaV exceptions
 catalogue, ChemRRV lead ban — not an EU-bilateral matter; MRA out of
-scope). Deliverable: a decision basis for the actors around the lead-paint
-exception (regulation owner, review lead; commissioning context stays
-implicit in public documents) plus a reusable product/SDS evidence
-database. Research study + light data-engineering hybrid (document
-scraping, database). Currently in 3SM stage IMPLEMENTATION: unit
-v0.1.1 (source probing — slim CLI) is built and gate-verified
-(PHASE01–07; the PHASE08 census feasibility pass ran 2026-09-11, its
-close-out transferred to v0.1.2 per D26); unit v0.1.2 (operator layer
-+ census close-out) is built (PHASE01–06 done 2026-09-11, 155 offline
-tests; migration 0003 per-HS metrics + census_status, od8 report
-content layer, repo Makefile with GO=1 guards) — PHASE07, the census
-execution through `GO=1 make census`, awaits the explicit
-real-network go — on top of the v0.1 foundational strategy pass.
+scope). Switzerland is the regulatory frame only, never a studied
+market (D31); the study documents market facts and takes no position
+on the regulation itself. Deliverable: documented market numbers for
+the actors around the lead-paint exception (regulation owner, review
+lead; commissioning context stays implicit in public documents) plus a
+reusable product/SDS evidence database. Research study + light
+data-engineering hybrid (document scraping, database). Currently in
+3SM stage IMPLEMENTATION: unit v0.1.1 (source probing — slim CLI) is
+built and gate-verified (PHASE01–07; the PHASE08 census feasibility
+pass ran 2026-09-11, its close-out transferred to v0.1.2 per D26);
+unit v0.1.2 (operator layer + census close-out) is built (PHASE01–06
+done 2026-09-11, 155 offline tests; migration 0003 per-HS metrics +
+census_status, od8 report content layer, repo Makefile with GO=1
+guards); unit v0.1.3 (data-landscape map) is built (walk counters,
+migration 0004, 165 offline tests; baseline probe round 2026-09-12) —
+its walk-based execution superseded by the v0.2.0 strategy turn (D31,
+`v0.2.md`: numbers-first N1/N2/N3, reconnaissance-only, EU-only) —
+on top of the v0.1 foundational strategy pass.
 
 **Hard constraints:** no laboratory work, no physical samples, no paid data
 sources — publicly retrievable documents only, minimal cost.
@@ -78,8 +85,8 @@ explicit user instruction.
 
 - Lead-compound identifiers (CAS/EC) that are still unverified must stay
   flagged until checked against the ECHA EC inventory.
-- Swiss regulatory specifics (ChemO/REACH alignment, EZV data granularity,
-  current ChemRRV Anhang 2.8 wording, consolidated VIPaV text, BBL
+- Swiss regulatory specifics (ChemO/REACH alignment, current ChemRRV
+  Anhang 2.8 wording, consolidated VIPaV text, BBL
   requester/owner role for the lead exception) remain OPEN until verified
   against primary sources — see 10_STRATEGY open items; do not assert them
   as fact.

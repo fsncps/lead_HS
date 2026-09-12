@@ -253,3 +253,21 @@ with a supersession note (walk machinery idles); METHODOLOGY
 register scope, EU-only table rows) updated. DE/FR translations keep
 `source_updated` drift markers (D23); management summary updates
 when v0.2 numbers land.
+
+## 2026-09-12 — project-wide — Framing and tone correction (user direction)
+
+User review of the public README framing: the study researches the
+**EU market** — Switzerland is not a studied market, it enters only as
+the regulatory frame (consistent with D31, now applied everywhere); and
+the study takes no position on the regulation — "does the exception
+still have a factual field of application" phrasing is out of depth and
+removed (D11 reworded: documented EU-market numbers within the review
+cycle, no position). Study arc as stated by the user: count products,
+establish for how many detailed specifications (MSDS) are obtainable,
+analyse — currently at the probing stage (data landscape). Applied to:
+README trio (rewritten — slimmer, professional tone, detail moved to
+the linked docs), management summary (rewritten in both languages,
+status brought up to v0.2.0 — superseding the D31 entry's "summary
+updates when v0.2 numbers land" deferral), strategy MASTER (abstract,
+D1/D3/D10 supersession markers, D11 wording), project MASTER dashboard
+(abstract, current stage), AGENTS.md project paragraph.

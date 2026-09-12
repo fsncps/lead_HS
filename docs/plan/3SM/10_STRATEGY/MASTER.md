@@ -9,24 +9,29 @@ updated: 2026-09-12
 
 ## Abstract
 
-This is the strategy summary, in plain terms. The project asks whether
-paints on the **EU market** (customs headings 3208/3209, plus a census
-annex for artists' colours under 3213) contain lead — the **primary
-object** — with the Swiss market and the Swiss 100 ppm rule as an
-*additional* metric, using only documents collectable for free from the
-web. The implicit expectation is that there are **none** on the EU market;
-the study tests that assumption against product documentation. It records
-the main decisions: what counts as one "product" (one base formulation),
-which parts of the market we look at (all segments, split by origin;
-EU-lawful presence is a study object in its own right because of the
-Cassis-de-Dijon import route), how many products we check (about 2,000–3,000
-by statistical precision), how we detect lead (safety-data-sheet ingredients
-sections, cross-checked across documents — no laboratory), and the
-regulatory frame the evidence feeds into (Swiss ban at 100 ppm total Pb via
-ChemRRV Anhang 2.8, shielded from EU-lawful imports by the VIPaV exceptions
-catalogue — an autonomous Cassis-de-Dijon exception whose entire catalogue
-is reviewed every five years under SECO's lead, serving the exception's
-owner). Open questions and the phased roadmap follow.
+This is the strategy summary, in plain terms. The project researches
+the **EU market** for paints (customs headings 3208/3209, plus a
+low-priority annex for artists' colours under 3213): how many products
+are on the market, for how many of them detailed documentation
+(safety-data-sheet sections) is obtainable, and what that
+documentation shows about lead — using only documents collectable for
+free from the web. The study is situated in the context of the Swiss
+Cassis-de-Dijon exception for lead-containing paints and the related
+legislation and decision-making; Switzerland enters as the regulatory
+frame only (ban threshold, VIPaV entry), never as a studied market
+(D31). The working expectation is that EU regulation has largely
+eliminated lead paints; the study tests that against product
+documentation. It records the main decisions: what counts as one
+"product" (one base formulation), which parts of the market we look at
+(all segments; EU-lawful presence is a study object in its own right),
+how many products we check (about 2,000–3,000 by statistical
+precision, once the frame unit follows), how we detect lead (SDS
+Section 3, cross-checked across documents — no laboratory), and the
+regulatory frame the evidence feeds into (Swiss ban at 100 ppm total
+Pb via ChemRRV Anhang 2.8, shielded from EU-lawful imports by the
+VIPaV exceptions catalogue — an autonomous Cassis-de-Dijon exception
+whose entire catalogue is reviewed every five years under SECO's
+lead). Open questions and the phased roadmap follow.
 
 ## DECISIONS
 
@@ -34,17 +39,24 @@ owner). Open questions and the phased roadmap follow.
    lead-paint exception (regulation owner and review lead; see decision 11
    institutional frame) — briefing on Swiss external trade in 3208/3209
    paints, lead prevalence, and the regulatory seams — plus a reusable
-   product/SDS evidence database.
+   product/SDS evidence database. **(Amended 2026-09-12 by D31: the
+   briefing covers EU-market scale, access coverage and lead
+   prevalence; Swiss external trade is no longer part of the
+   deliverable.)**
 2. **Unit of analysis:** formulation/base product (register-like; colour and
    size variants collapse; point-of-sale tinting variants excluded). Matches
    PCN/SPIN logic and regulatory reality.
 3. **Segment scope:** all segments — decorative, industrial/professional
    (anticorrosive, marine, road-marking, coil/OEM) — each additionally split
    by **origin** (Swiss production / EU import / third-country import),
-   weighted by Swiss trade statistics.
+   weighted by Swiss trade statistics. **(Origin split and Swiss-trade
+   weighting superseded 2026-09-12 by D31 — metrics are EU-only;
+   Switzerland is the regulatory frame, not a studied market.)**
 4. **Sampling:** precision-based stratified design (not a literal 10%):
    n ≈ 385/stratum (p=0.5, ±5%), n ≈ 811 (p≈5%, ±1.5%), with FPC where frames
    are small; full design ≈ 2,000–3,000 products. High-risk strata oversampled.
+   **(Origin split and Swiss-trade weighting superseded 2026-09-12 by
+   D31 — metrics are EU-only; frame unit deferred, D29.)**
 5. **Lead detection primary source:** SDS (MSDS) Section 3 parsing against a
    CAS/EC/Index lead-compound dictionary; UFI as join key; Section 15
    authorisation statements as anomaly signal.
@@ -64,7 +76,10 @@ owner). Open questions and the phased roadmap follow.
 10. **Swiss workstreams are first-class Phase-0 items:** (a) EZV/swiss-impex
     trade extraction at CN8 × partner; (b) legal dossier EU vs CH (ChemO
     REACH-alignment, third-country import control; MRA deliberately out of
-    scope — separate THG instrument, see decision 11).
+    scope — separate THG instrument, see decision 11). **(Superseded
+    2026-09-12 by D31: the EZV extraction is closed and the Swiss
+    workstreams dropped — EU-only; legal-text verification stays as
+    background documentation.)**
 11. **Regulatory anchoring and political protocol (corrected 2026-09-10;
     supersedes the "bilateral" framing):** the study is anchored in the
     **autonomous Swiss Cassis-de-Dijon frame** — THG Art. 16a, one of
@@ -83,10 +98,10 @@ owner). Open questions and the phased roadmap follow.
     naming BBL in deliverables); BAFU enforces; **SECO conducts the
     five-yearly review of the entire exception catalogue** (last 2023:
     keep; next ~2028; criteria Eignung/Erforderlichkeit/
-    Verhältnismässigkeit). The study documents whether the exception has
-    a factual field of application and supplies the decision basis for
-    the owner within that review cycle — **without presupposing deletion
-    or retention outcomes**. Public-facing documents keep the
+    Verhältnismässigkeit). The study supplies documented EU-market
+    numbers within that review cycle — **without presupposing deletion
+    or retention outcomes** and without taking a position on the
+    regulation itself. Public-facing documents keep the
     commissioning relationship implicit; correct institutional wording
     only. SECO's "Art 2a(1)" read as Art. 2 Bst. a Ziff. 1 (no Art. 2a
     exists; inference, confirm only if load-bearing). Art. 16 VIPaV
