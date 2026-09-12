@@ -1,3 +1,9 @@
+---
+language: fr
+translation_of: README.md
+source_updated: 2026-09-12
+---
+
 Sprachen / Languages / Langues : [EN](README.md) · [DE](README.de.md) · **FR**
 
 # lead_HS — Le plomb dans les peintures : commerce extérieur suisse et contexte Cassis-de-Dijon (HS 3208 / 3209)
@@ -19,7 +25,7 @@ La Suisse n'est ni dans l'UE ni dans l'EEE. Son marché de la peinture est alime
 
 1. Quels produits de peinture sur le **marché de l'UE** contiennent du plomb **selon leur propre documentation** — comme pigment, inhibiteur de rouille ou agent siccatif ?
 2. Lesquels sont **conformes au droit de l'UE** (et pourraient donc entrer en Suisse sous Cassis de Dijon) par opposition à **non conformes au droit de l'UE** (et ne devraient pas être sur le marché du tout) ?
-3. À quoi ressemble le commerce extérieur suisse de peintures (3208/3209) — volumes, valeurs et surtout *provenances* ?
+3. Combien de produits de peinture y a-t-il réellement sur le **marché de l'UE** — et combien sont atteignables par la documentation publique ?
 4. Où se trouvent les coutures entre marchandises conformes au droit de l'UE, l'exception suisse au plomb et les importations de pays tiers ?
 
 Des enquêtes sur le plomb dans les peintures existent pour de nombreux pays (une étude mexicaine de 2026 a trouvé 55 % des peintures au-dessus de 90 ppm de plomb) — **mais aucune pour l'UE/l'EEE, et aucune pour la Suisse**. L'hypothèse européenne « pratiquement aucune, c'est réglementé » n'a jamais été testée contre la documentation produit — et la Suisse se situe en partie en dehors des règles de l'UE sur lesquelles cette hypothèse repose.
@@ -46,7 +52,7 @@ La **règle suisse des 100 ppm** est ensuite une métrique *additionnelle* : mê
 
 ### Comment l'étude est organisée
 
-- **Les statistiques du commerce extérieur** (la plateforme swiss-impex de l'administration des douanes, ventilée par pays partenaire) structurent le marché et ses provenances.
+- **Les statistiques commerciales de l'UE** (flux d'importation/exportation pour 3208/3209) structurent le marché et ses provenances.
 - **Les catalogues de produits** (producteurs, détaillants, portails B2B — boutiques en ligne pour clients professionnels), collectés avec respect et dédupliqués, deviennent la liste des produits sur laquelle le tirage s'effectue.
 - **Échantillonnage à précision constante, pas à pourcentage fixe** : environ 2 000–3 000 produits sur huit segments de marché, chacun ventilé par provenance (Suisse / UE / pays tiers).
 - **Recoupement au lieu d'un laboratoire** : chaque produit suspect de plomb est recoupé avec des documents indépendants concernant le même produit ; les angles morts sont déclarés ouvertement comme limites.
@@ -94,11 +100,13 @@ Il n'existe **aucun répertoire européen gratuit unique de fiches de données d
 
 Le registre complet, avec règles d'accès et discipline de provenance, en langage clair : [document sources de données](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.fr.md).
 
+Depuis le tournant stratégique du 12 septembre 2026, les métriques sont **UE uniquement** : la plateforme douanière suisse et les enseignes de bricolage suisses ont quitté le registre des sources de l'outil ; la Suisse reste le cadre réglementaire de l'étude — la règle des 100 ppm et l'exception Cassis-de-Dijon — et non un marché mesuré. Les entrées ci-dessus restent listées pour le contexte.
+
 ## Le moteur de preuves : un petit programme honnête
 
 La collecte est automatisée par un petit programme en ligne de commande (« leadhs ») — pas de site web, pas de serveur, une machine. Sa mission : garder la chaîne de preuves étanche — chaque document récupéré est archivé comme original intact, avec sa source, sa date de récupération et une empreinte numérique de son contenu ; chaque observation est liée à l'exécution qui l'a produite ; rien n'est jamais écrasé — les corrections sont de nouvelles entrées, de sorte que chaque chiffre du rapport final remonte à un document précis. L'outil, la base de données et tous les rapports générés ne contiennent que des **données produit** — composés du plomb, concentrations, documents, dénombrements. Les textes juridiques sont le cadre contextuel de l'étude et vivent dans les documents de l'étude ; l'outil ne les stocke ni ne les rapporte jamais.
 
-Les deux premières unités de construction — **v0.1.1, « sondage »** et **v0.1.2, « couche opérateur + achèvement du recensement »** — sont implémentées et testées (155 tests automatisés, suite hors ligne). Ensemble, elles couvrent : la mise en place de la base de preuves, le chargement du registre des sources prévues, les visites de test respectueuses et des rapports de faisabilité structurés par source. Rien de plus ; la chaîne de collecte complète viendra avec les unités suivantes.
+Les unités de construction à ce jour — **v0.1.1, « sondage »**, **v0.1.2, « couche opérateur + achèvement du recensement »** et **v0.1.3, « carte du paysage des données »** — sont implémentées et testées (165 tests automatisés, suite hors ligne). Ensemble, elles couvrent : la mise en place de la base de preuves, le chargement du registre des sources prévues, les visites de test respectueuses, les rapports de faisabilité structurés par source, et la machinerie de comptage pour les parcours de catalogues par catégorie de marché (construite, en attente d'un feu vert). L'unité en cours, **v0.2.0**, ajoute la couche chiffrée décrite plus bas ; la chaîne de collecte complète des FDS viendra plus tard.
 
 ## Utiliser l'outil
 
@@ -126,15 +134,25 @@ Documents de travail : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md)
 
 ## Première étape : vérifier les sources
 
-Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — la plateforme douanière suisse délivre-t-elle des exports exploitables ? Quels catalogues sont lisibles ? La base de données du registre nordique des produits est-elle traitable ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données. La passe de faisabilité du 11 septembre 2026 a été exécutée une fois et a consigné les lacunes restantes ; achever le recensement est le livrable de v0.1.2 (construite), qui l'exécute via le point d'entrée make — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite (« GO=1 make census »).
+Avant toute collecte à grande échelle, chaque source prévue reçoit une petite visite de test respectueuse — le registre ou la plateforme délivre-t-il des données exploitables ? Quels catalogues sont lisibles, ne serait-ce que ? Chaque vérification est enregistrée ; un refus est un constat documenté, jamais un obstacle forcé. Le flux de sondage est schématisé dans le document sources de données.
+
+**Le recensement de référence a tourné.** Le 12 septembre 2026, les sources semences ont été sondées : trois achevées, une bloquée, trois en échec — chaque blocage étant lui-même un constat documenté (une plateforme douanière refuse l'accès machine au niveau TLS, un détaillant opère un mur anti-robot, un registre n'a pas répondu) — et l'audit de provenance passe proprement.
+
+**La stratégie de sondage actuelle (depuis le 12 septembre 2026) : compter, ne pas collecter.** L'unité active, v0.2.0, oriente les sondages vers trois chiffres phares :
+
+- **N1 — combien de peintures y a-t-il sur le marché de l'UE ?** Pas des tableaux clairsemés mais un ordre de grandeur, assemblé à partir des statistiques officielles : flux commerciaux, statistiques de production, notifications au portail des centres antipoison (PCN), registres de produits, structure industrielle (environ 3 200 producteurs dans l'UE ; les ~800 membres de l'association sectorielle couvrant ~85 % d'un marché de 17 Md€).
+- **N2 — pour combien de produits avons-nous un accès, sous une forme ou une autre ?** Compté là où les sources exposent des comptages (registres, jeux de données, annonces visibles via sitemap) ; honnêtement signalé là où seul un feu vert de collecte pourrait mesurer.
+- **N3 — pour combien peut-on obtenir des données détaillées, une FDS ?** Même règle : compté là où c'est atteignable, caractérisé ailleurs.
+
+Méthode : reconnaissance seulement — statut robots/conditions, existence et forme des points d'accès API ou de téléchargement, comptage des URL produit via un unique appel structuré au sitemap, vérifications manuelles du web. Les parcours de catalogues et toute collecte au niveau produit restent différés jusqu'à un feu vert explicite ; la machinerie de parcours est déjà construite et patiente. En parallèle, la découverte de sources : une nouvelle classe de sources **associations & registres** (associations européennes et nationales de la peinture, registres nationaux de produits avec statistiques publiques — les registres nordiques en tête) rejoint les sources statistiques à comptage. L'annexe couleurs d'artistes (3213) est rétrogradée en priorité basse. Le rapport chiffré doit montrer des ordres de grandeur — chaque chiffre avec sa provenance.
 
 ## La feuille de route
 
 | Phase | Contenu |
 |---|---|
-| 0 | Combler les lacunes de recherche : extraction douanière suisse ; vérifier les textes juridiques actuels ; référence du refus UE ; statistiques PCN ; requête SPIN ; comptages de catalogues |
+| 0 | Combler les lacunes de recherche — les chiffres d'abord : estimation de la taille du marché (N1) et couverture d'accès (N2/N3) à partir des statistiques officielles, des registres et de la reconnaissance ; vérifier les textes juridiques actuels ; référence du refus UE ; statistiques PCN ; requête SPIN |
 | 1 | Pilote : figer le dictionnaire du plomb, tester la collecte et l'analyse des FDS |
-| 2 | Construire la base d'échantillonnage produit, tirer l'échantillon, collecte à pleine échelle ; recensement des couleurs d'artistes (3213) en parallèle |
+| 2 | Construire la base d'échantillonnage produit, tirer l'échantillon, collecte à pleine échelle ; annexe couleurs d'artistes (3213) en parallèle, selon la capacité restante |
 | 3 | Recoupement inter-documents et assurance qualité |
 | 4 | Analyse ; la base de discussion des décideurs ; gel de la base de données |
 
@@ -158,7 +176,7 @@ Avant toute collecte à grande échelle, chaque source prévue reçoit une petit
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités en cours (v0.1.1 construite ; v0.1.2 planifiée) — suivi des phases, critères de sortie |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3 construites ; v0.2.0 en cours) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -170,7 +188,7 @@ Avant toute collecte à grande échelle, chaque source prévue reçoit une petit
     AGENTS.md                  conventions pour le travail assisté par IA (EN)
     Makefile                   point d'entrée opérateur (« make help » = index)
     pyproject.toml             empaquetage Python de l'outil leadhs
-    src/leadhs/                code source de l'outil (v0.1.1 sondage + v0.1.2 couche opérateur)
+    src/leadhs/                code source de l'outil (v0.1.1 sondage, v0.1.2 couche opérateur, v0.1.3 compteurs de parcours)
     tests/                     suite de tests automatisés hors ligne
     data/                      état de travail local (gitignored) : base, stockage brut, rapports intermédiaires
     docs/report/               rapports finaux publiés (commités délibérément)
@@ -187,4 +205,4 @@ Avant toute collecte à grande échelle, chaque source prévue reçoit une petit
 
 ## État
 
-La stratégie, la conception revue et un plan d'implémentation revu par l'ingénierie sont en place pour les deux premières unités de construction. **v0.1.1, sondage des sources** — implémentée et testée ; la passe de faisabilité du recensement du 11 septembre 2026 a été exécutée et ses lacunes consignées puis transférées. **v0.1.2, couche opérateur + achèvement du recensement** — implémentée et testée : point d'entrée make à la racine du dépôt avec feu vert explicite (« GO=1 »), ergonomie CLI et application des codes de sortie, contrôle préalable de la base, métriques de comptage par position tarifaire (3208/3209/3213), constats manuels census_status et le rapport de faisabilité structuré par source (matrice récapitulative, statut des exécutions y compris bloquées/échouées, légende « — » vs 0) ; 155 tests automatisés passent (suite hors ligne). Le recensement complet lui-même s'exécute comme « GO=1 make census » — une étape opérationnelle qui touche de vrais sites et attend donc un feu vert explicite. Rien n'est gelé — la méthodologie reste ouverte à révision à mesure que les résultats de la phase 0 arrivent.
+La stratégie, la conception revue et des plans d'implémentation revus sont en place jusqu'à l'unité en cours. **v0.1.1, sondage des sources** — construite et vérifiée contre les critères de sortie ; la passe de faisabilité du recensement a tourné le 11 septembre 2026. **v0.1.2, couche opérateur + achèvement du recensement** — construite : point d'entrée make à la racine du dépôt avec feu vert explicite (« GO=1 »), ergonomie CLI et application des codes de sortie, contrôle préalable de la base, métriques de comptage par position tarifaire (3208/3209/3213), constats manuels census_status et le rapport de faisabilité structuré par source (matrice récapitulative, statut des exécutions y compris bloquées/échouées, légende « — » vs 0) ; 155 tests automatisés hors ligne passent. **v0.1.3, carte du paysage des données** — la machinerie de parcours des catalogues construite (compteurs de produits et de liens documentaires par catégorie ; 165 tests hors ligne) et le recensement de référence exécuté le 12 septembre 2026 (trois sources achevées, une bloquée, trois en échec — chaque échec un constat documenté ; audit de provenance propre) ; son plan d'exécution par parcours est surpassé, l'unité est gelée, la machinerie attend un feu vert. **v0.2.0, ampleur du marché & disponibilité des données** — l'unité en cours (stratégie esquissée le 12 septembre 2026) : le sondage décrit plus haut, chiffres d'abord, en mode reconnaissance uniquement, UE uniquement. La méthodologie reste ouverte à révision à mesure que les résultats arrivent.

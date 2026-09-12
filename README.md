@@ -40,8 +40,8 @@ differently. The study asks:
 2. Which of those are **EU-lawful** (and could therefore flow into
    Switzerland under Cassis de Dijon) versus **EU-illegal** (and should not
    be on the market at all)?
-3. What does Swiss external trade in paints (3208/3209) look like —
-   volumes, values, and above all *origins*?
+3. How many paint products are actually on the **EU market** — and how
+   many of them are reachable through public documentation at all?
 4. Where are the seams between EU-lawful goods, the Swiss lead exception,
    and third-country imports?
 
@@ -89,8 +89,8 @@ blind spot is carried in every deliverable.
 
 ### How the study is organised
 
-- **Trade statistics** (the customs administration's swiss-impex platform,
-  broken down by partner country) structure the market and its origins.
+- **Trade statistics** (EU import/export flows for 3208/3209) structure
+  the market and its origins.
 - **Product catalogues** (producers, retailers, B2B portals — web shops for
   professional customers), collected politely and de-duplicated, become the
   list of products to draw from.
@@ -171,6 +171,12 @@ study therefore builds its own corpus from public sources:
 The full register, with access rules and provenance discipline, in plain
 language: [data sources document](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
 
+Since the 2026-09-12 strategy turn, the study's metrics are **EU-only**:
+the Swiss customs platform and the Swiss DIY chains have left the tool's
+source register; Switzerland remains the study's regulatory frame — the
+100 ppm rule and the Cassis-de-Dijon exception — rather than a measured
+market. The entries above stay listed for context.
+
 ## The evidence engine: a small, honest program
 
 Collection is automated by a small command-line program ("leadhs") — no
@@ -185,13 +191,15 @@ concentrations, documents, counts. Legal texts are framing background
 for the study and live in the study documents; the tool never stores
 or reports them.
 
-The first build unit — **v0.1.1, "probe"** — and the second —
-**v0.1.2, "operator layer + census close-out"** — are implemented and
-tested (155 automated tests, offline suite). Together they cover:
+The build units so far — **v0.1.1, "probe"**, **v0.1.2, "operator layer +
+census close-out"** and **v0.1.3, "data-landscape map"** — are implemented
+and tested (165 automated tests, offline suite). Together they cover:
 setting up the evidence database, loading the register of planned
-sources, the polite test visits, and structured per-source
-feasibility reports. Nothing beyond that; later units add the full
-collection pipeline.
+sources, the polite test visits, structured per-source feasibility
+reports, and counting machinery for catalogue walks per market category
+(built, idle until a go). The current unit, **v0.2.0**, adds the
+numbers layer described below; the full SDS collection pipeline comes
+later.
 
 ## Using the tool
 
@@ -234,23 +242,50 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 ## First step: checking the sources
 
 Before any large-scale collection, each planned source gets one small,
-polite test visit — does the Swiss customs platform deliver usable
-exports? Which catalogues can be read? Is the Nordic product-register
-database processable? Every check is recorded; a refusal is a documented
-finding, never an obstacle pushed through. The probe workflow is
-diagrammed in the data-sources document. The 2026-09-11 feasibility
-pass ran once and recorded the remaining gaps; completing the census is
-the deliverable of v0.1.2 (built), which runs it through the make
-entrypoint — an operational step that touches real sites and therefore
-waits for an explicit go-ahead (`GO=1 make census`).
+polite test visit — does the register or platform deliver usable data?
+Which catalogues can be read at all? Every check is recorded; a refusal
+is a documented finding, never an obstacle pushed through. The probe
+workflow is diagrammed in the data-sources document.
+
+**The baseline census has run.** On 2026-09-12 the seed sources were
+sounded out: three completed, one blocked, three failed — each block or
+failure itself a documented finding (a customs platform refusing machine
+access at the TLS layer, a retailer's bot wall, a register that did not
+answer) — and the provenance audit passes clean.
+
+**The current probing strategy (since 2026-09-12): count, don't scrape.**
+The active unit, v0.2.0, turns the probes toward three headline numbers:
+
+- **N1 — how many paints are on the EU market?** Not sparse tables but an
+  order of magnitude, assembled from official statistics: trade flows,
+  production statistics, poison-centre notifications (PCN), product
+  registers, industry structure (roughly 3,200 EU27 producers; the
+  industry association's ~800 members covering ~85% of a €17 bn market).
+- **N2 — for how many products do we have access in some form?** Counted
+  where sources expose counts (registers, datasets, sitemap-visible
+  listings); honestly flagged where only a scraping go could measure.
+- **N3 — for how many can we get detailed data, an SDS?** Same rule:
+  counted where reachable, characterized elsewhere.
+
+Method: reconnaissance only — robots/terms status, whether API or
+download endpoints exist, sitemap product-URL counts via a single
+structured fetch, manual web checks. Catalogue walks and any
+product-level collection are deferred until an explicit go; the walk
+machinery is already built and idles meanwhile. Source discovery runs in
+parallel: a new source class of **associations & registers** (European
+and national paint associations, national product registers with public
+statistics — the Nordic registers lead) joins the count-bearing
+statistics sources. The artists'-colours annex (3213) is demoted to low
+priority. The numbers report must show magnitudes — every number
+provenance-cited.
 
 ## Roadmap
 
 | Phase | Content |
 |---|---|
-| 0 | Close research gaps: Swiss customs extraction; verify current legal texts; EU refusal reference; PCN statistics; SPIN query; catalog counts |
+| 0 | Close research gaps — numbers first: market-size estimate (N1) and access coverage (N2/N3) from official statistics, registers and reconnaissance; verify current legal texts; EU refusal reference; PCN statistics; SPIN query |
 | 1 | Pilot: freeze the lead dictionary, test SDS collection and parsing |
-| 2 | Build the product frame, draw the sample, collect at full scale; artists' colours census (3213) in parallel |
+| 2 | Build the product frame, draw the sample, collect at full scale; artists' colours annex (3213) in parallel, capacity permitting |
 | 3 | Cross-document corroboration and quality assurance |
 | 4 | Analysis; the decision-makers' discussion basis; freeze the database |
 
@@ -279,7 +314,7 @@ waits for an explicit go-ahead (`GO=1 make census`).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the current units (v0.1.1 built; v0.1.2 planned) — phase tracking, exit gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3 built; v0.2.0 current) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -289,7 +324,7 @@ waits for an explicit go-ahead (`GO=1 make census`).
     AGENTS.md                  conventions for AI-assisted work on this repo
     Makefile                   operator entrypoint (make help = index)
     pyproject.toml             Python packaging for the leadhs tool
-    src/leadhs/                source code of the tool (v0.1.1 probing + v0.1.2 operator layer)
+    src/leadhs/                source code of the tool (v0.1.1 probing, v0.1.2 operator layer, v0.1.3 walk counters)
     tests/                     automated offline test suite
     data/                      local working state (gitignored): database, raw store, report intermediates
     docs/report/               published report finals (committed deliberately)
@@ -304,17 +339,21 @@ waits for an explicit go-ahead (`GO=1 make census`).
 
 ## Status
 
-Strategy, reviewed design and an ENG-reviewed implementation plan are
-in place for the first two build units. **v0.1.1, source probing** —
-implemented and tested; the census feasibility pass ran on 2026-09-11
-and its recorded gaps moved forward. **v0.1.2, operator layer + census
-close-out** — implemented and tested: repo-root make entrypoint with
-the explicit go-ahead gate (`GO=1`), CLI operability and exit-code
+Strategy, reviewed design and reviewed implementation plans are in place
+through the current unit. **v0.1.1, source probing** — built and
+gate-verified; the census feasibility pass ran on 2026-09-11. **v0.1.2,
+operator layer + census close-out** — built: repo-root make entrypoint
+with the explicit go-ahead gate (`GO=1`), CLI operability and exit-code
 enforcement, database preflight, per-heading count metrics
 (3208/3209/3213), census-status manual records, and the structured
 per-source feasibility report (summary matrix, run status incl.
-blocked/failed, "—" vs 0 legend); 155 automated tests pass on the
-offline suite. The completed census itself runs as `GO=1 make census`
-— an operational step that touches real sites and therefore waits for
-an explicit go-ahead. Nothing is frozen — the methodology stays open
-to revision as Phase 0 results come in.
+blocked/failed, "—" vs 0 legend); 155 automated offline tests pass.
+**v0.1.3, data-landscape map** — the catalogue-walk machinery built
+(per-category product and document-link counters; 165 offline tests)
+and the baseline census executed on 2026-09-12 (three sources done, one
+blocked, three failed — every failure a documented finding; provenance
+audit clean); its walk-based execution plan is superseded and the unit
+stands frozen, the machinery idling until a go. **v0.2.0, market scale
+& data availability** — the current unit (strategy drafted 2026-09-12):
+the numbers-first, reconnaissance-only probing described above, EU-only.
+The methodology stays open to revision as results come in.

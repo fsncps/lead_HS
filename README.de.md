@@ -1,3 +1,9 @@
+---
+language: de
+translation_of: README.md
+source_updated: 2026-09-12
+---
+
 Sprachen / Languages / Langues: [EN](README.md) · **DE** · [FR](README.fr.md)
 
 # lead_HS — Blei in Farben: Schweizer Aussenhandel und der Cassis-de-Dijon-Kontext (HS 3208 / 3209)
@@ -21,7 +27,7 @@ Die Schweiz ist weder in der EU noch im EWR. Ihr Farbenmarkt wird gespeist durch
 
 1. Welche Farbprodukte auf dem **EU-Markt** enthalten Blei **laut ihrer eigenen Dokumentation** — als Pigment, Rostschutz oder Trockenstoff?
 2. Welche davon sind **EU-rechtskonform** (und könnten daher unter Cassis de Dijon in die Schweiz gelangen) gegenüber **EU-rechtswidrig** (und dürften gar nicht auf dem Markt sein)?
-3. Wie sieht der Schweizer Aussenhandel mit Farben (3208/3209) aus — Volumen, Werte und vor allem *Herkünfte*?
+3. Wie viele Farbprodukte gibt es tatsächlich auf dem **EU-Markt** — und wie viele davon sind überhaupt über öffentlich zugängliche Dokumentation erreichbar?
 4. Wo liegen die Nähte zwischen EU-rechtskonformer Ware, der Schweizer Bleiausnahme und Drittland-Importen?
 
 Untersuchungen zu Blei in Farben gibt es für viele Länder (eine mexikanische Studie von 2026 fand 55 % der Farben über 90 ppm Blei) — **aber keine für die EU/den EWR und keine für die Schweiz**. Die europäische Annahme «praktisch keine, das ist reguliert» wurde nie gegen Produktdokumentation geprüft — und die Schweiz liegt teilweise ausserhalb der EU-Regeln, auf denen diese Annahme beruht.
@@ -48,7 +54,7 @@ Die **Schweizer 100-ppm-Regel** ist dann eine *zusätzliche* Messgrösse obendra
 
 ### Wie die Studie aufgebaut ist
 
-- **Aussenhandelsstatistik** (die swiss-impex-Plattform der Zollverwaltung, aufgeschlüsselt nach Partnerland) strukturiert den Markt und seine Herkünfte.
+- **Handelsstatistik** (EU-Im-/Exportflüsse für 3208/3209) strukturiert den Markt und seine Herkünfte.
 - **Produktkataloge** (Hersteller, Händler, B2B-Portale — Webshops für professionelle Kunden), höflich gesammelt und dedupliziert, werden die Liste der Produkte, aus denen gezogen wird.
 - **Stichprobe nach Präzision, nicht nach Prozentsatz**: rund 2'000–3'000 Produkte über acht Marktsegmente, jeweils aufgeteilt nach Herkunft (Schweiz / EU / Drittland).
 - **Abgleich statt Labor**: jedes verdächtige Bleiprodukt wird gegen unabhängige Dokumente zum selben Produkt abgeglichen; blinde Flecken werden offen als Einschränkung benannt.
@@ -96,11 +102,13 @@ Es gibt **kein einzelnes, kostenloses EU-Verzeichnis von Sicherheitsdatenblätte
 
 Das vollständige Register mit Zugriffsregeln und Provenienzdisziplin, in einfacher Sprache: [Quellen-Dokument](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.de.md).
 
+Seit der Strategiewende vom 12. September 2026 sind die Messgrössen **EU-only**: Die Schweizer Zollplattform und die Schweizer DIY-Ketten haben das Quellenregister des Werkzeugs verlassen; die Schweiz bleibt der regulatorische Rahmen der Studie — die 100-ppm-Regel und die Cassis-de-Dijon-Ausnahme —, nicht mehr eine gemessene Marktseite. Die obigen Einträge bleiben als Kontext stehen.
+
 ## Die Beweis-Engine: ein kleines, ehrliches Programm
 
 Das Sammeln automatisiert ein kleines Kommandozeilenprogramm («leadhs») — keine Website, kein Server, eine Maschine. Seine Aufgabe ist es, die Beweiskette lückenlos zu halten: Jedes abgerufene Dokument wird als unverändertes Original archiviert, mit Quelle, Abrufdatum und digitalem Fingerabdruck seines Inhalts; jede Beobachtung ist an den Lauf gebunden, der sie erzeugt; nichts wird je überschrieben — Korrekturen sind neue Einträge, sodass jede Zahl im Schlussbericht auf ein konkretes Dokument zurückverfolgt werden kann. Werkzeug, Datenbank und alle erzeugten Berichte enthalten ausschliesslich **Produktdaten** — Bleiverbindungen, Konzentrationen, Dokumente, Zählungen. Rechtstexte sind Hintergrundrahmen der Studie und leben in den Studiendokumenten; das Werkzeug speichert und berichtet sie nie.
 
-Die ersten beiden Baueinheiten — **v0.1.1, «Sondierung»** und **v0.1.2, «Operator-Schicht + Zensus-Abschluss»** — sind implementiert und getestet (155 automatisierte Tests, Offline-Suite). Zusammen decken sie ab: die Evidenzdatenbank einrichten, das Register der geplanten Quellen laden, die höflichen Testbesuche und strukturierte Feasibility-Berichte je Quelle. Nichts darüber hinaus; die vollständige Sammelpipeline kommt mit späteren Einheiten.
+Die Baueinheiten bisher — **v0.1.1, «Sondierung»**, **v0.1.2, «Operator-Schicht + Zensus-Abschluss»** und **v0.1.3, «Datenlandschaft-Karte»** — sind implementiert und getestet (165 automatisierte Tests, Offline-Suite). Zusammen decken sie ab: die Evidenzdatenbank einrichten, das Register der geplanten Quellen laden, die höflichen Testbesuche, strukturierte Feasibility-Berichte je Quelle sowie Zähl-Maschinerie für Katalogläufe je Marktkategorie (gebaut, wartet auf ein Go). Die aktuelle Einheit, **v0.2.0**, legt die unten beschriebene Zahlen-Schicht darüber; die vollständige SDB-Sammelpipeline kommt später.
 
 ## Das Werkzeug benutzen
 
@@ -128,15 +136,25 @@ Arbeitsdokumente: [Architektur](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) und [
 
 ## Erster Schritt: die Quellen prüfen
 
-Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert die Schweizer Zollplattform brauchbare Exporte? Welche Kataloge sind lesbar? Ist die Datenbank des nordischen Produktregisters verarbeitbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt. Der Sondierungs-Lauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert; den Zensus abschliessen ist die Aufgabe von v0.1.2 (gebaut), die ihn über den Make-Einstiegspunkt führt — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet («GO=1 make census»).
+Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höflichen Testbesuch — liefert das Register oder die Plattform brauchbare Daten? Welche Kataloge sind überhaupt lesbar? Jede Prüfung wird protokolliert; eine Verweigerung ist ein dokumentierter Befund, nie ein Hindernis, das durchgedrückt wird. Der Sondierungs-Workflow ist im Quellen-Dokument als Diagramm dargestellt.
+
+**Der Baseline-Zensus ist gelaufen.** Am 12. September 2026 wurden die gesetzten Quellen sondiert: drei abgeschlossen, eine blockiert, drei fehlgeschlagen — jede Blockade selbst ein dokumentierter Befund (eine Zollplattform verweigert Maschinenzugriff auf TLS-Ebene, ein Händler betreibt eine Bot-Mauer, ein Register meldete sich nicht) — und die Provenienzprüfung besteht sauber.
+
+**Die aktuelle Sondierungsstrategie (seit 12. September 2026): zählen, nicht auslesen.** Die aktive Einheit, v0.2.0, richtet die Sondierung auf drei Leitgrössen:
+
+- **N1 — wie viele Farben sind auf dem EU-Markt?** Keine dünnen Tabellen, sondern eine Grössenordnung, zusammengesetzt aus amtlichen Statistiken: Handelsflüsse, Produktionsstatistiken, Meldungen beim Giftzentren-Portal (PCN), Produktregister, Industriestruktur (rund 3'200 EU-Produzenten; die rund 800 Mitglieder des Branchenverbands decken rund 85 % eines Marktes von 17 Mrd. € ab).
+- **N2 — zu wie vielen Produkten haben wir in irgendeiner Form Zugang?** Gezählt, wo Quellen Zählungen liefern (Register, Datensätze, über Sitemaps sichtbare Listings); ehrlich markiert, wo erst ein Auslese-Go es messen könnte.
+- **N3 — für wie viele kommen Detaildaten, ein SDB?** Dieselbe Regel: gezählt, wo erreichbar, sonst charakterisiert.
+
+Methode: ausschliesslich Erkundung — Robots-/Nutzungsbedingungen-Status, ob API- oder Download-Endpunkte existieren, Zählung der Produkt-URLs in der Sitemap über einen einzigen strukturierten Abruf, manuelle Web-Prüfungen. Katalogdurchläufe und jede Sammlung auf Produktebene bleiben zurückgestellt, bis ein explizites Go erteilt wird; die Lauf-Maschinerie ist bereits gebaut und wartet. Parallel läuft die Quellensuche: Eine neue Quellenklasse **Verbände & Register** (europäische und nationale Farbverbände, nationale Produktregister mit öffentlichen Statistiken — die nordischen Register führen) kommt zu den zählenden Statistikquellen. Der Künstlerfarben-Anhang (3213) ist zur niedrigen Priorität zurückgestuft. Der Zahlenbericht muss Grössenordnungen zeigen — jede Zahl mit Provenienz.
 
 ## Der Fahrplan
 
 | Phase | Inhalt |
 |---|---|
-| 0 | Recherche-Lücken schliessen: Schweizer Zoll-Extraktion; geltende Rechtstexte verifizieren; Referenz der EU-Verweigerung; PCN-Statistiken; SPIN-Abfrage; Katalogzählungen |
+| 0 | Recherche-Lücken schliessen — Zahlen zuerst: Schätzung der Marktgrösse (N1) und Zugangsabdeckung (N2/N3) aus amtlichen Statistiken, Registern und Erkundung; geltende Rechtstexte verifizieren; Referenz der EU-Verweigerung; PCN-Statistiken; SPIN-Abfrage |
 | 1 | Pilot: Blei-Wörterbuch einfrieren, SDB-Sammlung und -Parsing testen |
-| 2 | Produkt-Auswahlrahmen aufbauen, Stichprobe ziehen, Sammlung im vollen Umfang; Künstlerfarben-Vollerhebung (3213) parallel |
+| 2 | Produkt-Auswahlrahmen aufbauen, Stichprobe ziehen, Sammlung im vollen Umfang; Künstlerfarben-Anhang (3213) parallel, nach verfügbarem Spielraum |
 | 3 | Dokumentenübergreifender Abgleich und Qualitätssicherung |
 | 4 | Analyse; die Entscheidungsgrundlage; Datenbank einfrieren |
 
@@ -160,7 +178,7 @@ Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höfli
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der aktuellen Einheiten (v0.1.1 gebaut; v0.1.2 geplant) — Phasenverfolgung, Abnahme-Gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3 gebaut; v0.2.0 aktuell) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -172,7 +190,7 @@ Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höfli
     AGENTS.md                  Konventionen für KI-gestützte Arbeit an diesem Repo (EN)
     Makefile                   Operator-Einstiegspunkt («make help» = Verzeichnis)
     pyproject.toml             Python-Paketierung des leadhs-Werkzeugs
-    src/leadhs/                Quellcode des Werkzeugs (v0.1.1 Sondierung + v0.1.2 Operator-Schicht)
+    src/leadhs/                Quellcode des Werkzeugs (v0.1.1 Sondierung, v0.1.2 Operator-Schicht, v0.1.3 Lauf-Zähler)
     tests/                     automatisierte Offline-Testsuite
     data/                      lokaler Arbeitszustand (gitignored): Datenbank, Raw-Speicher, Berichts-Zwischenstände
     docs/report/               publizierte Berichts-Finalfassungen (bewusst committet)
@@ -189,4 +207,4 @@ Vor jeder grösseren Sammlung bekommt jede geplante Quelle einen kleinen, höfli
 
 ## Status
 
-Strategie, begutachtetes Design und ein im Engineering begutachteter Implementierungsplan liegen für die ersten beiden Baueinheiten vor. **v0.1.1, Quellensondierung** — implementiert und getestet; der Zensus-Erprobungslauf vom 11. September 2026 hat die verbleibenden Lücken protokolliert und weitergereicht. **v0.1.2, Operator-Schicht + Zensus-Abschluss** — implementiert und getestet: Make-Einstiegspunkt im Repo-Root mit explizitem Go-Gate («GO=1»), CLI-Bedienbarkeit und Exit-Code-Durchsetzung, Datenbank-Vorprüfung, Zollpositions-Zählmetriken (3208/3209/3213), Census-Status-Handeinträge und der strukturierte Feasibility-Bericht je Quelle (Zusammenfassungsmatrix, Laufstatus inkl. blockiert/fehlgeschlagen, «—» vs. 0-Legende); 155 automatisierte Tests bestehen (Offline-Suite). Der vollständige Zensus selbst läuft als «GO=1 make census» — ein operativer Schritt, der echte Sites berührt und daher auf ein explizites Go wartet. Nichts ist eingefroren — die Methodik bleibt offen für Revision, während die Phase-0-Ergebnisse eintreffen.
+Strategie, begutachtetes Design und begutachtete Implementierungspläne liegen bis zur aktuellen Einheit vor. **v0.1.1, Quellensondierung** — gebaut und gegen die Abnahme-Kriterien verifiziert; der Zensus-Erprobungslauf lief am 11. September 2026. **v0.1.2, Operator-Schicht + Zensus-Abschluss** — gebaut: Make-Einstiegspunkt im Repo-Root mit explizitem Go-Gate («GO=1»), CLI-Bedienbarkeit und Exit-Code-Durchsetzung, Datenbank-Vorprüfung, Zollpositions-Zählmetriken (3208/3209/3213), Census-Status-Handeinträge und der strukturierte Feasibility-Bericht je Quelle (Zusammenfassungsmatrix, Laufstatus inkl. blockiert/fehlgeschlagen, «—» vs. 0-Legende); 155 automatisierte Offline-Tests bestehen. **v0.1.3, Datenlandschaft-Karte** — die Kataloglauf-Maschinerie gebaut (Zähler für Produkte und Dokumentlinks je Kategorie; 165 Offline-Tests) und der Baseline-Zensus am 12. September 2026 ausgeführt (drei Quellen abgeschlossen, eine blockiert, drei fehlgeschlagen — jede Blockade ein dokumentierter Befund; Provenienz-Audit sauber); ihr laufbasierter Ausführungsplan ist überholt, die Einheit steht eingefroren, die Maschinerie wartet auf ein Go. **v0.2.0, Marktgrösse & Datenverfügbarkeit** — die aktuelle Einheit (Strategie entworfen am 12. September 2026): die oben beschriebene zahlenfirstige, nur-erkundende Sondierung, EU-only. Die Methodik bleibt offen für Revision, während die Ergebnisse eintreffen.
