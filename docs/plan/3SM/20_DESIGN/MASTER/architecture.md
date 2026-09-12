@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Architecture — modules, runtime, tooling (Design)
@@ -122,6 +122,9 @@ text: `units/v0.1.2.md`.
         0001__probe_base.sql
         0002__probe_core.sql
         0003__probe_metrics.sql  # records_hs* + census_status (v0.1.2)
+        0004__product_census.sql # D28 rework: LG/LI prune +
+                                 #  products_listed/doc_links_seen
+        0005__priors_metric.sql  # products_registered (v0.1.3)
     tests/
     pyproject.toml       # console script: leadhs = leadhs.cli:main
 
@@ -199,7 +202,11 @@ count grows. Split on pain, not before (minimal-diff preference).
   (landing page) and category_count per category — depth ≤ 3 pages,
   path in the finding notes (R4); sample N products (default 5) →
   page_sample_ok, sds_sample_ok; sample pages raw-archived as
-  documents.
+  documents. **v0.1.3:** the D28 rework adds the category walk
+  (`products_listed`, `doc_links_seen`, `walk_budget_exhausted` 0/1
+  when the page budget stops the walk) and enumeration turns
+  the four PE buckets into per-site rows (`PE-10`+; PE-1..4 retire
+  inactive) — same adapter mechanics per site (i13).
 - **ST-2 SPIN** (format_check): download availability, mdbtools
   presence, small extraction attempt; extraction_path finding; the
   downloaded DB file is hashed and archived as a document.
@@ -387,6 +394,19 @@ Test strategy, matrix and key tests: testing.md.
   (path in notes, R4 strict), manual records via census_status;
   per-HS metrics records_hs3208/3209/3213 + census_status via
   migration 0003 (od9/od10; strategy D26).
+- a16: enumeration register model — per-site PE rows (PE-10+),
+  PE-1..4 retirement, structured notes convention, `source load`
+  validation (id/url/dup-active-host), budget-exhausted flagged via
+  the `walk_budget_exhausted` metric (i13; v0.1.3 HOLD-SCOPE
+  review; ENG review 2A).
+- a17: landscape map = od8 content-layer extensions — aggregate
+  floors (sums over latest done runs of **active** sources only —
+  ENG review 1A; excluded counted, budget flags, channel
+  subtotals), trade-context lines, priors lines, frame-decision
+  bridge with deferred line (i14; v0.1.3).
+- a18: coarse priors as one generic metric `products_registered`
+  (migration 0005; manual records; anchor promotion manual, D20)
+  (i4 extension rule; v0.1.3).
 
 ## OPEN ITEMS
 

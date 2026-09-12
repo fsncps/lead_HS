@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Interfaces & contracts (Design)
@@ -51,7 +51,7 @@ All groups print help on bare invocation (`no_args_is_help`; exit 0).
 | `db init` | apply pending migrations (0001–0003 in this unit); backup existing DB first unless `--no-backup` | 0 ok; 1 no/invalid DB path |
 | `db status` | applied/pending migrations, table row counts, file path+size | 0 |
 | `db audit` | run rules R1–R9, print report; `--unreferenced` also lists raw-store orphans | 0 clean; 3 violations |
-| `source load` | upsert register from `src/leadhs/dict/sources.csv` (or `--file`); register of record is the CSV in git | 0; 1 malformed CSV / bad row |
+| `source load` | upsert register from `src/leadhs/dict/sources.csv` (or `--file`); register of record is the CSV in git; row validation (i13/pe6): id matches `^[A-Z]{2}-[0-9]+$`, url non-empty http(s), no duplicate host among active rows (netloc lowercased, `www.` stripped; inactive rows exempt) — a failing row is named, exit 1 | 0; 1 malformed CSV / bad row |
 | `source list` | table of sources with class, status, active | 0 |
 | `probe run` | one run per source (see run semantics); findings + documents written; per-source summary line | 0 all done; 2 any run failed/blocked (findings still recorded) |
 | `probe record` | create a manual run (kind=probe, method=manual) + one finding; optionally attach a raw file as document | 0; 1 bad metric/value |
@@ -166,6 +166,10 @@ no `rescue StandardError` equivalent).
 | records_hs3209 | Records HS 3209 | numeric | same, for HS 3209 |
 | records_hs3213 | Records HS 3213 | numeric | same, for HS 3213 (census annex) |
 | census_status | Census status | text | manual/deferral record on a source's census state (PCN aggregates, deferral notes, manual export mechanics; method=manual) |
+| products_listed | Products listed (walk) | numeric | distinct product detail links from a polite category walk (BFS depth ≤ 3, page budget ≤ 12 incl. homepage); a floor, never a market total (0004, D28) |
+| doc_links_seen | Doc links seen (walk) | numeric | SDS/TDS-type links encountered during the same walk (0004, D28) |
+| walk_budget_exhausted | Walk budget exhausted | numeric | 0/1 — the page budget stopped the walk; the report flags such floors "≥ observed, budget-limited" (0004; ENG review 2A) |
+| products_registered | Products registered (prior) | numeric | coarse register prior: SPIN preparations / PCN formulations / PRODCOM producers, recorded manually per ST source (0005, v0.1.3) |
 
 Extension rule: new metrics are added by a migration INSERT (code
 never renamed; value_type fixed at insert). `metrics.py` is the
@@ -282,6 +286,33 @@ attempted action — full context, never message-only).
   registered sources; legend distinguishes "—" (not queried) from
   0 (queried, empty); framing states source-feasibility ≠
   product/lead (M2+) (v0.1.2; HOLD-SCOPE review).
+- i13: enumeration register model (v0.1.3, pe1/pe4/pe6) —
+  enumerated sites enter as per-site `source` rows (`PE-10`, …,
+  class PE, scrape); PE-1..4 retire inactive with supersession
+  `census_status` notes (reference rows updatable, never deleted);
+  enumeration provenance rides in the structured notes convention
+  `channel=<…>; listed_by=<…>; listed_url=<…>; listed_date=<…>;
+  inclusion=<…>` — parsed only by humans and the report's
+  channel-facet grouping (stringly until M1, accepted); `source
+  load` validates id pattern, http(s) url and duplicate hosts among
+  active rows; a budget-exhausted walk emits the numeric metric
+  `walk_budget_exhausted` (ENG review 2A — no note substrings).
+- i14: landscape-map contract (v0.1.3, pe3) — aggregate floors
+  (Q1 = Σ products_listed, Q2 = Σ doc_links_seen) sum **active**
+  sources whose latest census run is done (ENG review 1A: retired
+  inactive rows stay in the matrix, never in the sums — footnoted);
+  blocked/failed/not-yet-walked active sources are excluded from
+  the sum AND counted in the aggregate line, citing constituent
+  run_keys; budget-limited sources flagged via
+  walk_budget_exhausted; channel-facet subtotals + the overlap
+  caveat (cross-listing not deduplicated, W4); zero
+  completed walks → explicit "no measured floors yet" line;
+  trade-context lines from records_hs* (D28 grain rule); priors
+  lines from products_registered / census_status; frame-decision
+  bridge (md only, qualitative, evidence-cited) or its deferred
+  line; csv matrix gains products_listed / doc_links_seen /
+  products_registered / walk_note; json carries the full
+  structure.
 
 ## OPEN ITEMS
 

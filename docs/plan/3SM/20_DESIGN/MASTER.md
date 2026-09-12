@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Design MASTER — lead_HS
@@ -30,7 +30,19 @@ topic documents below.
   HOLD SCOPE; D25/D26 absorbed, D27 applied);
   **built 2026-09-11** — implementation trail rescoped to od8–od10 at
   activation, PHASE01–06 done (155 offline tests), PHASE07 census
-  execution awaits explicit go (`GO=1 make census`).
+  execution awaits explicit go (`GO=1 make census`). **The D28
+  rework (register slim 0004, walk metrics, product-first report)
+  and PHASE07 are absorbed into unit v0.1.3's PHASE01–02** (B8
+  precedent; transfer marked in both trails).
+- Unit **v0.1.3** (data-landscape map, strategy refocus D29) —
+  design converged 2026-09-12 (units/v0.1.3.md, pe1–pe6; CEO review
+  HOLD SCOPE 2026-09-12): enumeration register model (per-site
+  rows, load validation, notes convention), priors metric
+  (migration 0005 products_registered), landscape-map report
+  extensions (aggregate floors, bridge), budget marker; absorbs the
+  v0.1.2 close-out. Implementation plan written (ENG review
+  2026-09-12, SMALL CHANGE); build awaits explicit go; the census
+  phases additionally need the real-network go-ahead.
 - Unit v0.1 (feasibility & study design) — foundational strategy
   pass, LIVE in STRATEGY.
 - Full-pipeline design: **present but not frozen** — freeze awaits
@@ -48,6 +60,7 @@ topic documents below.
 - `MASTER/testing.md` — test matrix, key tests, flakiness rules
 - `units/v0.1.1.md` — the design delta for the active unit
 - `units/v0.1.2.md` — design delta for the census close-out unit
+- `units/v0.1.3.md` — design delta for the data-landscape map unit
 
 (The canonical "design" subject is covered by architecture +
 interfaces together — consolidation decision, no separate
@@ -141,6 +154,26 @@ design.md.)
   no findings — they appear in the summary matrix only as inactive
   register rows, never as legal content (strategy D27; supersedes
   the D14-derived fields).
+- **d28** enumeration register model — enumerated sites as per-site
+  `source` rows (PE-10+), PE-1..4 retired inactive, structured
+  notes convention documented once (stringly until M1 accepted),
+  `source load` validation (id pattern, http(s) url, duplicate
+  active-host check), budget-exhausted flagged via the numeric
+  metric `walk_budget_exhausted` (i13/a16; v0.1.3 HOLD-SCOPE
+  review; ENG review 2A).
+- **d29** landscape map = od8 content-layer extensions — aggregate
+  floors (sums over latest done runs of **active** sources only —
+  ENG review 1A; blocked/failed/not-yet-walked excluded and
+  counted; budget-limited flagged; channel-facet subtotals +
+  overlap caveat; explicit no-floors line), trade-context lines,
+  priors lines, frame-decision bridge md-only with deferred line
+  (i14/a17; strategy D29).
+- **d30** coarse priors as one generic metric `products_registered`
+  via migration 0005; v_anchor_candidates redefined; anchor
+  promotion manual (D20) (a18/i4; v0.1.3).
+- **d31** v0.1.3 PHASE01–02 absorb the outstanding v0.1.2 D28
+  rework + census execution (B8 precedent; transfer marked in both
+  implementation trails).
 
 ## OPEN ITEMS
 
@@ -171,7 +204,15 @@ design.md.)
   migration 0003). Phase plans:
   30_IMPLEMENTATION/v0.1.2/PHASE01–07. Build awaits explicit go;
   PHASE07 (census execution) additionally requires the real-network
-  go-ahead.
+  go-ahead. **D28 rework + PHASE07 transferred to v0.1.3
+  PHASE01–02 (d31).**
+- **v0.1.3: ready — implementation plans written.** Design converged
+  (pe1–pe6; CEO review 2026-09-12 HOLD SCOPE; ENG review 2026-09-12
+  SMALL CHANGE). Phase plans: 30_IMPLEMENTATION/v0.1.3/PHASE01–07.
+  Build awaits explicit go; PHASE02/PHASE06 additionally require
+  the real-network go-ahead. Convergence of the underlying strategy
+  (DRAFT) stays gated on the executed census — the phase plans
+  deliver exactly those floors.
 - **Full pipeline: not ready.** Freeze awaits probe results (source
   counts, swiss-impex format, SDS corpus quality) and the
   legal-verification items in 10_STRATEGY/MASTER.md.

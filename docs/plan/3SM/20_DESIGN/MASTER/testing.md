@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Testing (Design)
@@ -206,6 +206,13 @@ v_probe_latest unchanged by the aborted run.
 - t8: report content-layer structural tests (test_report_content.py)
   + golden regeneration with review for od8 — v0.1.2 (HOLD-SCOPE
   review 2026-09-11).
+- t9: v0.1.3 — source-load validation (id/url/dup-active-host;
+  inactive exemption), landscape-map aggregates (active-only sums —
+  ENG review 1A incl. the retired-PE-1..4 double-count case;
+  excluded counted; budget flag via the walk_budget_exhausted
+  metric; channel subtotals; deferred lines; csv/json gains),
+  migrations 0004/0005 + sync (0001+0003+0004+0005), per-site walk
+  runs (HOLD-SCOPE review 2026-09-12; ENG review SMALL CHANGE).
 
 ## OPEN ITEMS
 

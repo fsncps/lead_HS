@@ -1,8 +1,8 @@
 ---
-unit: v0.1.1
+unit: v0.1.3
 stage: IMPLEMENTATION
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Implementation MASTER — lead_HS
@@ -13,25 +13,25 @@ Dashboard of the IMPLEMENTATION stage: finalized, executable phase
 plans (the `PHASE##.md` files) per unit. Per the 3SM canon this stage
 contains ONLY phase tracking and finalized executable plans — no
 brainstorming, research, reviews or provisional designs; those live
-in 10_STRATEGY/ and 20_DESIGN/. The active unit is **v0.1.1** (source
-probing, slim CLI). Its engineering plan was ENG-reviewed on
-2026-09-11 (SMALL CHANGE mode; 3 findings, all resolved — recorded in
-the unit MASTER); PHASE01–07 are built and gate-verified, and its
-PHASE08 census feasibility pass was executed 2026-09-11. Unit
-**v0.1.2** (operator layer + census close-out) has its ENG-reviewed
-phase plan in place (SMALL CHANGE mode, 2026-09-11; findings,
-empirical click verification and the OD-A resolution recorded as
-B1–B8 in the unit MASTER). Per strategy **D26** the census close-out
-is delivered by v0.1.2 and executed through the operator layer
-(`GO=1 make census`) — this supersedes the same-day census-first
-sequencing discussion.
+in 10_STRATEGY/ and 20_DESIGN/. The active unit is **v0.1.3** (data-landscape map, D29; converged
+2026-09-12 on D30 — the three-number deliverable N1/N2/N3; strategy
+FROZEN). Unit **v0.1.1** (source probing, slim CLI) is built and
+gate-verified (PHASE01–07 + PHASE08 feasibility pass, 2026-09-11;
+ENG-reviewed SMALL CHANGE). Unit **v0.1.2** (operator layer + census
+close-out) is built (PHASE01–06, 2026-09-11; ENG-reviewed SMALL
+CHANGE, findings recorded as B1–B8); its D28 rework + PHASE07 census
+execution transferred to v0.1.3 PHASE01–02 (2026-09-12, d31). For
+v0.1.3 the baseline census ran 2026-09-12 (3 done / 1 blocked / 3
+failed; audit clean). PHASE01 (the D28 rework) is built 2026-09-12
+(165 offline tests, audit clean); PHASE02+ await explicit go.
 
 ## Units
 
 | Unit | Stage | Status |
 |---|---|---|
 | v0.1.1 (source probing — slim CLI) | IMPLEMENTATION | PHASE01–07 done (gate-verified 2026-09-11); PHASE08 feasibility pass executed; census close-out transferred to v0.1.2 (D26) |
-| v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | planned — PHASE01–07 written (ENG-reviewed 2026-09-11); build awaits explicit go; PHASE07 additionally needs the real-network go-ahead |
+| v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | PHASE01–06 done 2026-09-11 (155 offline tests); **D28 rework + PHASE07 transferred to v0.1.3 PHASE01–02 (2026-09-12, d31)** |
+| v0.1.3 (data-landscape map, D29) | IMPLEMENTATION | strategy converged on D30 2026-09-12 (re-reviewed CEO HOLD + ENG SMALL CHANGE; E1/E2 folded); PHASE01 (D28 rework) built 2026-09-12 (165 offline tests, audit clean); baseline census 2026-09-12 (3/1/3, audit clean); PHASE02+ await explicit go, PHASE02/06 additionally the real-network go-ahead |
 
 ## Phase tracking (v0.1.1 — summary)
 
@@ -64,17 +64,34 @@ Per-phase status, dependencies and detail: `v0.1.1/MASTER.md` and
 Per-phase status, dependencies and detail: `v0.1.2/MASTER.md` and
 `v0.1.2/PHASE01..05.md`.
 
+## Phase tracking (v0.1.3 — summary)
+
+| Phase | Focus | Status | Exit gate (summary) |
+|---|---|---|---|
+| PHASE01 | D28 rework (migration 0004, walk metrics + walk_budget_exhausted, product-first report) | done 2026-09-12 | suite green incl. sync 0001+0003+0004; two numbers + matrix on fixtures |
+| PHASE02 | Census execution (absorbs v0.1.2 PHASE07; GO=1, phased) | planned | baseline floors exist; report published; audit exit 0 |
+| PHASE03 | Enumeration register (load validation, per-site rows, version 0.1.3) | planned | validation named-row exits; enumerated register loads; probe-dry covers all |
+| PHASE04 | Priors metric (migration 0005 products_registered) | planned | 0005 applies; recordable; v_anchor_candidates extended |
+| PHASE05 | Landscape-map render (aggregate floors active-only, trade/priors lines, bridge) | planned | i14 sections incl. C1 case on fixtures; goldens reviewed |
+| PHASE06 | Walks + priors execution (GO=1, phased) | planned | floors over enumerated register; priors recorded/blocked; audit exit 0 |
+| PHASE07 | Docs & close-out (README, management summary three numbers (N1–N3), register statuses) | planned | docs carry the real three numbers (N1–N3); translations drift-marked or updated |
+
+Per-phase status, dependencies and detail: `v0.1.3/MASTER.md` and
+`v0.1.3/PHASE01..07.md`.
+
 ## Governing references
 
 - Strategy: `../10_STRATEGY/v0.1.1.md` (unit scope),
   `../10_STRATEGY/DATA_SOURCE.md` (register, discipline),
   `../10_STRATEGY/MASTER.md` (D19/D20 rollout, anchor promotion);
-  unit v0.1.2: `../10_STRATEGY/v0.1.2.md` (D21/D22, U1–U7).
-- Design: `../20_DESIGN/MASTER.md` (consolidated decisions d1–d24)
+  unit v0.1.2: `../10_STRATEGY/v0.1.2.md` (D21/D22, U1–U7);
+  unit v0.1.3: `../10_STRATEGY/v0.1.3.md` (D29 refocus, W1–W8).
+- Design: `../20_DESIGN/MASTER.md` (consolidated decisions d1–d31)
   and topic docs `MASTER/{data_model,architecture,interfaces,testing}.md`
   (review semantics applied 2026-09-11 per
   `../20_DESIGN/FIXPLAN_2026-09-11.md` — DONE); unit deltas
-  `../20_DESIGN/units/v0.1.1.md`, `../20_DESIGN/units/v0.1.2.md`.
+  `../20_DESIGN/units/v0.1.1.md`, `../20_DESIGN/units/v0.1.2.md`,
+  `../20_DESIGN/units/v0.1.3.md`.
 
 ## Retention (hot-history policy)
 

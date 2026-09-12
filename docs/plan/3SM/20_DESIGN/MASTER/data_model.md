@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Data model — normalized evidence database (Design)
@@ -99,19 +99,24 @@ substance dictionary (`dict load` — 10_STRATEGY/DATA_MODEL.md D6);
 | `0001__probe_base.sql` | M0 (v0.1.1) | 10 lookups | — |
 | `0002__probe_core.sql` | M0 (v0.1.1) | source, document, run, probe_run, probe_finding | v_probe_latest, v_anchor_candidates, v_source_activity |
 | `0003__probe_metrics.sql` | M0 (v0.1.2) | — (probe_metric INSERTs: records_hs3208/3209/3213, census_status) | v_anchor_candidates (redefined) |
-| `0004__dictionary.sql` | M1 | substance, compound_synonym, compound_identifier + 5 lookups | — |
-| `0005__catalog_frame.sql` | M1 | study, org, product, product_org, product_classification, category, product_category, population_anchor, frame_stratum, frame_stratum_anchor, cn_code + 8 lookups | v_anchor_candidates (redefined), v_product_current |
-| `0006__sampling.sql` | M1 | sampling_run, sample_selection + 2 lookups | — |
-| `0007__trade_stats.sql` | M1 | trade_stat + flow lookup | — |
-| `0008__sds.sql` | M2 | sds_document, product_ufi, sds_ingredient, sds_finding, sds_finding_hcode, sds_section15 + 6 lookups | — |
-| `0009__evidence.sql` | M2–M3 | sighting, corroboration + 2 lookups | — |
-| `0010__views.sql` | M4 | — | v_finding_full, v_product_dossier, v_trade_ch, v_census_3213 |
+| `0004__product_census.sql` | M0 (v0.1.2 rework, D28) | — (prune LG/LI source rows + their runs/findings/documents; probe_metric INSERTs: products_listed, doc_links_seen, walk_budget_exhausted) | v_anchor_candidates (redefined) |
+| `0005__priors_metric.sql` | M0 (v0.1.3) | — (probe_metric INSERT: products_registered) | v_anchor_candidates (redefined) |
+| `0006__dictionary.sql` | M1 | substance, compound_synonym, compound_identifier + 5 lookups | — |
+| `0007__catalog_frame.sql` | M1 | study, org, product, product_org, product_classification, category, product_category, population_anchor, frame_stratum, frame_stratum_anchor, cn_code + 8 lookups | v_anchor_candidates (redefined), v_product_current |
+| `0008__sampling.sql` | M1 | sampling_run, sample_selection + 2 lookups | — |
+| `0009__trade_stats.sql` | M1 | trade_stat + flow lookup | — |
+| `0010__sds.sql` | M2 | sds_document, product_ufi, sds_ingredient, sds_finding, sds_finding_hcode, sds_section15 + 6 lookups | — |
+| `0011__evidence.sql` | M2–M3 | sighting, corroboration + 2 lookups | — |
+| `0012__views.sql` | M4 | — | v_finding_full, v_product_dossier, v_trade_ch, v_census_3213 |
 
 Renumbering note (unit v0.1.2, od10): the probe metric extension took
 `0003` — the cheapest moment, before any design-ahead file exists; the
 design-ahead migrations shifted one number (`0003__dictionary` → `0004`
-… `0009__views` → `0010`). Future probe-era metric INSERTs repeat this
-shift; accepted (docs-only, pre-build).
+… `0009__views` → `0010`). Unit v0.1.2's D28 rework takes `0004`
+(register slim + walk metrics) and unit v0.1.3's priors metric takes
+`0005`; the design-ahead block shifts again to `0006`–`0012`. Future
+probe-era metric INSERTs repeat this shift; accepted (docs-only,
+pre-build).
 
 Two corrections vs the session draft of this plan: `trade_stat` moves
 into the M1 set (frame weighting by EZV import shares happens at M1,
