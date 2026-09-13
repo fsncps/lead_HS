@@ -50,7 +50,7 @@ without scraping · **(d)** blocked/unknown.
 | a | dataset/register access counted | — | 0 |
 | b | sitemap-visible counted | — | 0 |
 | c | visible, uncounted without scraping | CX-1, PX-1 | 2 |
-| d | blocked/unknown | CX-2, CX-3, CX-4, PX-2, PX-3, PX-4, PX-5, PX-6, PX-7, PX-8, PX-9, SX-1 | 12 |
+| d | blocked/unknown | AX-1, CX-2, CX-3, CX-4, PX-2, PX-3, PX-4, PX-5, PX-6, PX-7, PX-8, PX-9, SX-1 | 13 |
 
 
 **N2 (Σ tier a+b counts):** no counted sources yet — run the statistics
@@ -91,6 +91,7 @@ context — tariff-line flows, not products.
 
 | source | class | active | tier | status | sitemap | sds lib | products reg. | producers reg. | kg 3208 | EUR 3208 | kg 3209 | EUR 3209 | products | doc links | walk budget | catalog | category | page ok | sds ok | hs3208 | hs3209 | hs3213 | export rows | census status | last run |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| AX-1 | AS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | CX-1 | CS | 1 | c | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | 3 count | — | probe-20260910-cx1 |
 | CX-2 | CS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | CX-3 | CS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
@@ -108,6 +109,39 @@ context — tariff-line flows, not products.
 | SX-1 | ST | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 
 
+## Capability profile
+
+Per registered source, the source-level capability sounding-out (v0.2.1):
+is an entry actually a real product per the study's model — (CN8 code,
+manufacturer, manufacturer product-ident) — and at what volume and
+depth? A source is a **real product source** when it exposes a
+manufacturer field, a product-ident field, a non-`none` CN8-linkage
+mechanism, and data depth >= 2. `—` = capability metric not recorded.
+
+Preliminary N2 numerator (official registers, floor): sum of products_identifiable over the real-product sources below. Official registers are certified/declared subsets of the market, never a market total — a floor, cited to the run it comes from.
+
+**N2 numerator (official registers, floor):** none yet (no source has passed the predicate).
+
+| source | class | active | run_key | status | identifiable | mfr | product-ident | cn8-linkage | depth | cn8-reachable | real product source |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| AX-1 | AS | 1 | — | — | — | — | — | — | — | — | no |
+| CX-1 | CS | 1 | — | — | — | — | — | — | — | — | no |
+| CX-2 | CS | 1 | — | — | — | — | — | — | — | — | no |
+| CX-3 | CS | 1 | — | — | — | — | — | — | — | — | no |
+| CX-4 | CS | 1 | — | — | — | — | — | — | — | — | no |
+| PX-1 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-2 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-3 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-4 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-5 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-6 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-7 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-8 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PX-9 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| ST-1 | ST | 0 | — | — | — | — | — | — | — | — | no |
+| SX-1 | ST | 1 | — | — | — | — | — | — | — | — | no |
+
+
 ## Execution log (latest census/recon run per source)
 
 
@@ -120,6 +154,14 @@ context — tariff-line flows, not products.
 
 ## Sources
 
+
+### AX-1 — Fixture register
+
+- identity: class AS · active yes · tier d · verification open · http://127.0.0.1:PORT/reg.csv
+- access: robots — · terms — · rate limit — · free access —
+- content: format — · granularity — · coverage — · languages —
+- counts:
+- register note: capability fixture (mfr+ident+cn8)
 
 ### CX-1 — Fixture export
 

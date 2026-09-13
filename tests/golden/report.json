@@ -24,6 +24,7 @@
         "PX-1"
       ],
       "d": [
+        "AX-1",
         "CX-2",
         "CX-3",
         "CX-4",
@@ -42,7 +43,7 @@
       "a": 0,
       "b": 0,
       "c": 2,
-      "d": 12
+      "d": 13
     },
     "n2_total": null,
     "n2_components": [],
@@ -63,7 +64,332 @@
     }
   },
   "anchors": [],
+  "capability": {
+    "matrix": [
+      {
+        "source_id": "AX-1",
+        "class_code": "AS",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "CX-1",
+        "class_code": "CS",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "CX-2",
+        "class_code": "CS",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "CX-3",
+        "class_code": "CS",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "CX-4",
+        "class_code": "CS",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-1",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-2",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-3",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-4",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-5",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-6",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-7",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-8",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PX-9",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "ST-1",
+        "class_code": "ST",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "SX-1",
+        "class_code": "ST",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      }
+    ],
+    "numerator": {
+      "total": null,
+      "components": [],
+      "caveat": "Preliminary N2 numerator (official registers, floor): sum of products_identifiable over the real-product sources below. Official registers are certified/declared subsets of the market, never a market total \u2014 a floor, cited to the run it comes from."
+    }
+  },
   "sources": [
+    {
+      "id": "AX-1",
+      "class_code": "AS",
+      "name": "Fixture register",
+      "url": "http://127.0.0.1:PORT/reg.csv",
+      "access_method_code": "download",
+      "verification_status_code": "open",
+      "active": true,
+      "notes": "capability fixture (mfr+ident+cn8)",
+      "run": null,
+      "status": null,
+      "tier": "d",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
+    },
     {
       "id": "CX-1",
       "class_code": "CS",
@@ -182,7 +508,18 @@
           }
         ],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "CX-2",
@@ -231,7 +568,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "CX-3",
@@ -280,7 +628,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "CX-4",
@@ -329,7 +688,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-1",
@@ -535,7 +905,18 @@
             "value": "1 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-2",
@@ -584,7 +965,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-3",
@@ -633,7 +1025,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-4",
@@ -682,7 +1085,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-5",
@@ -731,7 +1145,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-6",
@@ -780,7 +1205,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-7",
@@ -829,7 +1265,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-8",
@@ -878,7 +1325,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PX-9",
@@ -927,7 +1385,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "ST-1",
@@ -976,7 +1445,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "SX-1",
@@ -1025,7 +1505,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     }
   ],
   "anchor_candidates": [
@@ -1066,6 +1557,13 @@
     }
   ],
   "source_activity": [
+    {
+      "source_id": "AX-1",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
     {
       "source_id": "CX-1",
       "first_retrieved_at": "2026-09-10T12:00:00Z",

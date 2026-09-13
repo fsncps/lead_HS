@@ -1,8 +1,8 @@
 ---
-unit: v0.1.1
+unit: v0.2.1
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-12
+updated: 2026-09-14
 ---
 
 # Design MASTER — lead_HS
@@ -60,6 +60,16 @@ topic documents below.
   2026-09-12 (BIG CHANGE; e1–e8 folded — d39)**; build awaits
   explicit go; PHASE04/PHASE05 additionally the
   real-network go-ahead.
+- Unit **v0.2.1** (source-level capability sounding-out, D33) —
+  design converged 2026-09-13 (units/v0.2.1.md, cap1–cap7; user
+  decisions 2026-09-13 on four tradeoffs): capability profile as six
+  new probe_metrics + probe_mode `capability` (i17), hybrid
+  automation (official CSV/API registers automated; XLSX/auth-gated
+  + PE universe by manual record), N2 numerator as report-time
+  derivation (i18), register-capability branch under AS (cap4/cap5),
+  migration 0007 + design-ahead renumber 0008–0014 (cap7). Rides the
+  v0.2.0 machinery; no new CLI commands (V9). Built 2026-09-14
+  (PHASE01–06; 231 offline tests; capability report published).
 - Unit v0.1 (feasibility & study design) — foundational strategy
   pass, LIVE in STRATEGY.
 - Full-pipeline design: **present but not frozen** — freeze awaits
@@ -79,6 +89,8 @@ topic documents below.
 - `units/v0.1.2.md` — design delta for the census close-out unit
 - `units/v0.1.3.md` — design delta for the data-landscape map unit
 - `units/v0.2.0.md` — design delta for the numbers unit
+- `units/v0.2.1.md` — design delta for the source-level capability
+  unit (active unit)
 
 (The canonical "design" subject is covered by architecture +
 interfaces together — consolidation decision, no separate
@@ -222,6 +234,12 @@ design.md.)
   + namespace handling (e4/e5); robots-unknown proceeds (e6);
   nested-index / year-step-back / dry-run mechanics (e7); record
   mode parameter (e8); plain census_status matrix column (nu9).
+- **d40** capability profile (v0.2.1, cap1–cap7) — six new
+  probe_metrics + probe_mode `capability`; register-capability branch
+  (CSV/API automated, D3; XLSX/auth-gated + PE universe manual);
+  real-product-source predicate + preliminary N2 numerator as
+  report-time derivations; branch under AS; migration 0007 +
+  renumber 0008–0014; no new CLI commands (i17/i18, a23/a24).
 
 ## OPEN ITEMS
 
@@ -273,6 +291,13 @@ design.md.)
   real-network go-ahead. The governing strategy (`10_STRATEGY/
   v0.2.md`) stays DRAFT — its freeze is a separate explicit user
   action.
+- **v0.2.1: design ready — implementation plans to draft.** Design
+  converged 2026-09-13 (units/v0.2.1.md, cap1–cap7; user decisions
+  on the four tradeoffs). Rides the v0.2.0 machinery (no new CLI
+  commands, no new pipeline stages — V9). Next per 3SM: draft
+  30_IMPLEMENTATION/v0.2.1/PHASE01–06 when explicitly instructed.
+  The governing strategy (`10_STRATEGY/v0.2.1.md`) stays DRAFT — its
+  freeze is a separate explicit user action.
 
 ## Handoff note
 

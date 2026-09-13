@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "leadhs"
-version = "0.2.0"
+version = "0.2.1"
 description = "Lead-in-paints evidence tool (HS 3208/3209/3213)"
 requires-python = ">=3.11"
 dependencies = [

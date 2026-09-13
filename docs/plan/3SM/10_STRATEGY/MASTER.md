@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-12
+updated: 2026-09-13
 ---
 
 # Strategy MASTER — lead_HS
@@ -332,6 +332,29 @@ lead). Open questions and the phased roadmap follow.
     bundled Windows artifact delivered alongside the wheel. The
     "bundling rejected" stance of D24 is thereby superseded for
     v0.3 scope.
+33. **Source-level sounding-out before product identification
+    (2026-09-13; user direction, opens unit v0.2.1):** before the
+    normalized product DB is seeded (planned v0.3), the source
+    universe is expanded and each source is characterized at source
+    level against the study's product model — **(CN8 code,
+    manufacturer, manufacturer product-ident)** — plus catalog volume
+    and data depth. Unit v0.2.1 is reconnaissance-only: no product DB
+    seeding, no scraping (D31 discipline). **Product identity key
+    (refines D2, formulation unit):** primary = (manufacturer,
+    manufacturer product/article code); UFI (regulatory formulation
+    ID) and GTIN/EAN (retail) recorded as cross-reference
+    identifiers. Strategic finding (2026-09-13 research): **no
+    official EU chemical register publishes product-level paint data
+    publicly** — ECHA PCN is authority-only; SPIN/KemI/national
+    registers are substance-level with confidential product names;
+    EuPCS is a taxonomy with no CN8 mapping. The official
+    product-level sources are the **ecolabel/EPD registers** (EU
+    Ecolabel ECAT ≈38k paints, Nordic Swan, Blue Angel 410 wall
+    paints, INIES, IBU, environdec) — certified/declared subsets of
+    the market, the N2 seed; the complete product list still needs PE
+    catalogue expansion (deferred). **N1 is fully achievable from
+    official statistics at CN8 granularity** (Comext DS-045409 intra +
+    extra; PRODCOM DS-059358; SBS).
 
 ## OPEN ITEMS
 
@@ -364,6 +387,11 @@ lead). Open questions and the phased roadmap follow.
   (LEAD_SDS.md, METHODOLOGY regulatory frame).
 - OPEN/NON-BLOCKING: ECHA PCN universe totals + EuPCS paint share (EU context).
 - OPEN/NON-BLOCKING: SPIN Access DB extraction; PRODCOM sold production 20.30.1x.
+- OPEN (methodological, 2026-09-13): EuPCS↔CN8 mapping gap — no official
+  mapping exists; treat EuPCS PC-PNT-2 as an approximate proxy for CN
+  3208/3209 with explicit caveats (decision at Design). PRODCOM↔CN8
+  correspondence is at "complete reference" level, not 1:1 — retrieve the
+  official correspondence table.
 - OPEN: verify CAS for lead naphthenate (61790-14-5?) and lead neodecanoate
   (27253-29-8?) against ECHA EC inventory before freezing the dictionary.
 - OPEN: artists' colours vs REACH Annex XVII entries 16/17 — the
@@ -447,11 +475,25 @@ lead). Open questions and the phased roadmap follow.
   user decision 1A — bounded sitemap-index expansion);
   implementation plans drafted + ENG-reviewed the same day
   (30_IMPLEMENTATION/v0.2.0/, PHASE01–07; BIG CHANGE, findings
-  e1–e8 folded); build awaits explicit go.
-- **v0.3 (goal noted 2026-09-12, D32; unit not yet opened):**
-  distribution — easy install on **vanilla Windows** (no make, no
-  preinstalled Python) via a self-contained per-OS artifact; PyPI
-  publication not required. Design follows once v0.2.0 converges.
+  e1–e8 folded); build awaits explicit go. **Built 2026-09-12** (see
+  the project dashboard MASTER.md); its web-channel focus is
+  superseded for the next step by v0.2.1 (D33).
+- `v0.2.1.md` — source-level sounding-out of the expanded universe
+  (D33): expand the source register (ecolabel/EPD registers as AS rows;
+  PRODCOM and national stats as CS/ST; CEPE/national associations and
+  ecolabel bodies as AS; LI; PE universe enumerated), and characterize
+  each source against the product model (CN8, manufacturer,
+  manufacturer product-ident) plus catalog volume and data depth —
+  reconnaissance-only, no product DB seeding, no scraping. Strategy
+  DRAFT; Design follows on user validation of the source-level
+  framing. Grounded by the 2026-09-13 official-source research pass.
+- **v0.3 (goal noted 2026-09-12, D32; the D32 vanilla-Windows
+  distribution goal):** easy install on **vanilla Windows** (no make,
+  no preinstalled Python) via a self-contained per-OS artifact; PyPI
+  publication not required. Design follows once v0.2.1 converges.
+  (The official-source product-identification seeding, planned behind
+  v0.2.1, carries a provisional v0.3 label in that planning; it is a
+  distinct unit from the D32 distribution goal.)
 - v0.1 (feasibility & study design) remains the foundational strategy
   pass; its legal-verification open items stay in OPEN ITEMS above.
 
@@ -484,3 +526,11 @@ e1–e8 folded). Build awaits explicit go (PHASE04/05 additionally
 GO=1). The strategy unit doc
 itself stays DRAFT — freezing it is a separate explicit user
 action.
+
+For unit v0.2.1: strategy is DRAFT (D33, this document) — converging
+on user validation of the source-level sounding-out framing (confirmed
+2026-09-13). The 2026-09-13 official-source research pass grounds the
+source expansion and the EuPCS↔CN8 and PRODCOM↔CN8 gaps. Design may
+proceed on: recon probe shape for the new AS/ST rows, capability-profile
+fields and migration, Comext/PRODCOM CN8 aggregation, source-capability
+matrix layout, N2 numerator assembly.

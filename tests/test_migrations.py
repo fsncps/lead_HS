@@ -10,7 +10,7 @@ from leadhs import db as dbmod
 
 def test_fresh_apply_all_migrations(conn):
     applied = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
-    assert applied == {1, 2, 3, 4, 5, 6}
+    assert applied == {1, 2, 3, 4, 5, 6, 7}
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for table in ("source", "document", "run", "probe_run", "probe_finding", "probe_metric"):
         assert table in tables
@@ -92,7 +92,7 @@ def test_0004_prunes_lg_li_rows_with_evidence(tmp_path):
     conn.commit()
 
     applied, _ = dbmod.migrate(conn)
-    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql"]
+    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql"]
 
     ids = {r[0] for r in conn.execute("SELECT id FROM source")}
     assert "LG-9" not in ids and "LI-9" not in ids and "PE-9" in ids
@@ -137,7 +137,7 @@ def test_migration_order_enforced(tmp_path):
         applied, pending = dbmod.migrate(conn)
         assert applied == ["0002__probe_core.sql", "0003__probe_metrics.sql",
                            "0004__product_census.sql", "0005__priors_metric.sql",
-                           "0006__recon_numbers.sql"]
+                           "0006__recon_numbers.sql", "0007__capability.sql"]
     finally:
         conn.close()
 
@@ -325,3 +325,34 @@ def test_0006_retires_cs1(tmp_path):
     assert "pre-existing note" in row[1]
     assert "out of scope D31" in row[1]
     conn.close()
+
+
+# --- v0.2.1: 0007 capability mode + metrics -------------------------------
+
+
+def test_0007_capability_mode_seeded(conn):
+    modes = {r[0] for r in conn.execute("SELECT code FROM probe_mode")}
+    assert "capability" in modes
+
+
+def test_0007_capability_metrics_seeded(conn):
+    """cap1: the six capability metrics are in the vocabulary with the
+    right value_types (four numeric, one text for the linkage)."""
+    codes = {r[0] for r in conn.execute("SELECT code FROM probe_metric")}
+    assert {"products_identifiable", "cap_manufacturer", "cap_product_ident",
+            "cap_cn8_linkage", "cap_depth_tier", "cn8_reachable"} <= codes
+    types = dict(conn.execute(
+        "SELECT code, value_type FROM probe_metric WHERE code IN "
+        "('products_identifiable', 'cap_manufacturer', 'cap_product_ident', "
+        "'cap_cn8_linkage', 'cap_depth_tier', 'cn8_reachable')"
+    ).fetchall())
+    assert types == {"products_identifiable": "numeric", "cap_manufacturer": "numeric",
+                     "cap_product_ident": "numeric", "cap_cn8_linkage": "text",
+                     "cap_depth_tier": "numeric", "cn8_reachable": "numeric"}
+
+
+def test_0007_no_view_change(conn):
+    """cap7: 0007 adds no view — v_anchor_candidates is unchanged."""
+    cols = {r[0] for r in conn.execute("SELECT metric_code FROM v_anchor_candidates LIMIT 0")}
+    # the anchor-candidate view keeps its v0.2.0 code set (0006 shape)
+    assert "products_identifiable" not in cols

@@ -49,6 +49,10 @@
         "PE-31"
       ],
       "d": [
+        "AS-2",
+        "AS-3",
+        "AS-6",
+        "AS-7",
         "ST-2"
       ]
     },
@@ -56,7 +60,7 @@
       "a": 0,
       "b": 23,
       "c": 3,
-      "d": 1
+      "d": 5
     },
     "n2_total": 204693.0,
     "n2_components": [
@@ -256,6 +260,677 @@
       "run_key": "probe-20260912-st3manual"
     }
   ],
+  "capability": {
+    "matrix": [
+      {
+        "source_id": "AS-1",
+        "class_code": "AS",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "AS-2",
+        "class_code": "AS",
+        "active": true,
+        "run_key": "probe-20260913-as2manual-6",
+        "status": "done",
+        "metrics": {
+          "products_identifiable": "17838 count",
+          "cap_manufacturer": "1",
+          "cap_product_ident": "1",
+          "cap_cn8_linkage": "category",
+          "cap_depth_tier": "2",
+          "cn8_reachable": "0 count"
+        },
+        "real_product_source": true
+      },
+      {
+        "source_id": "AS-3",
+        "class_code": "AS",
+        "active": true,
+        "run_key": "probe-20260913-as3-4",
+        "status": "done",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "manual",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "AS-4",
+        "class_code": "AS",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "AS-5",
+        "class_code": "AS",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "AS-6",
+        "class_code": "AS",
+        "active": true,
+        "run_key": "probe-20260913-as6-4",
+        "status": "done",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "manual",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "AS-7",
+        "class_code": "AS",
+        "active": true,
+        "run_key": "probe-20260913-as7-4",
+        "status": "done",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "manual",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "CS-1",
+        "class_code": "CS",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "CS-2",
+        "class_code": "CS",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-1",
+        "class_code": "PE",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-10",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-11",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-12",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-13",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-14",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-15",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-16",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-17",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-18",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-19",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-2",
+        "class_code": "PE",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-20",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-21",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-22",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-23",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-24",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-25",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-26",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-27",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-28",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-29",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-3",
+        "class_code": "PE",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-30",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-31",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-32",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-33",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-34",
+        "class_code": "PE",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "PE-4",
+        "class_code": "PE",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "ST-1",
+        "class_code": "ST",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "ST-2",
+        "class_code": "ST",
+        "active": true,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      },
+      {
+        "source_id": "ST-3",
+        "class_code": "ST",
+        "active": false,
+        "run_key": "\u2014",
+        "status": "\u2014",
+        "metrics": {
+          "products_identifiable": "\u2014",
+          "cap_manufacturer": "\u2014",
+          "cap_product_ident": "\u2014",
+          "cap_cn8_linkage": "\u2014",
+          "cap_depth_tier": "\u2014",
+          "cn8_reachable": "\u2014"
+        },
+        "real_product_source": false
+      }
+    ],
+    "numerator": {
+      "total": 17838.0,
+      "components": [
+        {
+          "source_id": "AS-2",
+          "products_identifiable": 17838.0,
+          "run_key": "probe-20260913-as2manual-6"
+        }
+      ],
+      "caveat": "Preliminary N2 numerator (official registers, floor): sum of products_identifiable over the real-product sources below. Official registers are certified/declared subsets of the market, never a market total \u2014 a floor, cited to the run it comes from."
+    }
+  },
   "sources": [
     {
       "id": "AS-1",
@@ -327,6 +1002,453 @@
             "value": "800 count"
           }
         ]
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
+    },
+    {
+      "id": "AS-2",
+      "class_code": "AS",
+      "name": "EU Ecolabel Product Catalogue (ECAT)",
+      "url": "https://data.europa.eu/data/datasets/eu-ecolabel-products",
+      "access_method_code": "download",
+      "verification_status_code": "verified",
+      "active": true,
+      "notes": "certified subset (non-exhaustive, licence holders register products); paints & varnishes group 044; CSV download + API (D3 official export); host data.europa.eu distinct from CS-2",
+      "run": null,
+      "status": null,
+      "tier": "d",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [
+          {
+            "source_id": "AS-2",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm",
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260913-as2-4",
+            "started_at": "2026-09-13T22:59:28Z",
+            "notes": null,
+            "value": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm"
+          }
+        ],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      },
+      "capability": {
+        "products_identifiable": "17838 count",
+        "cap_manufacturer": "1",
+        "cap_product_ident": "1",
+        "cap_cn8_linkage": "category",
+        "cap_depth_tier": "2",
+        "cn8_reachable": "0 count"
+      },
+      "products_identifiable_num": 17838.0,
+      "real_product_source": true,
+      "cap_run": {
+        "run_key": "probe-20260913-as2manual-6",
+        "status": "done",
+        "started_at": "2026-09-13T23:00:33Z",
+        "finished_at": "2026-09-13T23:00:33Z",
+        "notes": null
+      }
+    },
+    {
+      "id": "AS-3",
+      "class_code": "AS",
+      "name": "Nordic Swan Ecolabel product database",
+      "url": "https://www.svanen.se/en/search-for-ecolabelled-products-and-services/",
+      "access_method_code": "download",
+      "verification_status_code": "verified",
+      "active": true,
+      "notes": "paints & varnishes criterion 096; CSV/Excel export visible; host svanen.se distinct",
+      "run": null,
+      "status": null,
+      "tier": "d",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [
+          {
+            "source_id": "AS-3",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm",
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260913-as3-4",
+            "started_at": "2026-09-13T22:59:30Z",
+            "notes": null,
+            "value": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm"
+          }
+        ],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "manual",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": {
+        "run_key": "probe-20260913-as3-4",
+        "status": "done",
+        "started_at": "2026-09-13T22:59:30Z",
+        "finished_at": "2026-09-13T22:59:32Z",
+        "notes": null
+      }
+    },
+    {
+      "id": "AS-4",
+      "class_code": "AS",
+      "name": "Blue Angel (Blauer Engel)",
+      "url": "https://www.blauer-engel.de/en/products",
+      "access_method_code": "manual",
+      "verification_status_code": "partially_verified",
+      "active": false,
+      "notes": "XLSX export; no openpyxl (pure-Python set) \u2014 characterize via probe record --mode capability",
+      "run": null,
+      "status": null,
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
+    },
+    {
+      "id": "AS-5",
+      "class_code": "AS",
+      "name": "INIES (French EPD register)",
+      "url": "https://www.inies.fr/",
+      "access_method_code": "manual",
+      "verification_status_code": "partially_verified",
+      "active": false,
+      "notes": "auth-gated; confirm whether web search suffices or document-blocked (strategy OPEN)",
+      "run": null,
+      "status": null,
+      "tier": null,
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
+    },
+    {
+      "id": "AS-6",
+      "class_code": "AS",
+      "name": "IBU (Institut Bauen und Umwelt EPD)",
+      "url": "https://ibu-epd.com/en/",
+      "access_method_code": "download",
+      "verification_status_code": "partially_verified",
+      "active": true,
+      "notes": "published EPD declarations; EPD file downloads; shape to confirm at capability run",
+      "run": null,
+      "status": null,
+      "tier": "d",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [
+          {
+            "source_id": "AS-6",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm",
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260913-as6-4",
+            "started_at": "2026-09-13T22:59:32Z",
+            "notes": null,
+            "value": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm"
+          }
+        ],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "manual",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": {
+        "run_key": "probe-20260913-as6-4",
+        "status": "done",
+        "started_at": "2026-09-13T22:59:32Z",
+        "finished_at": "2026-09-13T22:59:36Z",
+        "notes": null
+      }
+    },
+    {
+      "id": "AS-7",
+      "class_code": "AS",
+      "name": "environdec (International EPD System)",
+      "url": "https://environdec.com/library",
+      "access_method_code": "download",
+      "verification_status_code": "partially_verified",
+      "active": true,
+      "notes": "published EPDs; library with downloads; shape to confirm at capability run",
+      "run": null,
+      "status": null,
+      "tier": "d",
+      "counted": null,
+      "matrix": {
+        "sitemap_products": "\u2014",
+        "sds_library_visible": "\u2014",
+        "products_registered": "\u2014",
+        "producers_registered": "\u2014",
+        "trade_kg_hs3208": "\u2014",
+        "trade_eur_hs3208": "\u2014",
+        "trade_kg_hs3209": "\u2014",
+        "trade_eur_hs3209": "\u2014",
+        "products_listed": "\u2014",
+        "doc_links_seen": "\u2014",
+        "walk_budget_exhausted": "\u2014",
+        "catalog_count": "\u2014",
+        "category_count": "\u2014",
+        "page_sample_ok": "\u2014",
+        "sds_sample_ok": "\u2014",
+        "records_hs3208": "\u2014",
+        "records_hs3209": "\u2014",
+        "records_hs3213": "\u2014",
+        "export_rows": "\u2014",
+        "census_status": "\u2014",
+        "last_run_key": "\u2014"
+      },
+      "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
+      "content_line": "format HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "counts_line": "",
+      "trade_lines": [],
+      "priors_lines": [],
+      "sections": {
+        "access": [],
+        "content": [
+          {
+            "source_id": "AS-7",
+            "metric_code": "format",
+            "value_numeric": null,
+            "value_text": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm",
+            "unit_code": null,
+            "method_code": "download",
+            "run_key": "probe-20260913-as7-4",
+            "started_at": "2026-09-13T22:59:36Z",
+            "notes": null,
+            "value": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm"
+          }
+        ],
+        "counts": [],
+        "availability": [],
+        "priors": []
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "manual",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": {
+        "run_key": "probe-20260913-as7-4",
+        "status": "done",
+        "started_at": "2026-09-13T22:59:36Z",
+        "finished_at": "2026-09-13T22:59:38Z",
+        "notes": null
       }
     },
     {
@@ -384,7 +1506,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "CS-2",
@@ -602,7 +1735,18 @@
           }
         ],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-1",
@@ -747,7 +1891,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-10",
@@ -845,7 +2000,18 @@
             "value": "2 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-11",
@@ -943,7 +2109,18 @@
             "value": "146 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-12",
@@ -1041,7 +2218,18 @@
             "value": "9 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-13",
@@ -1139,7 +2327,18 @@
             "value": "1953 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-14",
@@ -1237,7 +2436,18 @@
             "value": "3 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-15",
@@ -1335,7 +2545,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-16",
@@ -1433,7 +2654,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-17",
@@ -1531,7 +2763,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-18",
@@ -1629,7 +2872,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-19",
@@ -1727,7 +2981,18 @@
             "value": "1619 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-2",
@@ -1784,7 +3049,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-20",
@@ -1882,7 +3158,18 @@
             "value": "199354 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-21",
@@ -1980,7 +3267,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-22",
@@ -2078,7 +3376,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-23",
@@ -2176,7 +3485,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-24",
@@ -2246,7 +3566,18 @@
           }
         ],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-25",
@@ -2344,7 +3675,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-26",
@@ -2442,7 +3784,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-27",
@@ -2540,7 +3893,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-28",
@@ -2638,7 +4002,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-29",
@@ -2736,7 +4111,18 @@
             "value": "4 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-3",
@@ -2793,7 +4179,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-30",
@@ -2891,7 +4288,18 @@
             "value": "60 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-31",
@@ -2961,7 +4369,18 @@
           }
         ],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-32",
@@ -3059,7 +4478,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-33",
@@ -3157,7 +4587,18 @@
             "value": "1541 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-34",
@@ -3255,7 +4696,18 @@
             "value": "2 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "PE-4",
@@ -3400,7 +4852,18 @@
             "value": "0 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "ST-1",
@@ -3449,7 +4912,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "ST-2",
@@ -3506,7 +4980,18 @@
         "counts": [],
         "availability": [],
         "priors": []
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     },
     {
       "id": "ST-3",
@@ -3578,7 +5063,18 @@
             "value": "3200 count"
           }
         ]
-      }
+      },
+      "capability": {
+        "products_identifiable": "\u2014",
+        "cap_manufacturer": "\u2014",
+        "cap_product_ident": "\u2014",
+        "cap_cn8_linkage": "\u2014",
+        "cap_depth_tier": "\u2014",
+        "cn8_reachable": "\u2014"
+      },
+      "products_identifiable_num": null,
+      "real_product_source": false,
+      "cap_run": null
     }
   ],
   "anchor_candidates": [
@@ -3795,6 +5291,48 @@
       "finding_count": 1
     },
     {
+      "source_id": "AS-2",
+      "first_retrieved_at": "2026-09-13T22:59:30Z",
+      "last_retrieved_at": "2026-09-13T22:59:30Z",
+      "run_count": 10,
+      "finding_count": 9
+    },
+    {
+      "source_id": "AS-3",
+      "first_retrieved_at": "2026-09-13T22:59:32Z",
+      "last_retrieved_at": "2026-09-13T22:59:32Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "AS-4",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "AS-5",
+      "first_retrieved_at": null,
+      "last_retrieved_at": null,
+      "run_count": 0,
+      "finding_count": 0
+    },
+    {
+      "source_id": "AS-6",
+      "first_retrieved_at": "2026-09-13T22:59:36Z",
+      "last_retrieved_at": "2026-09-13T22:59:36Z",
+      "run_count": 4,
+      "finding_count": 3
+    },
+    {
+      "source_id": "AS-7",
+      "first_retrieved_at": "2026-09-13T22:58:44Z",
+      "last_retrieved_at": "2026-09-13T22:59:38Z",
+      "run_count": 4,
+      "finding_count": 2
+    },
+    {
       "source_id": "CS-1",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
@@ -3805,7 +5343,7 @@
       "source_id": "CS-2",
       "first_retrieved_at": "2026-09-11T03:49:20Z",
       "last_retrieved_at": "2026-09-12T08:33:35Z",
-      "run_count": 14,
+      "run_count": 15,
       "finding_count": 39
     },
     {
@@ -3819,70 +5357,70 @@
       "source_id": "PE-10",
       "first_retrieved_at": "2026-09-12T08:35:44Z",
       "last_retrieved_at": "2026-09-12T08:35:44Z",
-      "run_count": 5,
+      "run_count": 6,
       "finding_count": 5
     },
     {
       "source_id": "PE-11",
       "first_retrieved_at": "2026-09-12T08:36:32Z",
       "last_retrieved_at": "2026-09-12T08:36:32Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-12",
       "first_retrieved_at": "2026-09-12T08:36:36Z",
       "last_retrieved_at": "2026-09-12T08:36:36Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-13",
       "first_retrieved_at": "2026-09-12T08:36:50Z",
       "last_retrieved_at": "2026-09-12T08:36:50Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-14",
       "first_retrieved_at": "2026-09-12T08:36:54Z",
       "last_retrieved_at": "2026-09-12T08:36:54Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-15",
       "first_retrieved_at": "2026-09-12T08:37:08Z",
       "last_retrieved_at": "2026-09-12T08:37:08Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-16",
       "first_retrieved_at": "2026-09-12T08:37:12Z",
       "last_retrieved_at": "2026-09-12T08:37:12Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-17",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-18",
       "first_retrieved_at": "2026-09-12T08:37:33Z",
       "last_retrieved_at": "2026-09-12T08:37:33Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-19",
       "first_retrieved_at": "2026-09-12T08:37:38Z",
       "last_retrieved_at": "2026-09-12T08:37:38Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
@@ -3896,70 +5434,70 @@
       "source_id": "PE-20",
       "first_retrieved_at": "2026-09-12T08:37:53Z",
       "last_retrieved_at": "2026-09-12T08:37:53Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-21",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-22",
       "first_retrieved_at": "2026-09-12T08:38:13Z",
       "last_retrieved_at": "2026-09-12T08:38:13Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-23",
       "first_retrieved_at": "2026-09-12T08:38:32Z",
       "last_retrieved_at": "2026-09-12T08:38:32Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-24",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 1
     },
     {
       "source_id": "PE-25",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-26",
       "first_retrieved_at": "2026-09-12T08:39:09Z",
       "last_retrieved_at": "2026-09-12T08:39:09Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-27",
       "first_retrieved_at": "2026-09-12T08:39:16Z",
       "last_retrieved_at": "2026-09-12T08:39:16Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-28",
       "first_retrieved_at": "2026-09-12T08:39:20Z",
       "last_retrieved_at": "2026-09-12T08:39:20Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-29",
       "first_retrieved_at": "2026-09-12T08:39:34Z",
       "last_retrieved_at": "2026-09-12T08:39:34Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
@@ -3973,35 +5511,35 @@
       "source_id": "PE-30",
       "first_retrieved_at": "2026-09-12T08:39:47Z",
       "last_retrieved_at": "2026-09-12T08:39:47Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-31",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 2
     },
     {
       "source_id": "PE-32",
       "first_retrieved_at": "2026-09-12T08:39:56Z",
       "last_retrieved_at": "2026-09-12T08:39:56Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-33",
       "first_retrieved_at": "2026-09-12T08:40:10Z",
       "last_retrieved_at": "2026-09-12T08:40:10Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
       "source_id": "PE-34",
       "first_retrieved_at": "2026-09-12T08:40:14Z",
       "last_retrieved_at": "2026-09-12T08:40:14Z",
-      "run_count": 4,
+      "run_count": 5,
       "finding_count": 3
     },
     {
@@ -4022,7 +5560,7 @@
       "source_id": "ST-2",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 11,
+      "run_count": 12,
       "finding_count": 0
     },
     {

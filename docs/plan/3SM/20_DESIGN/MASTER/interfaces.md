@@ -26,7 +26,7 @@ disagree, this document wins.
     leadhs source load [--file CSV]
     leadhs source list [--class CS|PE|LG|ST|LI]
      leadhs probe run --source ID | --all
-                      [--mode census|format_check|access_check|recon]
+                      [--mode census|format_check|access_check|recon|capability]
                      [--sample N] [--dry-run]
     leadhs probe record --source ID --metric M
                         [--value X | --value-text T] [--unit U]
@@ -177,6 +177,12 @@ no `rescue StandardError` equivalent).
 | trade_eur_hs3208 | Trade value HS 3208 (import) | numeric | full-year import value sum, EUR (0006, v0.2.0) |
 | trade_kg_hs3209 | Trade mass HS 3209 (import) | numeric | as trade_kg_hs3208 (0006, v0.2.0) |
 | trade_eur_hs3209 | Trade value HS 3209 (import) | numeric | as trade_eur_hs3208 (0006, v0.2.0) |
+| products_identifiable | Products identifiable | numeric | volume the source features, against the product model (0007, v0.2.1) |
+| cap_manufacturer | Capability: manufacturer field | numeric | 0/1 — source exposes a manufacturer/org field (0007, v0.2.1) |
+| cap_product_ident | Capability: product-ident field | numeric | 0/1 — source exposes a product-ident (licence no / UFI / article code / SKU / GTIN) (0007, v0.2.1) |
+| cap_cn8_linkage | Capability: CN8 linkage | text | mechanism to the 13 CN8 codes: category / prodcom / eupcs_proxy / manual / none (0007, v0.2.1) |
+| cap_depth_tier | Capability: depth tier | numeric | 1 name-only · 2 name/ident+technical · 3 deep+internal docs · 4 standardized specs+MSDS (0007, v0.2.1) |
+| cn8_reachable | CN8 codes reachable | numeric | how many of the 13 CN8 codes reachable (0007, v0.2.1) |
 
 Extension rule: new metrics are added by a migration INSERT (code
 never renamed; value_type fixed at insert). `metrics.py` is the
@@ -344,6 +350,28 @@ attempted action — full context, never message-only).
   bridge (md); N2 sums products_registered only (never
   producers_registered); i14 walk-floor sections deferred (spec on
   file); csv/json carry the full structure.
+- i17: capability contract (v0.2.1, cap1/cap2/cap4) — probe_mode
+  `capability` (0007); six capability probe_metrics
+  (products_identifiable, cap_manufacturer, cap_product_ident,
+  cap_cn8_linkage, cap_depth_tier, cn8_reachable); register-
+  capability adapter branch for access_method IN (download, api)
+  official-register sources — fetch → header/shape inspect → row
+  count → capability findings (D3; no scraping); AS is the class of
+  the official product-level registers (branch exposed under AS —
+  new ASAdapter or AS→download-capable mapping, at implementation);
+  XLSX-only / auth-gated registers and the enumerated PE universe
+  characterized by manual `probe record --mode capability` (pure-
+  Python dependency set kept tight, no openpyxl); the real-product-
+  source predicate (cap_manufacturer=1 ∧ cap_product_ident=1 ∧
+  cap_cn8_linkage!='none' ∧ cap_depth_tier>=2) and the preliminary N2
+  numerator are report-time derivations (nu5 precedent), never stored.
+- i18: capability-report contract (v0.2.1, cap3) — od8 extension:
+  capability matrix section (the six metrics + the derived real-
+  product-source flag per registered source); preliminary N2-numerator
+  line (Σ products_identifiable over real-product sources, a floor,
+  with the certified/declared-subset caveat); md explains the
+  predicate in prose; csv/json carry the six columns and the derived
+  predicate + N2-numerator components.
 
 ## OPEN ITEMS
 

@@ -46,7 +46,7 @@ def test_cli_version_0_2_0():
         [sys.executable, "-m", "leadhs.cli", "--version"],
         capture_output=True, text=True, env=env,
     )
-    assert r.returncode == 0 and "0.2.0" in r.stdout
+    assert r.returncode == 0 and "0.2.1" in r.stdout
 
 
 def test_cli_probe_record_and_report(db_path, fixture_register, tmp_path):

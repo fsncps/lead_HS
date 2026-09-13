@@ -1,7 +1,7 @@
 ---
 language: fr
 translation_of: README.md
-source_updated: 2026-09-12
+source_updated: 2026-09-14
 ---
 
 Sprachen / Languages / Langues : [EN](README.md) · [DE](README.de.md) · **FR**
@@ -87,12 +87,12 @@ c'est une étude documentaire qui ne prend pas position sur la
 réglementation elle-même. La Suisse n'intervient dans l'étude que
 comme ce cadre réglementaire — le marché étudié est celui de l'UE.
 
-## Étape actuelle : carte du paysage des données livrée (v0.2.0)
+## Étape actuelle : carte du paysage des données (v0.2.0) + capacité des sources (v0.2.1)
 
 Avant toute collecte de données produit, l'étude cartographie son
 **paysage des données** : quelles sources couvrent le marché de la
 peinture de l'UE, à quelle échelle, et avec quel accès à la
-documentation produit. Cette carte est maintenant établie et les trois
+documentation produit. Cette carte est établie et les trois
 chiffres phares sont documentés. Chaque résultat, y compris les refus
 d'accès, est consigné avec sa cause, et l'audit de provenance de la
 base passe.
@@ -129,6 +129,39 @@ téléchargements, comptage des URL produit dans les sitemaps,
 vérifications manuelles. Les parcours de catalogues et toute collecte
 au niveau produit attendent un feu vert distinct. Les registres
 nordiques restent ouverts (SPIN injoignable lors de cette passe).
+
+### Capacité des sources sondée (v0.2.1, construite le 14.09.2026)
+
+La carte du paysage des données (v0.2.0) a compté les sources ; v0.2.1
+descend d'un niveau pour les **registres officiels** — les
+enregistrements écolabel et EPD qui publient des données produit sur
+les peintures — et caractérise chacun contre le modèle produit de
+l'étude (code CN8, fabricant, identification produit du fabricant),
+selon le volume et la profondeur. Les profils de capacité figurent
+dans le [rapport de reconnaissance](docs/report/probe-report.md)
+(section « Capability profile »).
+
+- Le registre comporte désormais **7 registres officiels** (AS-1–AS-7) :
+  le catalogue Écolabel UE (ECAT), Nordic Swan, Ange Bleu, INIES, IBU
+  et environdec, plus AS-1. Quatre sont actifs ; Ange Bleu et INIES
+  sont inactifs (export XLSX ou accès protégé).
+- La page d'accueil de chaque registre actif est du HTML — les exports
+  sont documentés comme **URL d'export à ancrer** lors du prochain
+  passage, consignés honnêtement plutôt que lus à tort comme un export.
+- **Un registre est confirmé comme source de produits réels :** le
+  **catalogue Écolabel UE (ECAT)** — il expose un champ fabricant, un
+  champ d'identification produit (GTIN/EAN), un mécanisme de liaison
+  CN8 (catégorie) et une profondeur de données 2 ; son export CSV est
+  téléchargeable.
+- **Numérateur N2 préliminaire (registres officiels, plancher) : 17.838**
+  peintures & vernis et revêtements de performance de l'ECAT (16.001 +
+  1.817 produits selon les critères 2014 et 2025, plus 20 revêtements
+  de performance). Il s'agit d'un **sous-ensemble certifié/déclaré** du
+  marché — un plancher, jamais un total de marché, et les données
+  produit attendent toujours le feu vert de collecte.
+- Les autres registres actifs ne sont pas encore des sources de
+  produits réels : environdec expose un fabricant mais pas
+  d'identification produit ; Nordic Swan et IBU sont à ancrer.
 
 ## Ce que les recherches antérieures montrent
 
@@ -173,7 +206,7 @@ conception technique revue dans
 
 | Phase | Contenu |
 |---|---|
-| 0 — en cours | Cartographier le paysage des données ; les trois chiffres N1/N2/N3 |
+| 0 — en cours | Cartographier le paysage des données ; les trois chiffres N1/N2/N3 ; sonder la capacité des registres officiels |
 | 1 | Pilote : figer le dictionnaire du plomb ; collecte et analyse des FDS sur un premier échantillon |
 | 2 | Base d'échantillonnage et tirage ; collecte de documentation à pleine échelle ; annexe couleurs d'artistes (3213), selon la capacité |
 | 3 | Recoupement inter-documents et assurance qualité |
@@ -191,7 +224,7 @@ conception technique revue dans
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3 et v0.2.0 construites) — suivi des phases, critères de sortie |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0 et v0.2.1 construites) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -220,12 +253,12 @@ conception technique revue dans
 
 ## État
 
-Les unités outil v0.1.1–v0.2.0 sont construites et testées (205 tests
+Les unités outil v0.1.1–v0.2.1 sont construites et testées (231 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente
-d'un feu vert de collecte), et carte du paysage des données avec les
-trois chiffres phares. La passe de reconnaissance a tourné le
-12 septembre 2026 ; le rapport est publié sous `docs/report/`. La
-méthodologie reste ouverte à révision à mesure que les résultats
-arrivent.
+d'un feu vert de collecte), carte du paysage des données avec les
+trois chiffres phares, et sondage de capacité des registres officiels.
+La passe de reconnaissance a tourné le 12 septembre 2026 ; le rapport
+est publié sous `docs/report/`. La méthodologie reste ouverte à
+révision à mesure que les résultats arrivent.

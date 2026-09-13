@@ -1,7 +1,7 @@
 ---
 language: de
 translation_of: README.md
-source_updated: 2026-09-12
+source_updated: 2026-09-14
 ---
 
 Sprachen / Languages / Langues: [EN](README.md) · **DE** · [FR](README.fr.md)
@@ -84,12 +84,12 @@ Dokumentstudie und bezieht keine Position zur Regelung selbst. Die
 Schweiz kommt in der Studie nur als dieser regulatorische Rahmen vor —
 untersuchter Markt ist der EU-Markt.
 
-## Aktueller Stand: Datenlandschaft-Karte geliefert (v0.2.0)
+## Aktueller Stand: Datenlandschaft-Karte (v0.2.0) + Quellenfähigkeit (v0.2.1)
 
 Bevor irgendwelche Produktdaten gesammelt werden, kartiert die Studie
 ihre **Datenlandschaft**: welche Quellen den EU-Farbenmarkt abdecken,
 in welcher Grössenordnung, und mit welchem Zugang zur
-Produktdokumentation. Diese Karte ist nun gebaut und die drei
+Produktdokumentation. Diese Karte ist gebaut und die drei
 Leitgrössen sind dokumentiert. Jedes Ergebnis, inklusive
 Zugangsverweigerungen, ist mit seiner Ursache protokolliert, und die
 Provenienzprüfung der Datenbank besteht.
@@ -126,7 +126,39 @@ Downloads, Zählung der Produkt-URLs in Sitemaps, manuelle Prüfungen.
 Katalogdurchläufe und jede Sammlung auf Produktebene warten auf eine
 separate Freigabe. Die nordischen Register bleiben offen (SPIN in
 dieser Runde nicht erreichbar).
-kommen neben die amtlichen Statistiken.
+
+### Quellenfähigkeit sondiert (v0.2.1, gebaut am 14.09.2026)
+
+Die Datenlandschaft-Karte (v0.2.0) hat die Quellen gezählt; v0.2.1
+geht bei den **amtlichen Registern** eine Ebene tiefer — die
+Ökolabel- und EPD-Registrierungen, die Produktdaten zu Farben
+veröffentlichen — und charakterisiert jede davon gegen das
+Produktmodell der Studie (CN8-Code, Hersteller, Hersteller-
+Produktidentifikation), nach Umfang und Tiefe. Die
+Fähigkeitsprofile stehen im
+[Sondierungsbericht](docs/report/probe-report.md) (Abschnitt
+«Capability profile»).
+
+- Das Register umfasst nun **7 amtliche Register** (AS-1–AS-7): das
+  EU-Ecolabel-Katalog (ECAT), Nordic Swan, Blauer Engel, INIES, IBU
+  und environdec sowie AS-1. Vier sind aktiv; Blauer Engel und INIES
+  sind inaktiv (nur XLSX bzw. zugangsgeschützt).
+- Die Landingpage jedes aktiven Registers ist HTML — die Exporte sind
+  als **Export-URL zu verankern** für den nächsten Durchlauf
+  dokumentiert, ehrlich protokolliert statt als Export fehlgelesen.
+- **Ein Register ist als real-Produktquelle bestätigt:** das
+  **EU-Ecolabel-Katalog (ECAT)** — es weist ein Herstellerfeld, ein
+  Produktidentifikationsfeld (GTIN/EAN), einen CN8-Verweis (Kategorie)
+  und Datentiefe 2 auf; sein CSV-Export ist herunterladbar.
+- **Vorläufiger N2-Zähler (amtliche Register, Untergrenze): 17.838**
+  Farben & Lacke sowie Performance-Beschichtungen aus dem ECAT
+  (16.001 + 1.817 Produkte nach den Kriterien 2014 und 2025, plus 20
+  Performance-Beschichtungen). Das ist eine **zertifizierte/
+  deklarierte Teilmenge** des Marktes — eine Untergrenze, nie eine
+  Marktzahl, und Produktdaten warten weiterhin auf die Sammel-Freigabe.
+- Die übrigen aktiven Register sind noch keine real-Produktquellen:
+  environdec weist einen Hersteller, aber keine Produktidentifikation
+  aus; Nordic Swan und IBU sind Export-zu-verankern.
 
 ## Was frühere Recherchen zeigen
 
@@ -171,7 +203,7 @@ begutachtete technische Design in
 
 | Phase | Inhalt |
 |---|---|
-| 0 — aktuell | Datenlandschaft kartieren; die drei Leitgrössen N1/N2/N3 |
+| 0 — aktuell | Datenlandschaft kartieren; die drei Leitgrössen N1/N2/N3; Fähigkeit der amtlichen Register sondieren |
 | 1 | Pilot: Blei-Verzeichnis einfrieren; SDB-Sammlung und -Auswertung an einer ersten Stichprobe |
 | 2 | Auswahlrahmen und Stichprobe; Dokumentensammlung im vollen Umfang; Künstlerfarben-Anhang (3213), nach verfügbarer Kapazität |
 | 3 | Dokumentenübergreifender Abgleich und Qualitätssicherung |
@@ -189,7 +221,7 @@ begutachtete technische Design in
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3 und v0.2.0 gebaut) — Phasenverfolgung, Abnahme-Gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0 und v0.2.1 gebaut) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -218,11 +250,12 @@ begutachtete technische Design in
 
 ## Status
 
-Die Werkzeug-Einheiten v0.1.1–v0.2.0 sind gebaut und getestet (205
+Die Werkzeug-Einheiten v0.1.1–v0.2.1 sind gebaut und getestet (231
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
 Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
-Katalogdurchläufe (wartet auf eine Sammel-Freigabe) sowie die
-Datenlandschaft-Karte mit den drei Leitgrössen. Die Sondierungsrunde
+Katalogdurchläufe (wartet auf eine Sammel-Freigabe), die
+Datenlandschaft-Karte mit den drei Leitgrössen sowie die
+Quellenfähigkeits-Sondierung der amtlichen Register. Die Sondierungsrunde
 lief am 12. September 2026; der Bericht ist unter `docs/report/`
 veröffentlicht. Die Methodik bleibt offen für Revision, während
 Ergebnisse eintreffen.

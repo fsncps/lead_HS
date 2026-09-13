@@ -214,6 +214,17 @@ count grows. Split on pain, not before (minimal-diff preference).
   `leadhs probe record` (method=manual), like any probe finding;
   census deferrals and manual export mechanics use the census_status
   metric (od9; works on inactive sources).
+- **AS (v0.2.1, capability):** the official product-level registers
+  and association member lists. Sources exposing a data export
+  (access_method IN download/api) — EU Ecolabel ECAT CSV, Nordic Swan
+  CSV, PRODCOM/stat APIs — ride the register-capability branch:
+  fetch the export, inspect the header/shape (manufacturer /
+  product-ident / nomenclature columns), count rows, emit capability
+  findings (i17). Sources that are XLSX-only or auth-gated (Blue
+  Angel, INIES) ship active=0 and are characterized by manual
+  `probe record --mode capability`. Dispatch: AS currently maps to no
+  adapter (CS/PE/ST only) — a new ASAdapter or an AS→download-capable
+  mapping is the v0.2.1 implementation decision (cap5).
 - **LG**: not probed (Strategy — legal-text verification is a manual
   document workstream; register rows stay inactive and never reach
   reports — MASTER D27).
@@ -431,6 +442,16 @@ Test strategy, matrix and key tests: testing.md.
   `recon` chain targets tolerates exactly exit 2 (`|| test $$? -eq
   2`; findings persisted on expected blocks); other failures abort
   the chain (e1; operator layer).
+- a23: register-capability branch — probe_mode `capability`; for
+  official-register sources exposing a data export, fetch → header/
+  shape inspect → row count → capability findings (D3; no scraping);
+  AS is the class of the official product-level registers (branch
+  exposed under AS — new ASAdapter or AS→download-capable mapping);
+  XLSX/auth-gated registers and the enumerated PE universe by manual
+  record (i17; v0.2.1).
+- a24: capability report — od8 extension: capability matrix + derived
+  real-product-source predicate + preliminary N2-numerator line
+  (report-time derivations, nu5 precedent; i18; v0.2.1).
 
 ## OPEN ITEMS
 

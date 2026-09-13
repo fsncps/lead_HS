@@ -106,3 +106,32 @@ def test_chain_exit_2_tolerance_idiom():
     recon_block = makefile.split("\nrecon:")[1].split("test:")[0]
     assert tolerance in census_block
     assert tolerance in recon_block
+
+
+# --- v0.2.1: capability targets + MODE pass-through ------------------------
+
+
+def test_guard_probe_capability_blocks_without_go():
+    r = _make("probe-capability")
+    assert r.returncode != 0
+    assert "set GO=1" in r.stderr
+
+
+def test_capability_chain_dry_run():
+    r = _make("-n", "capability", env_extra={"GO": "1"})
+    assert r.returncode == 0
+    assert "probe run --all --mode capability" in r.stdout
+
+
+def test_capability_chain_exit_2_tolerance():
+    import pathlib
+
+    makefile = (REPO / "Makefile").read_text(encoding="utf-8")
+    capability_block = makefile.split("\ncapability:")[1].split("test:")[0]
+    assert "|| test $$? -eq 2" in capability_block
+
+
+def test_probe_single_mode_capability_passthrough():
+    r = _make("-n", "probe-single", env_extra={"SOURCE": "AS-1", "MODE": "capability"})
+    assert r.returncode == 0
+    assert "--mode capability" in r.stdout

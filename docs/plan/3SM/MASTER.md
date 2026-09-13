@@ -2,7 +2,7 @@
 unit: v0.2.0
 stage: IMPLEMENTATION
 lifecycle: LIVE
-updated: 2026-09-12
+updated: 2026-09-13
 ---
 # lead_HS — MASTER
 
@@ -26,18 +26,29 @@ works purely from documents — chiefly safety data sheets (SDS) and
 statistics — with no laboratory and at minimal cost. The outcome is
 documented market numbers for the surrounding decision-making plus a
 reusable database of checked products. This file is the project
-dashboard. Current stage: **v0.2.0 — market scale & data
-availability** (the D31 strategy turn, `v0.2.md`: numbers-first
-N1 market size, N2 access coverage, N3 detailed-data reachability;
-reconnaissance-only, EU-only; strategy DRAFT — freeze untouched).
-**Built 2026-09-12:** all seven phases done, offline suite green
-(205 passed), probe report published under `docs/report/probe-report.md`.
-Headline results: N1 anchors (2024 EU extra-EU imports — HS 3208
-≈2.5 Mt / ≈€12.2 bn, HS 3209 ≈2.1 Mt / ≈€6.2 bn; CEPE ≈800 members;
-SBS NACE 20.30 = 3,200 enterprises 2020); N2 = 204,693 sitemap-visible
-product URLs across 23 counted sources; N3 = 9 sites with a visible
-SDS library (site count). Recon status: 22 sites done, PE-31 blocked,
-PE-24 failed, ST-2 (SPIN) unreachable; ST-3/AS-1 priors recorded.
+dashboard. Current stage: **v0.2.1 — source-level capability
+sounding-out** (the D33 expansion, `10_STRATEGY/v0.2.1.md`: expand the
+source register to the official ecolabel/EPD registers and characterize
+each source against the product model — CN8, manufacturer,
+manufacturer product-ident — volume and depth; reconnaissance-only;
+strategy DRAFT — freeze untouched). **Built 2026-09-14:** all six
+phases done, offline suite green (231 passed), capability report
+published under `docs/report/probe-report.md`. Headline: the
+preliminary N2 numerator (official registers, floor) = **17.838** —
+EU Ecolabel ECAT paints & varnishes + performance coatings (a
+certified subset, a floor, never a market total); ECAT confirmed a
+real-product source (manufacturer + GTIN/EAN, depth tier 2); the other
+registers (Nordic Swan, Blue Angel, INIES, IBU, environdec) recorded
+as export-to-anchor / not-real-product-source. Prior v0.2.0 headline:
+N1 anchors (2024 EU extra-EU imports — HS 3208 ≈2.5 Mt / ≈€12.2 bn, HS
+3209 ≈2.1 Mt / ≈€6.2 bn; CEPE ≈800 members; SBS NACE 20.30 = 3,200
+enterprises 2020); N2 = 204,693 sitemap-visible product URLs across 23
+counted sources; N3 = 9 sites with a visible SDS library.
+**Next planning unit (v0.3, DRAFT):** official-source product
+identification / product-DB seeding — build on the v0.2.1 capability
+profiles to seed the study's product evidence DB from the real-product
+sources (ECAT first), then PE-catalogue scraping and the full list +
+coverage.
 Unit v0.1.1 built (probe CLI gate-verified; census feasibility pass
 executed 2026-09-11); unit v0.1.2 — operator layer + census close-out
 (D26) — **built 2026-09-11** (PHASE01–06 done; 155 offline tests
@@ -68,6 +79,7 @@ no paid data sources, minimal cost.
 | v0.1.2 (operator layer + census close-out) | IMPLEMENTATION | built 2026-09-11 (PHASE01–06; rescoped to second-pass od8–od10; 155 tests offline); PHASE07 census execution transferred to v0.1.3 PHASE02 (B8/D26) |
 | v0.1.3 (data-landscape map) | IMPLEMENTATION | strategy converged 2026-09-12 on D30 (three-number deliverable); design + PHASE01–07 written (CEO HOLD + ENG SMALL CHANGE 2026-09-12); PHASE01 (D28 rework) built 2026-09-12 — 165 offline tests, audit clean; **D31: walk execution supersedes into v0.2.0 (machinery idles); pe1/pe2/pe6 groundwork + docs transfer to v0.2.0** |
 | v0.2.0 (market scale & data availability — the numbers unit) | IMPLEMENTATION | the D31 strategy turn (`v0.2.md`, DRAFT): N1 estimate, N2/N3 access tiers, AS-class discovery, EU-only, no-scrape recon. Design converged 2026-09-12 (nu1–nu9; CEO HOLD SCOPE; decision 1A); implementation plans drafted + ENG-reviewed 2026-09-12 (BIG CHANGE; e1–e8 folded); **built 2026-09-12** — PHASE01–07 done, 205 offline tests, probe report published (N1 anchors / N2=204,693 / N3=9 sites), audit clean |
+| v0.2.1 (source-level sounding-out of the expanded universe) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor; strategy `v0.2.1.md` stays DRAFT) |
 
 ## Documents
 

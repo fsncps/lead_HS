@@ -60,7 +60,7 @@ without scraping · **(d)** blocked/unknown.
 | a | dataset/register access counted | — | 0 |
 | b | sitemap-visible counted | PE-10, PE-11, PE-12, PE-13, PE-14, PE-15, PE-16, PE-17, PE-18, PE-19, PE-20, PE-21, PE-22, PE-23, PE-25, PE-26, PE-27, PE-28, PE-29, PE-30, PE-32, PE-33, PE-34 | 23 |
 | c | visible, uncounted without scraping | CS-2, PE-24, PE-31 | 3 |
-| d | blocked/unknown | ST-2 | 1 |
+| d | blocked/unknown | AS-2, AS-3, AS-6, AS-7, ST-2 | 5 |
 
 
 **N2 (Σ tier a+b counts): 204693** across
@@ -135,6 +135,12 @@ context — tariff-line flows, not products.
 | source | class | active | tier | status | sitemap | sds lib | products reg. | producers reg. | kg 3208 | EUR 3208 | kg 3209 | EUR 3209 | products | doc links | walk budget | catalog | category | page ok | sds ok | hs3208 | hs3209 | hs3213 | export rows | census status | last run |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | AS-1 | AS | 0 | — | done | — | — | — | 800 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-as1manual |
+| AS-2 | AS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-3 | AS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-4 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-5 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-6 | AS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-7 | AS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | CS-1 | CS | 0 | — | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-cs1-3 |
 | CS-2 | CS | 1 | c | done | — | — | — | — | 2471311314 kg | 12211227434 eur | 2099166223.9999998 kg | 6221811666 eur | — | — | — | — | — | — | — | 278 count | 264 count | 228 count | 1 count | — | probe-20260912-cs2-10 |
 | PE-1 | PE | 0 | — | done | — | — | — | — | — | — | — | — | 0 count | 0 count | 0 | — | — | — | — | — | — | — | — | — | probe-20260912-pe1-3 |
@@ -169,6 +175,64 @@ context — tariff-line flows, not products.
 | ST-1 | ST | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | ST-2 | ST | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-st2-7 |
 | ST-3 | ST | 0 | — | done | — | — | — | 3200 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-st3manual |
+
+
+## Capability profile
+
+Per registered source, the source-level capability sounding-out (v0.2.1):
+is an entry actually a real product per the study's model — (CN8 code,
+manufacturer, manufacturer product-ident) — and at what volume and
+depth? A source is a **real product source** when it exposes a
+manufacturer field, a product-ident field, a non-`none` CN8-linkage
+mechanism, and data depth >= 2. `—` = capability metric not recorded.
+
+Preliminary N2 numerator (official registers, floor): sum of products_identifiable over the real-product sources below. Official registers are certified/declared subsets of the market, never a market total — a floor, cited to the run it comes from.
+
+**N2 numerator (official registers, floor):** 17838 over 1 real-product source(s).
+
+| source | class | active | run_key | status | identifiable | mfr | product-ident | cn8-linkage | depth | cn8-reachable | real product source |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| AS-1 | AS | 0 | — | — | — | — | — | — | — | — | no |
+| AS-2 | AS | 1 | probe-20260913-as2manual-6 | done | 17838 count | 1 | 1 | category | 2 | 0 count | yes |
+| AS-3 | AS | 1 | probe-20260913-as3-4 | done | — | — | — | manual | — | — | no |
+| AS-4 | AS | 0 | — | — | — | — | — | — | — | — | no |
+| AS-5 | AS | 0 | — | — | — | — | — | — | — | — | no |
+| AS-6 | AS | 1 | probe-20260913-as6-4 | done | — | — | — | manual | — | — | no |
+| AS-7 | AS | 1 | probe-20260913-as7-4 | done | — | — | — | manual | — | — | no |
+| CS-1 | CS | 0 | — | — | — | — | — | — | — | — | no |
+| CS-2 | CS | 1 | — | — | — | — | — | — | — | — | no |
+| PE-1 | PE | 0 | — | — | — | — | — | — | — | — | no |
+| PE-10 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-11 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-12 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-13 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-14 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-15 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-16 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-17 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-18 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-19 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-2 | PE | 0 | — | — | — | — | — | — | — | — | no |
+| PE-20 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-21 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-22 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-23 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-24 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-25 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-26 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-27 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-28 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-29 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-3 | PE | 0 | — | — | — | — | — | — | — | — | no |
+| PE-30 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-31 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-32 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-33 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-34 | PE | 1 | — | — | — | — | — | — | — | — | no |
+| PE-4 | PE | 0 | — | — | — | — | — | — | — | — | no |
+| ST-1 | ST | 0 | — | — | — | — | — | — | — | — | no |
+| ST-2 | ST | 1 | — | — | — | — | — | — | — | — | no |
+| ST-3 | ST | 0 | — | — | — | — | — | — | — | — | no |
 
 
 ## Execution log (latest census/recon run per source)
@@ -225,6 +289,54 @@ context — tariff-line flows, not products.
 - priors: producers_registered=800 [probe-20260912-as1manual]
 - register note: producers_registered via manual record (member counts / national-association list); URL verified live 2026-09-12; candidate-row semantics nu3
 - latest run: probe-20260912-as1manual (done)
+
+### AS-2 — EU Ecolabel Product Catalogue (ECAT)
+
+- identity: class AS · active yes · tier d · verification verified · https://data.europa.eu/data/datasets/eu-ecolabel-products
+- access: robots — · terms — · rate limit — · free access —
+- content: format HTML landing page — not a CSV/JSON export; export mechanics to confirm · granularity — · coverage — · languages —
+- counts:
+- register note: certified subset (non-exhaustive, licence holders register products); paints & varnishes group 044; CSV download + API (D3 official export); host data.europa.eu distinct from CS-2
+
+### AS-3 — Nordic Swan Ecolabel product database
+
+- identity: class AS · active yes · tier d · verification verified · https://www.svanen.se/en/search-for-ecolabelled-products-and-services/
+- access: robots — · terms — · rate limit — · free access —
+- content: format HTML landing page — not a CSV/JSON export; export mechanics to confirm · granularity — · coverage — · languages —
+- counts:
+- register note: paints & varnishes criterion 096; CSV/Excel export visible; host svanen.se distinct
+
+### AS-4 — Blue Angel (Blauer Engel)
+
+- identity: class AS · active no · tier — · verification partially_verified · https://www.blauer-engel.de/en/products
+- access: robots — · terms — · rate limit — · free access —
+- content: format — · granularity — · coverage — · languages —
+- counts:
+- register note: XLSX export; no openpyxl (pure-Python set) — characterize via probe record --mode capability
+
+### AS-5 — INIES (French EPD register)
+
+- identity: class AS · active no · tier — · verification partially_verified · https://www.inies.fr/
+- access: robots — · terms — · rate limit — · free access —
+- content: format — · granularity — · coverage — · languages —
+- counts:
+- register note: auth-gated; confirm whether web search suffices or document-blocked (strategy OPEN)
+
+### AS-6 — IBU (Institut Bauen und Umwelt EPD)
+
+- identity: class AS · active yes · tier d · verification partially_verified · https://ibu-epd.com/en/
+- access: robots — · terms — · rate limit — · free access —
+- content: format HTML landing page — not a CSV/JSON export; export mechanics to confirm · granularity — · coverage — · languages —
+- counts:
+- register note: published EPD declarations; EPD file downloads; shape to confirm at capability run
+
+### AS-7 — environdec (International EPD System)
+
+- identity: class AS · active yes · tier d · verification partially_verified · https://environdec.com/library
+- access: robots — · terms — · rate limit — · free access —
+- content: format HTML landing page — not a CSV/JSON export; export mechanics to confirm · granularity — · coverage — · languages —
+- counts:
+- register note: published EPDs; library with downloads; shape to confirm at capability run
 
 ### CS-1 — swiss-impex (EZV)
 

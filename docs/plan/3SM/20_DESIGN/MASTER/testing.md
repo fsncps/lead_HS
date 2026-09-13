@@ -229,9 +229,21 @@ v_probe_latest unchanged by the aborted run.
   nested-index child (noted, not recursed), JSON-stat value-as-
   object fixture with partner decode (sums + tops from one
   payload), year step-back (empty → previous; 3 empties → blocked
-  note), CS-2 dry-run plans aggregation URLs, fetch `max_bytes`
+  note),   CS-2 dry-run plans aggregation URLs, fetch `max_bytes`
   cap tests (uncapped default unchanged), `probe record --mode`
   label, chain exit-2 tolerance idiom in census/recon recipes.
+- t11: v0.2.1 — migration 0007 (capability mode + 6 capability
+  metrics seeded, sync test green through 0007), register-capability
+  adapter paths (CSV/API: header/shape inspect + row count →
+  products_identifiable + capability findings; manufacturer-but-no-
+  product-ident → cap_manufacturer=1/cap_product_ident=0;
+  no-nomenclature-column → cap_cn8_linkage='manual'/cn8_reachable=0;
+  malformed/empty export → UnexpectedFormat → format finding, run
+  done; zero-call dry-run invariant; auth-gated 403 → blocked),
+  report capability tests (predicate derivation, N2-numerator sum over
+  real-product sources only, inactive out of sum, certified-subset
+  caveat line, csv/json gains), make `capability` guard + MODE
+  pass-through, interrupt mid-capability-run persistence (v0.2.1).
 
 ## OPEN ITEMS
 

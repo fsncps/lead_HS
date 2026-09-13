@@ -6,7 +6,7 @@ from leadhs.metrics import PROBE_METRIC_SEEDS
 
 
 def test_metric_vocabulary_size():
-    assert len(PROBE_METRIC_SEEDS) == 32  # 17 (0001) + 4 (0003, od10) + 3 (0004, D28) + 1 (0005) + 7 (0006)
+    assert len(PROBE_METRIC_SEEDS) == 38  # 17 (0001) + 4 (0003, od10) + 3 (0004, D28) + 1 (0005) + 7 (0006) + 6 (0007)
 
 
 def test_migration_seeds_match_metrics(conn):

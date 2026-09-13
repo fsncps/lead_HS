@@ -386,3 +386,61 @@ upgraded to 0.2.0.
 
 Docs and report are committed and pushed with the tool changes; the
 strategy `v0.2.md` stays DRAFT (freeze untouched).
+
+## 2026-09-14 — v0.2.1 built (source-level capability sounding-out)
+
+Explicit user go to implement 0.2.1 (the D33 source-level expansion) and
+run the live sweep. All six phases executed; offline suite green (231
+passed, 2 deselected, up from 205); wheel builds at 0.2.1; leadhs
+upgraded to 0.2.1.
+
+- **PHASE01 (migration):** `0007__capability.sql` — probe_mode
+  `capability` + six capability probe_metrics
+  (products_identifiable, cap_manufacturer, cap_product_ident,
+  cap_cn8_linkage, cap_depth_tier, cn8_reachable); metrics.py seeds;
+  sync test 0001+0003+0004+0005+0006+0007.
+- **PHASE02 (code delta):** `ASAdapter` (matches class_code 'AS',
+  no-ops for non-`capability` modes — C1; CSV/JSON shape-inspect via a
+  reused `_inspect_register`; HTML landing pages are recorded as a
+  format finding, never mis-parsed as an export); capability mode on
+  the CLI choice list; `make probe-capability`/`capability` (GO=1
+  guards, expected-exit-2 tolerance, MODE pass-through); `run_all`
+  sweeps AS sources only in capability mode; version 0.2.1; t11
+  adapter/makefile tests.
+- **PHASE03 (register expansion):** sources.csv gains AS-2..AS-7
+  (EU Ecolabel ECAT on data.europa.eu — the duplicate-active-host
+  constraint resolved by the distinct host; Nordic Swan; Blue Angel
+  active=0 XLSX; INIES active=0 auth-gated; IBU; environdec). 40
+  rows loaded; probe-dry plans every active row; audit clean.
+- **PHASE04 (capability execution, GO=1):** automated sweep of the
+  four active AS registers — each honestly recorded "HTML landing
+  page — not a machine-readable export; export URL to anchor". The
+  EU Ecolabel ECAT CSV export (88.920 products, semicolon dialect) is
+  a manual case (cap2): a manual capability record documented the
+  real profile — manufacturer + GTIN/EAN product-ident, depth tier 2,
+  category CN8-linkage, **17.838 paints & varnishes + performance
+  coatings** → ECAT is a real-product source. environdec exposes
+  manufacturer but no product-ident (not a real-product source).
+- **PHASE05 (report):** od8 extension — capability matrix section
+  (six metrics + derived real-product-source flag per source), the
+  preliminary N2-numerator line ("official registers, floor",
+  certified-subset caveat — a separate derived line, never folded
+  into the existing N2 tiers, A2); the capability matrix fetches its
+  own latest-`capability` run (A1); one `CAPABILITY_METRICS` tuple
+  (C2) and one `_is_real_product_source` predicate (C3); csv widens
+  the per-source matrix with the six columns + predicate flag; json
+  carries the full structure. Published
+  `docs/report/probe-report.{md,csv,json}`; audit exit 0. Goldens
+  regenerated with review.
+- **PHASE06 (docs & close-out):** management summary DE/FR (capability
+  findings — ECAT 17.838 real-product source, preliminary N2
+  numerator; other registers export-to-anchor), project status
+  brought to v0.2.1 (231 tests, five build stages), unit MASTER phase
+  table → done, this LOG entry.
+
+Real-data outcome: the preliminary N2 numerator (official registers,
+floor) = **17.838** (EU Ecolabel ECAT, certified subset — a floor,
+never a market total). The other registers' CSV/API endpoints remain
+to be anchored at the next pass (documented, not asserted). Nothing
+frozen; the strategy `v0.2.1.md` stays DRAFT. Commits pending at time
+of writing.

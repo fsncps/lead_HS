@@ -72,12 +72,12 @@ documentation study and takes no position on the regulation itself.
 Switzerland enters the study only as this regulatory frame — the
 market under study is the EU's.
 
-## Current stage: data-landscape map delivered (v0.2.0)
+## Current stage: data-landscape map (v0.2.0) + source capability (v0.2.1)
 
 Before any product data is collected, the study maps its **data
 landscape**: which sources cover the EU paints market, at what scale,
-and with what access to product documentation. That map is now built
-and the three headline numbers are documented. Every result, including
+and with what access to product documentation. That map is built and
+the three headline numbers are documented. Every result, including
 access refusals, is recorded with its cause, and the database's
 provenance audit passes.
 
@@ -110,6 +110,37 @@ conditions, availability of APIs or downloads, product-URL counts from
 sitemaps, manual checks. Catalogue walks and any product-level
 collection await a separate go-ahead. The Norde registers remain
 open (SPIN unreachable this round).
+
+### Source capability probed (v0.2.1, built 2026-09-14)
+
+The data-landscape map (v0.2.0) counted the sources; v0.2.1 goes one
+level deeper on the **official registers** — the ecolabel and EPD
+registries that publish product-level paint data — and characterises
+each against the study's product model (CN8 code, manufacturer,
+manufacturer product-ident), at what volume and depth. The capability
+profiles are in the [probe report](docs/report/probe-report.md)
+(Capability profile section).
+
+- The register now holds **7 official registers** (AS-1–AS-7): the EU
+  Ecolabel catalogue (ECAT), Nordic Swan, Blue Angel, INIES, IBU and
+  environdec, plus AS-1. Four are active; Blue Angel and INIES are
+  inactive (XLSX-only or auth-gated exports).
+- Each active register's landing page is HTML — the exports are
+  documented as **export URL to anchor** at the next pass, recorded
+  honestly rather than mis-read as an export.
+- **One register is confirmed a real-product source:** the **EU
+  Ecolabel catalogue (ECAT)** — it exposes a manufacturer field, a
+  product-ident field (GTIN/EAN), a CN8-linkage mechanism (category)
+  and data depth 2; its CSV export is downloadable.
+- **Preliminary N2 numerator (official registers, floor): 17,838**
+  paints & varnishes + performance coatings from ECAT (16,001 + 1,817
+  products under the 2014 and 2025 criteria, plus 20 performance
+  coatings). This is a **certified/declared subset** of the market — a
+  floor, never a market total, and product data still awaits the
+  collection go-ahead.
+- The other active registers are not yet real-product sources:
+  environdec exposes a manufacturer but no product-ident; Nordic Swan
+  and IBU are export-to-anchor.
 
 ## What earlier research shows
 
@@ -152,7 +183,7 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
 | Phase | Content |
 |---|---|
-| 0 — current | Map the data landscape; the three numbers N1/N2/N3 |
+| 0 — current | Map the data landscape; the three numbers N1/N2/N3; probe the official registers' capability |
 | 1 | Pilot: freeze the lead dictionary; SDS collection and parsing on a first sample |
 | 2 | Frame and sample build; documentation collection at full scale; artists' colours annex (3213), capacity permitting |
 | 3 | Cross-document corroboration and quality assurance |
@@ -170,7 +201,7 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3 and v0.2.0 built) — phase tracking, exit gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0 and v0.2.1 built) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -195,10 +226,11 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
 ## Status
 
-Tool units v0.1.1–v0.2.0 are built and tested (205 automated offline
+Tool units v0.1.1–v0.2.1 are built and tested (231 automated offline
 tests): evidence database, source register, source probing,
 per-source feasibility reports, counting machinery for catalogue walks
-(idle until a collection go-ahead), and the data-landscape map with the
-three headline numbers. The probe round ran on 2026-09-12; the report
-is published under `docs/report/`. The methodology stays open to
+(idle until a collection go-ahead), the data-landscape map with the
+three headline numbers, and the source-level capability sounding-out
+of the official registers. The probe round ran on 2026-09-12; the
+report is published under `docs/report/`. The methodology stays open to
 revision as results come in.

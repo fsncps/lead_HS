@@ -113,6 +113,60 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/csv")
             self.end_headers()
             self.wfile.write(body)
+        elif p == "/reg.csv":
+            # v0.2.1 capability fixture: register with manufacturer,
+            # product-ident and CN8 nomenclature columns.
+            body = (
+                b"product_name,manufacturer,licence_no,cn_code\n"
+                b"Paint A,Acme GmbH,DE-1234,32089000\n"
+                b"Paint B,Acme GmbH,DE-5678,32089000\n"
+                b"Paint C,Beier AG,DE-9999,32091000\n"
+            )
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/reg-manufacturer.csv":
+            # manufacturer + CN8, but no product-ident column
+            body = (
+                b"product_name,manufacturer,cn_code\n"
+                b"Paint A,Acme GmbH,32089000\n"
+                b"Paint B,Acme GmbH,32091000\n"
+            )
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/reg-no-nomenclature.csv":
+            # manufacturer + product-ident, but no CN8/nomenclature column
+            body = (
+                b"product_name,manufacturer,licence_no\n"
+                b"Paint A,Acme GmbH,DE-1234\n"
+                b"Paint B,Beier AG,DE-5678\n"
+            )
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/reg-empty.csv":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(b"")
+        elif p == "/reg-bad.csv":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(b"product_name\n")
+        elif p == "/reg.json":
+            body = json.dumps([
+                {"name": "Paint A", "manufacturer": "Acme GmbH", "licence_no": "DE-1234", "cn_code": "32089000"},
+                {"name": "Paint B", "manufacturer": "Acme GmbH", "licence_no": "DE-5678", "cn_code": "32091000"},
+            ]).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(body)
         elif p == "/export-bad.csv":
             body = b"a,b,c\n1,2,3\n"
             self.send_response(200)
@@ -340,6 +394,7 @@ def fixture_register(tmp_path, site):
         f"CX-4,CS,Fixture 500,{h(13)}/error500,api,,open,1,network fail",
         f"SX-1,ST,Fixture spin,{h(14)}/spin,download,,open,1,mdbtools",
         f"ST-1,ST,PCN stats,{h(15)}/missing,manual,,open,0,manual-web via probe record",
+        f"AX-1,AS,Fixture register,{h(16)}/reg.csv,download,,open,1,capability fixture (mfr+ident+cn8)",
     ]
     path.write_text("\n".join(rows) + "\n", encoding="utf-8")
     return str(path)

@@ -50,6 +50,12 @@ METRIC_TRADE_KG_HS3208 = "trade_kg_hs3208"
 METRIC_TRADE_EUR_HS3208 = "trade_eur_hs3208"
 METRIC_TRADE_KG_HS3209 = "trade_kg_hs3209"
 METRIC_TRADE_EUR_HS3209 = "trade_eur_hs3209"
+METRIC_PRODUCTS_IDENTIFIABLE = "products_identifiable"
+METRIC_CAP_MANUFACTURER = "cap_manufacturer"
+METRIC_CAP_PRODUCT_IDENT = "cap_product_ident"
+METRIC_CAP_CN8_LINKAGE = "cap_cn8_linkage"
+METRIC_CAP_DEPTH_TIER = "cap_depth_tier"
+METRIC_CN8_REACHABLE = "cn8_reachable"
 
 
 PROBE_METRIC_SEEDS = (
@@ -89,6 +95,13 @@ PROBE_METRIC_SEEDS = (
     Metric(METRIC_TRADE_EUR_HS3208, "EU imports HS 3208 (EUR)", "numeric"),
     Metric(METRIC_TRADE_KG_HS3209, "EU imports HS 3209 (kg)", "numeric"),
     Metric(METRIC_TRADE_EUR_HS3209, "EU imports HS 3209 (EUR)", "numeric"),
+    # 0007__capability.sql (v0.2.1, cap1)
+    Metric(METRIC_PRODUCTS_IDENTIFIABLE, "Products identifiable", "numeric"),
+    Metric(METRIC_CAP_MANUFACTURER, "Capability: manufacturer field", "numeric"),
+    Metric(METRIC_CAP_PRODUCT_IDENT, "Capability: product-ident field", "numeric"),
+    Metric(METRIC_CAP_CN8_LINKAGE, "Capability: CN8 linkage", "text"),
+    Metric(METRIC_CAP_DEPTH_TIER, "Capability: depth tier", "numeric"),
+    Metric(METRIC_CN8_REACHABLE, "CN8 codes reachable", "numeric"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)

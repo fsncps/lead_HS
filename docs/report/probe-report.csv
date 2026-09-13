@@ -1,36 +1,42 @@
-source_id,class_code,active,tier,status,sitemap_products,sds_library_visible,products_registered,producers_registered,trade_kg_hs3208,trade_eur_hs3208,trade_kg_hs3209,trade_eur_hs3209,products_listed,doc_links_seen,walk_budget_exhausted,catalog_count,category_count,page_sample_ok,sds_sample_ok,records_hs3208,records_hs3209,records_hs3213,export_rows,census_status,last_run_key
-AS-1,AS,0,—,done,—,—,—,800 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-as1manual
-CS-1,CS,0,—,failed,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-cs1-3
-CS-2,CS,1,c,done,—,—,—,—,2471311314 kg,12211227434 eur,2099166223.9999998 kg,6221811666 eur,—,—,—,—,—,—,—,278 count,264 count,228 count,1 count,—,probe-20260912-cs2-10
-PE-1,PE,0,—,done,—,—,—,—,—,—,—,—,0 count,0 count,0,—,—,—,—,—,—,—,—,—,probe-20260912-pe1-3
-PE-10,PE,1,b,done,2 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe10manual
-PE-11,PE,1,b,done,146 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe11manual
-PE-12,PE,1,b,done,9 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe12manual
-PE-13,PE,1,b,done,1953 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe13manual
-PE-14,PE,1,b,done,3 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe14manual
-PE-15,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe15manual
-PE-16,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe16manual
-PE-17,PE,1,b,done,0 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe17manual
-PE-18,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe18manual
-PE-19,PE,1,b,done,1619 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe19manual
-PE-2,PE,0,—,blocked,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe2-3
-PE-20,PE,1,b,done,199354 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe20manual
-PE-21,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe21manual
-PE-22,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe22manual
-PE-23,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe23manual
-PE-24,PE,1,c,done,—,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe24manual
-PE-25,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe25manual
-PE-26,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe26manual
-PE-27,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe27manual
-PE-28,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe28manual
-PE-29,PE,1,b,done,4 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe29manual
-PE-3,PE,0,—,failed,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe3-3
-PE-30,PE,1,b,done,60 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe30manual
-PE-31,PE,1,c,done,—,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe31manual
-PE-32,PE,1,b,done,0 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe32manual
-PE-33,PE,1,b,done,1541 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe33manual
-PE-34,PE,1,b,done,2 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe34manual
-PE-4,PE,0,—,done,—,—,—,—,—,—,—,—,0 count,0 count,0,—,—,—,—,—,—,—,—,—,probe-20260912-pe4-3
-ST-1,ST,0,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-ST-2,ST,1,d,failed,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-st2-7
-ST-3,ST,0,—,done,—,—,—,3200 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-st3manual
+source_id,class_code,active,tier,status,sitemap_products,sds_library_visible,products_registered,producers_registered,trade_kg_hs3208,trade_eur_hs3208,trade_kg_hs3209,trade_eur_hs3209,products_listed,doc_links_seen,walk_budget_exhausted,catalog_count,category_count,page_sample_ok,sds_sample_ok,records_hs3208,records_hs3209,records_hs3213,export_rows,census_status,last_run_key,products_identifiable,cap_manufacturer,cap_product_ident,cap_cn8_linkage,cap_depth_tier,cn8_reachable,real_product_source
+AS-1,AS,0,—,done,—,—,—,800 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-as1manual,—,—,—,—,—,—,0
+AS-2,AS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,17838 count,1,1,category,2,0 count,1
+AS-3,AS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,manual,—,—,0
+AS-4,AS,0,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+AS-5,AS,0,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+AS-6,AS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,manual,—,—,0
+AS-7,AS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,manual,—,—,0
+CS-1,CS,0,—,failed,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-cs1-3,—,—,—,—,—,—,0
+CS-2,CS,1,c,done,—,—,—,—,2471311314 kg,12211227434 eur,2099166223.9999998 kg,6221811666 eur,—,—,—,—,—,—,—,278 count,264 count,228 count,1 count,—,probe-20260912-cs2-10,—,—,—,—,—,—,0
+PE-1,PE,0,—,done,—,—,—,—,—,—,—,—,0 count,0 count,0,—,—,—,—,—,—,—,—,—,probe-20260912-pe1-3,—,—,—,—,—,—,0
+PE-10,PE,1,b,done,2 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe10manual,—,—,—,—,—,—,0
+PE-11,PE,1,b,done,146 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe11manual,—,—,—,—,—,—,0
+PE-12,PE,1,b,done,9 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe12manual,—,—,—,—,—,—,0
+PE-13,PE,1,b,done,1953 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe13manual,—,—,—,—,—,—,0
+PE-14,PE,1,b,done,3 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe14manual,—,—,—,—,—,—,0
+PE-15,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe15manual,—,—,—,—,—,—,0
+PE-16,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe16manual,—,—,—,—,—,—,0
+PE-17,PE,1,b,done,0 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe17manual,—,—,—,—,—,—,0
+PE-18,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe18manual,—,—,—,—,—,—,0
+PE-19,PE,1,b,done,1619 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe19manual,—,—,—,—,—,—,0
+PE-2,PE,0,—,blocked,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe2-3,—,—,—,—,—,—,0
+PE-20,PE,1,b,done,199354 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe20manual,—,—,—,—,—,—,0
+PE-21,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe21manual,—,—,—,—,—,—,0
+PE-22,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe22manual,—,—,—,—,—,—,0
+PE-23,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe23manual,—,—,—,—,—,—,0
+PE-24,PE,1,c,done,—,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe24manual,—,—,—,—,—,—,0
+PE-25,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe25manual,—,—,—,—,—,—,0
+PE-26,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe26manual,—,—,—,—,—,—,0
+PE-27,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe27manual,—,—,—,—,—,—,0
+PE-28,PE,1,b,done,0 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe28manual,—,—,—,—,—,—,0
+PE-29,PE,1,b,done,4 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe29manual,—,—,—,—,—,—,0
+PE-3,PE,0,—,failed,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe3-3,—,—,—,—,—,—,0
+PE-30,PE,1,b,done,60 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe30manual,—,—,—,—,—,—,0
+PE-31,PE,1,c,done,—,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe31manual,—,—,—,—,—,—,0
+PE-32,PE,1,b,done,0 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe32manual,—,—,—,—,—,—,0
+PE-33,PE,1,b,done,1541 count,0 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe33manual,—,—,—,—,—,—,0
+PE-34,PE,1,b,done,2 count,1 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-pe34manual,—,—,—,—,—,—,0
+PE-4,PE,0,—,done,—,—,—,—,—,—,—,—,0 count,0 count,0,—,—,—,—,—,—,—,—,—,probe-20260912-pe4-3,—,—,—,—,—,—,0
+ST-1,ST,0,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+ST-2,ST,1,d,failed,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-st2-7,—,—,—,—,—,—,0
+ST-3,ST,0,—,done,—,—,—,3200 count,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,probe-20260912-st3manual,—,—,—,—,—,—,0

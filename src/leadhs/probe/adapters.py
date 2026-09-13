@@ -866,6 +866,181 @@ class PEAdapter:
         return urls
 
 
+# --- AS adapter (register-capability sounding-out, v0.2.1 cap2/cap5) -------
+
+
+# Column-detection hints for the register shape inspect (i17): the
+# capability profile is measured, not declared — a source exposes a
+# manufacturer / product-ident / CN8-nomenclature field when its export
+# header carries one of these (0/1 flags, nu8 — the mechanism is the
+# descriptive cap_cn8_linkage text, never string-matched).
+_MANUFACTURER_HINTS = ("manufacturer", "producer", "company", "brand", "organization", "organisation", "org")
+_PRODUCT_IDENT_HINTS = ("licence", "ufi", "article", "sku", "gtin", "product_ident", "productid", "ean")
+_NOMENCLATURE_HINTS = ("cn8", "cn_code", "hs_code", "nomenclature", "commodity", "cn_code8")
+_CN_CODE_RE = re.compile(r"\b(\d{8}|\d{6}|\d{4})\b")
+# The study's 13 CN8 codes are deferred to 0008/M1 (cap6) — the adapter
+# counts distinct CN-prefixed codes observed and caps at 13, flagging
+# the deferral in the finding note (exact 13-code matching is M1 work).
+_CN8_REACHABLE_CAP = 13
+
+
+class ASAdapter:
+    key = "AS"
+
+    def supports(self, source: SourceRef) -> bool:
+        return source.class_code == "AS"
+
+    def probe(self, source: SourceRef, ctx) -> ProbeResult:
+        """Register-capability sounding-out (cap2/cap4): fetch an official
+        register export (CSV/API) and inspect its shape against the product
+        model. No-ops for non-`capability` modes (C1) so the census/recon
+        sweeps are unchanged; manual-access_method sources are
+        characterized by `probe record --mode capability`, never here."""
+        if ctx.mode != "capability":
+            return ProbeResult()
+        if source.access_method_code not in ("download", "api"):
+            return ProbeResult()
+        if ctx.dry_run:
+            ctx.fetcher.plan(source.url)
+            return ProbeResult()
+        resp = ctx.fetcher.get(source.url)
+        _log(ctx, "as_get", url=source.url, status=resp.status_code)
+        docs = [_doc(source.url, resp, retrieval_method_code=source.access_method_code)]
+        return self._inspect_register(resp, source, docs)
+
+    def _inspect_register(self, resp, source: SourceRef, docs) -> ProbeResult:
+        """The reused register shape-inspect (C1): detect the manufacturer /
+        product-ident / nomenclature columns, count the rows, emit the six
+        capability findings. Raises UnexpectedFormat on an empty/malformed
+        export (the engine degrades to a format finding, run done)."""
+        findings, notes = [], []
+        method = source.access_method_code or "download"
+        ct = resp.headers.get("Content-Type", "").lower()
+        text = resp.text
+        if "html" in ct or text.lstrip()[:1] == "<":
+            # i17: an HTML landing page is not a machine-readable export —
+            # record the honest format finding + manual linkage; the actual
+            # CSV/API export URL is pinned at the manual capability record.
+            findings.append(FindingDraft(metric_code="format", method_code=method,
+                                         value_text="HTML landing page — not a CSV/JSON export; export mechanics to confirm"))
+            findings.append(FindingDraft(metric_code="cap_cn8_linkage", method_code=method,
+                                         value_text="manual"))
+            notes.append("HTML landing page; no machine-readable export at this URL — characterize via probe record --mode capability")
+            return ProbeResult(documents=docs, findings=findings, notes=notes)
+        if "json" in ct or text.lstrip()[:1] in ("{", "["):
+            header, data_rows = self._json_register(text, method, findings, notes)
+        else:
+            header, data_rows = self._csv_register(text, method, findings, notes)
+        if header is None:
+            return ProbeResult(documents=docs, findings=findings, notes=notes)
+
+        has_manu = any(any(h in c for h in _MANUFACTURER_HINTS) for c in header)
+        has_ident = any(any(h in c for h in _PRODUCT_IDENT_HINTS) for c in header)
+        has_nomen = any(any(h in c for h in _NOMENCLATURE_HINTS) for c in header)
+        n = len(data_rows)
+
+        findings.append(FindingDraft(metric_code="products_identifiable", method_code=method,
+                                     value_numeric=n, unit_code="count",
+                                     notes=f"export rows: {n}"))
+        findings.append(FindingDraft(metric_code="cap_manufacturer", method_code=method,
+                                     value_numeric=1 if has_manu else 0))
+        findings.append(FindingDraft(metric_code="cap_product_ident", method_code=method,
+                                     value_numeric=1 if has_ident else 0))
+        if has_nomen:
+            linkage, reachable = self._nomenclature_linkage(header, data_rows)
+        else:
+            linkage, reachable = "manual", 0
+            notes.append("no nomenclature column — linkage is manual, CN8 codes deferred to M1")
+        findings.append(FindingDraft(metric_code="cap_cn8_linkage", method_code=method,
+                                     value_text=linkage))
+        findings.append(FindingDraft(metric_code="cap_depth_tier", method_code=method,
+                                     value_numeric=self._depth_tier(has_manu, has_ident)))
+        findings.append(FindingDraft(metric_code="cn8_reachable", method_code=method,
+                                     value_numeric=reachable, unit_code="count",
+                                     notes="distinct CN-prefixed codes observed; exact 13-code matching deferred to 0008/M1" if has_nomen else None))
+        notes.append(f"shape: manufacturer={has_manu} product_ident={has_ident} nomenclature={has_nomen} rows={n}")
+        return ProbeResult(documents=docs, findings=findings, notes=notes)
+
+    @staticmethod
+    def _csv_register(text, method, findings, notes):
+        reader = csv.reader(io.StringIO(text))
+        rows = [r for r in reader if any(c.strip() for c in r)]
+        if not rows:
+            raise UnexpectedFormat("empty register export", partial=ProbeResult(documents=[], findings=findings))
+        header = [c.strip().lower() for c in rows[0]]
+        if len(header) < 2:
+            raise UnexpectedFormat(f"register layout missing columns (got {header})",
+                                   partial=ProbeResult(documents=[], findings=findings))
+        findings.append(FindingDraft(metric_code="format", method_code=method,
+                                     value_text=f"CSV; columns: {', '.join(header)}"))
+        return header, rows[1:]
+
+    @staticmethod
+    def _json_register(text, method, findings, notes):
+        try:
+            data = json.loads(text)
+        except ValueError:
+            raise UnexpectedFormat("expected JSON but content not parseable",
+                                   partial=ProbeResult(documents=[], findings=findings))
+        if isinstance(data, list):
+            items = data
+        elif isinstance(data, dict):
+            items = None
+            for key in _JSON_LIST_COUNTS:
+                if isinstance(data.get(key), list):
+                    items = data[key]
+                    break
+            if items is None:
+                raise UnexpectedFormat("register JSON is not a list payload",
+                                       partial=ProbeResult(documents=[], findings=findings))
+        else:
+            raise UnexpectedFormat("register JSON is not a list payload",
+                                   partial=ProbeResult(documents=[], findings=findings))
+        if not items:
+            raise UnexpectedFormat("empty register export", partial=ProbeResult(documents=[], findings=findings))
+        first = items[0]
+        if not isinstance(first, dict):
+            raise UnexpectedFormat("register JSON rows are not objects",
+                                   partial=ProbeResult(documents=[], findings=findings))
+        header = [k.strip().lower() for k in first.keys()]
+        findings.append(FindingDraft(metric_code="format", method_code=method,
+                                     value_text=f"JSON (API); columns: {', '.join(header)}"))
+        return header, items
+
+    @staticmethod
+    def _nomenclature_linkage(header, data_rows):
+        """Mechanism + reachable count for a source with a nomenclature
+        column: 'category' taxonomy linkage; count distinct CN codes."""
+        nomen_idx = next((i for i, c in enumerate(header) if any(h in c for h in _NOMENCLATURE_HINTS)), None)
+        nomen_key = header[nomen_idx] if nomen_idx is not None else None
+        codes = set()
+        for row in data_rows:
+            raw = None
+            if nomen_key is not None:
+                if isinstance(row, dict):
+                    raw = row.get(nomen_key)
+                elif nomen_idx < len(row):
+                    raw = row[nomen_idx]
+            if raw is not None:
+                m = _CN_CODE_RE.search(str(raw))
+                if m:
+                    codes.add(m.group(1))
+        return "category", min(len(codes), _CN8_REACHABLE_CAP)
+
+    @staticmethod
+    def _depth_tier(has_manu, has_ident):
+        """cap_depth_tier: 1 name-only, 2 name/ident + some technical.
+        The automated register inspect can only certify name + ident +
+        (nomenclature) — deeper tiers (3/4) require human/manual review
+        of the actual product docs, so the floor is 2."""
+        if has_manu and has_ident:
+            return 2
+        if has_manu or has_ident:
+            return 1
+        return 1
+
+
+
 
 # --- ST adapter (SPIN download + extraction check) -------------------------
 
@@ -945,3 +1120,4 @@ class STAdapter:
 register(CSAdapter())
 register(PEAdapter())
 register(STAdapter())
+register(ASAdapter())

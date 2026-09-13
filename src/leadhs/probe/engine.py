@@ -259,6 +259,11 @@ def run_all(conn, store, fetcher, mode: str = "census", sample_n: int = 5, dry_r
     dbmod.stale_run_reclaim(conn)
     summaries = []
     sources = [s for s in sourcemod.all_sources(conn, active_only=True) if adaptersmod.get_adapter(s)]
+    if mode == "capability":
+        # v0.2.1 cap2/cap5: the capability sweep targets the official
+        # register (AS) sources only — PE/CS/ST adapters no-op for
+        # non-recon/census modes and are never swept in capability mode.
+        sources = [s for s in sources if s.class_code == "AS"]
     if not sources:
         return [], 0
     exit_code = 0

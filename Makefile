@@ -1,10 +1,11 @@
-# lead_HS — operator entrypoint (v0.2.0). One target = one `leadhs` call;
+# lead_HS — operator entrypoint (v0.2.1). One target = one `leadhs` call;
 # pipeline logic lives in the CLI (D21); make stays a thin wrapper.
 # Parameters are make variables until M1 (committed config file).
 
 .PHONY: help install doctor db-init db-status db-audit sources-load \
 	sources-list setup probe-dry probe-single record report \
 	report-publish probe census recon probe-recon test smoke test-net \
+	probe-capability capability \
 	clean clobber frame sample acquire ingest parse analyze full
 .DEFAULT_GOAL := help
 
@@ -94,6 +95,14 @@ probe-recon: guard-probe-recon ## recon sweep: robots-compliant, counts only (GO
 
 recon: guard-recon setup ## setup → recon → report → audit (GO=1)
 	$(LEADHS) probe run --all --mode recon || test $$? -eq 2
+	$(MAKE) report
+	$(MAKE) db-audit
+
+probe-capability: guard-probe-capability ## capability sweep: official register exports, shape inspect (GO=1)
+	$(LEADHS) probe run --all --mode capability
+
+capability: guard-capability setup ## setup → capability → report → audit (GO=1)
+	$(LEADHS) probe run --all --mode capability || test $$? -eq 2
 	$(MAKE) report
 	$(MAKE) db-audit
 

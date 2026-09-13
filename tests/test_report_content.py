@@ -120,7 +120,7 @@ def test_csv_is_matrix_only(loaded_conn, store, fetcher):
     _setup(loaded_conn, store, fetcher)
     out = reportmod.render(loaded_conn, format="csv")
     lines = out.splitlines()
-    assert lines[0].split(",") == reportmod._MATRIX_HEADER
+    assert lines[0].split(",") == reportmod._MATRIX_HEADER + list(reportmod.CAPABILITY_METRICS) + ["real_product_source"]
     assert len(lines) == 1 + len(_db_ids(loaded_conn))
     assert "anchor" not in out.lower()
 
@@ -128,7 +128,7 @@ def test_csv_is_matrix_only(loaded_conn, store, fetcher):
 def test_json_full_structure(loaded_conn, store, fetcher):
     _setup(loaded_conn, store, fetcher)
     data = json.loads(reportmod.render(loaded_conn, format="json"))
-    assert set(data) == {"report", "numbers", "anchors", "sources", "anchor_candidates", "source_activity"}
+    assert set(data) == {"report", "numbers", "anchors", "capability", "sources", "anchor_candidates", "source_activity"}
     assert data["report"]["title"] == reportmod.TITLE
     # nu5: json carries anchor values, never a computed N1 range
     assert "range" not in json.dumps(data["numbers"])
@@ -170,7 +170,7 @@ def test_tier_a_and_b_derivation_with_n2_sum(loaded_conn, store, fetcher):
     assert "N2 (Σ tier a+b counts): 47" in md
     data = json.loads(reportmod.render(loaded_conn, format="json"))
     assert data["numbers"]["n2_total"] == 47.0
-    assert data["numbers"]["tier_sizes"] == {"a": 1, "b": 1, "c": 1, "d": 11}
+    assert data["numbers"]["tier_sizes"] == {"a": 1, "b": 1, "c": 1, "d": 12}
 
 
 def test_excluded_and_counted_line(loaded_conn, store, fetcher):
@@ -231,3 +231,122 @@ def test_access_decision_bridge(loaded_conn, store, fetcher):
     md = reportmod.render(loaded_conn, format="md")
     assert "Access-decision bridge" in md
     assert "PX-1" in md.split("## Execution log")[0].split("Access-decision bridge")[1]
+
+
+# --- v0.2.1: capability profile + N2 numerator (t11, cap3/i18) --------------
+
+
+def _capability_run(loaded_conn, store, fetcher, sid, mode="capability"):
+    """A capability-mode run over a fixture AS source (reg.csv: mfr +
+    ident + cn_code) via the AS adapter."""
+    return engine.run_one(loaded_conn, store, fetcher, get_source(loaded_conn, sid),
+                          mode=mode, sample_n=3)
+
+
+def _cap_record(loaded_conn, store, sid, metric, value=None, value_text=None):
+    return engine.record_manual(loaded_conn, store, sid, metric, value=value,
+                                value_text=value_text, mode="capability")
+
+
+def test_capability_matrix_section_and_predicate(loaded_conn, store, fetcher):
+    """cap3/C3: the capability matrix renders; a full register passes the
+    predicate; the N2 numerator sums the real-product sources."""
+    _capability_run(loaded_conn, store, fetcher, "AX-1")  # full CSV register
+    md = reportmod.render(loaded_conn, format="md")
+    assert "## Capability profile" in md
+    assert "N2 numerator (official registers, floor)" in md
+    assert "| AX-1 | AS | 1 |" in md
+    assert "| yes |" in md  # the AX-1 row ends real-product-source = yes
+    data = json.loads(reportmod.render(loaded_conn, format="json"))
+    ax1 = next(c for c in data["capability"]["matrix"] if c["source_id"] == "AX-1")
+    assert ax1["real_product_source"] is True
+    assert ax1["metrics"]["products_identifiable"] == "3 count"
+    assert data["capability"]["numerator"]["total"] == 3.0
+    assert data["capability"]["numerator"]["components"][0]["source_id"] == "AX-1"
+
+
+def test_predicate_fails_on_each_axis(loaded_conn, store, fetcher):
+    """C3: the predicate is false on each failing axis — manufacturer=0,
+    product_ident=0, linkage='none', depth<2. Each is a separate manual
+    capability record; the source must not sum into the numerator."""
+    _cap_record(loaded_conn, store, "ST-1", "products_identifiable", value="5")
+    # manufacturer=0
+    _cap_record(loaded_conn, store, "ST-1", "cap_manufacturer", value="0")
+    _cap_record(loaded_conn, store, "ST-1", "cap_product_ident", value="1")
+    _cap_record(loaded_conn, store, "ST-1", "cap_cn8_linkage", value_text="category")
+    _cap_record(loaded_conn, store, "ST-1", "cap_depth_tier", value="2")
+    data = json.loads(reportmod.render(loaded_conn, format="json"))
+    st1 = next(c for c in data["capability"]["matrix"] if c["source_id"] == "ST-1")
+    assert st1["real_product_source"] is False
+    assert data["capability"]["numerator"]["total"] is None
+
+
+def test_predicate_requires_all_four(loaded_conn, store, fetcher):
+    """C3: manufacturer=1, product_ident=1, linkage != 'none', depth >= 2
+    — all four hold => real product source."""
+    _cap_record(loaded_conn, store, "ST-1", "products_identifiable", value="5")
+    _cap_record(loaded_conn, store, "ST-1", "cap_manufacturer", value="1")
+    _cap_record(loaded_conn, store, "ST-1", "cap_product_ident", value="1")
+    _cap_record(loaded_conn, store, "ST-1", "cap_cn8_linkage", value_text="prodcom")
+    _cap_record(loaded_conn, store, "ST-1", "cap_depth_tier", value="2")
+    data = json.loads(reportmod.render(loaded_conn, format="json"))
+    st1 = next(c for c in data["capability"]["matrix"] if c["source_id"] == "ST-1")
+    assert st1["real_product_source"] is True
+    assert data["capability"]["numerator"]["total"] == 5.0
+    assert data["capability"]["numerator"]["components"][0]["source_id"] == "ST-1"
+
+
+def test_linkage_none_fails_predicate(loaded_conn, store, fetcher):
+    _cap_record(loaded_conn, store, "ST-1", "products_identifiable", value="5")
+    _cap_record(loaded_conn, store, "ST-1", "cap_manufacturer", value="1")
+    _cap_record(loaded_conn, store, "ST-1", "cap_product_ident", value="1")
+    _cap_record(loaded_conn, store, "ST-1", "cap_cn8_linkage", value_text="none")
+    _cap_record(loaded_conn, store, "ST-1", "cap_depth_tier", value="2")
+    data = json.loads(reportmod.render(loaded_conn, format="json"))
+    st1 = next(c for c in data["capability"]["matrix"] if c["source_id"] == "ST-1")
+    assert st1["real_product_source"] is False
+    assert data["capability"]["numerator"]["total"] is None
+
+
+def test_depth_tier_below_2_fails_predicate(loaded_conn, store, fetcher):
+    _cap_record(loaded_conn, store, "ST-1", "products_identifiable", value="5")
+    _cap_record(loaded_conn, store, "ST-1", "cap_manufacturer", value="1")
+    _cap_record(loaded_conn, store, "ST-1", "cap_product_ident", value="1")
+    _cap_record(loaded_conn, store, "ST-1", "cap_cn8_linkage", value_text="category")
+    _cap_record(loaded_conn, store, "ST-1", "cap_depth_tier", value="1")
+    data = json.loads(reportmod.render(loaded_conn, format="json"))
+    st1 = next(c for c in data["capability"]["matrix"] if c["source_id"] == "ST-1")
+    assert st1["real_product_source"] is False
+    assert data["capability"]["numerator"]["total"] is None
+
+
+def test_capability_run_not_in_existing_execution_log(loaded_conn, store, fetcher):
+    """A1: a capability run does NOT surface as the source's latest
+    census/recon run (its own fetch is separate), so the existing tier
+    logic is untouched."""
+    _capability_run(loaded_conn, store, fetcher, "AX-1")
+    rows = {r["source_id"]: r for r in csv.DictReader(io.StringIO(reportmod.render(loaded_conn, format="csv")))}
+    assert rows["AX-1"]["status"] == "\u2014"  # no census/recon run -> tier dash
+    data = json.loads(reportmod.render(loaded_conn, format="json"))
+    ax1 = next(c for c in data["capability"]["matrix"] if c["source_id"] == "AX-1")
+    assert ax1["status"] == "done"  # but its capability run IS recorded
+    assert ax1["run_key"] != "\u2014"
+
+
+def test_certified_subset_caveat_line(loaded_conn, store, fetcher):
+    _capability_run(loaded_conn, store, fetcher, "AX-1")
+    md = reportmod.render(loaded_conn, format="md")
+    assert "Preliminary N2 numerator (official registers, floor)" in md
+    assert "certified/declared subsets" in md
+    assert "never a market total" in md
+
+
+def test_csv_capability_columns_added(loaded_conn, store, fetcher):
+    _capability_run(loaded_conn, store, fetcher, "AX-1")
+    rows = {r["source_id"]: r for r in csv.DictReader(io.StringIO(reportmod.render(loaded_conn, format="csv")))}
+    expected = set(reportmod.CAPABILITY_METRICS) | {"real_product_source"}
+    assert expected <= set(next(csv.DictReader(io.StringIO(reportmod.render(loaded_conn, format="csv")))))
+    assert rows["AX-1"]["products_identifiable"] == "3 count"
+    assert rows["AX-1"]["cap_manufacturer"] == "1"
+    assert rows["AX-1"]["cap_cn8_linkage"] == "category"
+    assert rows["AX-1"]["real_product_source"] == "1"

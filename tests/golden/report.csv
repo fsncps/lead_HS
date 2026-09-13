@@ -1,16 +1,17 @@
-source_id,class_code,active,tier,status,sitemap_products,sds_library_visible,products_registered,producers_registered,trade_kg_hs3208,trade_eur_hs3208,trade_kg_hs3209,trade_eur_hs3209,products_listed,doc_links_seen,walk_budget_exhausted,catalog_count,category_count,page_sample_ok,sds_sample_ok,records_hs3208,records_hs3209,records_hs3213,export_rows,census_status,last_run_key
-CX-1,CS,1,c,done,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,3 count,—,probe-20260910-cx1
-CX-2,CS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-CX-3,CS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-CX-4,CS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-1,PE,1,c,done,—,—,—,—,—,—,—,—,6 count,1 count,0,500 count,2 count,2 count,1 count,—,—,—,—,—,probe-20260910-px1
-PX-2,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-3,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-4,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-5,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-6,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-7,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-8,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-PX-9,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-ST-1,ST,0,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
-SX-1,ST,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—
+source_id,class_code,active,tier,status,sitemap_products,sds_library_visible,products_registered,producers_registered,trade_kg_hs3208,trade_eur_hs3208,trade_kg_hs3209,trade_eur_hs3209,products_listed,doc_links_seen,walk_budget_exhausted,catalog_count,category_count,page_sample_ok,sds_sample_ok,records_hs3208,records_hs3209,records_hs3213,export_rows,census_status,last_run_key,products_identifiable,cap_manufacturer,cap_product_ident,cap_cn8_linkage,cap_depth_tier,cn8_reachable,real_product_source
+AX-1,AS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+CX-1,CS,1,c,done,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,3 count,—,probe-20260910-cx1,—,—,—,—,—,—,0
+CX-2,CS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+CX-3,CS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+CX-4,CS,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-1,PE,1,c,done,—,—,—,—,—,—,—,—,6 count,1 count,0,500 count,2 count,2 count,1 count,—,—,—,—,—,probe-20260910-px1,—,—,—,—,—,—,0
+PX-2,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-3,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-4,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-5,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-6,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-7,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-8,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+PX-9,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+ST-1,ST,0,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+SX-1,ST,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0

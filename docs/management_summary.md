@@ -142,6 +142,36 @@ blockiert/unbekannt (ST-2, SPIN nicht erreichbar). Erkundung von 25
 Katalog-/Herstellerseiten: 22 abgeschlossen, 1 blockiert (PE-31), 1
 fehlgeschlagen (PE-24), 1 unerreichbar (ST-2).
 
+### Quellenfähigkeit (Einheit v0.2.1, Stand 14.09.2026)
+
+Erweiterung um die amtlichen Produktregister (EU-Ecolabel ECAT, Nordic
+Swan, Blauer Engel, INIES, IBU, environdec) und die Kernfrage der
+Einheit: **ist ein Eintrag tatsächlich ein reales Produkt gemäss
+Studienmodell — (CN8-Code, Hersteller, Produkt-Ident) — und mit
+welchem Umfang und welcher Datentiefe?** Erste Sondierungsrunde der
+Register (Erkundung, kein Scraping, keine Labordaten):
+
+- **EU-Ecolabel ECAT** (öffentlicher CSV-Export, 88.920 Produkte):
+  bestätigt realer Produktquellen-Kandidat — Herstellerfeld (Firma)
+  und Produkt-Ident (GTIN/EAN) vorhanden, Datentiefe Stufe 2,
+  CN8-Verlinkung über die Produktgruppe (Kategorie). Farben & Lacke
+  + Beschichtungen: **17.838** zertifizierte Produkte. → erster
+  **vorläufiger N2-Zähler: 17.838** (amtliches Register, Untergrenze —
+  ein zertifizierter, nicht erschöpfender Teilbestand, nie eine
+  Marktzahl).
+- **Nordic Swan, Blauer Engel, INIES, IBU, environdec:** als
+  Register erfasst; die Export-/API-Endpunkte sind bei der ersten
+  Erkundung noch HTML-Oberflächen (CSV/API-Endpunkt noch zu
+  verankern) bzw. zulassungsgebunden/XLSX — bewusst offen belassen
+  und als «Export-URL zu verankern» vermerkt; environdec zeigt
+  Hersteller, aber keinen Produkt-Ident (kein realer Produktquellen-
+  Kandidat).
+
+Der Bericht führt die Fähigkeitsmatrix je Quelle (Umfang, Hersteller,
+Produkt-Ident, CN8-Verlinkung, Datentiefe, erreichbare CN8-Codes) und
+den vorläufigen Zähler als separate, klar gekennzeichnete Zeile —
+getrennt von der bestehenden N2-Tierzusammensetzung.
+
 Marktbefunde (Stand 31.08.2026, EU, dokumentiert):
 
 - **Bleichromat-Pigmente:** keine rechtmässige EU-Inverkehrbringung mehr seit
@@ -162,14 +192,15 @@ der EU vollkommen rechtskonform deklariert sein und diese Grenze dennoch
 überschreiten — für die rein dokumentbasierte Methode unsichtbar. Dieser
 blinde Fleck wird in allen Resultaten ausgewiesen.
 
-Projektstand (12.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
+Projektstand (14.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
-jeden Befund nachvollziehbar hält — ist in vier Ausbaustufen gebaut und
-getestet (205 automatisierte Offline-Tests): Evidenzdatenbank,
+jeden Befund nachvollziehbar hält — ist in fünf Ausbaustufen gebaut und
+getestet (231 automatisierte Offline-Tests): Evidenzdatenbank,
 Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
-Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe)
-sowie die Datenlandschaft-Karte mit den drei Leitgrössen. Die aktive
-Einheit **v0.2.0** ist damit abgeschlossen.
+Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe),
+die Datenlandschaft-Karte mit den drei Leitgrössen sowie die
+Quellenfähigkeits-Sondierung der amtlichen Register. Die aktive
+Einheit **v0.2.1** ist damit abgeschlossen.
 
 ### Grenzen der Studie
 
@@ -331,6 +362,38 @@ bloqué/inconnu (ST-2, SPIN injoignable). Reconnaissance de 25 sites de
 catalogues/fabricants : 22 achevés, 1 bloqué (PE-31), 1 en échec
 (PE-24), 1 injoignable (ST-2).
 
+### Capacité des sources (unité v0.2.1, état au 14.09.2026)
+
+Élargissement aux registres officiels de produits (Écolabel UE ECAT,
+Nordic Swan, Ange Bleu, INIES, IBU, environdec) et question centrale de
+l'unité : **une entrée est-elle réellement un produit au sens du
+modèle d'étude — (code CN8, fabricant, identifiant produit) — et avec
+quelle ampleur et quelle profondeur de données ?** Première passe de
+reconnaissance des registres (reconnaissance, pas de scraping, pas de
+laboratoire) :
+
+- **Écolabel UE ECAT** (export CSV public, 88.920 produits) : candidat
+  source de produit réel confirmé — champ fabricant (société) et
+  identifiant produit (GTIN/EAN) présents, profondeur niveau 2,
+  liaison CN8 via le groupe de produits (catégorie). Peintures &
+  vernis + revêtements : **17.838** produits certifiés. → premier
+  **numérateur N2 provisoire : 17.838** (registre officiel, plancher —
+  un sous-ensemble certifié, non exhaustif, jamais un chiffre de
+  marché).
+- **Nordic Swan, Ange Bleu, INIES, IBU, environdec :** enregistrés
+  comme sources ; lors de la première reconnaissance les points
+  d'accès CSV/API sont encore des interfaces HTML (endpoint à
+  ancrer) ou sous licence/XLSX — volontairement laissés ouverts et
+  marqués « URL d'export à ancrer » ; environdec expose un fabricant
+  mais pas d'identifiant produit (pas un candidat de source de
+  produit réel).
+
+Le rapport présente la matrice de capacité par source (ampleur,
+fabricant, identifiant produit, liaison CN8, profondeur, codes CN8
+atteignables) et le numérateur provisoire comme ligne distincte,
+clairement identifiée — séparée de la composition par palier N2
+existante.
+
 Constats de marché (état au 31.08.2026, UE, documentés) :
 
 - **Pigments au chromate de plomb :** plus de mise sur le marché légale dans
@@ -352,14 +415,15 @@ peut être parfaitement déclaré conformément au droit de l'UE et dépasser
 malgré tout cette limite — de manière invisible pour la méthode purement
 documentaire. Cet angle mort est signalé dans tous les résultats.
 
-État du projet (12.09.2026) : l'outil de collecte — un petit programme
+État du projet (14.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
-et rend chaque constat traçable — est construit et testé en quatre étapes
-(205 tests automatisés hors ligne) : base de preuves, registre des
+et rend chaque constat traçable — est construit et testé en cinq étapes
+(231 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
-attente d'un feu vert de collecte), et carte du paysage des données avec
-les trois chiffres phares. L'unité active **v0.2.0** est ainsi achevée.
+attente d'un feu vert de collecte), carte du paysage des données avec
+les trois chiffres phares, et reconnaissance de la capacité des registres
+officiels. L'unité active **v0.2.1** est ainsi achevée.
 
 ### Limites de l'étude
 

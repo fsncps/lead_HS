@@ -187,7 +187,7 @@ def list_(ctx, class_code):
 @probe.command()
 @click.option("--source", "source_id", default=None, help="source ID (CS-1)")
 @click.option("--all", "all_sources", is_flag=True, help="run every active adapter-backed source")
-@click.option("--mode", "mode", type=click.Choice(["census", "format_check", "access_check", "recon"]), default="census")
+@click.option("--mode", "mode", type=click.Choice(["census", "format_check", "access_check", "recon", "capability"]), default="census")
 @click.option("--sample", "sample_n", type=int, default=5, help="PE sample-page count")
 @click.option("--dry-run", is_flag=True, help="plan requests; zero network calls")
 @click.pass_context
@@ -247,7 +247,7 @@ def run(ctx, source_id, all_sources, mode, sample_n, dry_run):
 @click.option("--url", "url", default=None, help="provenance URL")
 @click.option("--document", "document_file", default=None, type=click.Path(exists=True), help="raw file to attach")
 @click.option("--note", "note", default=None, help="note")
-@click.option("--mode", "mode", type=click.Choice(["census", "recon"]), default="census", help="probe_mode label for the manual run (e8)")
+@click.option("--mode", "mode", type=click.Choice(["census", "recon", "capability"]), default="census", help="probe_mode label for the manual run (e8)")
 @click.pass_context
 def record(ctx, source_id, metric, value, value_text, unit, url, document_file, note, mode):
     """Create a manual probe run + one finding (method=manual; ST-1 PCN path)."""

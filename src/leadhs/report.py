@@ -140,6 +140,48 @@ BRIDGE_INTRO = (
 
 _MATRIX_HEADER = ["source_id", "class_code", "active", "tier", "status"] + list(MATRIX_METRICS) + [_CENSUS_STATUS_COLUMN, "last_run_key"]
 
+# v0.2.1 capability profile (cap1/C2): one tuple drives the capability-
+# matrix columns AND the real-product-source predicate derivation — no
+# duplicated literals (i18).
+CAPABILITY_METRICS = (
+    "products_identifiable", "cap_manufacturer", "cap_product_ident",
+    "cap_cn8_linkage", "cap_depth_tier", "cn8_reachable",
+)
+_CAPABILITY_METRIC_LABELS = {
+    "products_identifiable": "identifiable",
+    "cap_manufacturer": "mfr",
+    "cap_product_ident": "product-ident",
+    "cap_cn8_linkage": "cn8-linkage",
+    "cap_depth_tier": "depth",
+    "cn8_reachable": "cn8-reachable",
+}
+
+# A2: the preliminary N2 numerator is a separate derived line with the
+# certified-subset caveat — never folded into the existing N2 tiers.
+N2_NUMERATOR_CAVEAT = (
+    "Preliminary N2 numerator (official registers, floor): sum of "
+    "products_identifiable over the real-product sources below. Official "
+    "registers are certified/declared subsets of the market, never a "
+    "market total — a floor, cited to the run it comes from."
+)
+
+
+def _is_real_product_source(by_metric: dict) -> bool:
+    """C3: the single real-product-source predicate
+    (cap_manufacturer=1 ∧ cap_product_ident=1 ∧ cap_cn8_linkage!='none'
+    ∧ cap_depth_tier>=2), derived at report time, never stored (i17)."""
+    def num(code):
+        rows = by_metric.get(code)
+        return rows[0].get("value_numeric") if rows else None
+
+    mfr = num("cap_manufacturer")
+    ident = num("cap_product_ident")
+    linkage_rows = by_metric.get("cap_cn8_linkage")
+    linkage = linkage_rows[0].get("value_text") if linkage_rows else None
+    depth = num("cap_depth_tier")
+    return bool(mfr == 1 and ident == 1 and linkage is not None and linkage != "none"
+                and depth is not None and depth >= 2)
+
 
 def _is_dry_run(parameters_json: Optional[str]) -> bool:
     if not parameters_json:
@@ -331,6 +373,32 @@ def _fetch_latest_runs(conn) -> dict:
     return latest
 
 
+def _fetch_latest_capability_runs(conn) -> dict:
+    """A1: the capability matrix fetches its OWN latest-`capability` run
+    per source (any status; dry-run skipped), leaving `_fetch_latest_runs`
+    (census/recon) untouched so the existing tier logic is unaffected."""
+    rows = conn.execute(
+        "SELECT r.id AS run_id, r.source_id, r.run_key, r.started_at, r.finished_at, "
+        "r.status_code, r.notes, r.parameters_json "
+        "FROM run r JOIN probe_run pr ON pr.run_id = r.id "
+        "WHERE r.kind_code = 'probe' AND pr.mode_code = 'capability' AND r.source_id IS NOT NULL "
+        "ORDER BY r.source_id, r.started_at DESC, r.id DESC"
+    ).fetchall()
+    latest: dict = {}
+    for row in rows:
+        sid = row["source_id"]
+        if sid in latest or _is_dry_run(row["parameters_json"]):
+            continue
+        latest[sid] = {
+            "run_key": row["run_key"],
+            "status": row["status_code"],
+            "started_at": row["started_at"],
+            "finished_at": row["finished_at"],
+            "notes": row["notes"],
+        }
+    return latest
+
+
 def _fetch_anchors(conn, source_id: Optional[str] = None) -> list:
     sql = "SELECT source_id, metric_code, value_numeric, unit_code, run_key FROM v_anchor_candidates"
     params = ()
@@ -353,6 +421,7 @@ def build(conn, source_id: Optional[str] = None) -> dict:
     sources = _fetch_sources(conn, source_id)
     census = _fetch_census(conn, source_id)
     latest_runs = _fetch_latest_runs(conn)
+    capability_runs = _fetch_latest_capability_runs(conn)
     activity = _fetch_activity(conn) if not source_id else [
         dict(r) for r in conn.execute(
             "SELECT source_id, first_retrieved_at, last_retrieved_at, run_count, finding_count "
@@ -390,15 +459,22 @@ def build(conn, source_id: Optional[str] = None) -> dict:
             name: [dict(r) for code in codes for r in by_metric.get(code, [])]
             for name, codes in SECTIONS.items()
         }
+        entry["capability"] = {code: (by_metric[code][0]["value"] if by_metric.get(code) else "\u2014") for code in CAPABILITY_METRICS}
+        entry["products_identifiable_num"] = (by_metric["products_identifiable"][0].get("value_numeric")
+                                              if by_metric.get("products_identifiable") else None)
+        entry["real_product_source"] = _is_real_product_source(by_metric)
+        entry["cap_run"] = capability_runs.get(sid)
         entries.append(entry)
 
     numbers = _assemble_numbers(entries)
     anchors = _anchors_from_entries(entries)
+    capability = _assemble_capability(entries)
 
     return {
         "report": {"title": TITLE, "framing": FRAMING, "legend": LEGEND, "no_runs_line": NO_RUNS_LINE, "source_filter": source_id},
         "numbers": numbers,
         "anchors": anchors,
+        "capability": capability,
         "sources": entries,
         "anchor_candidates": anchors_raw(conn, source_id),
         "source_activity": activity,
@@ -483,8 +559,49 @@ def _assemble_numbers(entries: list) -> dict:
     }
 
 
+def _assemble_capability(entries: list) -> dict:
+    """The capability profile (i18): per-source matrix of the six
+    capability metrics + the derived real-product-source flag, and the
+    preliminary N2 numerator (A2 — a separate line, never folded into
+    the existing N2 tiers)."""
+    matrix = []
+    numerator_components = []
+    numerator_total = 0.0
+    for e in entries:
+        has_profile = any(v != "\u2014" for v in e["capability"].values())
+        if not has_profile and not e["cap_run"]:
+            matrix.append({
+                "source_id": e["id"], "class_code": e["class_code"], "active": e["active"],
+                "run_key": "\u2014", "status": "\u2014",
+                "metrics": e["capability"], "real_product_source": False,
+            })
+            continue
+        matrix.append({
+            "source_id": e["id"], "class_code": e["class_code"], "active": e["active"],
+            "run_key": (e["cap_run"] or {}).get("run_key", "\u2014"),
+            "status": (e["cap_run"] or {}).get("status", "\u2014"),
+            "metrics": e["capability"],
+            "real_product_source": e["real_product_source"],
+        })
+        if e["real_product_source"] and e["products_identifiable_num"] is not None:
+            numerator_components.append({
+                "source_id": e["id"],
+                "products_identifiable": e["products_identifiable_num"],
+                "run_key": (e["cap_run"] or {}).get("run_key", "\u2014"),
+            })
+            numerator_total += e["products_identifiable_num"]
+    return {
+        "matrix": matrix,
+        "numerator": {
+            "total": numerator_total if numerator_components else None,
+            "components": numerator_components,
+            "caveat": N2_NUMERATOR_CAVEAT,
+        },
+    }
+
+
 def _matrix_rows(data: dict) -> list:
-    header = _MATRIX_HEADER
+    header = _MATRIX_HEADER + list(CAPABILITY_METRICS) + ["real_product_source"]
     rows = [header]
     for entry in data["sources"]:
         rows.append([
@@ -494,6 +611,8 @@ def _matrix_rows(data: dict) -> list:
             *[entry["matrix"][code] for code in MATRIX_METRICS],
             entry["matrix"]["census_status"],
             entry["matrix"]["last_run_key"],
+            *[entry["capability"][code] for code in CAPABILITY_METRICS],
+            "1" if entry["real_product_source"] else "0",
         ])
     return rows
 
@@ -506,6 +625,7 @@ def render(conn, format: str = "md", source_id: Optional[str] = None) -> str:
             report=data["report"],
             numbers=data["numbers"],
             anchors=data["anchors"],
+            capability=data["capability"],
             sources=data["sources"],
             anchor_candidates=data["anchor_candidates"],
             activity=data["source_activity"],

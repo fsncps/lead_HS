@@ -88,6 +88,24 @@ context — tariff-line flows, not products.
 {% for s in sources %}| {{ s.id }} | {{ s.class_code }} | {{ '1' if s.active else '0' }} | {{ s.tier or '—' }} | {{ s.status or '—' }} | {{ s.matrix['sitemap_products'] }} | {{ s.matrix['sds_library_visible'] }} | {{ s.matrix['products_registered'] }} | {{ s.matrix['producers_registered'] }} | {{ s.matrix['trade_kg_hs3208'] }} | {{ s.matrix['trade_eur_hs3208'] }} | {{ s.matrix['trade_kg_hs3209'] }} | {{ s.matrix['trade_eur_hs3209'] }} | {{ s.matrix['products_listed'] }} | {{ s.matrix['doc_links_seen'] }} | {{ s.matrix['walk_budget_exhausted'] }} | {{ s.matrix['catalog_count'] }} | {{ s.matrix['category_count'] }} | {{ s.matrix['page_sample_ok'] }} | {{ s.matrix['sds_sample_ok'] }} | {{ s.matrix['records_hs3208'] }} | {{ s.matrix['records_hs3209'] }} | {{ s.matrix['records_hs3213'] }} | {{ s.matrix['export_rows'] }} | {{ s.matrix['census_status'] }} | {{ s.matrix['last_run_key'] }} |
 {% endfor %}
 
+## Capability profile
+
+Per registered source, the source-level capability sounding-out (v0.2.1):
+is an entry actually a real product per the study's model — (CN8 code,
+manufacturer, manufacturer product-ident) — and at what volume and
+depth? A source is a **real product source** when it exposes a
+manufacturer field, a product-ident field, a non-`none` CN8-linkage
+mechanism, and data depth >= 2. `—` = capability metric not recorded.
+
+{{ capability.numerator.caveat }}
+
+**N2 numerator (official registers, floor):** {% if capability.numerator.total is not none %}{{ capability.numerator.total|int }} over {{ capability.numerator.components|length }} real-product source(s){% else %}none yet (no source has passed the predicate){% endif %}.
+
+| source | class | active | run_key | status | identifiable | mfr | product-ident | cn8-linkage | depth | cn8-reachable | real product source |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+{% for c in capability.matrix %}| {{ c.source_id }} | {{ c.class_code }} | {{ '1' if c.active else '0' }} | {{ c.run_key }} | {{ c.status }} | {{ c.metrics['products_identifiable'] }} | {{ c.metrics['cap_manufacturer'] }} | {{ c.metrics['cap_product_ident'] }} | {{ c.metrics['cap_cn8_linkage'] }} | {{ c.metrics['cap_depth_tier'] }} | {{ c.metrics['cn8_reachable'] }} | {{ 'yes' if c.real_product_source else 'no' }} |
+{% endfor %}
+
 ## Execution log (latest census/recon run per source)
 
 {% if sources|selectattr("run")|list %}
