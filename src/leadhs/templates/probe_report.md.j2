@@ -5,7 +5,9 @@
 
 ## Funnel — the three questions (v0.2.2)
 
-{% if landscape.staging_absent_note %}_{{ landscape.staging_absent_note }}_{% endif %}
+{% if landscape.pool_v2 %}> ⚠ **{{ landscape.pool_v2.supersession_banner }}**
+
+{% endif %}{% if landscape.staging_absent_note %}_{{ landscape.staging_absent_note }}_{% endif %}
 {% set q1 = landscape.funnel.q1 %}{% set q2 = landscape.funnel.q2 %}{% set q3 = landscape.funnel.q3 %}{% set ratio = landscape.funnel.ratio %}
 **Q1 — market pool (modeled estimate):** {{ q1.formula }}{% if q1.absent %} — _range not computable: M bounds alone ({{ q1.m_bounds[0] }}–{{ q1.m_high_source }} producers) need the products-per-producer estimate from staged registers (e5)._{% else %} → range **[{{ q1.range[0] }}, {{ q1.range[1] }}]** products
 (M bounds: {{ q1.m_low_source }} / {{ q1.m_high_source }}; ppp = {{ q1.ppp.ppp }} = {{ q1.ppp.pairs }} distinct pairs ÷ {{ q1.ppp.manufacturers }} licence holders over the largest staged register {{ q1.ppp.source_id }}). {{ q1.label }}.{% endif %}
@@ -21,6 +23,20 @@ Per-CN8 modeled split (s = staged extra-EU kg share):
 **Q3 — SDS reachable (modeled): {{ q3.value }}** — {{ q3.label }}.{% endif %}
 {% if ratio.absent %}**v0.5 ratio (Q2 ÷ Q1):** _not computable without the Q2 floor._{% else %}
 **v0.5 ratio (Q2 ÷ Q1): {{ ratio.low }} – {{ ratio.high }}** — {{ ratio.label }}.{% endif %}
+
+## Pool estimate v2 (v0.2.3 — benchmark vote, dual-level verdict)
+
+{{ landscape.pool_v2.intro }}
+
+{{ landscape.pool_v2.vote_sku_md }}
+
+{{ landscape.pool_v2.verdict_sku_md }}
+
+{{ landscape.pool_v2.vote_formulation_md }}
+
+{{ landscape.pool_v2.verdict_formulation_md }}
+
+{{ landscape.pool_v2.compression_note }}
 
 ## N1 — market-size anchors
 

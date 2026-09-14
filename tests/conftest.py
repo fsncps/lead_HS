@@ -495,3 +495,103 @@ def make_fetcher():
 @pytest.fixture()
 def fetcher(make_fetcher):
     return make_fetcher()
+
+
+# ------------------------------------------------------------------
+# v0.2.3 shared synthetic-staging builder (ENG 2A): one builder feeds
+# the refinement, benchmark and verdict-path tests. Groups control the
+# key-tier structure exactly — (n_rows, n_eans, n_names, n_licences)
+# makes the per-tier collapse factors n_rows/n_eans, n_rows/n_names,
+# n_rows/n_licences known a priori, so hostile distributions can flip
+# the factor ranking deterministically.
+# ------------------------------------------------------------------
+
+@pytest.fixture()
+def make_synthetic_staging(tmp_path):
+    import json as _json
+
+    from leadhs import db as dbmod
+    from leadhs import staging as stgmod
+
+    def _doc(i: int) -> dict:
+        return {
+            "url": f"https://fixture.invalid/export-{i}",
+            "doc_hash": f"hash-{i:04d}",
+            "retrieval_date": "2026-09-14",
+        }
+
+    def _register_rows(source_id: str, groups) -> list:
+        rows = []
+        i = 0
+        for n_rows, n_eans, n_names, n_licences in groups:
+            for _ in range(n_rows):
+                ean = f"E{i % n_eans:06d}" if n_eans else ""
+                name = f"Name {i % n_names:04d}" if n_names else ""
+                rows.append(
+                    {
+                        "manufacturer_raw": "MFR",
+                        "manufacturer_norm": "mfr",
+                        "ident_raw": ean or name,
+                        "ident_norm": ean or name,
+                        "ident_type": "gtin" if ean else "none",
+                        "ident_basis": "ident" if ean else "name",
+                        "name": name,
+                        "category_raw": "Decorative paints, varnishes, and related products (2014 criteria)",
+                        "raw": _json.dumps(
+                            {"licence_number": f"XX/044/{i % n_licences:03d}", "company_name": "MFR"}
+                        ),
+                    }
+                )
+                i += 1
+        return rows
+
+    def _make(
+        ecat_groups=None,
+        ecat_source="AS-2",
+        trade_rows=None,
+        dk=None,
+        sources=None,
+    ):
+        """``sources``: [(source_id, class_code, notes, [(metric_code, value), …])]
+        — inserted into the evidence DB (source + done probe run +
+        findings), so ``metric_value``/``pe_distribution`` see them."""
+        stg = stgmod.connect(":memory:")
+        stgmod.init(stg)
+        stgmod.seed_dict(stg)
+        if ecat_groups:
+            stgmod.replace_products(stg, ecat_source, "synthetic-001", _doc(1), _register_rows(ecat_source, ecat_groups))
+        if dk:
+            dk_source, dk_groups = dk
+            stgmod.replace_products(stg, dk_source, "synthetic-dk", _doc(2), _register_rows(dk_source, dk_groups))
+        if trade_rows:
+            stgmod.replace_trade(
+                stg, "CS-2", "synthetic-trade", _doc(3),
+                [{"cn8": cn8, "flow": "1", "declarant": "EU", "partner": "WLD", "year": "2024", "kg": kg, "eur": kg} for cn8, kg in trade_rows],
+            )
+
+        ev = dbmod.connect(str(tmp_path / "ev-synth.sqlite"))
+        dbmod.migrate(ev, db_path=str(tmp_path / "ev-synth.sqlite"))
+        for source_id, class_code, notes, findings in sources or []:
+            ev.execute(
+                "INSERT INTO source (id, class_code, name, url, access_method_code, active, notes) "
+                "VALUES (?, ?, 'synthetic', 'https://fixture.invalid', 'manual', 1, ?)",
+                (source_id, class_code, notes),
+            )
+            run_key = f"synthetic-{source_id.lower()}"
+            ev.execute(
+                "INSERT INTO run (run_key, kind_code, source_id, started_at, finished_at, status_code) "
+                "VALUES (?, 'probe', ?, '2026-09-14T00:00:00Z', '2026-09-14T00:00:00Z', 'done')",
+                (run_key, source_id),
+            )
+            run_id = ev.execute("SELECT id FROM run WHERE run_key=?", (run_key,)).fetchone()[0]
+            ev.execute("INSERT INTO probe_run (run_id, mode_code) VALUES (?, 'census')", (run_id,))
+            for metric_code, value in findings:
+                ev.execute(
+                    "INSERT INTO probe_finding (run_id, metric_code, value_numeric, method_code) "
+                    "VALUES (?, ?, ?, 'manual')",
+                    (run_id, metric_code, value),
+                )
+        ev.commit()
+        return stg, ev
+
+    return _make

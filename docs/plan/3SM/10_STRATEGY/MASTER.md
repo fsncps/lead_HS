@@ -353,8 +353,38 @@ lead). Open questions and the phased roadmap follow.
     paints, INIES, IBU, environdec) — certified/declared subsets of
     the market, the N2 seed; the complete product list still needs PE
     catalogue expansion (deferred). **N1 is fully achievable from
-    official statistics at CN8 granularity** (Comext DS-045409 intra +
+    official statistics at     CN8 granularity** (Comext DS-045409 intra +
     extra; PRODCOM DS-059358; SBS).
+34. **Pool-estimate triangulation unit v0.2.3 (2026-09-14; user
+    direction, D35 — D34 is the v0.2.2 funnel-unit decision, recorded
+    in `v0.2.2.md`):** the Q1 range [85,840–343,360] is too wide and
+    its basis opaque; unit v0.2.3 is **research-intensive (minimal
+    development, no new scraping)** and delivers (a) an informed
+    estimate of the **auditable-products pool** (unique identified
+    products with substantial data + reachable SDS — counted, not
+    asserted) and (b) an informed estimate of the **total distinct
+    paint products on the EU market** — via four independent anchors:
+    A1 ECAT-inverse (certified count ÷ penetration denominator),
+    A2 national product-register scaling (SE/DK/NO paint-category
+    counts with scope corrections), A3 PCN mixture share (of 1.4M
+    mixtures notified EU-wide 2021), A4 long-tail bottom-up
+    (producer-size × assortment distributions, calibrated with the
+    staged PE `products_listed` distribution — replacing the uniform
+    ppp = 107.3). Research grounding (2026-09-14 evidence pass):
+    ECAT is the legally anchored register (Art. 9(10) Reg. (EC)
+    66/2010) but partial even in scope (EUEB status 04/2024: 87% of
+    licences / 69% of products registered; EANs often missing) and
+    certified-subset-only; the Commission publishes no ecolabel
+    market share (SWD(2017) 253); no published EU paint product
+    count exists anywhere (documented gap); assortment sizes are
+    long-tailed (Tikkurila ≈190; Brillux >12,000 articles).
+    **Reconciliation gate:** Commission 38,233 paints & varnishes
+    (03/2026) vs our staged 17,838 (group 044) — filter scope /
+    awarded-vs-registered / variant counting resolved in-unit.
+    Preliminary: the user's 20k–50k prior is unsupported (working
+    hypothesis ≈80k–300k registration-level, ≈40k–150k
+    formulation-level, D2 variant collapse); the final range comes
+    from the anchors.
 
 ## OPEN ITEMS
 
@@ -399,6 +429,26 @@ lead). Open questions and the phased roadmap follow.
   ECHA guidance document retrieved yet.
 - OPEN: FR/IT red-lead primer retail ("minium de plomb"/"minio rosso") —
   unverified; engine capacity, not evidence absence.
+- RESOLVED (v0.2.3, D35; 2026-09-14 build): BfR-Akademie 2022 Sweden
+  PDF — pc-pnt-* counts are **poison-centre submissions** (CLP Art. 45
+  PCN + voluntary; 71,231 paints/coatings 2022-09-15), not register
+  products; Danish AT CC0 dataset — **aggregates only** (embedded
+  Power BI; no adapter possible); JRC145238 superseded by the final
+  criteria-revision report (DOI 10.2760/4572222) — **no market-share
+  data exist** (official; 217 licences / 36,960 products 03/2025);
+  SWD(2022) 435 Annex 16 — 1,444,290 dossiers 2021, no paint-share /
+  non-hazardous constant; SBS verify — **3,300** (C2030, 2020).
+- OPEN (v0.2.3, D35): ECAT reconciliation — group-044 filter vs
+  Commission category (17,838 vs 38,233); awarded-vs-registered gap;
+  shade/pack variant counting — X1 measured the key-tier dedup (name
+  ×1.049, EAN ×1.266, 199 licences); the shade-collapse itself stays
+  not measurable from registry metadata (pinned 1–10 assumption band
+  in the verdict).
+- OPEN (v0.2.3, D35): PE `products_listed` distribution from the
+  staging DB (empirical ppp — walk idle since D31; B4 carries the
+  pinned 25–150 assortment band); B6 total-market anchors — none
+  exist (documented gap); SPIN reachability (low priority —
+  substance-level anyway).
 
 ## ROADMAP (strategy altitude)
 
@@ -498,6 +548,21 @@ lead). Open questions and the phased roadmap follow.
   (units/v0.2.2.md, fu1–fu10; CEO review HOLD SCOPE c1–c6; ENG review
   BIG CHANGE e1–e8); implementation plans drafted
   (30_IMPLEMENTATION/v0.2.2/, PHASE01–07); build awaits explicit go.
+  **Built 2026-09-14** (see the project dashboard MASTER.md).
+- `v0.2.3.md` — pool-estimate meta-benchmarking (D35, reframed by
+  the design turn): research-intensive, minimal development; the
+  deliverable is a **magnitude-class verdict** (contiguous classes
+  20–50/50–100/100–200/200–300/>300k, dual-level SKU + formulation)
+  under a pinned confidence rule, from six benchmarks B1–B6 in a
+  class-vote table; the ECAT reconciliation is a supporting input,
+  not a gate (T4 amended); Danish AT CC0 dataset staged as real
+  rows (user-approved scope addition). Design converged 2026-09-14
+  (`20_DESIGN/units/v0.2.3.md`, tr1–tr10; CEO HOLD SCOPE c1–c7);
+  implementation plans drafted (30_IMPLEMENTATION/v0.2.3/,
+  PHASE01–05). **Built 2026-09-14** (see the project dashboard
+  MASTER.md): verdict on real data — SKU class e, formulation class
+  c, both confidence-withheld; the Danish staging turned out
+  aggregates-only (shape gate) and did not deliver register rows.
 - **v0.3 (goal noted 2026-09-12, D32; the D32 vanilla-Windows
   distribution goal):** easy install on **vanilla Windows** (no make,
   no preinstalled Python) via a self-contained per-OS artifact; PyPI
@@ -550,5 +615,12 @@ For unit v0.2.2: strategy is DRAFT (D34, this document) — the funnel
 framing and the staging-DB / runtime-budget decisions confirmed
 2026-09-14. Design converged the same day (units/v0.2.2.md, fu1–fu10;
 CEO HOLD SCOPE c1–c6; ENG BIG CHANGE e1–e8 folded); implementation
-plans written (30_IMPLEMENTATION/v0.2.2/, PHASE01–07); build awaits
-explicit go. Grounded by the v0.2.1 review findings.
+plans written (30_IMPLEMENTATION/v0.2.2/, PHASE01–07). Built and
+executed 2026-09-14 — the funnel numbers and the reconciliation flag
+ground unit v0.2.3.
+
+For unit v0.2.3: strategy is DRAFT (D35, this document) — the
+four-anchor triangulation method, the auditable-products
+operationalization and the ECAT 17,838-vs-38,233 reconciliation gate
+await user validation; design (expected minimal) follows after
+convergence.

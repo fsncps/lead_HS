@@ -63,30 +63,40 @@ record: ## manual finding (SOURCE= METRIC= VALUE=|VALUE_TEXT= [UNIT=] [URL=] [NO
 		$(if $(URL),--url "$(URL)") \
 		$(if $(NOTE),--note "$(NOTE)")
 
-report: ## render md/csv/json into $(REPORT_DIR)
-	@mkdir -p $(REPORT_DIR)
-	$(LEADHS) probe report --format md   --out $(REPORT_DIR)/probe-report.md
-	$(LEADHS) probe report --format csv  --out $(REPORT_DIR)/probe-report.csv
-	$(LEADHS) probe report --format json --out $(REPORT_DIR)/probe-report.json
-
+# Render history policy (v0.2.3 addendum): every render writes an
+# immutable timestamped set probe-report.<UTC ts>.<ext> into
+# $(REPORT_DIR) — one shared ts per run, nothing overwritten — and
+# refreshes the unversioned "latest" copies for stable references.
 # Publish history policy (v0.2.2 PHASE07 addendum): every publish stages
 # the stable "latest" name AND an immutable timestamp-hash snapshot
 # <stem>.<UTC ts>.<sha256-8>.<ext>, so unit republishes never overwrite
 # a prior snapshot.
+TS = $(shell date -u +%Y%m%d-%H%M%S)
+
+report: ## render md/csv/json (timestamped set + latest copies) into $(REPORT_DIR)
+	@mkdir -p $(REPORT_DIR)
+	$(LEADHS) probe report --format md   --out $(REPORT_DIR)/probe-report.$(TS).md
+	$(LEADHS) probe report --format csv  --out $(REPORT_DIR)/probe-report.$(TS).csv
+	$(LEADHS) probe report --format json --out $(REPORT_DIR)/probe-report.$(TS).json
+	cp $(REPORT_DIR)/probe-report.$(TS).md   $(REPORT_DIR)/probe-report.md
+	cp $(REPORT_DIR)/probe-report.$(TS).csv  $(REPORT_DIR)/probe-report.csv
+	cp $(REPORT_DIR)/probe-report.$(TS).json $(REPORT_DIR)/probe-report.json
+	@echo "render set probe-report.$(TS).{md,csv,json} + latest copies in $(REPORT_DIR)"
 report-publish: ## stage one report into $(PUBLISH_DIR) (WHICH=…; copies, never moves; + timestamp-hash snapshot)
 	@test -n "$(WHICH)" || { echo "report-publish: set WHICH=path/to/report" >&2; exit 1; }
 	@test -f "$(WHICH)" || { echo "report-publish: no such file $(WHICH)" >&2; exit 1; }
 	@mkdir -p $(PUBLISH_DIR)
 	@src=$$(readlink -f "$(WHICH)"); \
 	dst_stem=$$(basename "$(WHICH)"); \
-	dst=$$(readlink -f "$(PUBLISH_DIR)")/$$dst_stem; \
-	if [ "$$src" != "$$dst" ]; then cp "$(WHICH)" "$(PUBLISH_DIR)/$$dst_stem"; fi; \
+	stable=$$(printf '%s' "$$dst_stem" | sed -E 's/\.[0-9]{8}-[0-9]{6}(\.[A-Za-z0-9]+)$$/\1/'); \
+	dst=$$(readlink -f "$(PUBLISH_DIR)")/$$stable; \
+	if [ "$$src" != "$$dst" ]; then cp "$(WHICH)" "$(PUBLISH_DIR)/$$stable"; fi; \
 	ts=$$(date -u +%Y%m%d-%H%M%S); \
 	h=$$(sha256sum "$(WHICH)" | cut -c1-8); \
-	base=$${dst_stem%.*}; ext=$${dst_stem##*.}; \
-	if [ "$$base" = "$$ext" ]; then snap="$$dst_stem.$$ts.$$h"; else snap="$$base.$$ts.$$h.$$ext"; fi; \
+	base=$${stable%.*}; ext=$${stable##*.}; \
+	if [ "$$base" = "$$ext" ]; then snap="$$stable.$$ts.$$h"; else snap="$$base.$$ts.$$h.$$ext"; fi; \
 	cp "$(WHICH)" "$(PUBLISH_DIR)/$$snap"; \
-	echo "staged $$(basename "$(WHICH)") into $(PUBLISH_DIR)/ (+ snapshot $$snap) — committing is explicit"
+	echo "staged $$stable into $(PUBLISH_DIR)/ (+ snapshot $$snap) — committing is explicit"
 
 guard-%:
 	@test "$(GO)" = "1" || { echo "$*: set GO=1 to confirm (GO=1 make $*)" >&2; exit 1; }

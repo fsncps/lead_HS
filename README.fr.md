@@ -87,7 +87,54 @@ c'est une étude documentaire qui ne prend pas position sur la
 réglementation elle-même. La Suisse n'intervient dans l'étude que
 comme ce cadre réglementaire — le marché étudié est celui de l'UE.
 
-## Étape actuelle : l'entonnoir à trois questions (v0.2.2)
+## Étape actuelle : estimation de pool v2 (v0.2.3)
+
+L'unité v0.2.3 remplace le titre à modèle unique de v0.2.2 par un
+**vote méta-benchmark** : sept quantités de référence indépendantes
+estiment le pool de peintures de l'UE ; chacune vote dans l'une des
+cinq classes de magnitude contiguës (a 20k–50k … e >300k), et une
+règle épinglée convertit le vote en un **verdict à deux niveaux** —
+niveau SKU (comptage registre/produit) et niveau formulation
+(collapsé ombre/conditionnement). La confiance n'est revendiquée que
+lorsque ≥3 benchmarks disponibles convergent sans conflit exclusif non
+adjacent ; les égalités rendent une fourchette avec les hypothèses de
+basculement ; le vote reste visible dans tous les cas.
+
+- **Niveau SKU : classe e (>300k produits)** — confiance non
+  revendiquée (trois benchmarks se situent dans des classes non
+  adjacentes ; consignés comme points ouverts).
+- **Niveau formulation : classe c (100k–200k)** — confiance non
+  revendiquée ; la conversion de niveau repose sur une fourchette
+  épinglée d'effondrement d'ombres 1–10, signalée comme hypothèse (la
+  déduplication mesurable des clés ECAT est faible : nom ×1,049,
+  EAN ×1,266).
+- De nouvelles extractions de sources primaires alimentent les
+  benchmarks : déclarations des centres antipoison suédois
+  peintures/vernis 71 231 (2022) ; dossiers PCN 1 444 290 (2021,
+  SWD(2022) 435 annexe 16 — aucune constante de part de peinture
+  n'existe) ; rapport final du JCR sur l'Écolabel européen (2026) :
+  36 960 produits certifiés (03/2025) et la confirmation officielle
+  qu'**aucune donnée de part de marché n'existe** ; Produktregistret
+  danois ≈40 000 produits dangereux (agrégats uniquement — pas
+  d'adaptateur possible) ; vérification Eurostat SBS : 3 300
+  entreprises (NACE C2030, 2020).
+- La section entonnoir du rapport publié porte désormais un bandeau
+  de péremption ; son contenu v0.2.2 est conservé dans l'historique
+  de publication.
+- La passe complète de sondage du 14.09.2026 (vagues 1–3) a
+  reproduit chaque chiffre clé (ECAT 17 838 rapproché exactement ;
+  Comext 6 316 lignes ; ensembles bloqués/en échec identiques) —
+  constats, lacunes et pistes dans le document compagnon
+  [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
+
+Rapport d'unité : [report-0.2.3.md](docs/report/report-0.2.3.md) ;
+tableaux lisibles par machine (vote des benchmarks, verdicts, toutes
+les sections antérieures) dans le
+[rapport de sondage](docs/report/probe-report.md).
+
+## Unités antérieures
+
+### v0.2.2 — l'entonnoir à trois questions (14.09.2026)
 
 L'unité v0.2.2 a exécuté les **passes du paysage sur le réseau réel**
 (14.09.2026 ; reconnaissance uniquement — exports/APIs officiels, pas
@@ -100,7 +147,8 @@ chiffre est le résultat d'une requête de base de données :
   3 200 (Eurostat SBS NACE 20.30) × **107,3 produits par producteur**
   (ECAT : paires ÷ titulaires de licence) × parts de volume des
   importations extra-UE par code CN8. Une estimation modélisée, jamais
-  un décompte.
+  un décompte. **Supplanté depuis le 14.09.2026 par le vote benchmark
+  v0.2.3 (ci-dessus) ; conservé dans l'historique de publication.**
 - **Q2 — pour combien de produits le triplet d'identité est
   définitivement connu (plancher) :** **17 170** paires distinctes
   (fabricant, identifiant produit) sur les registres officiels
@@ -121,8 +169,6 @@ n'est pas établi. Rapport d'unité :
 lisibles par machine (commerce CN8, identité, matrice de profondeur,
 recensement, drapeaux de rapprochement) dans le
 [rapport de sondage](docs/report/probe-report.md).
-
-## Unités antérieures
 
 ### v0.2.1 — capacité des sources sondée (14.09.2026)
 
@@ -212,7 +258,7 @@ conception technique revue dans
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0–v0.2.2 construites) — suivi des phases, critères de sortie |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0–v0.2.3 construites) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -241,16 +287,17 @@ conception technique revue dans
 
 ## État
 
-Les unités outil v0.1.1–v0.2.2 sont construites et testées (299 tests
+Les unités outil v0.1.1–v0.2.3 sont construites et testées (341 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente
 d'un feu vert de collecte), carte du paysage des données avec les
 trois chiffres phares, sondage de capacité des registres officiels,
-et l'entonnoir à trois questions exécuté sur le réseau réel
-(14.09.2026) : base d'établissement, exécution par vagues, disposition
-complète du registre de 101 lignes et le rapport avec les sections
-entonnoir, commerce CN8, identité, profondeur et recensement — chaque
-chiffre est un résultat de requête. Le rapport est publié sous
-`docs/report/`. La méthodologie reste ouverte à révision à mesure que
-les résultats arrivent.
+l'entonnoir à trois questions exécuté sur le réseau réel
+(14.09.2026), et l'estimation de pool v2 — le vote méta-benchmark
+avec un verdict de magnitude à deux niveaux (14.09.2026) : moteur de
+benchmarks, paquet d'adaptateurs, quatre nouvelles extractions
+primaires, section de rapport avec bandeau de péremption — chaque
+chiffre est un résultat de requête ou une extraction datée. Le rapport
+est publié sous `docs/report/`. La méthodologie reste ouverte à
+révision à mesure que les résultats arrivent.

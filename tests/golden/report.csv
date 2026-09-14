@@ -31,4 +31,13 @@ depth,tier 4,,0
 census,enumerated,,16
 census,probed,,2
 census,counted,,0
+pool_v2,B1,band,low=46250.0 base=98750 high=210000.0 base_class=b
+pool_v2,B2-SE,indeterminate,"no staged national register counts (SE PC poison-centre submissions — voluntary-inclusive, upper envelope)"
+pool_v2,B2-DK,indeterminate,"no staged national register counts (DK total notified ≈40,000 — hazardous-only; paint split Power-BI-only (not extractable, D31))"
+pool_v2,B3,indeterminate,missing PCN mixture count
+pool_v2,B4,indeterminate,missing producer count or assortment band
+pool_v2,B5,band,low=123200.0 base=246400 high=739200.0 base_class=d
+pool_v2,B6,band,low=14700 base=20648 high=26597 base_class=a
+pool_v2,verdict_sku,a–b–d,available=3 confidence=None
+pool_v2,verdict_formulation,a–d,available=3 confidence=None
 staging,absent,,"Staging DB not provided or empty — the funnel floor, CN8 trade table, identity table and per-CN8 pool split render as explicit absence notes (e5). Re-run the W1 waves with the staging DB to populate them."

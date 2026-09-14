@@ -1,5 +1,5 @@
 ---
-unit: v0.2.2
+unit: v0.2.3
 stage: IMPLEMENTATION
 lifecycle: LIVE
 updated: 2026-09-14
@@ -26,22 +26,37 @@ works purely from documents — chiefly safety data sheets (SDS) and
 statistics — with no laboratory and at minimal cost. The outcome is
 documented market numbers for the surrounding decision-making plus a
 reusable database of checked products. This file is the project
-dashboard. Current stage: **v0.2.2 — the three-question funnel
-(product-identity and granularity sounding-out)** (`10_STRATEGY/
-v0.2.2.md`, D34; strategy DRAFT — freeze untouched). **Built and
-executed 2026-09-14:** all seven phases done, offline suite green
-(299 passed, 2 deselected), `db audit` clean, wheel 0.2.2 verified;
-the real-network landscape run (GO=1, reconnaissance-only)
-dispositioned the 101-row register (36 counted / 48 manual-recorded /
-4 blocked / 13 inactive-by-design), staged ECAT 17,838 rows
-(reconciling exactly with the v0.2.1 record) and Comext 6,316 trade
-rows (all 13 CN8 codes), and the report is published under
-`docs/report/probe-report.{md,csv,json}`. Headline funnel: **Q1 pool
+dashboard. Current stage: **v0.2.3 — pool estimate v2
+(meta-benchmarking, dual-level magnitude verdict)**
+(`10_STRATEGY/v0.2.3.md`, D35; strategy DRAFT — freeze untouched).
+**Built and executed 2026-09-14:** PHASE01–05 done, offline suite
+green (341 passed, 2 deselected), `db audit` clean, wheel 0.2.3
+verified. The verdict on real data: **SKU level class e (>300k
+products), formulation level class c (100k–200k) — both
+confidence-withheld** (divergences recorded per the pinned rule);
+the formulation conversion rides a pinned 1–10 shade-collapse band
+(flagged assumption — measurable ECAT key-tier dedup is small:
+name ×1.049, EAN ×1.266 over 17,838 rows, 199 licences). New
+primary extractions (all URL + access-dated): Swedish poison-centre
+paints/coatings 71,231 (2022); PCN dossiers 1,444,290 (2021,
+SWD(2022) 435 Annex 16 — no paint-share constant exists); JRC
+final Ecolabel report (DOI 10.2760/4572222): 36,960 certified
+products 03/2025 and the official confirmation that **no
+market-share data exist**; Danish Produktregistret ≈40,000
+hazardous products (aggregates-only — no adapter possible, PHASE02
+shape gate); Eurostat SBS verify: 3,300 enterprises (NACE C2030,
+2020). The funnel section of the published report carries a
+supersession banner; the report is re-published under
+`docs/report/probe-report.{md,csv,json}` with timestamp-hash
+snapshots. Unit report: `docs/report/report-0.2.3.md`.
+Prior v0.2.2 headline: the three-question funnel — **Q1 pool
 (modeled estimate) [85,840–343,360] products** (M 800–3,200 × ppp
-107.3 × staged CN8 kg shares) · **Q2 definitively identifiable
-(floor) 17,170** distinct (manufacturer, product-ident) pairs ·
-**Q3 SDS reachable (modeled, upper bound) 3,590** · **v0.5 ratio
-0.05–0.2**; ECAT ∩ Nordic Swan overlap pilot explicitly not computable
+107.3 × staged CN8 kg shares; **superseded 2026-09-14 by the v0.2.3
+benchmark vote, kept for the publish history**) · **Q2 definitively
+identifiable (floor) 17,170** distinct (manufacturer, product-ident)
+pairs · **Q3 SDS reachable (modeled, upper bound) 3,590** ·
+**v0.5 ratio 0.05–0.2**; ECAT ∩ Nordic Swan overlap pilot explicitly
+not computable
 until a second register is staged. Prior v0.2.1 headline: the
 preliminary N2 numerator (official registers, floor) = 17,838 — ECAT
 confirmed a real-product source (manufacturer + GTIN/EAN, depth tier
@@ -50,11 +65,13 @@ confirmed a real-product source (manufacturer + GTIN/EAN, depth tier
 members; SBS NACE 20.30 = 3,200 enterprises 2020); N2 = 204,693
 sitemap-visible product URLs across 23 counted sources; N3 = 9 sites
 with a visible SDS library.
-**After v0.2.2 (v0.3, DRAFT):** official-source product identification /
+**After v0.2.3 (v0.3, DRAFT):** official-source product identification /
 product-DB seeding — seed the product evidence DB from the real-product
 sources (ECAT first), then PE-catalogue scraping and the full list +
 coverage; the overlap pilot (second register staging) rides ahead of
-or with it.
+or with it — the v0.2.3 Danish shape gate showed the AT dataset is
+aggregates-only, so the pilot needs a different second register
+(candidate: Nordic Swan per browser pass).
 Unit v0.1.1 built (probe CLI gate-verified; census feasibility pass
 executed 2026-09-11); unit v0.1.2 — operator layer + census close-out
 (D26) — **built 2026-09-11** (PHASE01–06 done; 155 offline tests
@@ -86,6 +103,8 @@ no paid data sources, minimal cost.
 | v0.1.3 (data-landscape map) | IMPLEMENTATION | strategy converged 2026-09-12 on D30 (three-number deliverable); design + PHASE01–07 written (CEO HOLD + ENG SMALL CHANGE 2026-09-12); PHASE01 (D28 rework) built 2026-09-12 — 165 offline tests, audit clean; **D31: walk execution supersedes into v0.2.0 (machinery idles); pe1/pe2/pe6 groundwork + docs transfer to v0.2.0** |
 | v0.2.0 (market scale & data availability — the numbers unit) | IMPLEMENTATION | the D31 strategy turn (`v0.2.md`, DRAFT): N1 estimate, N2/N3 access tiers, AS-class discovery, EU-only, no-scrape recon. Design converged 2026-09-12 (nu1–nu9; CEO HOLD SCOPE; decision 1A); implementation plans drafted + ENG-reviewed 2026-09-12 (BIG CHANGE; e1–e8 folded); **built 2026-09-12** — PHASE01–07 done, 205 offline tests, probe report published (N1 anchors / N2=204,693 / N3=9 sites), audit clean |
 | v0.2.1 (source-level sounding-out of the expanded universe) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor; strategy `v0.2.1.md` stays DRAFT) |
+| v0.2.2 (the three-question funnel) | IMPLEMENTATION | built 2026-09-14 (PHASE01–07 done; 299 offline tests; real-network landscape run, report published — Q1 [85,840–343,360] modeled / Q2 17,170 floor / Q3 3,590; strategy `v0.2.2.md` stays DRAFT); Q1 superseded 2026-09-14 by v0.2.3 (kept for the publish history) |
+| v0.2.3 (pool estimate v2 — meta-benchmarking) | IMPLEMENTATION | built 2026-09-14 (PHASE01–05 done; 341 offline tests; verdict SKU class e / formulation class c, both confidence-withheld; adapters package, four primary extractions, report re-published with supersession banner; strategy `v0.2.3.md` stays DRAFT) |
 
 ## Documents
 

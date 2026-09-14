@@ -73,7 +73,10 @@ explicit user instruction.
   `docs/report/report-<unit>.md` (e.g. `report-0.2.2.md`, EN-only).
   The machine-readable probe report (`probe-report.*`) lives alongside;
   republishes append timestamp-hash snapshots (publish history policy,
-  v0.2.2 PHASE07 addendum).
+  v0.2.2 PHASE07 addendum). Working renders in `data/report/` are
+  timestamped per run (`probe-report.<UTC ts>.{md,csv,json}`, nothing
+  overwritten) with unversioned "latest" copies kept for stable
+  references (render history policy, v0.2.3 addendum).
 - `docs/management_summary.md` — bilingual (DE/FR) management summary for
   decision makers: always keep it current whenever the project's substance
   changes; it is linked early in the README.

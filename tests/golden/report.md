@@ -4,6 +4,8 @@ This report answers two study questions: (Q1) how many paint/varnish products ea
 
 ## Funnel — the three questions (v0.2.2)
 
+> ⚠ **Superseded 2026-09-14 (v0.2.3): the funnel-modeled Q1 (M-bounds × uniform products-per-producer) is superseded by the pool estimate v2 section below (7-benchmark vote, dual-level verdict). The funnel block is kept for the publish history — republishes append timestamp-hash snapshots.**
+
 _Staging DB not provided or empty — the funnel floor, CN8 trade table, identity table and per-CN8 pool split render as explicit absence notes (e5). Re-run the W1 waves with the staging DB to populate them._
 
 **Q1 — market pool (modeled estimate):** P(cn8) = M × ppp × s(cn8) — _range not computable: M bounds alone (800–Eurostat SBS NACE 20.30 enterprise count (ST-3 prior) producers) need the products-per-producer estimate from staged registers (e5)._
@@ -11,6 +13,50 @@ _Per-CN8 split absent: no staged trade volumes / no ppp estimate (run the W1 wav
 **Q2 — definitively identifiable:** _absent — no staged registers (e5)._
 **Q3 — SDS reachable:** _absent — no site combines a visible SDS library with a sitemap product count yet._
 **v0.5 ratio (Q2 ÷ Q1):** _not computable without the Q2 floor._
+
+## Pool estimate v2 (v0.2.3 — benchmark vote, dual-level verdict)
+
+The v0.2.3 pool estimate: seven benchmark quantities vote into the magnitude taxonomy (a 20k–50k · b 50k–100k · c 100k–200k · d 200k–300k · e >300k); the pinned rule converts the vote into a dual-level verdict (SKU = registry/product level, formulation = shade/pack-collapsed). Estimates are bands, never points; indeterminate benchmarks stay visible; confidence is claimed only when ≥3 benchmarks converge at base with no exclusive non-adjacent conflict.
+
+| # | Quantity | Vintage | Band (low–high) | Base class(es) | Notes |
+|---|---|---|---|---|---|
+| B1 | EU tonnage ÷ per-SKU throughput | 2024 (JRC AHWG; accessed 2026-09-14) | 46,250–210,000 | b (↓a ↑d) | per-SKU throughput scenarios 20000–80000 kg/yr (base 40000); throughput per SKU is the flip assumption — abstracts pin it (X4) |
+| B2-SE | national paint count × EU scale × scope | 2022-09-15 (SE PC Echo, BfR-Akademie deck) | — | — | indeterminate: no staged national register counts (SE PC poison-centre submissions — voluntary-inclusive, upper envelope) |
+| B2-DK | national paint count × EU scale × scope | undated web figure (at.dk, accessed 2026-09-14) | — | — | indeterminate: no staged national register counts (DK total notified ≈40,000 — hazardous-only; paint split Power-BI-only (not extractable, D31)) |
+| B3 | notified mixtures × paint share × uplift | 2021 (SWD(2022) 435 Annex 16) | — | — | indeterminate: missing PCN mixture count |
+| B4 | producers × assortment | 2020 (SBS C2030) / 2026 (CEPE web) | — | — | indeterminate: missing producer count or assortment band |
+| B5 | certified count ÷ penetration | 03/2025 (JRC final report) | 123,200–739,200 | d (↓c ↑e) | penetration scenarios 0.05–0.3 (base 0.15) — no official market share exists |
+| B6 | out-of-pool sanity anchors | 07/2026 (Paint Color HQ; CoatingsTech 02/2021) | 14,700–26,597 | a (↓<a ↑a) | US named-colour catalogs: 26,597 colours / 13 brands, ≈14,700 distinct after ΔE-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021) |
+
+Base-vote tally: 20k–50k: 1 · 50k–100k: 1 · 100k–200k: 0 · 200k–300k: 1 · >300k: 0.
+
+**Verdict: span 20k–50k · 50k–100k · 200k–300k** at the sku level.
+
+Confidence: not claimed — tie — span reported with flip assumptions, no confidence claim (c3)
+
+Flip assumptions: per-SKU throughput scenarios 20000–80000 kg/yr (base 40000); throughput per SKU is the flip assumption — abstracts pin it (X4); penetration scenarios 0.05–0.3 (base 0.15) — no official market share exists; US named-colour catalogs: 26,597 colours / 13 brands, ≈14,700 distinct after ΔE-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021).
+
+| # | Quantity | Vintage | Band (low–high) | Base class(es) | Notes |
+|---|---|---|---|---|---|
+| B1 | EU tonnage ÷ per-SKU throughput | 2024 (JRC AHWG; accessed 2026-09-14) | 4,625–210,000 | <a (↓<a ↑d) | formulation level via compression factor ×1–10 (c2); per-SKU throughput scenarios 20000–80000 kg/yr (base 40000); throughput per SKU is the flip assumption — abstracts pin it (X4) |
+| B2-SE | national paint count × EU scale × scope | 2022-09-15 (SE PC Echo, BfR-Akademie deck) | — | — | indeterminate: no staged national register counts (SE PC poison-centre submissions — voluntary-inclusive, upper envelope) |
+| B2-DK | national paint count × EU scale × scope | undated web figure (at.dk, accessed 2026-09-14) | — | — | indeterminate: no staged national register counts (DK total notified ≈40,000 — hazardous-only; paint split Power-BI-only (not extractable, D31)) |
+| B3 | notified mixtures × paint share × uplift | 2021 (SWD(2022) 435 Annex 16) | — | — | indeterminate: missing PCN mixture count |
+| B4 | producers × assortment | 2020 (SBS C2030) / 2026 (CEPE web) | — | — | indeterminate: missing producer count or assortment band |
+| B5 | certified count ÷ penetration | 03/2025 (JRC final report) | 123,200–739,200 | d (↓c ↑e) | penetration scenarios 0.05–0.3 (base 0.15) — no official market share exists |
+| B6 | out-of-pool sanity anchors | 07/2026 (Paint Color HQ; CoatingsTech 02/2021) | 14,700–26,597 | a (↓<a ↑a) | US named-colour catalogs: 26,597 colours / 13 brands, ≈14,700 distinct after ΔE-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021) |
+
+Base-vote tally: 20k–50k: 1 · 50k–100k: 0 · 100k–200k: 0 · 200k–300k: 1 · >300k: 0.
+
+**Verdict: span 20k–50k · 200k–300k** at the formulation level.
+
+Confidence: not claimed — tie — span reported with flip assumptions, no confidence claim (c3)
+
+Flip assumptions: penetration scenarios 0.05–0.3 (base 0.15) — no official market share exists; US named-colour catalogs: 26,597 colours / 13 brands, ≈14,700 distinct after ΔE-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021).
+
+Divergent benchmarks (open items): B1 → <a.
+
+formulation-level conversion rides the pinned 1–10 shade-collapse band (assumption — not measurable from registry metadata). X1 measured key-tier structure: no staging DB connected.
 
 ## N1 — market-size anchors
 

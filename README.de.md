@@ -84,7 +84,52 @@ Dokumentstudie und bezieht keine Position zur Regelung selbst. Die
 Schweiz kommt in der Studie nur als dieser regulatorische Rahmen vor —
 untersuchter Markt ist der EU-Markt.
 
-## Aktueller Stand: der Drei-Fragen-Trichter (v0.2.2)
+## Aktueller Stand: Pool-Schätzung v2 (v0.2.3)
+
+Die Einheit v0.2.3 ersetzt die Ein-Modell-Überschrift von v0.2.2 durch
+eine **Meta-Benchmark-Abstimmung**: sieben unabhängige Benchmark-Grössen
+schätzen den EU-Farben-Pool; jede stimmt in eine von fünf aneinander-
+anschliessenden Grössenklassen (a 20k–50k … e >300k), und eine fest
+gepinnte Regel wandelt die Abstimmung in ein **doppelstufiges Urteil**
+um — SKU-Stufe (Register-/Produktzählung) und Formulierungs-Stufe
+(schatten-/gebindekollabiert). Vertrauen wird nur erklärt, wenn ≥3
+verfügbare Benchmarks ohne ausschliesslich nicht-angrenzenden Konflikt
+konvergieren; Gleichstände liefern eine Spanne samt Kipp-Annahmen; die
+Abstimmung ist in jedem Fall vollständig sichtbar.
+
+- **SKU-Stufe: Klasse e (>300k Produkte)** — Vertrauen nicht erklärt
+  (drei Benchmarks liegen in nicht-angrenzenden Klassen; als offene
+  Punkte vermerkt).
+- **Formulierungs-Stufe: Klasse c (100k–200k)** — Vertrauen nicht
+  erklärt; die Stufen-Umsetzung reitet auf einer gepinnten 1–10
+  Schattenkollaps-Spanne, als Annahme gekennzeichnet (die messbare
+  ECAT-Schlüssel-Deduplizierung ist klein: Name ×1,049, EAN ×1,266).
+- Neue Primärquellen-Extraktionen füttern die Benchmarks:
+  schwedische Giftzentren-Meldungen Farben/Lacke 71'231 (2022);
+  PCN-Dossiers 1'444'290 (2021, SWD(2022) 435 Anhang 16 — keine
+  Farbanteil-Konstante existiert); JRC-Abschlussbericht Ecolabel
+  (2026): 36'960 zertifizierte Produkte (03/2025) und die amtliche
+  Bestätigung, dass **keine Marktanteil-Daten existieren**; dänisches
+  Produktregistret ≈40'000 gefährliche Produkte (nur Aggregate —
+  kein Adapter möglich); Eurostat-SBS-Verifikation: 3'300
+  Unternehmen (NACE C2030, 2020).
+- Der Trichter-Abschnitt des publizierten Berichts trägt jetzt ein
+  Überholt-Banner; sein v0.2.2-Inhalt bleibt in der
+  Veröffentlichungshistorie erhalten.
+- Der volle Sondierungslauf vom 14.09.2026 (Wellen 1–3) reproduzierte
+  jede Kernzahl (ECAT 17'838 exakt abgeglichen; Comext 6'316 Zeilen;
+  identische blockiert/fehlerhaft-Sets) — Befunde, Lücken und Wege im
+  Begleitdokument
+  [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
+
+Einheitsbericht: [report-0.2.3.md](docs/report/report-0.2.3.md);
+maschinenlesbare Tabellen (Benchmark-Abstimmung, Urteile, alle
+bisherigen Abschnitte) im
+[Sondierungsbericht](docs/report/probe-report.md).
+
+## Frühere Einheiten
+
+### v0.2.2 — der Drei-Fragen-Trichter (14.09.2026)
 
 Die Einheit v0.2.2 hat die **Landschaftsläufe im echten Netz**
 ausgeführt (14.09.2026; nur Erkundung — amtliche Exporte/APIs, kein
@@ -97,6 +142,8 @@ Zahl ein Datenbank-Abfrageergebnis:
   NACE 20.30) × **107,3 Produkte je Hersteller** (ECAT: Paare ÷
   Lizenznehmer) × mengengewichte der gestützten Ausseneinfuhr je
   CN8-Code. Eine modellierte Schätzung, nie eine Zählung.
+  **Überholt seit 14.09.2026 durch die v0.2.3-Benchmark-Abstimmung
+  (oben); bleibt in der Veröffentlichungshistorie erhalten.**
 - **F2 — für wie viele Produkte das Identitäts-Tripel definitiv
   bekannt ist (Untergrenze):** **17'170** unterscheidbare
   (Hersteller, Produkt-Ident)-Paare über die gestützten amtlichen
@@ -117,8 +164,6 @@ Register gestützt ist. Einheitsbericht:
 Tabellen (CN8-Handel, Identität, Tiefenmatrix, Kapitel,
 Abstimmungskennzeichen) im
 [Sondierungsbericht](docs/report/probe-report.md).
-
-## Frühere Einheiten
 
 ### v0.2.1 — Quellenfähigkeit sondiert (14.09.2026)
 
@@ -207,7 +252,7 @@ begutachtete technische Design in
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0–v0.2.2 gebaut) — Phasenverfolgung, Abnahme-Gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0–v0.2.3 gebaut) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -236,15 +281,16 @@ begutachtete technische Design in
 
 ## Status
 
-Die Werkzeug-Einheiten v0.1.1–v0.2.2 sind gebaut und getestet (299
+Die Werkzeug-Einheiten v0.1.1–v0.2.3 sind gebaut und getestet (341
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
 Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
 Katalogdurchläufe (wartet auf eine Sammel-Freigabe), die
 Datenlandschaft-Karte mit den drei Leitgrössen, die
-Quellenfähigkeits-Sondierung der amtlichen Register sowie der
-Drei-Fragen-Trichter im echten Netz (14.09.2026): Staging-Datenbank,
-Wellen-Ausführung, vollständige Disposition des 101-Zeilen-Registers
-und der Bericht mit Trichter-, CN8-Handels-, Identitäts-, Tiefen- und
-Kapitel-Abschnitten — jede Zahl ein Abfrageergebnis. Der Bericht ist
-unter `docs/report/` veröffentlicht. Die Methodik bleibt offen für
-Revision, während Ergebnisse eintreffen.
+Quellenfähigkeits-Sondierung der amtlichen Register, der
+Drei-Fragen-Trichter im echten Netz (14.09.2026) sowie die
+Pool-Schätzung v2 — die Meta-Benchmark-Abstimmung mit doppelstufigem
+Grössenklassen-Urteil (14.09.2026): Benchmark-Maschine,
+Adapter-Paket, vier neue Primärextraktionen, Berichtsabschnitt mit
+Überholt-Banner — jede Zahl ein Abfrageergebnis oder eine datierte
+Extraktion. Der Bericht ist unter `docs/report/` veröffentlicht. Die
+Methodik bleibt offen für Revision, während Ergebnisse eintreffen.

@@ -56,15 +56,14 @@
         "PE-62"
       ],
       "c": [
-        "AS-6",
-        "AS-7",
         "CS-2",
-        "PE-53",
-        "ST-4"
+        "PE-53"
       ],
       "d": [
         "AS-2",
         "AS-3",
+        "AS-6",
+        "AS-7",
         "PE-24",
         "PE-31",
         "PE-35",
@@ -74,14 +73,15 @@
         "PE-54",
         "PE-56",
         "PE-58",
-        "ST-2"
+        "ST-2",
+        "ST-4"
       ]
     },
     "tier_sizes": {
       "a": 0,
       "b": 35,
-      "c": 5,
-      "d": 12
+      "c": 2,
+      "d": 15
     },
     "n2_total": 331644.0,
     "n2_components": [
@@ -391,7 +391,7 @@
         "source_id": "AS-10",
         "class_code": "AS",
         "active": false,
-        "run_key": "probe-20260914-as10-2",
+        "run_key": "probe-20260914-as10manual",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -551,7 +551,7 @@
         "source_id": "AS-2",
         "class_code": "AS",
         "active": true,
-        "run_key": "probe-20260914-as2-3",
+        "run_key": "probe-20260914-as2-2",
         "status": "done",
         "metrics": {
           "products_identifiable": "17838 count",
@@ -727,7 +727,7 @@
         "source_id": "AS-3",
         "class_code": "AS",
         "active": true,
-        "run_key": "probe-20260914-as3-3",
+        "run_key": "probe-20260914-as3manual",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -791,7 +791,7 @@
         "source_id": "AS-6",
         "class_code": "AS",
         "active": true,
-        "run_key": "probe-20260914-as6-3",
+        "run_key": "probe-20260914-as6manual",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -807,7 +807,7 @@
         "source_id": "AS-7",
         "class_code": "AS",
         "active": true,
-        "run_key": "probe-20260914-as7-3",
+        "run_key": "probe-20260914-as7manual",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -823,7 +823,7 @@
         "source_id": "AS-8",
         "class_code": "AS",
         "active": false,
-        "run_key": "probe-20260914-as8-2",
+        "run_key": "probe-20260914-as8manual",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -839,7 +839,7 @@
         "source_id": "AS-9",
         "class_code": "AS",
         "active": false,
-        "run_key": "probe-20260914-as9-2",
+        "run_key": "probe-20260914-as9manual",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -871,7 +871,7 @@
         "source_id": "CS-2",
         "class_code": "CS",
         "active": true,
-        "run_key": "probe-20260914-cs2-2",
+        "run_key": "probe-20260914-cs2",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -1959,7 +1959,7 @@
         "source_id": "ST-4",
         "class_code": "ST",
         "active": true,
-        "run_key": "probe-20260914-st4-2",
+        "run_key": "probe-20260914-st4manual",
         "status": "done",
         "metrics": {
           "products_identifiable": "\u2014",
@@ -2026,7 +2026,7 @@
         {
           "source_id": "AS-2",
           "products_identifiable": 17838.0,
-          "run_key": "probe-20260914-as2-3"
+          "run_key": "probe-20260914-as2-2"
         }
       ],
       "caveat": "Preliminary N2 numerator (official registers, floor): sum of products_identifiable over the real-product sources below. Official registers are certified/declared subsets of the market, never a market total \u2014 a floor, cited to the run it comes from."
@@ -2366,7 +2366,7 @@
       "registers": [
         {
           "source_id": "AS-2",
-          "run_key": "probe-20260914-as2-3",
+          "run_key": "probe-20260914-as2-2",
           "entries": 17838,
           "distinct_manufacturers": 160,
           "distinct_pairs": 17170,
@@ -2442,57 +2442,57 @@
         {
           "source_id": "PE-23",
           "sds_doc_urls": 1133.0,
-          "run_key": "probe-20260914-pe23-3"
+          "run_key": "probe-20260914-pe23-2"
         },
         {
           "source_id": "PE-20",
-          "sds_doc_urls": 652.0,
-          "run_key": "probe-20260914-pe20-3"
+          "sds_doc_urls": 659.0,
+          "run_key": "probe-20260914-pe20-2"
         },
         {
           "source_id": "PE-43",
           "sds_doc_urls": 401.0,
-          "run_key": "probe-20260914-pe43-3"
+          "run_key": "probe-20260914-pe43-2"
         },
         {
           "source_id": "PE-27",
           "sds_doc_urls": 5.0,
-          "run_key": "probe-20260914-pe27-3"
+          "run_key": "probe-20260914-pe27-2"
         },
         {
           "source_id": "PE-34",
           "sds_doc_urls": 5.0,
-          "run_key": "probe-20260914-pe34-3"
+          "run_key": "probe-20260914-pe34-2"
         },
         {
           "source_id": "PE-29",
           "sds_doc_urls": 4.0,
-          "run_key": "probe-20260914-pe29-3"
+          "run_key": "probe-20260914-pe29-2"
         },
         {
           "source_id": "PE-11",
           "sds_doc_urls": 3.0,
-          "run_key": "probe-20260914-pe11-3"
+          "run_key": "probe-20260914-pe11-2"
         },
         {
           "source_id": "PE-19",
           "sds_doc_urls": 3.0,
-          "run_key": "probe-20260914-pe19-3"
+          "run_key": "probe-20260914-pe19-2"
         },
         {
           "source_id": "PE-10",
           "sds_doc_urls": 2.0,
-          "run_key": "probe-20260914-pe10-3"
+          "run_key": "probe-20260914-pe10-2"
         },
         {
           "source_id": "PE-28",
           "sds_doc_urls": 2.0,
-          "run_key": "probe-20260914-pe28-3"
+          "run_key": "probe-20260914-pe28-2"
         },
         {
           "source_id": "PE-32",
           "sds_doc_urls": 1.0,
-          "run_key": "probe-20260914-pe32-3"
+          "run_key": "probe-20260914-pe32-2"
         }
       ],
       "note": "tier 4 is assigned only from recorded capability metrics (standardized-doc sources are manual records \u2014 capability not probed); absence of a tier is not a zero claim"
@@ -2546,14 +2546,14 @@
         }
       ],
       "enumerated": 103,
-      "probed": 63,
+      "probed": 57,
       "counted": 35
     },
     "reconciliation": [
       {
         "source_id": "AS-2",
         "kind": "ok",
-        "detail": "staged rows 17838 (no products_registered metric \u2014 reconciled against the staged count, run probe-20260914-as2-3)"
+        "detail": "staged rows 17838 (no products_registered metric \u2014 reconciled against the staged count, run probe-20260914-as2-2)"
       },
       {
         "source_id": "ST-1",
@@ -2573,7 +2573,7 @@
       {
         "source_id": "CS-2",
         "kind": "ok",
-        "detail": "staged rows 6316 (latest run probe-20260914-cs2-2)"
+        "detail": "6316 staged trade rows"
       }
     ],
     "pool_v2": {
@@ -2917,7 +2917,7 @@
           "measured": {
             "computed": true,
             "source_id": "AS-2",
-            "run_key": "probe-20260914-as2-3",
+            "run_key": "probe-20260914-as2-2",
             "rows": 17838,
             "ean_rows": 2858,
             "ean_distinct": 2257,
@@ -4309,16 +4309,8 @@
       "verification_status_code": "partially_verified",
       "active": false,
       "notes": "public EPD database (digi portal verified live 2026-09-14 via Jotun EPD pages); export shape pinned at W2",
-      "run": {
-        "run_key": "probe-20260914-as10manual-2",
-        "status": "done",
-        "started_at": "2026-09-14T08:39:27Z",
-        "finished_at": "2026-09-14T08:39:27Z",
-        "notes": null,
-        "documents": 0,
-        "findings": 1
-      },
-      "status": "done",
+      "run": null,
+      "status": null,
       "tier": null,
       "counted": null,
       "matrix": {
@@ -4342,7 +4334,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-as10manual-2"
+        "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format EPD Norway (EPD-Global): digi portal live (per-EPD pages verified 2026-09-14); no bulk export pinned \u2014 count deferred \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -4359,8 +4351,8 @@
             "value_text": "EPD Norway (EPD-Global): digi portal live (per-EPD pages verified 2026-09-14); no bulk export pinned \u2014 count deferred",
             "unit_code": null,
             "method_code": "manual",
-            "run_key": "probe-20260914-as10manual-2",
-            "started_at": "2026-09-14T08:39:27Z",
+            "run_key": "probe-20260914-as10manual",
+            "started_at": "2026-09-14T02:06:57Z",
             "notes": null,
             "value": "EPD Norway (EPD-Global): digi portal live (per-EPD pages verified 2026-09-14); no bulk export pinned \u2014 count deferred"
           }
@@ -4380,10 +4372,10 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-as10-2",
+        "run_key": "probe-20260914-as10manual",
         "status": "done",
-        "started_at": "2026-09-14T08:23:21Z",
-        "finished_at": "2026-09-14T08:23:23Z",
+        "started_at": "2026-09-14T02:06:57Z",
+        "finished_at": "2026-09-14T02:06:57Z",
         "notes": null
       }
     },
@@ -5170,10 +5162,10 @@
       "products_identifiable_num": 17838.0,
       "real_product_source": true,
       "cap_run": {
-        "run_key": "probe-20260914-as2-3",
+        "run_key": "probe-20260914-as2-2",
         "status": "done",
-        "started_at": "2026-09-14T08:21:22Z",
-        "finished_at": "2026-09-14T08:21:27Z",
+        "started_at": "2026-09-14T02:01:41Z",
+        "finished_at": "2026-09-14T02:01:47Z",
         "notes": null
       }
     },
@@ -6031,8 +6023,8 @@
             "value_text": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm",
             "unit_code": null,
             "method_code": "download",
-            "run_key": "probe-20260914-as3-3",
-            "started_at": "2026-09-14T08:21:27Z",
+            "run_key": "probe-20260914-as3-2",
+            "started_at": "2026-09-14T02:01:47Z",
             "notes": null,
             "value": "HTML landing page \u2014 not a CSV/JSON export; export mechanics to confirm"
           }
@@ -6052,10 +6044,10 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-as3-3",
+        "run_key": "probe-20260914-as3manual",
         "status": "done",
-        "started_at": "2026-09-14T08:21:27Z",
-        "finished_at": "2026-09-14T08:21:29Z",
+        "started_at": "2026-09-14T02:06:06Z",
+        "finished_at": "2026-09-14T02:06:06Z",
         "notes": null
       }
     },
@@ -6305,17 +6297,9 @@
       "verification_status_code": "partially_verified",
       "active": true,
       "notes": "published EPD declarations; EPD file downloads; export shape pinned at W2 (real format check, not landing-page-only)",
-      "run": {
-        "run_key": "probe-20260914-as6manual-2",
-        "status": "done",
-        "started_at": "2026-09-14T08:39:20Z",
-        "finished_at": "2026-09-14T08:39:20Z",
-        "notes": null,
-        "documents": 0,
-        "findings": 1
-      },
-      "status": "done",
-      "tier": "c",
+      "run": null,
+      "status": null,
+      "tier": "d",
       "counted": null,
       "matrix": {
         "sitemap_products": "\u2014",
@@ -6338,7 +6322,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-as6manual-2"
+        "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format IBU EPD: register is a web app; per-product EPD PDFs downloadable; no bulk export pinned \u2014 count deferred to a browser pass \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -6355,8 +6339,8 @@
             "value_text": "IBU EPD: register is a web app; per-product EPD PDFs downloadable; no bulk export pinned \u2014 count deferred to a browser pass",
             "unit_code": null,
             "method_code": "manual",
-            "run_key": "probe-20260914-as6manual-2",
-            "started_at": "2026-09-14T08:39:20Z",
+            "run_key": "probe-20260914-as6manual",
+            "started_at": "2026-09-14T02:06:55Z",
             "notes": null,
             "value": "IBU EPD: register is a web app; per-product EPD PDFs downloadable; no bulk export pinned \u2014 count deferred to a browser pass"
           }
@@ -6376,10 +6360,10 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-as6-3",
+        "run_key": "probe-20260914-as6manual",
         "status": "done",
-        "started_at": "2026-09-14T08:23:23Z",
-        "finished_at": "2026-09-14T08:23:27Z",
+        "started_at": "2026-09-14T02:06:55Z",
+        "finished_at": "2026-09-14T02:06:55Z",
         "notes": null
       }
     },
@@ -6392,17 +6376,9 @@
       "verification_status_code": "partially_verified",
       "active": true,
       "notes": "published EPDs; library with downloads; export shape pinned at W2; the unrecorded claim from v0.2.1 recorded-or-softened here (provenance repair)",
-      "run": {
-        "run_key": "probe-20260914-as7manual-2",
-        "status": "done",
-        "started_at": "2026-09-14T08:39:21Z",
-        "finished_at": "2026-09-14T08:39:21Z",
-        "notes": null,
-        "documents": 0,
-        "findings": 1
-      },
-      "status": "done",
-      "tier": "c",
+      "run": null,
+      "status": null,
+      "tier": "d",
       "counted": null,
       "matrix": {
         "sitemap_products": "\u2014",
@@ -6425,7 +6401,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-as7manual-2"
+        "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format environdec: EPD library is a web app; no bulk export pinned; the v0.2.1 unrecorded library-size claim is hereby softened to 'not obtained' (provenance repair) \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -6442,8 +6418,8 @@
             "value_text": "environdec: EPD library is a web app; no bulk export pinned; the v0.2.1 unrecorded library-size claim is hereby softened to 'not obtained' (provenance repair)",
             "unit_code": null,
             "method_code": "manual",
-            "run_key": "probe-20260914-as7manual-2",
-            "started_at": "2026-09-14T08:39:21Z",
+            "run_key": "probe-20260914-as7manual",
+            "started_at": "2026-09-14T02:06:56Z",
             "notes": null,
             "value": "environdec: EPD library is a web app; no bulk export pinned; the v0.2.1 unrecorded library-size claim is hereby softened to 'not obtained' (provenance repair)"
           }
@@ -6463,10 +6439,10 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-as7-3",
+        "run_key": "probe-20260914-as7manual",
         "status": "done",
-        "started_at": "2026-09-14T08:23:27Z",
-        "finished_at": "2026-09-14T08:23:29Z",
+        "started_at": "2026-09-14T02:06:56Z",
+        "finished_at": "2026-09-14T02:06:56Z",
         "notes": null
       }
     },
@@ -6479,16 +6455,8 @@
       "verification_status_code": "open",
       "active": false,
       "notes": "NF130 peintures/vernis; certified-product PDF lists; export shape pinned at W2; v0.2.2 addition (strategy source-expansion table)",
-      "run": {
-        "run_key": "probe-20260914-as8manual-2",
-        "status": "done",
-        "started_at": "2026-09-14T08:39:21Z",
-        "finished_at": "2026-09-14T08:39:21Z",
-        "notes": null,
-        "documents": 0,
-        "findings": 1
-      },
-      "status": "done",
+      "run": null,
+      "status": null,
       "tier": null,
       "counted": null,
       "matrix": {
@@ -6512,7 +6480,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-as8manual-2"
+        "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format NF Environnement: certified-product lists are per-criteria PDFs (NF130 peintures); no bulk CSV \u2014 count deferred to a PDF pass \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -6529,8 +6497,8 @@
             "value_text": "NF Environnement: certified-product lists are per-criteria PDFs (NF130 peintures); no bulk CSV \u2014 count deferred to a PDF pass",
             "unit_code": null,
             "method_code": "manual",
-            "run_key": "probe-20260914-as8manual-2",
-            "started_at": "2026-09-14T08:39:21Z",
+            "run_key": "probe-20260914-as8manual",
+            "started_at": "2026-09-14T02:06:56Z",
             "notes": null,
             "value": "NF Environnement: certified-product lists are per-criteria PDFs (NF130 peintures); no bulk CSV \u2014 count deferred to a PDF pass"
           }
@@ -6550,10 +6518,10 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-as8-2",
+        "run_key": "probe-20260914-as8manual",
         "status": "done",
-        "started_at": "2026-09-14T08:23:29Z",
-        "finished_at": "2026-09-14T08:23:32Z",
+        "started_at": "2026-09-14T02:06:56Z",
+        "finished_at": "2026-09-14T02:06:56Z",
         "notes": null
       }
     },
@@ -6566,16 +6534,8 @@
       "verification_status_code": "open",
       "active": false,
       "notes": "building products incl. coatings; certified-product database; export shape pinned at W2",
-      "run": {
-        "run_key": "probe-20260914-as9manual-2",
-        "status": "done",
-        "started_at": "2026-09-14T08:39:26Z",
-        "finished_at": "2026-09-14T08:39:26Z",
-        "notes": null,
-        "documents": 0,
-        "findings": 1
-      },
-      "status": "done",
+      "run": null,
+      "status": null,
       "tier": null,
       "counted": null,
       "matrix": {
@@ -6599,7 +6559,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-as9manual-2"
+        "last_run_key": "\u2014"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format natureplus: certified-product database is a web app; no bulk export pinned \u2014 count deferred \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -6616,8 +6576,8 @@
             "value_text": "natureplus: certified-product database is a web app; no bulk export pinned \u2014 count deferred",
             "unit_code": null,
             "method_code": "manual",
-            "run_key": "probe-20260914-as9manual-2",
-            "started_at": "2026-09-14T08:39:26Z",
+            "run_key": "probe-20260914-as9manual",
+            "started_at": "2026-09-14T02:06:56Z",
             "notes": null,
             "value": "natureplus: certified-product database is a web app; no bulk export pinned \u2014 count deferred"
           }
@@ -6637,10 +6597,10 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-as9-2",
+        "run_key": "probe-20260914-as9manual",
         "status": "done",
-        "started_at": "2026-09-14T08:23:32Z",
-        "finished_at": "2026-09-14T08:23:34Z",
+        "started_at": "2026-09-14T02:06:56Z",
+        "finished_at": "2026-09-14T02:06:56Z",
         "notes": null
       }
     },
@@ -6940,10 +6900,10 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-cs2-2",
+        "run_key": "probe-20260914-cs2",
         "status": "done",
-        "started_at": "2026-09-14T08:21:29Z",
-        "finished_at": "2026-09-14T08:23:14Z",
+        "started_at": "2026-09-14T02:01:50Z",
+        "finished_at": "2026-09-14T02:03:35Z",
         "notes": null
       }
     },
@@ -7666,10 +7626,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe10-3",
+        "run_key": "probe-20260914-pe10-2",
         "status": "done",
-        "started_at": "2026-09-14T08:23:38Z",
-        "finished_at": "2026-09-14T08:23:42Z",
+        "started_at": "2026-09-14T02:15:39Z",
+        "finished_at": "2026-09-14T02:15:43Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -7698,14 +7658,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe10-3"
+        "last_run_key": "probe-20260914-pe10-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=2 [probe-20260914-pe10-3]"
+        "priors: sitemap_products=2 [probe-20260914-pe10-2]"
       ],
       "sections": {
         "access": [
@@ -7716,8 +7676,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe10-3",
-            "started_at": "2026-09-14T08:23:38Z",
+            "run_key": "probe-20260914-pe10-2",
+            "started_at": "2026-09-14T02:15:39Z",
             "notes": null,
             "value": "allowed"
           }
@@ -7730,8 +7690,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe10-3",
-            "started_at": "2026-09-14T08:23:38Z",
+            "run_key": "probe-20260914-pe10-2",
+            "started_at": "2026-09-14T02:15:39Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "2 count"
           }
@@ -7759,8 +7719,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe10-3",
-            "started_at": "2026-09-14T08:23:38Z",
+            "run_key": "probe-20260914-pe10-2",
+            "started_at": "2026-09-14T02:15:39Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "2 count"
           }
@@ -7788,10 +7748,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe11-3",
+        "run_key": "probe-20260914-pe11-2",
         "status": "done",
-        "started_at": "2026-09-14T08:23:42Z",
-        "finished_at": "2026-09-14T08:23:56Z",
+        "started_at": "2026-09-14T02:15:43Z",
+        "finished_at": "2026-09-14T02:15:57Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -7820,14 +7780,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe11-3"
+        "last_run_key": "probe-20260914-pe11-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=146 [probe-20260914-pe11-3]"
+        "priors: sitemap_products=146 [probe-20260914-pe11-2]"
       ],
       "sections": {
         "access": [
@@ -7838,8 +7798,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe11-3",
-            "started_at": "2026-09-14T08:23:42Z",
+            "run_key": "probe-20260914-pe11-2",
+            "started_at": "2026-09-14T02:15:43Z",
             "notes": null,
             "value": "allowed"
           }
@@ -7852,8 +7812,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe11-3",
-            "started_at": "2026-09-14T08:23:42Z",
+            "run_key": "probe-20260914-pe11-2",
+            "started_at": "2026-09-14T02:15:43Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "3 count"
           }
@@ -7881,8 +7841,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe11-3",
-            "started_at": "2026-09-14T08:23:42Z",
+            "run_key": "probe-20260914-pe11-2",
+            "started_at": "2026-09-14T02:15:43Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "146 count"
           }
@@ -7910,10 +7870,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe12-3",
+        "run_key": "probe-20260914-pe12-2",
         "status": "done",
-        "started_at": "2026-09-14T08:23:56Z",
-        "finished_at": "2026-09-14T08:24:00Z",
+        "started_at": "2026-09-14T02:15:57Z",
+        "finished_at": "2026-09-14T02:16:01Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -7942,14 +7902,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe12-3"
+        "last_run_key": "probe-20260914-pe12-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=9 [probe-20260914-pe12-3]"
+        "priors: sitemap_products=9 [probe-20260914-pe12-2]"
       ],
       "sections": {
         "access": [
@@ -7960,8 +7920,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe12-3",
-            "started_at": "2026-09-14T08:23:56Z",
+            "run_key": "probe-20260914-pe12-2",
+            "started_at": "2026-09-14T02:15:57Z",
             "notes": null,
             "value": "allowed"
           }
@@ -7974,8 +7934,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe12-3",
-            "started_at": "2026-09-14T08:23:56Z",
+            "run_key": "probe-20260914-pe12-2",
+            "started_at": "2026-09-14T02:15:57Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -8003,8 +7963,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe12-3",
-            "started_at": "2026-09-14T08:23:56Z",
+            "run_key": "probe-20260914-pe12-2",
+            "started_at": "2026-09-14T02:15:57Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "9 count"
           }
@@ -8032,10 +7992,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe13-3",
+        "run_key": "probe-20260914-pe13-2",
         "status": "done",
-        "started_at": "2026-09-14T08:24:00Z",
-        "finished_at": "2026-09-14T08:24:14Z",
+        "started_at": "2026-09-14T02:16:01Z",
+        "finished_at": "2026-09-14T02:16:16Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -8064,14 +8024,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe13-3"
+        "last_run_key": "probe-20260914-pe13-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=1953 [probe-20260914-pe13-3]"
+        "priors: sitemap_products=1953 [probe-20260914-pe13-2]"
       ],
       "sections": {
         "access": [
@@ -8082,8 +8042,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe13-3",
-            "started_at": "2026-09-14T08:24:00Z",
+            "run_key": "probe-20260914-pe13-2",
+            "started_at": "2026-09-14T02:16:01Z",
             "notes": null,
             "value": "allowed"
           }
@@ -8096,8 +8056,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe13-3",
-            "started_at": "2026-09-14T08:24:00Z",
+            "run_key": "probe-20260914-pe13-2",
+            "started_at": "2026-09-14T02:16:01Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -8125,8 +8085,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe13-3",
-            "started_at": "2026-09-14T08:24:00Z",
+            "run_key": "probe-20260914-pe13-2",
+            "started_at": "2026-09-14T02:16:01Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "1953 count"
           }
@@ -8154,10 +8114,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe14-3",
+        "run_key": "probe-20260914-pe14-2",
         "status": "done",
-        "started_at": "2026-09-14T08:24:14Z",
-        "finished_at": "2026-09-14T08:24:18Z",
+        "started_at": "2026-09-14T02:16:16Z",
+        "finished_at": "2026-09-14T02:16:20Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -8186,14 +8146,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe14-3"
+        "last_run_key": "probe-20260914-pe14-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=3 [probe-20260914-pe14-3]"
+        "priors: sitemap_products=3 [probe-20260914-pe14-2]"
       ],
       "sections": {
         "access": [
@@ -8204,8 +8164,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe14-3",
-            "started_at": "2026-09-14T08:24:14Z",
+            "run_key": "probe-20260914-pe14-2",
+            "started_at": "2026-09-14T02:16:16Z",
             "notes": null,
             "value": "allowed"
           }
@@ -8218,8 +8178,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe14-3",
-            "started_at": "2026-09-14T08:24:14Z",
+            "run_key": "probe-20260914-pe14-2",
+            "started_at": "2026-09-14T02:16:16Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -8247,8 +8207,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe14-3",
-            "started_at": "2026-09-14T08:24:14Z",
+            "run_key": "probe-20260914-pe14-2",
+            "started_at": "2026-09-14T02:16:16Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "3 count"
           }
@@ -8276,10 +8236,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe15-3",
+        "run_key": "probe-20260914-pe15-2",
         "status": "done",
-        "started_at": "2026-09-14T08:24:18Z",
-        "finished_at": "2026-09-14T08:24:37Z",
+        "started_at": "2026-09-14T02:16:20Z",
+        "finished_at": "2026-09-14T02:16:34Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -8308,14 +8268,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe15-3"
+        "last_run_key": "probe-20260914-pe15-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe15-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe15-2]"
       ],
       "sections": {
         "access": [
@@ -8326,8 +8286,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe15-3",
-            "started_at": "2026-09-14T08:24:18Z",
+            "run_key": "probe-20260914-pe15-2",
+            "started_at": "2026-09-14T02:16:20Z",
             "notes": null,
             "value": "allowed"
           }
@@ -8340,8 +8300,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe15-3",
-            "started_at": "2026-09-14T08:24:18Z",
+            "run_key": "probe-20260914-pe15-2",
+            "started_at": "2026-09-14T02:16:20Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -8369,8 +8329,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe15-3",
-            "started_at": "2026-09-14T08:24:18Z",
+            "run_key": "probe-20260914-pe15-2",
+            "started_at": "2026-09-14T02:16:20Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -8398,10 +8358,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe16-3",
+        "run_key": "probe-20260914-pe16-2",
         "status": "done",
-        "started_at": "2026-09-14T08:24:37Z",
-        "finished_at": "2026-09-14T08:24:41Z",
+        "started_at": "2026-09-14T02:16:34Z",
+        "finished_at": "2026-09-14T02:16:38Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -8430,14 +8390,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe16-3"
+        "last_run_key": "probe-20260914-pe16-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe16-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe16-2]"
       ],
       "sections": {
         "access": [
@@ -8448,8 +8408,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe16-3",
-            "started_at": "2026-09-14T08:24:37Z",
+            "run_key": "probe-20260914-pe16-2",
+            "started_at": "2026-09-14T02:16:34Z",
             "notes": null,
             "value": "allowed"
           }
@@ -8462,8 +8422,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe16-3",
-            "started_at": "2026-09-14T08:24:37Z",
+            "run_key": "probe-20260914-pe16-2",
+            "started_at": "2026-09-14T02:16:34Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -8491,8 +8451,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe16-3",
-            "started_at": "2026-09-14T08:24:37Z",
+            "run_key": "probe-20260914-pe16-2",
+            "started_at": "2026-09-14T02:16:34Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -8520,10 +8480,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe17-3",
+        "run_key": "probe-20260914-pe17-2",
         "status": "done",
-        "started_at": "2026-09-14T08:24:41Z",
-        "finished_at": "2026-09-14T08:24:47Z",
+        "started_at": "2026-09-14T02:16:38Z",
+        "finished_at": "2026-09-14T02:16:44Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -8552,14 +8512,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe17-3"
+        "last_run_key": "probe-20260914-pe17-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe17-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe17-2]"
       ],
       "sections": {
         "access": [
@@ -8570,8 +8530,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe17-3",
-            "started_at": "2026-09-14T08:24:41Z",
+            "run_key": "probe-20260914-pe17-2",
+            "started_at": "2026-09-14T02:16:38Z",
             "notes": null,
             "value": "allowed"
           }
@@ -8584,8 +8544,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe17-3",
-            "started_at": "2026-09-14T08:24:41Z",
+            "run_key": "probe-20260914-pe17-2",
+            "started_at": "2026-09-14T02:16:38Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -8613,8 +8573,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe17-3",
-            "started_at": "2026-09-14T08:24:41Z",
+            "run_key": "probe-20260914-pe17-2",
+            "started_at": "2026-09-14T02:16:38Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -8642,12 +8602,12 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe18-3",
+        "run_key": "probe-20260914-pe18-2",
         "status": "done",
-        "started_at": "2026-09-14T08:24:47Z",
-        "finished_at": "2026-09-14T08:25:02Z",
+        "started_at": "2026-09-14T02:16:44Z",
+        "finished_at": "2026-09-14T02:16:59Z",
         "notes": null,
-        "documents": 3,
+        "documents": 0,
         "findings": 3
       },
       "status": "done",
@@ -8674,14 +8634,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe18-3"
+        "last_run_key": "probe-20260914-pe18-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe18-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe18-2]"
       ],
       "sections": {
         "access": [
@@ -8692,8 +8652,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe18-3",
-            "started_at": "2026-09-14T08:24:47Z",
+            "run_key": "probe-20260914-pe18-2",
+            "started_at": "2026-09-14T02:16:44Z",
             "notes": null,
             "value": "allowed"
           }
@@ -8706,8 +8666,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe18-3",
-            "started_at": "2026-09-14T08:24:47Z",
+            "run_key": "probe-20260914-pe18-2",
+            "started_at": "2026-09-14T02:16:44Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -8735,8 +8695,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe18-3",
-            "started_at": "2026-09-14T08:24:47Z",
+            "run_key": "probe-20260914-pe18-2",
+            "started_at": "2026-09-14T02:16:44Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -8764,10 +8724,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12",
       "run": {
-        "run_key": "probe-20260914-pe19-3",
+        "run_key": "probe-20260914-pe19-2",
         "status": "done",
-        "started_at": "2026-09-14T08:25:02Z",
-        "finished_at": "2026-09-14T08:25:07Z",
+        "started_at": "2026-09-14T02:16:59Z",
+        "finished_at": "2026-09-14T02:17:04Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -8796,14 +8756,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe19-3"
+        "last_run_key": "probe-20260914-pe19-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=1619 [probe-20260914-pe19-3]"
+        "priors: sitemap_products=1619 [probe-20260914-pe19-2]"
       ],
       "sections": {
         "access": [
@@ -8814,8 +8774,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe19-3",
-            "started_at": "2026-09-14T08:25:02Z",
+            "run_key": "probe-20260914-pe19-2",
+            "started_at": "2026-09-14T02:16:59Z",
             "notes": null,
             "value": "allowed"
           }
@@ -8828,8 +8788,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe19-3",
-            "started_at": "2026-09-14T08:25:02Z",
+            "run_key": "probe-20260914-pe19-2",
+            "started_at": "2026-09-14T02:16:59Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "3 count"
           }
@@ -8857,8 +8817,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe19-3",
-            "started_at": "2026-09-14T08:25:02Z",
+            "run_key": "probe-20260914-pe19-2",
+            "started_at": "2026-09-14T02:16:59Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "1619 count"
           }
@@ -8954,12 +8914,12 @@
       "active": true,
       "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe20-3",
+        "run_key": "probe-20260914-pe20-2",
         "status": "done",
-        "started_at": "2026-09-14T08:25:07Z",
-        "finished_at": "2026-09-14T08:25:22Z",
+        "started_at": "2026-09-14T02:17:04Z",
+        "finished_at": "2026-09-14T02:17:19Z",
         "notes": null,
-        "documents": 4,
+        "documents": 0,
         "findings": 3
       },
       "status": "done",
@@ -8986,14 +8946,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe20-3"
+        "last_run_key": "probe-20260914-pe20-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=199354 [probe-20260914-pe20-3]"
+        "priors: sitemap_products=199354 [probe-20260914-pe20-2]"
       ],
       "sections": {
         "access": [
@@ -9004,8 +8964,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe20-3",
-            "started_at": "2026-09-14T08:25:07Z",
+            "run_key": "probe-20260914-pe20-2",
+            "started_at": "2026-09-14T02:17:04Z",
             "notes": null,
             "value": "allowed"
           }
@@ -9014,14 +8974,14 @@
           {
             "source_id": "PE-20",
             "metric_code": "sds_doc_urls",
-            "value_numeric": 652.0,
+            "value_numeric": 659.0,
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe20-3",
-            "started_at": "2026-09-14T08:25:07Z",
+            "run_key": "probe-20260914-pe20-2",
+            "started_at": "2026-09-14T02:17:04Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
-            "value": "652 count"
+            "value": "659 count"
           }
         ],
         "counts": [],
@@ -9047,8 +9007,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe20-3",
-            "started_at": "2026-09-14T08:25:07Z",
+            "run_key": "probe-20260914-pe20-2",
+            "started_at": "2026-09-14T02:17:04Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "199354 count"
           }
@@ -9076,10 +9036,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe21-3",
+        "run_key": "probe-20260914-pe21-2",
         "status": "done",
-        "started_at": "2026-09-14T08:25:22Z",
-        "finished_at": "2026-09-14T08:25:28Z",
+        "started_at": "2026-09-14T02:17:19Z",
+        "finished_at": "2026-09-14T02:17:25Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -9108,14 +9068,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe21-3"
+        "last_run_key": "probe-20260914-pe21-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe21-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe21-2]"
       ],
       "sections": {
         "access": [
@@ -9126,8 +9086,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe21-3",
-            "started_at": "2026-09-14T08:25:22Z",
+            "run_key": "probe-20260914-pe21-2",
+            "started_at": "2026-09-14T02:17:19Z",
             "notes": null,
             "value": "allowed"
           }
@@ -9140,8 +9100,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe21-3",
-            "started_at": "2026-09-14T08:25:22Z",
+            "run_key": "probe-20260914-pe21-2",
+            "started_at": "2026-09-14T02:17:19Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -9169,8 +9129,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe21-3",
-            "started_at": "2026-09-14T08:25:22Z",
+            "run_key": "probe-20260914-pe21-2",
+            "started_at": "2026-09-14T02:17:19Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -9198,10 +9158,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2); URL corrected 2026-09-12 (bauhaus.de resolves to Bauhaus-Archiv museum)",
       "run": {
-        "run_key": "probe-20260914-pe22-3",
+        "run_key": "probe-20260914-pe22-2",
         "status": "blocked",
-        "started_at": "2026-09-14T08:25:28Z",
-        "finished_at": "2026-09-14T08:25:32Z",
+        "started_at": "2026-09-14T02:17:25Z",
+        "finished_at": "2026-09-14T02:17:29Z",
         "notes": "https://www.bauhaus.info/sitemap.xml: HTTP 403",
         "documents": 0,
         "findings": 1
@@ -9230,7 +9190,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe22-3"
+        "last_run_key": "probe-20260914-pe22-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -9307,10 +9267,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe23-3",
+        "run_key": "probe-20260914-pe23-2",
         "status": "done",
-        "started_at": "2026-09-14T08:25:32Z",
-        "finished_at": "2026-09-14T08:25:57Z",
+        "started_at": "2026-09-14T02:17:29Z",
+        "finished_at": "2026-09-14T02:17:53Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -9339,14 +9299,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe23-3"
+        "last_run_key": "probe-20260914-pe23-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe23-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe23-2]"
       ],
       "sections": {
         "access": [
@@ -9357,8 +9317,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe23-3",
-            "started_at": "2026-09-14T08:25:32Z",
+            "run_key": "probe-20260914-pe23-2",
+            "started_at": "2026-09-14T02:17:29Z",
             "notes": null,
             "value": "allowed"
           }
@@ -9371,8 +9331,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe23-3",
-            "started_at": "2026-09-14T08:25:32Z",
+            "run_key": "probe-20260914-pe23-2",
+            "started_at": "2026-09-14T02:17:29Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "1133 count"
           }
@@ -9400,8 +9360,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe23-3",
-            "started_at": "2026-09-14T08:25:32Z",
+            "run_key": "probe-20260914-pe23-2",
+            "started_at": "2026-09-14T02:17:29Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -9429,10 +9389,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe24-3",
+        "run_key": "probe-20260914-pe24-2",
         "status": "failed",
-        "started_at": "2026-09-14T08:25:57Z",
-        "finished_at": "2026-09-14T08:26:15Z",
+        "started_at": "2026-09-14T02:17:53Z",
+        "finished_at": "2026-09-14T02:18:11Z",
         "notes": "https://www.diy.com/sitemap.xml: HTTP 503 after retries",
         "documents": 0,
         "findings": 0
@@ -9461,7 +9421,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe24-3"
+        "last_run_key": "probe-20260914-pe24-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format sitemap recon deferred: timed out twice from desk egress \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -9529,10 +9489,10 @@
       "active": true,
       "notes": "channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe25-3",
+        "run_key": "probe-20260914-pe25-2",
         "status": "done",
-        "started_at": "2026-09-14T08:26:15Z",
-        "finished_at": "2026-09-14T08:26:19Z",
+        "started_at": "2026-09-14T02:18:11Z",
+        "finished_at": "2026-09-14T02:18:15Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -9561,14 +9521,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe25-3"
+        "last_run_key": "probe-20260914-pe25-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe25-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe25-2]"
       ],
       "sections": {
         "access": [
@@ -9579,8 +9539,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe25-3",
-            "started_at": "2026-09-14T08:26:15Z",
+            "run_key": "probe-20260914-pe25-2",
+            "started_at": "2026-09-14T02:18:11Z",
             "notes": null,
             "value": "allowed"
           }
@@ -9593,8 +9553,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe25-3",
-            "started_at": "2026-09-14T08:26:15Z",
+            "run_key": "probe-20260914-pe25-2",
+            "started_at": "2026-09-14T02:18:11Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -9622,8 +9582,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe25-3",
-            "started_at": "2026-09-14T08:26:15Z",
+            "run_key": "probe-20260914-pe25-2",
+            "started_at": "2026-09-14T02:18:11Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -9651,12 +9611,12 @@
       "active": true,
       "notes": "channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe26-3",
+        "run_key": "probe-20260914-pe26-2",
         "status": "done",
-        "started_at": "2026-09-14T08:26:19Z",
-        "finished_at": "2026-09-14T08:26:33Z",
+        "started_at": "2026-09-14T02:18:15Z",
+        "finished_at": "2026-09-14T02:18:30Z",
         "notes": null,
-        "documents": 6,
+        "documents": 0,
         "findings": 3
       },
       "status": "done",
@@ -9683,14 +9643,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe26-3"
+        "last_run_key": "probe-20260914-pe26-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe26-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe26-2]"
       ],
       "sections": {
         "access": [
@@ -9701,8 +9661,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe26-3",
-            "started_at": "2026-09-14T08:26:19Z",
+            "run_key": "probe-20260914-pe26-2",
+            "started_at": "2026-09-14T02:18:15Z",
             "notes": null,
             "value": "allowed"
           }
@@ -9715,8 +9675,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe26-3",
-            "started_at": "2026-09-14T08:26:19Z",
+            "run_key": "probe-20260914-pe26-2",
+            "started_at": "2026-09-14T02:18:15Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -9744,8 +9704,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe26-3",
-            "started_at": "2026-09-14T08:26:19Z",
+            "run_key": "probe-20260914-pe26-2",
+            "started_at": "2026-09-14T02:18:15Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -9773,10 +9733,10 @@
       "active": true,
       "notes": "channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe27-3",
+        "run_key": "probe-20260914-pe27-2",
         "status": "done",
-        "started_at": "2026-09-14T08:26:33Z",
-        "finished_at": "2026-09-14T08:26:40Z",
+        "started_at": "2026-09-14T02:18:30Z",
+        "finished_at": "2026-09-14T02:18:36Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -9805,14 +9765,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe27-3"
+        "last_run_key": "probe-20260914-pe27-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe27-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe27-2]"
       ],
       "sections": {
         "access": [
@@ -9823,8 +9783,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe27-3",
-            "started_at": "2026-09-14T08:26:33Z",
+            "run_key": "probe-20260914-pe27-2",
+            "started_at": "2026-09-14T02:18:30Z",
             "notes": null,
             "value": "allowed"
           }
@@ -9837,8 +9797,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe27-3",
-            "started_at": "2026-09-14T08:26:33Z",
+            "run_key": "probe-20260914-pe27-2",
+            "started_at": "2026-09-14T02:18:30Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "5 count"
           }
@@ -9866,8 +9826,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe27-3",
-            "started_at": "2026-09-14T08:26:33Z",
+            "run_key": "probe-20260914-pe27-2",
+            "started_at": "2026-09-14T02:18:30Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -9895,10 +9855,10 @@
       "active": true,
       "notes": "channel=marine; listed_by=PE-4 seed note (BRAVA SE); listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe28-3",
+        "run_key": "probe-20260914-pe28-2",
         "status": "done",
-        "started_at": "2026-09-14T08:26:40Z",
-        "finished_at": "2026-09-14T08:26:44Z",
+        "started_at": "2026-09-14T02:18:36Z",
+        "finished_at": "2026-09-14T02:18:40Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -9927,14 +9887,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe28-3"
+        "last_run_key": "probe-20260914-pe28-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe28-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe28-2]"
       ],
       "sections": {
         "access": [
@@ -9945,8 +9905,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe28-3",
-            "started_at": "2026-09-14T08:26:40Z",
+            "run_key": "probe-20260914-pe28-2",
+            "started_at": "2026-09-14T02:18:36Z",
             "notes": null,
             "value": "allowed"
           }
@@ -9959,8 +9919,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe28-3",
-            "started_at": "2026-09-14T08:26:40Z",
+            "run_key": "probe-20260914-pe28-2",
+            "started_at": "2026-09-14T02:18:36Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "2 count"
           }
@@ -9988,8 +9948,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe28-3",
-            "started_at": "2026-09-14T08:26:40Z",
+            "run_key": "probe-20260914-pe28-2",
+            "started_at": "2026-09-14T02:18:36Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -10017,10 +9977,10 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe29-3",
+        "run_key": "probe-20260914-pe29-2",
         "status": "done",
-        "started_at": "2026-09-14T08:26:44Z",
-        "finished_at": "2026-09-14T08:26:59Z",
+        "started_at": "2026-09-14T02:18:40Z",
+        "finished_at": "2026-09-14T02:18:55Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -10049,14 +10009,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe29-3"
+        "last_run_key": "probe-20260914-pe29-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=4 [probe-20260914-pe29-3]"
+        "priors: sitemap_products=4 [probe-20260914-pe29-2]"
       ],
       "sections": {
         "access": [
@@ -10067,8 +10027,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe29-3",
-            "started_at": "2026-09-14T08:26:44Z",
+            "run_key": "probe-20260914-pe29-2",
+            "started_at": "2026-09-14T02:18:40Z",
             "notes": null,
             "value": "allowed"
           }
@@ -10081,8 +10041,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe29-3",
-            "started_at": "2026-09-14T08:26:44Z",
+            "run_key": "probe-20260914-pe29-2",
+            "started_at": "2026-09-14T02:18:40Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "4 count"
           }
@@ -10110,8 +10070,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe29-3",
-            "started_at": "2026-09-14T08:26:44Z",
+            "run_key": "probe-20260914-pe29-2",
+            "started_at": "2026-09-14T02:18:40Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "4 count"
           }
@@ -10207,10 +10167,10 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe30-3",
+        "run_key": "probe-20260914-pe30-2",
         "status": "done",
-        "started_at": "2026-09-14T08:26:59Z",
-        "finished_at": "2026-09-14T08:27:11Z",
+        "started_at": "2026-09-14T02:18:55Z",
+        "finished_at": "2026-09-14T02:19:07Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -10239,14 +10199,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe30-3"
+        "last_run_key": "probe-20260914-pe30-2"
       },
       "access_line": "robots allow-all (404/empty) \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=60 [probe-20260914-pe30-3]"
+        "priors: sitemap_products=60 [probe-20260914-pe30-2]"
       ],
       "sections": {
         "access": [
@@ -10257,8 +10217,8 @@
             "value_text": "allow-all (404/empty)",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe30-3",
-            "started_at": "2026-09-14T08:26:59Z",
+            "run_key": "probe-20260914-pe30-2",
+            "started_at": "2026-09-14T02:18:55Z",
             "notes": null,
             "value": "allow-all (404/empty)"
           }
@@ -10271,8 +10231,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe30-3",
-            "started_at": "2026-09-14T08:26:59Z",
+            "run_key": "probe-20260914-pe30-2",
+            "started_at": "2026-09-14T02:18:55Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -10300,8 +10260,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe30-3",
-            "started_at": "2026-09-14T08:26:59Z",
+            "run_key": "probe-20260914-pe30-2",
+            "started_at": "2026-09-14T02:18:55Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "60 count"
           }
@@ -10329,10 +10289,10 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe31-3",
+        "run_key": "probe-20260914-pe31-2",
         "status": "blocked",
-        "started_at": "2026-09-14T08:27:11Z",
-        "finished_at": "2026-09-14T08:27:15Z",
+        "started_at": "2026-09-14T02:19:07Z",
+        "finished_at": "2026-09-14T02:19:11Z",
         "notes": "https://www.kremer-pigmente.com/sitemap.xml: HTTP 403",
         "documents": 0,
         "findings": 1
@@ -10361,7 +10321,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe31-3"
+        "last_run_key": "probe-20260914-pe31-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -10410,10 +10370,10 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe32-3",
+        "run_key": "probe-20260914-pe32-2",
         "status": "done",
-        "started_at": "2026-09-14T08:27:15Z",
-        "finished_at": "2026-09-14T08:27:20Z",
+        "started_at": "2026-09-14T02:19:11Z",
+        "finished_at": "2026-09-14T02:19:16Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -10442,14 +10402,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe32-3"
+        "last_run_key": "probe-20260914-pe32-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe32-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe32-2]"
       ],
       "sections": {
         "access": [
@@ -10460,8 +10420,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe32-3",
-            "started_at": "2026-09-14T08:27:15Z",
+            "run_key": "probe-20260914-pe32-2",
+            "started_at": "2026-09-14T02:19:11Z",
             "notes": null,
             "value": "allowed"
           }
@@ -10474,8 +10434,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe32-3",
-            "started_at": "2026-09-14T08:27:15Z",
+            "run_key": "probe-20260914-pe32-2",
+            "started_at": "2026-09-14T02:19:11Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "1 count"
           }
@@ -10503,8 +10463,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe32-3",
-            "started_at": "2026-09-14T08:27:15Z",
+            "run_key": "probe-20260914-pe32-2",
+            "started_at": "2026-09-14T02:19:11Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -10532,10 +10492,10 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe33-3",
+        "run_key": "probe-20260914-pe33-2",
         "status": "done",
-        "started_at": "2026-09-14T08:27:20Z",
-        "finished_at": "2026-09-14T08:27:35Z",
+        "started_at": "2026-09-14T02:19:16Z",
+        "finished_at": "2026-09-14T02:19:30Z",
         "notes": null,
         "documents": 2,
         "findings": 3
@@ -10564,14 +10524,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe33-3"
+        "last_run_key": "probe-20260914-pe33-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=1541 [probe-20260914-pe33-3]"
+        "priors: sitemap_products=1541 [probe-20260914-pe33-2]"
       ],
       "sections": {
         "access": [
@@ -10582,8 +10542,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe33-3",
-            "started_at": "2026-09-14T08:27:20Z",
+            "run_key": "probe-20260914-pe33-2",
+            "started_at": "2026-09-14T02:19:16Z",
             "notes": null,
             "value": "allowed"
           }
@@ -10596,8 +10556,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe33-3",
-            "started_at": "2026-09-14T08:27:20Z",
+            "run_key": "probe-20260914-pe33-2",
+            "started_at": "2026-09-14T02:19:16Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -10625,8 +10585,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe33-3",
-            "started_at": "2026-09-14T08:27:20Z",
+            "run_key": "probe-20260914-pe33-2",
+            "started_at": "2026-09-14T02:19:16Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "1541 count"
           }
@@ -10654,10 +10614,10 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe34-3",
+        "run_key": "probe-20260914-pe34-2",
         "status": "done",
-        "started_at": "2026-09-14T08:27:35Z",
-        "finished_at": "2026-09-14T08:27:39Z",
+        "started_at": "2026-09-14T02:19:30Z",
+        "finished_at": "2026-09-14T02:19:34Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -10686,14 +10646,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe34-3"
+        "last_run_key": "probe-20260914-pe34-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=2 [probe-20260914-pe34-3]"
+        "priors: sitemap_products=2 [probe-20260914-pe34-2]"
       ],
       "sections": {
         "access": [
@@ -10704,8 +10664,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe34-3",
-            "started_at": "2026-09-14T08:27:35Z",
+            "run_key": "probe-20260914-pe34-2",
+            "started_at": "2026-09-14T02:19:30Z",
             "notes": null,
             "value": "allowed"
           }
@@ -10718,8 +10678,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe34-3",
-            "started_at": "2026-09-14T08:27:35Z",
+            "run_key": "probe-20260914-pe34-2",
+            "started_at": "2026-09-14T02:19:30Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "5 count"
           }
@@ -10747,8 +10707,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe34-3",
-            "started_at": "2026-09-14T08:27:35Z",
+            "run_key": "probe-20260914-pe34-2",
+            "started_at": "2026-09-14T02:19:30Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "2 count"
           }
@@ -10776,10 +10736,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=DATA_SOURCE.md tier A (brand site); listed_date=2026-09-14; inclusion=cap MFR<=40 (widened v0.2.2); desk env could not reach (egress) \u2014 verify at W3",
       "run": {
-        "run_key": "probe-20260914-pe35-3",
+        "run_key": "probe-20260914-pe35-2",
         "status": "failed",
-        "started_at": "2026-09-14T08:27:39Z",
-        "finished_at": "2026-09-14T08:27:57Z",
+        "started_at": "2026-09-14T02:19:34Z",
+        "finished_at": "2026-09-14T02:19:53Z",
         "notes": "https://www.alpina-farben.de/sitemap.xml: network error after retries",
         "documents": 0,
         "findings": 0
@@ -10808,7 +10768,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe35-3"
+        "last_run_key": "probe-20260914-pe35-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format sitemap recon deferred: connection refused twice from desk egress \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -10863,10 +10823,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=DATA_SOURCE.md tier A; listed_date=2026-09-14; inclusion=cap MFR<=40 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe36-3",
+        "run_key": "probe-20260914-pe36-2",
         "status": "done",
-        "started_at": "2026-09-14T08:27:57Z",
-        "finished_at": "2026-09-14T08:28:12Z",
+        "started_at": "2026-09-14T02:19:53Z",
+        "finished_at": "2026-09-14T02:20:07Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -10895,14 +10855,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe36-3"
+        "last_run_key": "probe-20260914-pe36-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe36-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe36-2]"
       ],
       "sections": {
         "access": [
@@ -10913,8 +10873,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe36-3",
-            "started_at": "2026-09-14T08:27:57Z",
+            "run_key": "probe-20260914-pe36-2",
+            "started_at": "2026-09-14T02:19:53Z",
             "notes": null,
             "value": "allowed"
           }
@@ -10927,8 +10887,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe36-3",
-            "started_at": "2026-09-14T08:27:57Z",
+            "run_key": "probe-20260914-pe36-2",
+            "started_at": "2026-09-14T02:19:53Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -10943,8 +10903,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe36-3",
-            "started_at": "2026-09-14T08:27:57Z",
+            "run_key": "probe-20260914-pe36-2",
+            "started_at": "2026-09-14T02:19:53Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -10972,10 +10932,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap MFR<=40",
       "run": {
-        "run_key": "probe-20260914-pe37-3",
+        "run_key": "probe-20260914-pe37-2",
         "status": "done",
-        "started_at": "2026-09-14T08:28:12Z",
-        "finished_at": "2026-09-14T08:28:16Z",
+        "started_at": "2026-09-14T02:20:07Z",
+        "finished_at": "2026-09-14T02:20:11Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -11004,14 +10964,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe37-3"
+        "last_run_key": "probe-20260914-pe37-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=22 [probe-20260914-pe37-3]"
+        "priors: sitemap_products=22 [probe-20260914-pe37-2]"
       ],
       "sections": {
         "access": [
@@ -11022,8 +10982,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe37-3",
-            "started_at": "2026-09-14T08:28:12Z",
+            "run_key": "probe-20260914-pe37-2",
+            "started_at": "2026-09-14T02:20:07Z",
             "notes": null,
             "value": "allowed"
           }
@@ -11036,8 +10996,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe37-3",
-            "started_at": "2026-09-14T08:28:12Z",
+            "run_key": "probe-20260914-pe37-2",
+            "started_at": "2026-09-14T02:20:07Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -11052,8 +11012,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe37-3",
-            "started_at": "2026-09-14T08:28:12Z",
+            "run_key": "probe-20260914-pe37-2",
+            "started_at": "2026-09-14T02:20:07Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "22 count"
           }
@@ -11081,10 +11041,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap MFR<=40",
       "run": {
-        "run_key": "probe-20260914-pe38-3",
+        "run_key": "probe-20260914-pe38-2",
         "status": "done",
-        "started_at": "2026-09-14T08:28:16Z",
-        "finished_at": "2026-09-14T08:28:30Z",
+        "started_at": "2026-09-14T02:20:11Z",
+        "finished_at": "2026-09-14T02:20:25Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -11113,14 +11073,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe38-3"
+        "last_run_key": "probe-20260914-pe38-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe38-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe38-2]"
       ],
       "sections": {
         "access": [
@@ -11131,8 +11091,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe38-3",
-            "started_at": "2026-09-14T08:28:16Z",
+            "run_key": "probe-20260914-pe38-2",
+            "started_at": "2026-09-14T02:20:11Z",
             "notes": null,
             "value": "allowed"
           }
@@ -11145,8 +11105,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe38-3",
-            "started_at": "2026-09-14T08:28:16Z",
+            "run_key": "probe-20260914-pe38-2",
+            "started_at": "2026-09-14T02:20:11Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -11161,8 +11121,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe38-3",
-            "started_at": "2026-09-14T08:28:16Z",
+            "run_key": "probe-20260914-pe38-2",
+            "started_at": "2026-09-14T02:20:11Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -11190,10 +11150,10 @@
       "active": true,
       "notes": "channel=mfr; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap MFR<=40",
       "run": {
-        "run_key": "probe-20260914-pe39-3",
+        "run_key": "probe-20260914-pe39-2",
         "status": "done",
-        "started_at": "2026-09-14T08:28:30Z",
-        "finished_at": "2026-09-14T08:28:35Z",
+        "started_at": "2026-09-14T02:20:25Z",
+        "finished_at": "2026-09-14T02:20:30Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -11222,14 +11182,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe39-3"
+        "last_run_key": "probe-20260914-pe39-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe39-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe39-2]"
       ],
       "sections": {
         "access": [
@@ -11240,8 +11200,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe39-3",
-            "started_at": "2026-09-14T08:28:30Z",
+            "run_key": "probe-20260914-pe39-2",
+            "started_at": "2026-09-14T02:20:25Z",
             "notes": null,
             "value": "allowed"
           }
@@ -11254,8 +11214,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe39-3",
-            "started_at": "2026-09-14T08:28:30Z",
+            "run_key": "probe-20260914-pe39-2",
+            "started_at": "2026-09-14T02:20:25Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -11270,8 +11230,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe39-3",
-            "started_at": "2026-09-14T08:28:30Z",
+            "run_key": "probe-20260914-pe39-2",
+            "started_at": "2026-09-14T02:20:25Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -11455,10 +11415,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe40-3",
+        "run_key": "probe-20260914-pe40-2",
         "status": "failed",
-        "started_at": "2026-09-14T08:28:35Z",
-        "finished_at": "2026-09-14T08:28:54Z",
+        "started_at": "2026-09-14T02:20:30Z",
+        "finished_at": "2026-09-14T02:20:48Z",
         "notes": "https://www.castorama.fr/sitemap.xml: HTTP 503 after retries",
         "documents": 0,
         "findings": 0
@@ -11487,7 +11447,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe40-3"
+        "last_run_key": "probe-20260914-pe40-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format sitemap recon deferred: timed out twice from desk egress \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -11542,10 +11502,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe41-3",
+        "run_key": "probe-20260914-pe41-2",
         "status": "blocked",
-        "started_at": "2026-09-14T08:28:54Z",
-        "finished_at": "2026-09-14T08:29:00Z",
+        "started_at": "2026-09-14T02:20:48Z",
+        "finished_at": "2026-09-14T02:20:54Z",
         "notes": "https://www.gamma.nl/sitemap.xml: persistent 429 after one capped backoff",
         "documents": 0,
         "findings": 1
@@ -11574,7 +11534,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe41-3"
+        "last_run_key": "probe-20260914-pe41-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -11610,10 +11570,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe42-3",
+        "run_key": "probe-20260914-pe42-2",
         "status": "blocked",
-        "started_at": "2026-09-14T08:29:00Z",
-        "finished_at": "2026-09-14T08:29:04Z",
+        "started_at": "2026-09-14T02:20:54Z",
+        "finished_at": "2026-09-14T02:20:58Z",
         "notes": "https://www.praxis.nl/sitemap.xml: HTTP 403",
         "documents": 0,
         "findings": 1
@@ -11642,7 +11602,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe42-3"
+        "last_run_key": "probe-20260914-pe42-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -11678,12 +11638,12 @@
       "active": true,
       "notes": "channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe43-3",
+        "run_key": "probe-20260914-pe43-2",
         "status": "done",
-        "started_at": "2026-09-14T08:29:04Z",
-        "finished_at": "2026-09-14T08:29:19Z",
+        "started_at": "2026-09-14T02:20:58Z",
+        "finished_at": "2026-09-14T02:21:13Z",
         "notes": null,
-        "documents": 0,
+        "documents": 2,
         "findings": 3
       },
       "status": "done",
@@ -11710,14 +11670,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe43-3"
+        "last_run_key": "probe-20260914-pe43-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=126929 [probe-20260914-pe43-3]"
+        "priors: sitemap_products=126929 [probe-20260914-pe43-2]"
       ],
       "sections": {
         "access": [
@@ -11728,8 +11688,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe43-3",
-            "started_at": "2026-09-14T08:29:04Z",
+            "run_key": "probe-20260914-pe43-2",
+            "started_at": "2026-09-14T02:20:58Z",
             "notes": null,
             "value": "allowed"
           }
@@ -11742,8 +11702,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe43-3",
-            "started_at": "2026-09-14T08:29:04Z",
+            "run_key": "probe-20260914-pe43-2",
+            "started_at": "2026-09-14T02:20:58Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "401 count"
           }
@@ -11758,8 +11718,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe43-3",
-            "started_at": "2026-09-14T08:29:04Z",
+            "run_key": "probe-20260914-pe43-2",
+            "started_at": "2026-09-14T02:20:58Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "126929 count"
           }
@@ -11787,10 +11747,10 @@
       "active": true,
       "notes": "channel=diy; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe44-3",
+        "run_key": "probe-20260914-pe44-2",
         "status": "done",
-        "started_at": "2026-09-14T08:29:19Z",
-        "finished_at": "2026-09-14T08:29:33Z",
+        "started_at": "2026-09-14T02:21:13Z",
+        "finished_at": "2026-09-14T02:21:27Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -11819,14 +11779,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe44-3"
+        "last_run_key": "probe-20260914-pe44-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe44-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe44-2]"
       ],
       "sections": {
         "access": [
@@ -11837,8 +11797,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe44-3",
-            "started_at": "2026-09-14T08:29:19Z",
+            "run_key": "probe-20260914-pe44-2",
+            "started_at": "2026-09-14T02:21:13Z",
             "notes": null,
             "value": "allowed"
           }
@@ -11851,8 +11811,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe44-3",
-            "started_at": "2026-09-14T08:29:19Z",
+            "run_key": "probe-20260914-pe44-2",
+            "started_at": "2026-09-14T02:21:13Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -11867,8 +11827,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe44-3",
-            "started_at": "2026-09-14T08:29:19Z",
+            "run_key": "probe-20260914-pe44-2",
+            "started_at": "2026-09-14T02:21:13Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -12376,10 +12336,10 @@
       "active": true,
       "notes": "channel=marine; listed_by=DATA_SOURCE.md tier B (lead-relevant niche); listed_date=2026-09-14; inclusion=cap MARINE<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe53-3",
+        "run_key": "probe-20260914-pe53-2",
         "status": "done",
-        "started_at": "2026-09-14T08:29:33Z",
-        "finished_at": "2026-09-14T08:29:38Z",
+        "started_at": "2026-09-14T02:21:27Z",
+        "finished_at": "2026-09-14T02:21:32Z",
         "notes": "UnexpectedFormat: sitemap unparseable: undefined entity: line 9, column 164",
         "documents": 1,
         "findings": 2
@@ -12408,10 +12368,10 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe53-3"
+        "last_run_key": "probe-20260914-pe53-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
-      "content_line": "format sitemap unparseable: undefined entity: line 9, column 164 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
+      "content_line": "format sitemap recon deferred: sitemap shape not parseable (UnexpectedFormat warning); needs manual review \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [],
@@ -12424,8 +12384,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe53-3",
-            "started_at": "2026-09-14T08:29:33Z",
+            "run_key": "probe-20260914-pe53-2",
+            "started_at": "2026-09-14T02:21:27Z",
             "notes": null,
             "value": "allowed"
           }
@@ -12435,13 +12395,13 @@
             "source_id": "PE-53",
             "metric_code": "format",
             "value_numeric": null,
-            "value_text": "sitemap unparseable: undefined entity: line 9, column 164",
+            "value_text": "sitemap recon deferred: sitemap shape not parseable (UnexpectedFormat warning); needs manual review",
             "unit_code": null,
-            "method_code": "scrape",
-            "run_key": "probe-20260914-pe53-3",
-            "started_at": "2026-09-14T08:29:33Z",
-            "notes": "UnexpectedFormat \u2014 WARNING, manual review",
-            "value": "sitemap unparseable: undefined entity: line 9, column 164"
+            "method_code": "manual",
+            "run_key": "probe-20260914-pe53manual",
+            "started_at": "2026-09-14T02:23:57Z",
+            "notes": null,
+            "value": "sitemap recon deferred: sitemap shape not parseable (UnexpectedFormat warning); needs manual review"
           }
         ],
         "counts": [],
@@ -12476,10 +12436,10 @@
       "active": true,
       "notes": "channel=marine; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap MARINE<=10 (widened v0.2.2); desk env could not reach (egress) \u2014 verify at W3",
       "run": {
-        "run_key": "probe-20260914-pe54-3",
+        "run_key": "probe-20260914-pe54-2",
         "status": "failed",
-        "started_at": "2026-09-14T08:29:38Z",
-        "finished_at": "2026-09-14T08:30:23Z",
+        "started_at": "2026-09-14T02:21:32Z",
+        "finished_at": "2026-09-14T02:22:18Z",
         "notes": "https://www.boeroyachting.com/sitemap.xml: network error after retries",
         "documents": 0,
         "findings": 0
@@ -12508,7 +12468,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe54-3"
+        "last_run_key": "probe-20260914-pe54-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format sitemap recon deferred: connection refused twice from desk egress \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -12563,10 +12523,10 @@
       "active": true,
       "notes": "channel=marine; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap MARINE<=10 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe55-3",
+        "run_key": "probe-20260914-pe55-2",
         "status": "done",
-        "started_at": "2026-09-14T08:30:23Z",
-        "finished_at": "2026-09-14T08:30:32Z",
+        "started_at": "2026-09-14T02:22:18Z",
+        "finished_at": "2026-09-14T02:22:26Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -12595,14 +12555,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe55-3"
+        "last_run_key": "probe-20260914-pe55-2"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe55-3]"
+        "priors: sitemap_products=0 [probe-20260914-pe55-2]"
       ],
       "sections": {
         "access": [
@@ -12613,8 +12573,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe55-3",
-            "started_at": "2026-09-14T08:30:23Z",
+            "run_key": "probe-20260914-pe55-2",
+            "started_at": "2026-09-14T02:22:18Z",
             "notes": null,
             "value": "allowed"
           }
@@ -12627,8 +12587,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe55-3",
-            "started_at": "2026-09-14T08:30:23Z",
+            "run_key": "probe-20260914-pe55-2",
+            "started_at": "2026-09-14T02:22:18Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -12643,8 +12603,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe55-3",
-            "started_at": "2026-09-14T08:30:23Z",
+            "run_key": "probe-20260914-pe55-2",
+            "started_at": "2026-09-14T02:22:18Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -12672,10 +12632,10 @@
       "active": true,
       "notes": "channel=marine; listed_by=DATA_SOURCE.md tier B; URL unverified (desk); desk env could not reach (egress) \u2014 verify at W3; listed_date=2026-09-14; inclusion=cap MARINE<=10",
       "run": {
-        "run_key": "probe-20260914-pe56-3",
+        "run_key": "probe-20260914-pe56-2",
         "status": "failed",
-        "started_at": "2026-09-14T08:30:32Z",
-        "finished_at": "2026-09-14T08:30:50Z",
+        "started_at": "2026-09-14T02:22:26Z",
+        "finished_at": "2026-09-14T02:22:44Z",
         "notes": "https://www.de-ijssel-coatings.com/sitemap.xml: network error after retries",
         "documents": 0,
         "findings": 0
@@ -12704,7 +12664,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe56-3"
+        "last_run_key": "probe-20260914-pe56-2"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format sitemap recon deferred: connection refused twice from desk egress \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -12759,10 +12719,10 @@
       "active": true,
       "notes": "channel=art; listed_by=DATA_SOURCE.md tier B (artists' colours); listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe57-2",
+        "run_key": "probe-20260914-pe57",
         "status": "done",
-        "started_at": "2026-09-14T08:30:50Z",
-        "finished_at": "2026-09-14T08:30:54Z",
+        "started_at": "2026-09-14T02:14:06Z",
+        "finished_at": "2026-09-14T02:14:11Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -12791,14 +12751,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe57-2"
+        "last_run_key": "probe-20260914-pe57"
       },
       "access_line": "robots allow-all (404/empty) \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe57-2]"
+        "priors: sitemap_products=0 [probe-20260914-pe57]"
       ],
       "sections": {
         "access": [
@@ -12809,8 +12769,8 @@
             "value_text": "allow-all (404/empty)",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe57-2",
-            "started_at": "2026-09-14T08:30:50Z",
+            "run_key": "probe-20260914-pe57",
+            "started_at": "2026-09-14T02:14:06Z",
             "notes": null,
             "value": "allow-all (404/empty)"
           }
@@ -12823,8 +12783,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe57-2",
-            "started_at": "2026-09-14T08:30:50Z",
+            "run_key": "probe-20260914-pe57",
+            "started_at": "2026-09-14T02:14:06Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -12839,8 +12799,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe57-2",
-            "started_at": "2026-09-14T08:30:50Z",
+            "run_key": "probe-20260914-pe57",
+            "started_at": "2026-09-14T02:14:06Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -12868,10 +12828,10 @@
       "active": true,
       "notes": "channel=art; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2); desk env could not reach (egress) \u2014 verify at W3",
       "run": {
-        "run_key": "probe-20260914-pe58-2",
+        "run_key": "probe-20260914-pe58",
         "status": "failed",
-        "started_at": "2026-09-14T08:30:54Z",
-        "finished_at": "2026-09-14T08:31:13Z",
+        "started_at": "2026-09-14T02:14:11Z",
+        "finished_at": "2026-09-14T02:14:29Z",
         "notes": "https://www.talens.com/sitemap.xml: network error after retries",
         "documents": 0,
         "findings": 0
@@ -12900,7 +12860,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe58-2"
+        "last_run_key": "probe-20260914-pe58"
       },
       "access_line": "robots \u2014 \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format sitemap recon deferred: connection refused twice from desk egress \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
@@ -12955,10 +12915,10 @@
       "active": true,
       "notes": "channel=art; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe59-2",
+        "run_key": "probe-20260914-pe59",
         "status": "done",
-        "started_at": "2026-09-14T08:31:13Z",
-        "finished_at": "2026-09-14T08:31:17Z",
+        "started_at": "2026-09-14T02:14:29Z",
+        "finished_at": "2026-09-14T02:14:33Z",
         "notes": null,
         "documents": 0,
         "findings": 3
@@ -12987,14 +12947,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe59-2"
+        "last_run_key": "probe-20260914-pe59"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe59-2]"
+        "priors: sitemap_products=0 [probe-20260914-pe59]"
       ],
       "sections": {
         "access": [
@@ -13005,8 +12965,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe59-2",
-            "started_at": "2026-09-14T08:31:13Z",
+            "run_key": "probe-20260914-pe59",
+            "started_at": "2026-09-14T02:14:29Z",
             "notes": null,
             "value": "allowed"
           }
@@ -13019,8 +12979,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe59-2",
-            "started_at": "2026-09-14T08:31:13Z",
+            "run_key": "probe-20260914-pe59",
+            "started_at": "2026-09-14T02:14:29Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -13035,8 +12995,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe59-2",
-            "started_at": "2026-09-14T08:31:13Z",
+            "run_key": "probe-20260914-pe59",
+            "started_at": "2026-09-14T02:14:29Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -13064,12 +13024,12 @@
       "active": true,
       "notes": "channel=art; listed_by=DATA_SOURCE.md tier B; URL unverified (desk); listed_date=2026-09-14; inclusion=cap ART<=15",
       "run": {
-        "run_key": "probe-20260914-pe60-2",
+        "run_key": "probe-20260914-pe60",
         "status": "done",
-        "started_at": "2026-09-14T08:31:17Z",
-        "finished_at": "2026-09-14T08:31:36Z",
+        "started_at": "2026-09-14T02:14:33Z",
+        "finished_at": "2026-09-14T02:14:52Z",
         "notes": null,
-        "documents": 0,
+        "documents": 6,
         "findings": 3
       },
       "status": "done",
@@ -13096,14 +13056,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe60-2"
+        "last_run_key": "probe-20260914-pe60"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe60-2]"
+        "priors: sitemap_products=0 [probe-20260914-pe60]"
       ],
       "sections": {
         "access": [
@@ -13114,8 +13074,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe60-2",
-            "started_at": "2026-09-14T08:31:17Z",
+            "run_key": "probe-20260914-pe60",
+            "started_at": "2026-09-14T02:14:33Z",
             "notes": null,
             "value": "allowed"
           }
@@ -13128,8 +13088,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe60-2",
-            "started_at": "2026-09-14T08:31:17Z",
+            "run_key": "probe-20260914-pe60",
+            "started_at": "2026-09-14T02:14:33Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -13144,8 +13104,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe60-2",
-            "started_at": "2026-09-14T08:31:17Z",
+            "run_key": "probe-20260914-pe60",
+            "started_at": "2026-09-14T02:14:33Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -13173,12 +13133,12 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe61-2",
+        "run_key": "probe-20260914-pe61",
         "status": "done",
-        "started_at": "2026-09-14T08:31:36Z",
-        "finished_at": "2026-09-14T08:31:45Z",
+        "started_at": "2026-09-14T02:14:52Z",
+        "finished_at": "2026-09-14T02:15:02Z",
         "notes": null,
-        "documents": 0,
+        "documents": 3,
         "findings": 3
       },
       "status": "done",
@@ -13205,14 +13165,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe61-2"
+        "last_run_key": "probe-20260914-pe61"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe61-2]"
+        "priors: sitemap_products=0 [probe-20260914-pe61]"
       ],
       "sections": {
         "access": [
@@ -13223,8 +13183,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe61-2",
-            "started_at": "2026-09-14T08:31:36Z",
+            "run_key": "probe-20260914-pe61",
+            "started_at": "2026-09-14T02:14:52Z",
             "notes": null,
             "value": "allowed"
           }
@@ -13237,8 +13197,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe61-2",
-            "started_at": "2026-09-14T08:31:36Z",
+            "run_key": "probe-20260914-pe61",
+            "started_at": "2026-09-14T02:14:52Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -13253,8 +13213,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe61-2",
-            "started_at": "2026-09-14T08:31:36Z",
+            "run_key": "probe-20260914-pe61",
+            "started_at": "2026-09-14T02:14:52Z",
             "notes": "generic product-URL fallback (no register token)",
             "value": "0 count"
           }
@@ -13282,12 +13242,12 @@
       "active": true,
       "notes": "channel=art; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)",
       "run": {
-        "run_key": "probe-20260914-pe62-2",
+        "run_key": "probe-20260914-pe62",
         "status": "done",
-        "started_at": "2026-09-14T08:31:45Z",
-        "finished_at": "2026-09-14T08:32:00Z",
+        "started_at": "2026-09-14T02:15:02Z",
+        "finished_at": "2026-09-14T02:15:16Z",
         "notes": null,
-        "documents": 2,
+        "documents": 6,
         "findings": 3
       },
       "status": "done",
@@ -13314,14 +13274,14 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-pe62-2"
+        "last_run_key": "probe-20260914-pe62"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access \u2014",
       "content_line": "format \u2014 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014",
       "counts_line": "",
       "trade_lines": [],
       "priors_lines": [
-        "priors: sitemap_products=0 [probe-20260914-pe62-2]"
+        "priors: sitemap_products=0 [probe-20260914-pe62]"
       ],
       "sections": {
         "access": [
@@ -13332,8 +13292,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe62-2",
-            "started_at": "2026-09-14T08:31:45Z",
+            "run_key": "probe-20260914-pe62",
+            "started_at": "2026-09-14T02:15:02Z",
             "notes": null,
             "value": "allowed"
           }
@@ -13346,8 +13306,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe62-2",
-            "started_at": "2026-09-14T08:31:45Z",
+            "run_key": "probe-20260914-pe62",
+            "started_at": "2026-09-14T02:15:02Z",
             "notes": "sitemap-visible SDS/TDS document URLs (counts only)",
             "value": "0 count"
           }
@@ -13362,8 +13322,8 @@
             "value_text": null,
             "unit_code": "count",
             "method_code": "scrape",
-            "run_key": "probe-20260914-pe62-2",
-            "started_at": "2026-09-14T08:31:45Z",
+            "run_key": "probe-20260914-pe62",
+            "started_at": "2026-09-14T02:15:02Z",
             "notes": "generic product-URL fallback (no register token); floor partial (index/size cap)",
             "value": "0 count"
           }
@@ -13662,17 +13622,9 @@
       "verification_status_code": "open",
       "active": true,
       "notes": "production values for paints (NACE 20.30); bulk TSV sidesteps the dissemination-API size limit (413 observed 2026-09-14); NACE-to-CN8 via the official correspondence, NACE-proxy fallback with caveat (design c5); exact bulk-URL pinned at W1",
-      "run": {
-        "run_key": "probe-20260914-st4manual-2",
-        "status": "done",
-        "started_at": "2026-09-14T08:39:27Z",
-        "finished_at": "2026-09-14T08:39:27Z",
-        "notes": null,
-        "documents": 0,
-        "findings": 1
-      },
-      "status": "done",
-      "tier": "c",
+      "run": null,
+      "status": null,
+      "tier": "d",
       "counted": null,
       "matrix": {
         "sitemap_products": "\u2014",
@@ -13695,7 +13647,7 @@
         "records_hs3213": "\u2014",
         "export_rows": "\u2014",
         "census_status": "\u2014",
-        "last_run_key": "probe-20260914-st4manual-2"
+        "last_run_key": "\u2014"
       },
       "access_line": "robots allowed \u00b7 terms \u2014 \u00b7 rate limit \u2014 \u00b7 free access 1",
       "content_line": "format PRODCOM: dedicated API not pinnable by desk probing (dissemination API 404 for DS-059358/DS-066342; prodcom web app JS-rendered); bulk URL + layout pin deferred to the API docs (next pass); SBS producer counts ride ST-3 \u00b7 granularity \u2014 \u00b7 coverage \u2014 \u00b7 languages \u2014 \u00b7 extraction path: mdb-export exit 1: option parsing failed: Unknown option -1\nUsage:\n  mdb-export [OPTION\u2026] <file> <table> - export data from MDB file\n\nHelp Options:\n  -h, --help                        Show help options\n\nApplication Opti",
@@ -13711,8 +13663,8 @@
             "value_text": "allowed",
             "unit_code": null,
             "method_code": "download",
-            "run_key": "probe-20260914-st4-2",
-            "started_at": "2026-09-14T08:23:14Z",
+            "run_key": "probe-20260914-st4",
+            "started_at": "2026-09-14T02:03:35Z",
             "notes": null,
             "value": "allowed"
           }
@@ -13725,8 +13677,8 @@
             "value_text": "PRODCOM: dedicated API not pinnable by desk probing (dissemination API 404 for DS-059358/DS-066342; prodcom web app JS-rendered); bulk URL + layout pin deferred to the API docs (next pass); SBS producer counts ride ST-3",
             "unit_code": null,
             "method_code": "manual",
-            "run_key": "probe-20260914-st4manual-2",
-            "started_at": "2026-09-14T08:39:27Z",
+            "run_key": "probe-20260914-st4manual",
+            "started_at": "2026-09-14T02:06:07Z",
             "notes": null,
             "value": "PRODCOM: dedicated API not pinnable by desk probing (dissemination API 404 for DS-059358/DS-066342; prodcom web app JS-rendered); bulk URL + layout pin deferred to the API docs (next pass); SBS producer counts ride ST-3"
           },
@@ -13737,8 +13689,8 @@
             "value_text": "mdb-export exit 1: option parsing failed: Unknown option -1\nUsage:\n  mdb-export [OPTION\u2026] <file> <table> - export data from MDB file\n\nHelp Options:\n  -h, --help                        Show help options\n\nApplication Opti",
             "unit_code": null,
             "method_code": "download",
-            "run_key": "probe-20260914-st4-2",
-            "started_at": "2026-09-14T08:23:14Z",
+            "run_key": "probe-20260914-st4",
+            "started_at": "2026-09-14T02:03:35Z",
             "notes": null,
             "value": "mdb-export exit 1: option parsing failed: Unknown option -1\nUsage:\n  mdb-export [OPTION\u2026] <file> <table> - export data from MDB file\n\nHelp Options:\n  -h, --help                        Show help options\n\nApplication Opti"
           }
@@ -13752,8 +13704,8 @@
             "value_text": null,
             "unit_code": null,
             "method_code": "download",
-            "run_key": "probe-20260914-st4-2",
-            "started_at": "2026-09-14T08:23:14Z",
+            "run_key": "probe-20260914-st4",
+            "started_at": "2026-09-14T02:03:35Z",
             "notes": null,
             "value": "1"
           }
@@ -13771,11 +13723,11 @@
       "products_identifiable_num": null,
       "real_product_source": false,
       "cap_run": {
-        "run_key": "probe-20260914-st4-2",
+        "run_key": "probe-20260914-st4manual",
         "status": "done",
-        "started_at": "2026-09-14T08:23:14Z",
-        "finished_at": "2026-09-14T08:23:18Z",
-        "notes": "mdb-export exit 1: option parsing failed: Unknown option -1\nUsage:\n  mdb-export [OPTION\u2026] <file> <table> - export data from MDB file\n\nHelp Options:\n  -h, --help                        Show help options\n\nApplication Opti"
+        "started_at": "2026-09-14T02:06:07Z",
+        "finished_at": "2026-09-14T02:06:07Z",
+        "notes": null
       }
     },
     {
@@ -14078,84 +14030,84 @@
       "metric_code": "sitemap_products",
       "value_numeric": 2.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe10-3"
+      "run_key": "probe-20260914-pe10-2"
     },
     {
       "source_id": "PE-11",
       "metric_code": "sitemap_products",
       "value_numeric": 146.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe11-3"
+      "run_key": "probe-20260914-pe11-2"
     },
     {
       "source_id": "PE-12",
       "metric_code": "sitemap_products",
       "value_numeric": 9.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe12-3"
+      "run_key": "probe-20260914-pe12-2"
     },
     {
       "source_id": "PE-13",
       "metric_code": "sitemap_products",
       "value_numeric": 1953.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe13-3"
+      "run_key": "probe-20260914-pe13-2"
     },
     {
       "source_id": "PE-14",
       "metric_code": "sitemap_products",
       "value_numeric": 3.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe14-3"
+      "run_key": "probe-20260914-pe14-2"
     },
     {
       "source_id": "PE-15",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe15-3"
+      "run_key": "probe-20260914-pe15-2"
     },
     {
       "source_id": "PE-16",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe16-3"
+      "run_key": "probe-20260914-pe16-2"
     },
     {
       "source_id": "PE-17",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe17-3"
+      "run_key": "probe-20260914-pe17-2"
     },
     {
       "source_id": "PE-18",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe18-3"
+      "run_key": "probe-20260914-pe18-2"
     },
     {
       "source_id": "PE-19",
       "metric_code": "sitemap_products",
       "value_numeric": 1619.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe19-3"
+      "run_key": "probe-20260914-pe19-2"
     },
     {
       "source_id": "PE-20",
       "metric_code": "sitemap_products",
       "value_numeric": 199354.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe20-3"
+      "run_key": "probe-20260914-pe20-2"
     },
     {
       "source_id": "PE-21",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe21-3"
+      "run_key": "probe-20260914-pe21-2"
     },
     {
       "source_id": "PE-22",
@@ -14169,98 +14121,98 @@
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe23-3"
+      "run_key": "probe-20260914-pe23-2"
     },
     {
       "source_id": "PE-25",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe25-3"
+      "run_key": "probe-20260914-pe25-2"
     },
     {
       "source_id": "PE-26",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe26-3"
+      "run_key": "probe-20260914-pe26-2"
     },
     {
       "source_id": "PE-27",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe27-3"
+      "run_key": "probe-20260914-pe27-2"
     },
     {
       "source_id": "PE-28",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe28-3"
+      "run_key": "probe-20260914-pe28-2"
     },
     {
       "source_id": "PE-29",
       "metric_code": "sitemap_products",
       "value_numeric": 4.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe29-3"
+      "run_key": "probe-20260914-pe29-2"
     },
     {
       "source_id": "PE-30",
       "metric_code": "sitemap_products",
       "value_numeric": 60.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe30-3"
+      "run_key": "probe-20260914-pe30-2"
     },
     {
       "source_id": "PE-32",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe32-3"
+      "run_key": "probe-20260914-pe32-2"
     },
     {
       "source_id": "PE-33",
       "metric_code": "sitemap_products",
       "value_numeric": 1541.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe33-3"
+      "run_key": "probe-20260914-pe33-2"
     },
     {
       "source_id": "PE-34",
       "metric_code": "sitemap_products",
       "value_numeric": 2.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe34-3"
+      "run_key": "probe-20260914-pe34-2"
     },
     {
       "source_id": "PE-36",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe36-3"
+      "run_key": "probe-20260914-pe36-2"
     },
     {
       "source_id": "PE-37",
       "metric_code": "sitemap_products",
       "value_numeric": 22.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe37-3"
+      "run_key": "probe-20260914-pe37-2"
     },
     {
       "source_id": "PE-38",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe38-3"
+      "run_key": "probe-20260914-pe38-2"
     },
     {
       "source_id": "PE-39",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe39-3"
+      "run_key": "probe-20260914-pe39-2"
     },
     {
       "source_id": "PE-4",
@@ -14274,56 +14226,56 @@
       "metric_code": "sitemap_products",
       "value_numeric": 126929.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe43-3"
+      "run_key": "probe-20260914-pe43-2"
     },
     {
       "source_id": "PE-44",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe44-3"
+      "run_key": "probe-20260914-pe44-2"
     },
     {
       "source_id": "PE-55",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe55-3"
+      "run_key": "probe-20260914-pe55-2"
     },
     {
       "source_id": "PE-57",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe57-2"
+      "run_key": "probe-20260914-pe57"
     },
     {
       "source_id": "PE-59",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe59-2"
+      "run_key": "probe-20260914-pe59"
     },
     {
       "source_id": "PE-60",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe60-2"
+      "run_key": "probe-20260914-pe60"
     },
     {
       "source_id": "PE-61",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe61-2"
+      "run_key": "probe-20260914-pe61"
     },
     {
       "source_id": "PE-62",
       "metric_code": "sitemap_products",
       "value_numeric": 0.0,
       "unit_code": "count",
-      "run_key": "probe-20260914-pe62-2"
+      "run_key": "probe-20260914-pe62"
     },
     {
       "source_id": "ST-1",
@@ -14359,8 +14311,8 @@
       "source_id": "AS-10",
       "first_retrieved_at": "2026-09-14T02:06:28Z",
       "last_retrieved_at": "2026-09-14T02:06:57Z",
-      "run_count": 4,
-      "finding_count": 6
+      "run_count": 2,
+      "finding_count": 3
     },
     {
       "source_id": "AS-11",
@@ -14428,9 +14380,9 @@
     {
       "source_id": "AS-2",
       "first_retrieved_at": "2026-09-13T22:59:30Z",
-      "last_retrieved_at": "2026-09-14T08:21:27Z",
-      "run_count": 13,
-      "finding_count": 11
+      "last_retrieved_at": "2026-09-14T02:01:47Z",
+      "run_count": 12,
+      "finding_count": 10
     },
     {
       "source_id": "AS-20",
@@ -14505,9 +14457,9 @@
     {
       "source_id": "AS-3",
       "first_retrieved_at": "2026-09-13T22:59:32Z",
-      "last_retrieved_at": "2026-09-14T08:21:29Z",
-      "run_count": 8,
-      "finding_count": 8
+      "last_retrieved_at": "2026-09-14T02:06:06Z",
+      "run_count": 7,
+      "finding_count": 6
     },
     {
       "source_id": "AS-30",
@@ -14533,30 +14485,30 @@
     {
       "source_id": "AS-6",
       "first_retrieved_at": "2026-09-13T22:59:36Z",
-      "last_retrieved_at": "2026-09-14T08:23:27Z",
-      "run_count": 9,
-      "finding_count": 9
+      "last_retrieved_at": "2026-09-14T02:06:55Z",
+      "run_count": 7,
+      "finding_count": 6
     },
     {
       "source_id": "AS-7",
       "first_retrieved_at": "2026-09-13T22:58:44Z",
-      "last_retrieved_at": "2026-09-14T08:23:29Z",
-      "run_count": 9,
-      "finding_count": 8
+      "last_retrieved_at": "2026-09-14T02:06:56Z",
+      "run_count": 7,
+      "finding_count": 5
     },
     {
       "source_id": "AS-8",
       "first_retrieved_at": "2026-09-14T02:06:38Z",
       "last_retrieved_at": "2026-09-14T02:06:56Z",
-      "run_count": 4,
-      "finding_count": 6
+      "run_count": 2,
+      "finding_count": 3
     },
     {
       "source_id": "AS-9",
       "first_retrieved_at": "2026-09-14T02:06:40Z",
       "last_retrieved_at": "2026-09-14T02:06:56Z",
-      "run_count": 4,
-      "finding_count": 6
+      "run_count": 2,
+      "finding_count": 3
     },
     {
       "source_id": "CS-1",
@@ -14569,7 +14521,7 @@
       "source_id": "CS-2",
       "first_retrieved_at": "2026-09-11T03:49:20Z",
       "last_retrieved_at": "2026-09-14T02:03:35Z",
-      "run_count": 17,
+      "run_count": 16,
       "finding_count": 39
     },
     {
@@ -14632,71 +14584,71 @@
       "source_id": "PE-10",
       "first_retrieved_at": "2026-09-12T08:35:44Z",
       "last_retrieved_at": "2026-09-12T08:35:44Z",
-      "run_count": 9,
-      "finding_count": 14
+      "run_count": 8,
+      "finding_count": 11
     },
     {
       "source_id": "PE-11",
       "first_retrieved_at": "2026-09-12T08:36:32Z",
       "last_retrieved_at": "2026-09-14T02:07:19Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-12",
       "first_retrieved_at": "2026-09-12T08:36:36Z",
       "last_retrieved_at": "2026-09-14T02:07:24Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-13",
       "first_retrieved_at": "2026-09-12T08:36:50Z",
       "last_retrieved_at": "2026-09-14T02:07:38Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-14",
       "first_retrieved_at": "2026-09-12T08:36:54Z",
       "last_retrieved_at": "2026-09-12T08:36:54Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-15",
       "first_retrieved_at": "2026-09-12T08:37:08Z",
       "last_retrieved_at": "2026-09-12T08:37:08Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-16",
       "first_retrieved_at": "2026-09-12T08:37:12Z",
       "last_retrieved_at": "2026-09-12T08:37:12Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-17",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-18",
       "first_retrieved_at": "2026-09-12T08:37:33Z",
-      "last_retrieved_at": "2026-09-14T08:25:02Z",
-      "run_count": 8,
-      "finding_count": 12
+      "last_retrieved_at": "2026-09-12T08:37:33Z",
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-19",
       "first_retrieved_at": "2026-09-12T08:37:38Z",
       "last_retrieved_at": "2026-09-12T08:37:38Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-2",
@@ -14708,72 +14660,72 @@
     {
       "source_id": "PE-20",
       "first_retrieved_at": "2026-09-12T08:37:53Z",
-      "last_retrieved_at": "2026-09-14T08:25:22Z",
-      "run_count": 8,
-      "finding_count": 12
+      "last_retrieved_at": "2026-09-14T02:08:42Z",
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-21",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-22",
       "first_retrieved_at": "2026-09-12T08:38:13Z",
       "last_retrieved_at": "2026-09-12T08:38:13Z",
-      "run_count": 8,
-      "finding_count": 6
+      "run_count": 7,
+      "finding_count": 5
     },
     {
       "source_id": "PE-23",
       "first_retrieved_at": "2026-09-12T08:38:32Z",
       "last_retrieved_at": "2026-09-14T02:09:16Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-24",
       "first_retrieved_at": "2026-09-14T02:23:55Z",
       "last_retrieved_at": "2026-09-14T02:23:55Z",
-      "run_count": 9,
+      "run_count": 8,
       "finding_count": 2
     },
     {
       "source_id": "PE-25",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-26",
       "first_retrieved_at": "2026-09-12T08:39:09Z",
-      "last_retrieved_at": "2026-09-14T08:26:33Z",
-      "run_count": 8,
-      "finding_count": 12
+      "last_retrieved_at": "2026-09-14T02:09:53Z",
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-27",
       "first_retrieved_at": "2026-09-12T08:39:16Z",
       "last_retrieved_at": "2026-09-14T02:10:00Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-28",
       "first_retrieved_at": "2026-09-12T08:39:20Z",
       "last_retrieved_at": "2026-09-14T02:10:04Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-29",
       "first_retrieved_at": "2026-09-12T08:39:34Z",
       "last_retrieved_at": "2026-09-12T08:39:34Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-3",
@@ -14786,71 +14738,71 @@
       "source_id": "PE-30",
       "first_retrieved_at": "2026-09-12T08:39:47Z",
       "last_retrieved_at": "2026-09-12T08:39:47Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-31",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 8,
-      "finding_count": 5
+      "run_count": 7,
+      "finding_count": 4
     },
     {
       "source_id": "PE-32",
       "first_retrieved_at": "2026-09-12T08:39:56Z",
       "last_retrieved_at": "2026-09-12T08:39:56Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-33",
       "first_retrieved_at": "2026-09-12T08:40:10Z",
-      "last_retrieved_at": "2026-09-14T08:27:35Z",
-      "run_count": 8,
-      "finding_count": 12
+      "last_retrieved_at": "2026-09-14T02:19:30Z",
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-34",
       "first_retrieved_at": "2026-09-12T08:40:14Z",
       "last_retrieved_at": "2026-09-12T08:40:14Z",
-      "run_count": 8,
-      "finding_count": 12
+      "run_count": 7,
+      "finding_count": 9
     },
     {
       "source_id": "PE-35",
       "first_retrieved_at": "2026-09-14T02:23:55Z",
       "last_retrieved_at": "2026-09-14T02:23:55Z",
-      "run_count": 4,
+      "run_count": 3,
       "finding_count": 1
     },
     {
       "source_id": "PE-36",
       "first_retrieved_at": "2026-09-14T02:11:31Z",
       "last_retrieved_at": "2026-09-14T02:11:31Z",
-      "run_count": 3,
-      "finding_count": 9
+      "run_count": 2,
+      "finding_count": 6
     },
     {
       "source_id": "PE-37",
       "first_retrieved_at": "2026-09-14T02:11:35Z",
       "last_retrieved_at": "2026-09-14T02:11:35Z",
-      "run_count": 3,
-      "finding_count": 9
+      "run_count": 2,
+      "finding_count": 6
     },
     {
       "source_id": "PE-38",
       "first_retrieved_at": "2026-09-14T02:11:49Z",
       "last_retrieved_at": "2026-09-14T02:11:49Z",
-      "run_count": 3,
-      "finding_count": 9
+      "run_count": 2,
+      "finding_count": 6
     },
     {
       "source_id": "PE-39",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 3,
-      "finding_count": 9
+      "run_count": 2,
+      "finding_count": 6
     },
     {
       "source_id": "PE-4",
@@ -14863,36 +14815,36 @@
       "source_id": "PE-40",
       "first_retrieved_at": "2026-09-14T02:23:56Z",
       "last_retrieved_at": "2026-09-14T02:23:56Z",
-      "run_count": 4,
+      "run_count": 3,
       "finding_count": 1
     },
     {
       "source_id": "PE-41",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 3,
-      "finding_count": 3
+      "run_count": 2,
+      "finding_count": 2
     },
     {
       "source_id": "PE-42",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 3,
-      "finding_count": 3
+      "run_count": 2,
+      "finding_count": 2
     },
     {
       "source_id": "PE-43",
       "first_retrieved_at": "2026-09-14T02:12:36Z",
       "last_retrieved_at": "2026-09-14T02:21:13Z",
-      "run_count": 3,
-      "finding_count": 9
+      "run_count": 2,
+      "finding_count": 6
     },
     {
       "source_id": "PE-44",
       "first_retrieved_at": "2026-09-14T02:12:51Z",
       "last_retrieved_at": "2026-09-14T02:12:51Z",
-      "run_count": 3,
-      "finding_count": 9
+      "run_count": 2,
+      "finding_count": 6
     },
     {
       "source_id": "PE-45",
@@ -14953,72 +14905,72 @@
     {
       "source_id": "PE-53",
       "first_retrieved_at": "2026-09-14T02:12:56Z",
-      "last_retrieved_at": "2026-09-14T08:29:38Z",
-      "run_count": 4,
-      "finding_count": 7
+      "last_retrieved_at": "2026-09-14T02:23:57Z",
+      "run_count": 3,
+      "finding_count": 5
     },
     {
       "source_id": "PE-54",
       "first_retrieved_at": "2026-09-14T02:23:56Z",
       "last_retrieved_at": "2026-09-14T02:23:56Z",
-      "run_count": 4,
+      "run_count": 3,
       "finding_count": 1
     },
     {
       "source_id": "PE-55",
       "first_retrieved_at": "2026-09-14T02:13:48Z",
       "last_retrieved_at": "2026-09-14T02:13:48Z",
-      "run_count": 3,
-      "finding_count": 9
+      "run_count": 2,
+      "finding_count": 6
     },
     {
       "source_id": "PE-56",
       "first_retrieved_at": "2026-09-14T02:23:57Z",
       "last_retrieved_at": "2026-09-14T02:23:57Z",
-      "run_count": 4,
+      "run_count": 3,
       "finding_count": 1
     },
     {
       "source_id": "PE-57",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 2,
-      "finding_count": 6
+      "run_count": 1,
+      "finding_count": 3
     },
     {
       "source_id": "PE-58",
       "first_retrieved_at": "2026-09-14T02:23:57Z",
       "last_retrieved_at": "2026-09-14T02:23:57Z",
-      "run_count": 3,
+      "run_count": 2,
       "finding_count": 1
     },
     {
       "source_id": "PE-59",
       "first_retrieved_at": null,
       "last_retrieved_at": null,
-      "run_count": 2,
-      "finding_count": 6
+      "run_count": 1,
+      "finding_count": 3
     },
     {
       "source_id": "PE-60",
       "first_retrieved_at": "2026-09-14T02:14:52Z",
       "last_retrieved_at": "2026-09-14T02:14:52Z",
-      "run_count": 2,
-      "finding_count": 6
+      "run_count": 1,
+      "finding_count": 3
     },
     {
       "source_id": "PE-61",
       "first_retrieved_at": "2026-09-14T02:15:02Z",
       "last_retrieved_at": "2026-09-14T02:15:02Z",
-      "run_count": 2,
-      "finding_count": 6
+      "run_count": 1,
+      "finding_count": 3
     },
     {
       "source_id": "PE-62",
       "first_retrieved_at": "2026-09-14T02:15:16Z",
-      "last_retrieved_at": "2026-09-14T08:32:00Z",
-      "run_count": 2,
-      "finding_count": 6
+      "last_retrieved_at": "2026-09-14T02:15:16Z",
+      "run_count": 1,
+      "finding_count": 3
     },
     {
       "source_id": "ST-1",
@@ -15044,9 +14996,9 @@
     {
       "source_id": "ST-4",
       "first_retrieved_at": "2026-09-14T02:03:38Z",
-      "last_retrieved_at": "2026-09-14T08:23:18Z",
-      "run_count": 4,
-      "finding_count": 10
+      "last_retrieved_at": "2026-09-14T02:06:07Z",
+      "run_count": 2,
+      "finding_count": 5
     },
     {
       "source_id": "ST-5",

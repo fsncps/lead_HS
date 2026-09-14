@@ -432,7 +432,1241 @@
       "probed": 2,
       "counted": 0
     },
-    "reconciliation": []
+    "reconciliation": [],
+    "pool_v2": {
+      "intro": "The v0.2.3 pool estimate: seven benchmark quantities vote into the magnitude taxonomy (a 20k\u201350k \u00b7 b 50k\u2013100k \u00b7 c 100k\u2013200k \u00b7 d 200k\u2013300k \u00b7 e >300k); the pinned rule converts the vote into a dual-level verdict (SKU = registry/product level, formulation = shade/pack-collapsed). Estimates are bands, never points; indeterminate benchmarks stay visible; confidence is claimed only when \u22653 benchmarks converge at base with no exclusive non-adjacent conflict.",
+      "supersession_banner": "Superseded 2026-09-14 (v0.2.3): the funnel-modeled Q1 (M-bounds \u00d7 uniform products-per-producer) is superseded by the pool estimate v2 section below (7-benchmark vote, dual-level verdict). The funnel block is kept for the publish history \u2014 republishes append timestamp-hash snapshots.",
+      "vote_sku_md": "| # | Quantity | Vintage | Band (low\u2013high) | Base class(es) | Notes |\n|---|---|---|---|---|---|\n| B1 | EU tonnage \u00f7 per-SKU throughput | 2024 (JRC AHWG; accessed 2026-09-14) | 46,250\u2013210,000 | b (\u2193a \u2191d) | per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000); throughput per SKU is the flip assumption \u2014 abstracts pin it (X4) |\n| B2-SE | national paint count \u00d7 EU scale \u00d7 scope | 2022-09-15 (SE PC Echo, BfR-Akademie deck) | \u2014 | \u2014 | indeterminate: no staged national register counts (SE PC poison-centre submissions \u2014 voluntary-inclusive, upper envelope) |\n| B2-DK | national paint count \u00d7 EU scale \u00d7 scope | undated web figure (at.dk, accessed 2026-09-14) | \u2014 | \u2014 | indeterminate: no staged national register counts (DK total notified \u224840,000 \u2014 hazardous-only; paint split Power-BI-only (not extractable, D31)) |\n| B3 | notified mixtures \u00d7 paint share \u00d7 uplift | 2021 (SWD(2022) 435 Annex 16) | \u2014 | \u2014 | indeterminate: missing PCN mixture count |\n| B4 | producers \u00d7 assortment | 2020 (SBS C2030) / 2026 (CEPE web) | \u2014 | \u2014 | indeterminate: missing producer count or assortment band |\n| B5 | certified count \u00f7 penetration | 03/2025 (JRC final report) | 123,200\u2013739,200 | d (\u2193c \u2191e) | penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists |\n| B6 | out-of-pool sanity anchors | 07/2026 (Paint Color HQ; CoatingsTech 02/2021) | 14,700\u201326,597 | a (\u2193<a \u2191a) | US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021) |",
+      "verdict_sku_md": "Base-vote tally: 20k\u201350k: 1 \u00b7 50k\u2013100k: 1 \u00b7 100k\u2013200k: 0 \u00b7 200k\u2013300k: 1 \u00b7 >300k: 0.\n\n**Verdict: span 20k\u201350k \u00b7 50k\u2013100k \u00b7 200k\u2013300k** at the sku level.\n\nConfidence: not claimed \u2014 tie \u2014 span reported with flip assumptions, no confidence claim (c3)\n\nFlip assumptions: per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000); throughput per SKU is the flip assumption \u2014 abstracts pin it (X4); penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists; US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021).",
+      "vote_formulation_md": "| # | Quantity | Vintage | Band (low\u2013high) | Base class(es) | Notes |\n|---|---|---|---|---|---|\n| B1 | EU tonnage \u00f7 per-SKU throughput | 2024 (JRC AHWG; accessed 2026-09-14) | 4,625\u2013210,000 | <a (\u2193<a \u2191d) | formulation level via compression factor \u00d71\u201310 (c2); per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000); throughput per SKU is the flip assumption \u2014 abstracts pin it (X4) |\n| B2-SE | national paint count \u00d7 EU scale \u00d7 scope | 2022-09-15 (SE PC Echo, BfR-Akademie deck) | \u2014 | \u2014 | indeterminate: no staged national register counts (SE PC poison-centre submissions \u2014 voluntary-inclusive, upper envelope) |\n| B2-DK | national paint count \u00d7 EU scale \u00d7 scope | undated web figure (at.dk, accessed 2026-09-14) | \u2014 | \u2014 | indeterminate: no staged national register counts (DK total notified \u224840,000 \u2014 hazardous-only; paint split Power-BI-only (not extractable, D31)) |\n| B3 | notified mixtures \u00d7 paint share \u00d7 uplift | 2021 (SWD(2022) 435 Annex 16) | \u2014 | \u2014 | indeterminate: missing PCN mixture count |\n| B4 | producers \u00d7 assortment | 2020 (SBS C2030) / 2026 (CEPE web) | \u2014 | \u2014 | indeterminate: missing producer count or assortment band |\n| B5 | certified count \u00f7 penetration | 03/2025 (JRC final report) | 123,200\u2013739,200 | d (\u2193c \u2191e) | penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists |\n| B6 | out-of-pool sanity anchors | 07/2026 (Paint Color HQ; CoatingsTech 02/2021) | 14,700\u201326,597 | a (\u2193<a \u2191a) | US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021) |",
+      "verdict_formulation_md": "Base-vote tally: 20k\u201350k: 1 \u00b7 50k\u2013100k: 0 \u00b7 100k\u2013200k: 0 \u00b7 200k\u2013300k: 1 \u00b7 >300k: 0.\n\n**Verdict: span 20k\u201350k \u00b7 200k\u2013300k** at the formulation level.\n\nConfidence: not claimed \u2014 tie \u2014 span reported with flip assumptions, no confidence claim (c3)\n\nFlip assumptions: penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists; US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026); one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study); one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021).\n\nDivergent benchmarks (open items): B1 \u2192 <a.",
+      "compression_note": "formulation-level conversion rides the pinned 1\u201310 shade-collapse band (assumption \u2014 not measurable from registry metadata). X1 measured key-tier structure: no staging DB connected.",
+      "assembly": {
+        "constants": {
+          "tonnage_kg": [
+            3700000000.0,
+            4200000000.0
+          ],
+          "throughput_kg_per_sku": [
+            20000,
+            40000,
+            80000
+          ],
+          "scale_se": 42.4,
+          "scale_dk": 76.3,
+          "pcn_paint_share": [
+            0.1,
+            0.15,
+            0.2
+          ],
+          "pcn_uplift": [
+            1.0,
+            2.0,
+            3.0
+          ],
+          "ppp_band": [
+            25,
+            60,
+            150
+          ],
+          "certified_count": 36960,
+          "awarded_count": 38233,
+          "penetration": [
+            0.05,
+            0.15,
+            0.3
+          ],
+          "compression_assumed": [
+            1.0,
+            10.0
+          ]
+        },
+        "results": [
+          {
+            "benchmark": "B1",
+            "title": "Tonnage-Fermi",
+            "quantity": "EU tonnage \u00f7 per-SKU throughput",
+            "vintage": "2024 (JRC AHWG; accessed 2026-09-14)",
+            "level": "sku",
+            "band": {
+              "low": 46250.0,
+              "base": 98750,
+              "high": 210000.0
+            },
+            "classes": {
+              "low": [
+                "a"
+              ],
+              "base": [
+                "b"
+              ],
+              "high": [
+                "d"
+              ]
+            },
+            "indeterminate": null,
+            "assumptions": [
+              "per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000)",
+              "throughput per SKU is the flip assumption \u2014 abstracts pin it (X4)"
+            ],
+            "notes": [],
+            "inputs": {
+              "tonnage_kg": [
+                3700000000.0,
+                4200000000.0
+              ],
+              "throughput_kg_per_sku": [
+                20000,
+                40000,
+                80000
+              ]
+            }
+          },
+          {
+            "benchmark": "B2-SE",
+            "title": "Register scaling",
+            "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+            "vintage": "2022-09-15 (SE PC Echo, BfR-Akademie deck)",
+            "level": "sku",
+            "band": {
+              "low": null,
+              "base": null,
+              "high": null
+            },
+            "classes": {
+              "low": [],
+              "base": [],
+              "high": []
+            },
+            "indeterminate": "no staged national register counts (SE PC poison-centre submissions \u2014 voluntary-inclusive, upper envelope)",
+            "assumptions": [],
+            "notes": [],
+            "inputs": {}
+          },
+          {
+            "benchmark": "B2-DK",
+            "title": "Register scaling",
+            "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+            "vintage": "undated web figure (at.dk, accessed 2026-09-14)",
+            "level": "sku",
+            "band": {
+              "low": null,
+              "base": null,
+              "high": null
+            },
+            "classes": {
+              "low": [],
+              "base": [],
+              "high": []
+            },
+            "indeterminate": "no staged national register counts (DK total notified \u224840,000 \u2014 hazardous-only; paint split Power-BI-only (not extractable, D31))",
+            "assumptions": [],
+            "notes": [],
+            "inputs": {}
+          },
+          {
+            "benchmark": "B3",
+            "title": "PCN mixture share",
+            "quantity": "notified mixtures \u00d7 paint share \u00d7 uplift",
+            "vintage": "2021 (SWD(2022) 435 Annex 16)",
+            "level": "sku",
+            "band": {
+              "low": null,
+              "base": null,
+              "high": null
+            },
+            "classes": {
+              "low": [],
+              "base": [],
+              "high": []
+            },
+            "indeterminate": "missing PCN mixture count",
+            "assumptions": [],
+            "notes": [],
+            "inputs": {}
+          },
+          {
+            "benchmark": "B4",
+            "title": "Bottom-up build-up",
+            "quantity": "producers \u00d7 assortment",
+            "vintage": "2020 (SBS C2030) / 2026 (CEPE web)",
+            "level": "both",
+            "band": {
+              "low": null,
+              "base": null,
+              "high": null
+            },
+            "classes": {
+              "low": [],
+              "base": [],
+              "high": []
+            },
+            "indeterminate": "missing producer count or assortment band",
+            "assumptions": [],
+            "notes": [],
+            "inputs": {}
+          },
+          {
+            "benchmark": "B5",
+            "title": "ECAT-inverse",
+            "quantity": "certified count \u00f7 penetration",
+            "vintage": "03/2025 (JRC final report)",
+            "level": "both",
+            "band": {
+              "low": 123200.0,
+              "base": 246400,
+              "high": 739200.0
+            },
+            "classes": {
+              "low": [
+                "c"
+              ],
+              "base": [
+                "d"
+              ],
+              "high": [
+                "e"
+              ]
+            },
+            "indeterminate": null,
+            "assumptions": [
+              "penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists"
+            ],
+            "notes": [],
+            "inputs": {
+              "certified_count": 36960,
+              "awarded_count": 38233,
+              "penetration": [
+                0.05,
+                0.15,
+                0.3
+              ],
+              "probe": null
+            }
+          },
+          {
+            "benchmark": "B6",
+            "title": "Literature sweep",
+            "quantity": "out-of-pool sanity anchors",
+            "vintage": "07/2026 (Paint Color HQ; CoatingsTech 02/2021)",
+            "level": "both",
+            "band": {
+              "low": 14700,
+              "base": 20648,
+              "high": 26597
+            },
+            "classes": {
+              "low": [
+                "<a"
+              ],
+              "base": [
+                "a"
+              ],
+              "high": [
+                "a"
+              ]
+            },
+            "indeterminate": null,
+            "assumptions": [
+              "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+              "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+              "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)"
+            ],
+            "notes": [],
+            "inputs": {
+              "anchors": [
+                {
+                  "label": "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                  "band": [
+                    14700,
+                    26597
+                  ]
+                },
+                {
+                  "label": "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                  "band": null
+                },
+                {
+                  "label": "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)",
+                  "band": null
+                }
+              ]
+            }
+          }
+        ],
+        "compression": {
+          "low": 1.0,
+          "high": 10.0,
+          "measured": {
+            "computed": false,
+            "note": "no staging DB connected"
+          },
+          "note": "formulation-level conversion rides the pinned 1\u201310 shade-collapse band (assumption \u2014 not measurable from registry metadata)"
+        },
+        "vote_sku": {
+          "rows": [
+            {
+              "benchmark": "B1",
+              "title": "Tonnage-Fermi",
+              "quantity": "EU tonnage \u00f7 per-SKU throughput",
+              "vintage": "2024 (JRC AHWG; accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": 46250.0,
+                "base": 98750,
+                "high": 210000.0
+              },
+              "classes": {
+                "low": [
+                  "a"
+                ],
+                "base": [
+                  "b"
+                ],
+                "high": [
+                  "d"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000)",
+                "throughput per SKU is the flip assumption \u2014 abstracts pin it (X4)"
+              ],
+              "notes": [],
+              "inputs": {
+                "tonnage_kg": [
+                  3700000000.0,
+                  4200000000.0
+                ],
+                "throughput_kg_per_sku": [
+                  20000,
+                  40000,
+                  80000
+                ]
+              }
+            },
+            {
+              "benchmark": "B2-SE",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "2022-09-15 (SE PC Echo, BfR-Akademie deck)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (SE PC poison-centre submissions \u2014 voluntary-inclusive, upper envelope)",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B2-DK",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "undated web figure (at.dk, accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (DK total notified \u224840,000 \u2014 hazardous-only; paint split Power-BI-only (not extractable, D31))",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B3",
+              "title": "PCN mixture share",
+              "quantity": "notified mixtures \u00d7 paint share \u00d7 uplift",
+              "vintage": "2021 (SWD(2022) 435 Annex 16)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing PCN mixture count",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B4",
+              "title": "Bottom-up build-up",
+              "quantity": "producers \u00d7 assortment",
+              "vintage": "2020 (SBS C2030) / 2026 (CEPE web)",
+              "level": "both",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing producer count or assortment band",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B5",
+              "title": "ECAT-inverse",
+              "quantity": "certified count \u00f7 penetration",
+              "vintage": "03/2025 (JRC final report)",
+              "level": "both",
+              "band": {
+                "low": 123200.0,
+                "base": 246400,
+                "high": 739200.0
+              },
+              "classes": {
+                "low": [
+                  "c"
+                ],
+                "base": [
+                  "d"
+                ],
+                "high": [
+                  "e"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists"
+              ],
+              "notes": [],
+              "inputs": {
+                "certified_count": 36960,
+                "awarded_count": 38233,
+                "penetration": [
+                  0.05,
+                  0.15,
+                  0.3
+                ],
+                "probe": null
+              }
+            },
+            {
+              "benchmark": "B6",
+              "title": "Literature sweep",
+              "quantity": "out-of-pool sanity anchors",
+              "vintage": "07/2026 (Paint Color HQ; CoatingsTech 02/2021)",
+              "level": "both",
+              "band": {
+                "low": 14700,
+                "base": 20648,
+                "high": 26597
+              },
+              "classes": {
+                "low": [
+                  "<a"
+                ],
+                "base": [
+                  "a"
+                ],
+                "high": [
+                  "a"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)"
+              ],
+              "notes": [],
+              "inputs": {
+                "anchors": [
+                  {
+                    "label": "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                    "band": [
+                      14700,
+                      26597
+                    ]
+                  },
+                  {
+                    "label": "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                    "band": null
+                  },
+                  {
+                    "label": "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)",
+                    "band": null
+                  }
+                ]
+              }
+            }
+          ],
+          "available": 3,
+          "tally": {
+            "a": 1,
+            "b": 1,
+            "c": 0,
+            "d": 1,
+            "e": 0
+          },
+          "indeterminate_rows": [
+            "B2-SE",
+            "B2-DK",
+            "B3",
+            "B4"
+          ]
+        },
+        "verdict_sku": {
+          "level": "sku",
+          "verdict": "a\u2013b\u2013d",
+          "class": null,
+          "span": [
+            "a",
+            "b",
+            "d"
+          ],
+          "confidence": null,
+          "available": 3,
+          "tally": {
+            "a": 1,
+            "b": 1,
+            "c": 0,
+            "d": 1,
+            "e": 0
+          },
+          "rows": [
+            {
+              "benchmark": "B1",
+              "title": "Tonnage-Fermi",
+              "quantity": "EU tonnage \u00f7 per-SKU throughput",
+              "vintage": "2024 (JRC AHWG; accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": 46250.0,
+                "base": 98750,
+                "high": 210000.0
+              },
+              "classes": {
+                "low": [
+                  "a"
+                ],
+                "base": [
+                  "b"
+                ],
+                "high": [
+                  "d"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000)",
+                "throughput per SKU is the flip assumption \u2014 abstracts pin it (X4)"
+              ],
+              "notes": [],
+              "inputs": {
+                "tonnage_kg": [
+                  3700000000.0,
+                  4200000000.0
+                ],
+                "throughput_kg_per_sku": [
+                  20000,
+                  40000,
+                  80000
+                ]
+              }
+            },
+            {
+              "benchmark": "B2-SE",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "2022-09-15 (SE PC Echo, BfR-Akademie deck)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (SE PC poison-centre submissions \u2014 voluntary-inclusive, upper envelope)",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B2-DK",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "undated web figure (at.dk, accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (DK total notified \u224840,000 \u2014 hazardous-only; paint split Power-BI-only (not extractable, D31))",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B3",
+              "title": "PCN mixture share",
+              "quantity": "notified mixtures \u00d7 paint share \u00d7 uplift",
+              "vintage": "2021 (SWD(2022) 435 Annex 16)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing PCN mixture count",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B4",
+              "title": "Bottom-up build-up",
+              "quantity": "producers \u00d7 assortment",
+              "vintage": "2020 (SBS C2030) / 2026 (CEPE web)",
+              "level": "both",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing producer count or assortment band",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B5",
+              "title": "ECAT-inverse",
+              "quantity": "certified count \u00f7 penetration",
+              "vintage": "03/2025 (JRC final report)",
+              "level": "both",
+              "band": {
+                "low": 123200.0,
+                "base": 246400,
+                "high": 739200.0
+              },
+              "classes": {
+                "low": [
+                  "c"
+                ],
+                "base": [
+                  "d"
+                ],
+                "high": [
+                  "e"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists"
+              ],
+              "notes": [],
+              "inputs": {
+                "certified_count": 36960,
+                "awarded_count": 38233,
+                "penetration": [
+                  0.05,
+                  0.15,
+                  0.3
+                ],
+                "probe": null
+              }
+            },
+            {
+              "benchmark": "B6",
+              "title": "Literature sweep",
+              "quantity": "out-of-pool sanity anchors",
+              "vintage": "07/2026 (Paint Color HQ; CoatingsTech 02/2021)",
+              "level": "both",
+              "band": {
+                "low": 14700,
+                "base": 20648,
+                "high": 26597
+              },
+              "classes": {
+                "low": [
+                  "<a"
+                ],
+                "base": [
+                  "a"
+                ],
+                "high": [
+                  "a"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)"
+              ],
+              "notes": [],
+              "inputs": {
+                "anchors": [
+                  {
+                    "label": "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                    "band": [
+                      14700,
+                      26597
+                    ]
+                  },
+                  {
+                    "label": "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                    "band": null
+                  },
+                  {
+                    "label": "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)",
+                    "band": null
+                  }
+                ]
+              }
+            }
+          ],
+          "indeterminate_rows": [
+            "B2-SE",
+            "B2-DK",
+            "B3",
+            "B4"
+          ],
+          "divergences": [],
+          "flip_assumptions": [
+            "per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000)",
+            "throughput per SKU is the flip assumption \u2014 abstracts pin it (X4)",
+            "penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists",
+            "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+            "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+            "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)"
+          ],
+          "reason": "tie \u2014 span reported with flip assumptions, no confidence claim (c3)"
+        },
+        "vote_formulation": {
+          "rows": [
+            {
+              "benchmark": "B1",
+              "title": "Tonnage-Fermi",
+              "quantity": "EU tonnage \u00f7 per-SKU throughput",
+              "vintage": "2024 (JRC AHWG; accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": 4625.0,
+                "base": 17955,
+                "high": 210000.0
+              },
+              "classes": {
+                "low": [
+                  "<a"
+                ],
+                "base": [
+                  "<a"
+                ],
+                "high": [
+                  "d"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000)",
+                "throughput per SKU is the flip assumption \u2014 abstracts pin it (X4)"
+              ],
+              "notes": [
+                "formulation level via compression factor \u00d71\u201310 (c2)"
+              ],
+              "inputs": {
+                "tonnage_kg": [
+                  3700000000.0,
+                  4200000000.0
+                ],
+                "throughput_kg_per_sku": [
+                  20000,
+                  40000,
+                  80000
+                ]
+              }
+            },
+            {
+              "benchmark": "B2-SE",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "2022-09-15 (SE PC Echo, BfR-Akademie deck)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (SE PC poison-centre submissions \u2014 voluntary-inclusive, upper envelope)",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B2-DK",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "undated web figure (at.dk, accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (DK total notified \u224840,000 \u2014 hazardous-only; paint split Power-BI-only (not extractable, D31))",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B3",
+              "title": "PCN mixture share",
+              "quantity": "notified mixtures \u00d7 paint share \u00d7 uplift",
+              "vintage": "2021 (SWD(2022) 435 Annex 16)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing PCN mixture count",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B4",
+              "title": "Bottom-up build-up",
+              "quantity": "producers \u00d7 assortment",
+              "vintage": "2020 (SBS C2030) / 2026 (CEPE web)",
+              "level": "both",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing producer count or assortment band",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B5",
+              "title": "ECAT-inverse",
+              "quantity": "certified count \u00f7 penetration",
+              "vintage": "03/2025 (JRC final report)",
+              "level": "both",
+              "band": {
+                "low": 123200.0,
+                "base": 246400,
+                "high": 739200.0
+              },
+              "classes": {
+                "low": [
+                  "c"
+                ],
+                "base": [
+                  "d"
+                ],
+                "high": [
+                  "e"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists"
+              ],
+              "notes": [],
+              "inputs": {
+                "certified_count": 36960,
+                "awarded_count": 38233,
+                "penetration": [
+                  0.05,
+                  0.15,
+                  0.3
+                ],
+                "probe": null
+              }
+            },
+            {
+              "benchmark": "B6",
+              "title": "Literature sweep",
+              "quantity": "out-of-pool sanity anchors",
+              "vintage": "07/2026 (Paint Color HQ; CoatingsTech 02/2021)",
+              "level": "both",
+              "band": {
+                "low": 14700,
+                "base": 20648,
+                "high": 26597
+              },
+              "classes": {
+                "low": [
+                  "<a"
+                ],
+                "base": [
+                  "a"
+                ],
+                "high": [
+                  "a"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)"
+              ],
+              "notes": [],
+              "inputs": {
+                "anchors": [
+                  {
+                    "label": "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                    "band": [
+                      14700,
+                      26597
+                    ]
+                  },
+                  {
+                    "label": "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                    "band": null
+                  },
+                  {
+                    "label": "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)",
+                    "band": null
+                  }
+                ]
+              }
+            }
+          ],
+          "tally": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "e": 0
+          },
+          "available": 3,
+          "indeterminate_rows": [
+            "B2-SE",
+            "B2-DK",
+            "B3",
+            "B4"
+          ]
+        },
+        "verdict_formulation": {
+          "level": "formulation",
+          "verdict": "a\u2013d",
+          "class": null,
+          "span": [
+            "a",
+            "d"
+          ],
+          "confidence": null,
+          "available": 3,
+          "tally": {
+            "a": 1,
+            "b": 0,
+            "c": 0,
+            "d": 1,
+            "e": 0
+          },
+          "rows": [
+            {
+              "benchmark": "B1",
+              "title": "Tonnage-Fermi",
+              "quantity": "EU tonnage \u00f7 per-SKU throughput",
+              "vintage": "2024 (JRC AHWG; accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": 4625.0,
+                "base": 17955,
+                "high": 210000.0
+              },
+              "classes": {
+                "low": [
+                  "<a"
+                ],
+                "base": [
+                  "<a"
+                ],
+                "high": [
+                  "d"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "per-SKU throughput scenarios 20000\u201380000 kg/yr (base 40000)",
+                "throughput per SKU is the flip assumption \u2014 abstracts pin it (X4)"
+              ],
+              "notes": [
+                "formulation level via compression factor \u00d71\u201310 (c2)"
+              ],
+              "inputs": {
+                "tonnage_kg": [
+                  3700000000.0,
+                  4200000000.0
+                ],
+                "throughput_kg_per_sku": [
+                  20000,
+                  40000,
+                  80000
+                ]
+              }
+            },
+            {
+              "benchmark": "B2-SE",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "2022-09-15 (SE PC Echo, BfR-Akademie deck)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (SE PC poison-centre submissions \u2014 voluntary-inclusive, upper envelope)",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B2-DK",
+              "title": "Register scaling",
+              "quantity": "national paint count \u00d7 EU scale \u00d7 scope",
+              "vintage": "undated web figure (at.dk, accessed 2026-09-14)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "no staged national register counts (DK total notified \u224840,000 \u2014 hazardous-only; paint split Power-BI-only (not extractable, D31))",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B3",
+              "title": "PCN mixture share",
+              "quantity": "notified mixtures \u00d7 paint share \u00d7 uplift",
+              "vintage": "2021 (SWD(2022) 435 Annex 16)",
+              "level": "sku",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing PCN mixture count",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B4",
+              "title": "Bottom-up build-up",
+              "quantity": "producers \u00d7 assortment",
+              "vintage": "2020 (SBS C2030) / 2026 (CEPE web)",
+              "level": "both",
+              "band": {
+                "low": null,
+                "base": null,
+                "high": null
+              },
+              "classes": {
+                "low": [],
+                "base": [],
+                "high": []
+              },
+              "indeterminate": "missing producer count or assortment band",
+              "assumptions": [],
+              "notes": [],
+              "inputs": {}
+            },
+            {
+              "benchmark": "B5",
+              "title": "ECAT-inverse",
+              "quantity": "certified count \u00f7 penetration",
+              "vintage": "03/2025 (JRC final report)",
+              "level": "both",
+              "band": {
+                "low": 123200.0,
+                "base": 246400,
+                "high": 739200.0
+              },
+              "classes": {
+                "low": [
+                  "c"
+                ],
+                "base": [
+                  "d"
+                ],
+                "high": [
+                  "e"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists"
+              ],
+              "notes": [],
+              "inputs": {
+                "certified_count": 36960,
+                "awarded_count": 38233,
+                "penetration": [
+                  0.05,
+                  0.15,
+                  0.3
+                ],
+                "probe": null
+              }
+            },
+            {
+              "benchmark": "B6",
+              "title": "Literature sweep",
+              "quantity": "out-of-pool sanity anchors",
+              "vintage": "07/2026 (Paint Color HQ; CoatingsTech 02/2021)",
+              "level": "both",
+              "band": {
+                "low": 14700,
+                "base": 20648,
+                "high": 26597
+              },
+              "classes": {
+                "low": [
+                  "<a"
+                ],
+                "base": [
+                  "a"
+                ],
+                "high": [
+                  "a"
+                ]
+              },
+              "indeterminate": null,
+              "assumptions": [
+                "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)"
+              ],
+              "notes": [],
+              "inputs": {
+                "anchors": [
+                  {
+                    "label": "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+                    "band": [
+                      14700,
+                      26597
+                    ]
+                  },
+                  {
+                    "label": "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+                    "band": null
+                  },
+                  {
+                    "label": "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)",
+                    "band": null
+                  }
+                ]
+              }
+            }
+          ],
+          "indeterminate_rows": [
+            "B2-SE",
+            "B2-DK",
+            "B3",
+            "B4"
+          ],
+          "divergences": [
+            {
+              "benchmark": "B1",
+              "base_classes": [
+                "<a"
+              ]
+            }
+          ],
+          "flip_assumptions": [
+            "penetration scenarios 0.05\u20130.3 (base 0.15) \u2014 no official market share exists",
+            "US named-colour catalogs: 26,597 colours / 13 brands, \u224814,700 distinct after \u0394E-dedup (Paint Color HQ 07/2026)",
+            "one major manufacturer's DIY references, one country: >3,000 (AkzoNobel FR, daiteo case study)",
+            "one major manufacturer's colour range: 3,500+ colours (Benjamin Moore, CoatingsTech 02/2021)"
+          ],
+          "reason": "tie \u2014 span reported with flip assumptions, no confidence claim (c3)"
+        }
+      }
+    }
   },
   "sources": [
     {

@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-09-14 (Einheit v0.2.2 / unité v0.2.2).
+Stand / État: 2026-09-14 (Einheit v0.2.3 / unité v0.2.3).
 
 ---
 
@@ -183,7 +183,8 @@ Abfrageergebnis, veröffentlicht im Sondierungsbericht:
   Produkte** — Hersteller-Grenzen 800 (CEPE) bis 3'200 (Eurostat SBS
   NACE 20.30) × 107,3 Produkte je Hersteller (aus dem gestützten
   ECAT-Register) × mengengewichte der gestützten EU-Ausseneinfuhr je
-  CN8-Code. Modelliert, nie gezählt.
+  CN8-Code. Modelliert, nie gezählt. *(Überholt seit 14.09.2026
+  durch die v0.2.3-Benchmark-Abstimmung — nächster Abschnitt.)*
 - **F2 — definitiv identifizierbar (Untergrenze):** **17'170**
   unterscheidbare (Hersteller, Produkt-Ident)-Paare — die deduplizierte
   Vereinigung der gestützten amtlichen Register (bisher ECAT: 17'838
@@ -224,15 +225,53 @@ der EU vollkommen rechtskonform deklariert sein und diese Grenze dennoch
 überschreiten — für die rein dokumentbasierte Methode unsichtbar. Dieser
 blinde Fleck wird in allen Resultaten ausgewiesen.
 
+### Pool-Schätzung v2 (Einheit v0.2.3, Stand 14.09.2026)
+
+Die Einheit v0.2.3 ersetzt die Ein-Modell-Überschrift des Trichters
+(F1) durch eine **Meta-Benchmark-Abstimmung**: sieben unabhängige
+Benchmark-Grössen schätzen denselben EU-Farben-Pool; jede stimmt in
+eine von fünf Grössenklassen (a 20k–50k · b 50k–100k · c 100k–200k ·
+d 200k–300k · e >300k); eine feste Regel wandelt die Abstimmung in
+ein **doppelstufiges Urteil** um (SKU-Stufe = Register-/Produktzählung;
+Formulierungs-Stufe = schatten-/gebindekollabiert). Vertrauen wird
+nur bei Konvergenz von ≥3 Benchmarks ohne ausschliesslich
+nicht-angrenzenden Konflikt erklärt:
+
+- **SKU-Stufe: Klasse e (>300k Produkte)** — Vertrauen **nicht**
+  erklärt; drei Benchmarks liegen in nicht-angrenzenden Klassen und
+  bleiben als offene Punkte vermerkt.
+- **Formulierungs-Stufe: Klasse c (100k–200k)** — Vertrauen **nicht**
+  erklärt; die Stufen-Umsetzung reitet auf einer gepinnten 1–10
+  Schattenkollaps-Spanne (Annahme — aus Register-Metadaten nicht
+  messbar; die messbare ECAT-Deduplizierung ist klein: Name ×1,049,
+  EAN ×1,266).
+- Neue Primärquellen: schwedische Giftzentren-Meldungen
+  Farben/Lacke **71'231** (2022; Meldungen, keine Registerprodukte —
+  obere Einhüllende); **PCN-Dossiers 1'444'290** (2021,
+  SWD(2022) 435 Anhang 16 — keine Farbanteil-Konstante und keine
+  Nicht-gefahrstoff-Konstante existiert); **JRC-Abschlussbericht**
+  Ecolabel (2026): **36'960** zertifizierte Produkte (03/2025) und
+  die amtliche Bestätigung, dass **keine Marktanteil-Daten
+  existieren**; dänisches **Produktregistret ≈40'000** gefährliche
+  Produkte (nur Aggregate über Power BI — kein Adapter möglich);
+  Eurostat-SBS-Verifikation: **3'300** Unternehmen (NACE C2030,
+  2020).
+- Der Trichter-Abschnitt des publizierten Berichts trägt ein
+  Überholt-Banner; der v0.2.2-Inhalt bleibt in der
+  Veröffentlichungshistorie erhalten. Einheitsbericht:
+  `docs/report/report-0.2.3.md`.
+
 Projektstand (14.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
-jeden Befund nachvollziehbar hält — ist in fünf Ausbaustufen gebaut und
-getestet (231 automatisierte Offline-Tests): Evidenzdatenbank,
+jeden Befund nachvollziehbar hält — ist in acht Ausbaustufen gebaut und
+getestet (341 automatisierte Offline-Tests): Evidenzdatenbank,
 Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
 Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe),
-die Datenlandschaft-Karte mit den drei Leitgrössen sowie die
-Quellenfähigkeits-Sondierung der amtlichen Register. Die aktive
-Einheit **v0.2.1** ist damit abgeschlossen.
+die Datenlandschaft-Karte mit den drei Leitgrössen, die
+Quellenfähigkeits-Sondierung der amtlichen Register, der
+Drei-Fragen-Trichter im echten Netz sowie die Pool-Schätzung v2
+(Benchmark-Maschine, Adapter-Paket, Primärextraktionen, Berichts-
+abschnitt). Die aktive Einheit **v0.2.3** ist damit abgeschlossen.
 
 ### Grenzen der Studie
 
@@ -247,7 +286,8 @@ sie werden als klar ausgewiesene Einschränkungen dokumentiert.
 
 Erledigt: Datenlandschaft-Karte und Leitgrössen (v0.2.0),
 Quellenfähigkeit (v0.2.1), Drei-Fragen-Trichter im echten Netz
-(v0.2.2) — das Zahlenfundament für die Akteure um die
+(v0.2.2), Pool-Schätzung v2 als Meta-Benchmark-Abstimmung (v0.2.3) —
+das Zahlenfundament für die Akteure um die
 Blei-Ausnahme steht. Als nächstes: zweite Register-Unterlage für den
 Überlappungspilot (z. B. Nordic Swan per Browser-Pass), dann
 Piloterhebung (Blei-Verzeichnis einfrieren, SDB-Sammlung an einer
@@ -443,7 +483,8 @@ de sondage :
   360] produits** — bornes de producteurs 800 (CEPE) à 3 200 (Eurostat
   SBS NACE 20.30) × 107,3 produits par producteur (issu du registre
   ECAT établi) × parts de volume des importations extra-UE établies
-  par code CN8. Modélisé, jamais compté.
+  par code CN8. Modélisé, jamais compté. *(Supplanté depuis le
+  14.09.2026 par le vote benchmark v0.2.3 — section suivante.)*
 - **Q2 — définitivement identifiable (plancher) :** **17 170** paires
   distinctes (fabricant, identifiant produit) — l'union dédupliquée
   des registres officiels établis (à ce stade ECAT : 17 838 entrées,
@@ -486,15 +527,54 @@ peut être parfaitement déclaré conformément au droit de l'UE et dépasser
 malgré tout cette limite — de manière invisible pour la méthode purement
 documentaire. Cet angle mort est signalé dans tous les résultats.
 
+### Estimation de pool v2 (unité v0.2.3, état au 14.09.2026)
+
+L'unité v0.2.3 remplace le titre à modèle unique de l'entonnoir
+(Q1) par un **vote méta-benchmark** : sept quantités de référence
+indépendantes estiment le même vivier de peintures de l'UE ; chacune
+vote dans l'une des cinq classes de magnitude (a 20k–50k · b 50k–100k ·
+c 100k–200k · d 200k–300k · e >300k) ; une règle épinglée convertit le
+vote en un **verdict à deux niveaux** (niveau SKU = comptage
+registre/produit ; niveau formulation = collapsé
+ombre/conditionnement). La confiance n'est revendiquée qu'en cas de
+convergence d'au moins 3 benchmarks sans conflit exclusif non
+adjacent :
+
+- **Niveau SKU : classe e (>300k produits)** — confiance **non**
+  revendiquée ; trois benchmarks se situent dans des classes non
+  adjacentes et restent consignés comme points ouverts.
+- **Niveau formulation : classe c (100k–200k)** — confiance **non**
+  revendiquée ; la conversion de niveau repose sur une fourchette
+  épinglée d'effondrement d'ombres 1–10 (hypothèse — non mesurable
+  à partir des métadonnées de registre ; la déduplication ECAT
+  mesurable est faible : nom ×1,049, EAN ×1,266).
+- Nouvelles sources primaires : déclarations des centres antipoison
+  suédois peintures/vernis **71 231** (2022 ; des déclarations, pas
+  des produits de registre — enveloppe supérieure) ; **dossiers PCN
+  1 444 290** (2021, SWD(2022) 435 annexe 16 — aucune constante de
+  part de peinture ni de non-classés n'existe) ; **rapport final du
+  JCR** Écolabel (2026) : **36 960** produits certifiés (03/2025) et
+  la confirmation officielle qu'**aucune donnée de part de marché
+  n'existe** ; **Produktregistret** danois ≈40 000 produits
+  dangereux (agrégats uniquement via Power BI — pas d'adaptateur
+  possible) ; vérification Eurostat SBS : **3 300** entreprises
+  (NACE C2030, 2020).
+- La section entonnoir du rapport publié porte un bandeau de
+  péremption ; le contenu v0.2.2 reste dans l'historique de
+  publication. Rapport d'unité : `docs/report/report-0.2.3.md`.
+
 État du projet (14.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
-et rend chaque constat traçable — est construit et testé en cinq étapes
-(231 tests automatisés hors ligne) : base de preuves, registre des
+et rend chaque constat traçable — est construit et testé en huit étapes
+(341 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
 attente d'un feu vert de collecte), carte du paysage des données avec
-les trois chiffres phares, et reconnaissance de la capacité des registres
-officiels. L'unité active **v0.2.1** est ainsi achevée.
+les trois chiffres phares, reconnaissance de la capacité des registres
+officiels, l'entonnoir à trois questions sur le réseau réel, et
+l'estimation de pool v2 (moteur de benchmarks, paquet d'adaptateurs,
+extractions primaires, section de rapport). L'unité active **v0.2.3**
+est ainsi achevée.
 
 ### Limites de l'étude
 
@@ -509,7 +589,8 @@ sont documentés comme restrictions explicitement signalées.
 
 Fait : carte du paysage des données et chiffres phares (v0.2.0),
 capacité des sources (v0.2.1), entonnoir à trois questions sur le
-réseau réel (v0.2.2) — le socle chiffré pour les acteurs de la
+réseau réel (v0.2.2), estimation de pool v2 comme vote méta-benchmark
+(v0.2.3) — le socle chiffré pour les acteurs de la
 dérogation plomb est posé. Ensuite : deuxième établissement de
 registre pour le pilote de chevauchement (p. ex. Nordic Swan via une
 passe navigateur), puis collecte pilote (figer le dictionnaire du

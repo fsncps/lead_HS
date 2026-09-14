@@ -137,8 +137,8 @@ without scraping · **(d)** blocked/unknown.
 |---|---|---|---|
 | a | dataset/register access counted | — | 0 |
 | b | sitemap-visible counted | PE-10, PE-11, PE-12, PE-13, PE-14, PE-15, PE-16, PE-17, PE-18, PE-19, PE-20, PE-21, PE-22, PE-23, PE-25, PE-26, PE-27, PE-28, PE-29, PE-30, PE-32, PE-33, PE-34, PE-36, PE-37, PE-38, PE-39, PE-43, PE-44, PE-55, PE-57, PE-59, PE-60, PE-61, PE-62 | 35 |
-| c | visible, uncounted without scraping | AS-6, AS-7, CS-2, PE-53, ST-4 | 5 |
-| d | blocked/unknown | AS-2, AS-3, PE-24, PE-31, PE-35, PE-40, PE-41, PE-42, PE-54, PE-56, PE-58, ST-2 | 12 |
+| c | visible, uncounted without scraping | CS-2, PE-53 | 2 |
+| d | blocked/unknown | AS-2, AS-3, AS-6, AS-7, PE-24, PE-31, PE-35, PE-40, PE-41, PE-42, PE-54, PE-56, PE-58, ST-2, ST-4 | 15 |
 
 
 **N2 (Σ tier a+b counts): 331644** across
@@ -205,7 +205,7 @@ per-CN8 observed-products floor not computable from staging: the staged register
 
 | register | run | entries | distinct mfr | distinct (mfr, ident) pairs | identity completeness | top categories |
 |---|---|---|---|---|---|---|
-| AS-2 | probe-20260914-as2-3 | 17838 | 160 | 17170 | 16.0% | Decorative paints, varnishes, and related products (2014 criteria): 16001; Decorative paints, varnishes, and related products (2025 criteria): 1817; Performance coatings and related products: 20 |
+| AS-2 | probe-20260914-as2-2 | 17838 | 160 | 17170 | 16.0% | Decorative paints, varnishes, and related products (2014 criteria): 16001; Decorative paints, varnishes, and related products (2025 criteria): 1817; Performance coatings and related products: 20 |
 
 **Deduped union (Q2 floor): 17170 pairs over 160 manufacturers.**
 _overlap pilot not computable — no staged pairs for AS-3._
@@ -222,11 +222,11 @@ _overlap pilot not computable — no staged pairs for AS-3._
 | 4 | standardized full documents (EPD declarations; IATA/CMR MSDS) | — (0) |
 
 tier 4 is assigned only from recorded capability metrics (standardized-doc sources are manual records — capability not probed); absence of a tier is not a zero claim.
-Per-site SDS-URL counts (G6): PE-23 = 1133.0; PE-20 = 652.0; PE-43 = 401.0; PE-27 = 5.0; PE-34 = 5.0; PE-29 = 4.0; PE-11 = 3.0; PE-19 = 3.0; PE-10 = 2.0; PE-28 = 2.0; PE-32 = 1.0.
+Per-site SDS-URL counts (G6): PE-23 = 1133.0; PE-20 = 659.0; PE-43 = 401.0; PE-27 = 5.0; PE-34 = 5.0; PE-29 = 4.0; PE-11 = 3.0; PE-19 = 3.0; PE-10 = 2.0; PE-28 = 2.0; PE-32 = 1.0.
 
 ## Source census (enumerated vs probed vs counted)
 
-Enumerated register rows: 103 · probed (≥1 done run): 63 · counted: 35.
+Enumerated register rows: 103 · probed (≥1 done run): 57 · counted: 35.
 
 | class | channel | rows |
 |---|---|---|
@@ -244,11 +244,11 @@ Enumerated register rows: 103 · probed (≥1 done run): 63 · counted: 35.
 ## Reconciliation flags (c4 — visible, never silent)
 
 
-- ✓ **AS-2** (ok): staged rows 17838 (no products_registered metric — reconciled against the staged count, run probe-20260914-as2-3)
+- ✓ **AS-2** (ok): staged rows 17838 (no products_registered metric — reconciled against the staged count, run probe-20260914-as2-2)
 - ⚠ **ST-1** (staging-absent): metric present but no staged rows
 - ⚠ **ST-6** (staging-absent): metric present but no staged rows
 - ⚠ **ST-7** (staging-absent): metric present but no staged rows
-- ✓ **CS-2** (ok): staged rows 6316 (latest run probe-20260914-cs2-2)
+- ✓ **CS-2** (ok): 6316 staged trade rows
 
 
 
@@ -257,41 +257,41 @@ Enumerated register rows: 103 · probed (≥1 done run): 63 · counted: 35.
 
 
 - **AS-1** priors: producers_registered=800 [probe-20260912-as1manual]
-- **PE-10** priors: sitemap_products=2 [probe-20260914-pe10-3]
-- **PE-11** priors: sitemap_products=146 [probe-20260914-pe11-3]
-- **PE-12** priors: sitemap_products=9 [probe-20260914-pe12-3]
-- **PE-13** priors: sitemap_products=1953 [probe-20260914-pe13-3]
-- **PE-14** priors: sitemap_products=3 [probe-20260914-pe14-3]
-- **PE-15** priors: sitemap_products=0 [probe-20260914-pe15-3]
-- **PE-16** priors: sitemap_products=0 [probe-20260914-pe16-3]
-- **PE-17** priors: sitemap_products=0 [probe-20260914-pe17-3]
-- **PE-18** priors: sitemap_products=0 [probe-20260914-pe18-3]
-- **PE-19** priors: sitemap_products=1619 [probe-20260914-pe19-3]
-- **PE-20** priors: sitemap_products=199354 [probe-20260914-pe20-3]
-- **PE-21** priors: sitemap_products=0 [probe-20260914-pe21-3]
+- **PE-10** priors: sitemap_products=2 [probe-20260914-pe10-2]
+- **PE-11** priors: sitemap_products=146 [probe-20260914-pe11-2]
+- **PE-12** priors: sitemap_products=9 [probe-20260914-pe12-2]
+- **PE-13** priors: sitemap_products=1953 [probe-20260914-pe13-2]
+- **PE-14** priors: sitemap_products=3 [probe-20260914-pe14-2]
+- **PE-15** priors: sitemap_products=0 [probe-20260914-pe15-2]
+- **PE-16** priors: sitemap_products=0 [probe-20260914-pe16-2]
+- **PE-17** priors: sitemap_products=0 [probe-20260914-pe17-2]
+- **PE-18** priors: sitemap_products=0 [probe-20260914-pe18-2]
+- **PE-19** priors: sitemap_products=1619 [probe-20260914-pe19-2]
+- **PE-20** priors: sitemap_products=199354 [probe-20260914-pe20-2]
+- **PE-21** priors: sitemap_products=0 [probe-20260914-pe21-2]
 - **PE-22** priors: sitemap_products=0 [probe-20260912-pe22-2]
-- **PE-23** priors: sitemap_products=0 [probe-20260914-pe23-3]
-- **PE-25** priors: sitemap_products=0 [probe-20260914-pe25-3]
-- **PE-26** priors: sitemap_products=0 [probe-20260914-pe26-3]
-- **PE-27** priors: sitemap_products=0 [probe-20260914-pe27-3]
-- **PE-28** priors: sitemap_products=0 [probe-20260914-pe28-3]
-- **PE-29** priors: sitemap_products=4 [probe-20260914-pe29-3]
-- **PE-30** priors: sitemap_products=60 [probe-20260914-pe30-3]
-- **PE-32** priors: sitemap_products=0 [probe-20260914-pe32-3]
-- **PE-33** priors: sitemap_products=1541 [probe-20260914-pe33-3]
-- **PE-34** priors: sitemap_products=2 [probe-20260914-pe34-3]
-- **PE-36** priors: sitemap_products=0 [probe-20260914-pe36-3]
-- **PE-37** priors: sitemap_products=22 [probe-20260914-pe37-3]
-- **PE-38** priors: sitemap_products=0 [probe-20260914-pe38-3]
-- **PE-39** priors: sitemap_products=0 [probe-20260914-pe39-3]
-- **PE-43** priors: sitemap_products=126929 [probe-20260914-pe43-3]
-- **PE-44** priors: sitemap_products=0 [probe-20260914-pe44-3]
-- **PE-55** priors: sitemap_products=0 [probe-20260914-pe55-3]
-- **PE-57** priors: sitemap_products=0 [probe-20260914-pe57-2]
-- **PE-59** priors: sitemap_products=0 [probe-20260914-pe59-2]
-- **PE-60** priors: sitemap_products=0 [probe-20260914-pe60-2]
-- **PE-61** priors: sitemap_products=0 [probe-20260914-pe61-2]
-- **PE-62** priors: sitemap_products=0 [probe-20260914-pe62-2]
+- **PE-23** priors: sitemap_products=0 [probe-20260914-pe23-2]
+- **PE-25** priors: sitemap_products=0 [probe-20260914-pe25-2]
+- **PE-26** priors: sitemap_products=0 [probe-20260914-pe26-2]
+- **PE-27** priors: sitemap_products=0 [probe-20260914-pe27-2]
+- **PE-28** priors: sitemap_products=0 [probe-20260914-pe28-2]
+- **PE-29** priors: sitemap_products=4 [probe-20260914-pe29-2]
+- **PE-30** priors: sitemap_products=60 [probe-20260914-pe30-2]
+- **PE-32** priors: sitemap_products=0 [probe-20260914-pe32-2]
+- **PE-33** priors: sitemap_products=1541 [probe-20260914-pe33-2]
+- **PE-34** priors: sitemap_products=2 [probe-20260914-pe34-2]
+- **PE-36** priors: sitemap_products=0 [probe-20260914-pe36-2]
+- **PE-37** priors: sitemap_products=22 [probe-20260914-pe37-2]
+- **PE-38** priors: sitemap_products=0 [probe-20260914-pe38-2]
+- **PE-39** priors: sitemap_products=0 [probe-20260914-pe39-2]
+- **PE-43** priors: sitemap_products=126929 [probe-20260914-pe43-2]
+- **PE-44** priors: sitemap_products=0 [probe-20260914-pe44-2]
+- **PE-55** priors: sitemap_products=0 [probe-20260914-pe55-2]
+- **PE-57** priors: sitemap_products=0 [probe-20260914-pe57]
+- **PE-59** priors: sitemap_products=0 [probe-20260914-pe59]
+- **PE-60** priors: sitemap_products=0 [probe-20260914-pe60]
+- **PE-61** priors: sitemap_products=0 [probe-20260914-pe61]
+- **PE-62** priors: sitemap_products=0 [probe-20260914-pe62]
 - **ST-1** priors: products_registered=1444290 [probe-20260914-st1manual-2]
 - **ST-3** priors: producers_registered=3300 [probe-20260914-st3manual]
 - **ST-6** priors: products_registered=40000 [probe-20260914-st6manual-2]
@@ -303,7 +303,7 @@ Enumerated register rows: 103 · probed (≥1 done run): 63 · counted: 35.
 
 What a scraping go would buy versus its cost — qualitative, cited to the run evidence in this report (i14 bridge semantics, stripped of walk-floor inputs). No decision is taken here; this bridges the recon numbers to the follow-up options.
 
-- Would buy: the tier (c) sources (AS-6, AS-7, CS-2, PE-53, ST-4) — size
+- Would buy: the tier (c) sources (CS-2, PE-53) — size
   characterized, uncounted without scraping; a scraping go would turn
   these into floors.
 - Cost: blocked/failed evidence lives in the execution log (robots
@@ -321,7 +321,7 @@ context — tariff-line flows, not products.
 | source | class | active | tier | status | sitemap | sds lib | products reg. | producers reg. | kg 3208 | EUR 3208 | kg 3209 | EUR 3209 | products | doc links | walk budget | catalog | category | page ok | sds ok | hs3208 | hs3209 | hs3213 | export rows | census status | last run |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | AS-1 | AS | 0 | — | done | — | — | — | 800 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-as1manual |
-| AS-10 | AS | 0 | — | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-as10manual-2 |
+| AS-10 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | AS-11 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | AS-12 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | AS-13 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
@@ -346,10 +346,10 @@ context — tariff-line flows, not products.
 | AS-30 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | AS-4 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | AS-5 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
-| AS-6 | AS | 1 | c | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-as6manual-2 |
-| AS-7 | AS | 1 | c | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-as7manual-2 |
-| AS-8 | AS | 0 | — | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-as8manual-2 |
-| AS-9 | AS | 0 | — | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-as9manual-2 |
+| AS-6 | AS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-7 | AS | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-8 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| AS-9 | AS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | CS-1 | CS | 0 | — | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-cs1-3 |
 | CS-2 | CS | 1 | c | done | — | — | — | — | 2471311314 kg | 12211227434 eur | 2099166223.9999998 kg | 6221811666 eur | — | — | — | — | — | — | — | 278 count | 264 count | 228 count | 1 count | — | probe-20260912-cs2-10 |
 | CS-3 | CS | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
@@ -360,44 +360,44 @@ context — tariff-line flows, not products.
 | LI-4 | LI | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | LI-5 | LI | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | PE-1 | PE | 0 | — | done | — | — | — | — | — | — | — | — | 0 count | 0 count | 0 | — | — | — | — | — | — | — | — | — | probe-20260912-pe1-3 |
-| PE-10 | PE | 1 | b | done | 2 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe10-3 |
-| PE-11 | PE | 1 | b | done | 146 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe11-3 |
-| PE-12 | PE | 1 | b | done | 9 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe12-3 |
-| PE-13 | PE | 1 | b | done | 1953 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe13-3 |
-| PE-14 | PE | 1 | b | done | 3 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe14-3 |
-| PE-15 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe15-3 |
-| PE-16 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe16-3 |
-| PE-17 | PE | 1 | b | done | 0 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe17-3 |
-| PE-18 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe18-3 |
-| PE-19 | PE | 1 | b | done | 1619 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe19-3 |
+| PE-10 | PE | 1 | b | done | 2 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe10-2 |
+| PE-11 | PE | 1 | b | done | 146 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe11-2 |
+| PE-12 | PE | 1 | b | done | 9 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe12-2 |
+| PE-13 | PE | 1 | b | done | 1953 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe13-2 |
+| PE-14 | PE | 1 | b | done | 3 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe14-2 |
+| PE-15 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe15-2 |
+| PE-16 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe16-2 |
+| PE-17 | PE | 1 | b | done | 0 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe17-2 |
+| PE-18 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe18-2 |
+| PE-19 | PE | 1 | b | done | 1619 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe19-2 |
 | PE-2 | PE | 0 | — | blocked | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-pe2-3 |
-| PE-20 | PE | 1 | b | done | 199354 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe20-3 |
-| PE-21 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe21-3 |
-| PE-22 | PE | 1 | b | blocked | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe22-3 |
-| PE-23 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe23-3 |
-| PE-24 | PE | 1 | d | failed | — | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe24-3 |
-| PE-25 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe25-3 |
-| PE-26 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe26-3 |
-| PE-27 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe27-3 |
-| PE-28 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe28-3 |
-| PE-29 | PE | 1 | b | done | 4 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe29-3 |
+| PE-20 | PE | 1 | b | done | 199354 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe20-2 |
+| PE-21 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe21-2 |
+| PE-22 | PE | 1 | b | blocked | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe22-2 |
+| PE-23 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe23-2 |
+| PE-24 | PE | 1 | d | failed | — | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe24-2 |
+| PE-25 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe25-2 |
+| PE-26 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe26-2 |
+| PE-27 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe27-2 |
+| PE-28 | PE | 1 | b | done | 0 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe28-2 |
+| PE-29 | PE | 1 | b | done | 4 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe29-2 |
 | PE-3 | PE | 0 | — | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-pe3-3 |
-| PE-30 | PE | 1 | b | done | 60 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe30-3 |
-| PE-31 | PE | 1 | d | blocked | — | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe31-3 |
-| PE-32 | PE | 1 | b | done | 0 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe32-3 |
-| PE-33 | PE | 1 | b | done | 1541 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe33-3 |
-| PE-34 | PE | 1 | b | done | 2 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe34-3 |
-| PE-35 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe35-3 |
-| PE-36 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe36-3 |
-| PE-37 | PE | 1 | b | done | 22 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe37-3 |
-| PE-38 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe38-3 |
-| PE-39 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe39-3 |
+| PE-30 | PE | 1 | b | done | 60 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe30-2 |
+| PE-31 | PE | 1 | d | blocked | — | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe31-2 |
+| PE-32 | PE | 1 | b | done | 0 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe32-2 |
+| PE-33 | PE | 1 | b | done | 1541 count | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe33-2 |
+| PE-34 | PE | 1 | b | done | 2 count | 1 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe34-2 |
+| PE-35 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe35-2 |
+| PE-36 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe36-2 |
+| PE-37 | PE | 1 | b | done | 22 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe37-2 |
+| PE-38 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe38-2 |
+| PE-39 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe39-2 |
 | PE-4 | PE | 0 | — | done | — | — | — | — | — | — | — | — | 0 count | 0 count | 0 | — | — | — | — | — | — | — | — | — | probe-20260912-pe4-3 |
-| PE-40 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe40-3 |
-| PE-41 | PE | 1 | d | blocked | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe41-3 |
-| PE-42 | PE | 1 | d | blocked | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe42-3 |
-| PE-43 | PE | 1 | b | done | 126929 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe43-3 |
-| PE-44 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe44-3 |
+| PE-40 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe40-2 |
+| PE-41 | PE | 1 | d | blocked | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe41-2 |
+| PE-42 | PE | 1 | d | blocked | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe42-2 |
+| PE-43 | PE | 1 | b | done | 126929 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe43-2 |
+| PE-44 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe44-2 |
 | PE-45 | PE | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | PE-46 | PE | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | PE-47 | PE | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
@@ -406,20 +406,20 @@ context — tariff-line flows, not products.
 | PE-50 | PE | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | PE-51 | PE | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | PE-52 | PE | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
-| PE-53 | PE | 1 | c | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe53-3 |
-| PE-54 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe54-3 |
-| PE-55 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe55-3 |
-| PE-56 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe56-3 |
-| PE-57 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe57-2 |
-| PE-58 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe58-2 |
-| PE-59 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe59-2 |
-| PE-60 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe60-2 |
-| PE-61 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe61-2 |
-| PE-62 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe62-2 |
+| PE-53 | PE | 1 | c | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe53-2 |
+| PE-54 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe54-2 |
+| PE-55 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe55-2 |
+| PE-56 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe56-2 |
+| PE-57 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe57 |
+| PE-58 | PE | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe58 |
+| PE-59 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe59 |
+| PE-60 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe60 |
+| PE-61 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe61 |
+| PE-62 | PE | 1 | b | done | 0 count | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-pe62 |
 | ST-1 | ST | 0 | — | done | — | — | 1444290 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-st1manual-2 |
 | ST-2 | ST | 1 | d | failed | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260912-st2-7 |
 | ST-3 | ST | 0 | — | done | — | — | — | 3300 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-st3manual |
-| ST-4 | ST | 1 | c | done | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-st4manual-2 |
+| ST-4 | ST | 1 | d | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | ST-5 | ST | 0 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
 | ST-6 | ST | 0 | — | done | — | — | 40000 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-st6manual-2 |
 | ST-7 | ST | 0 | — | done | — | — | 71231 | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | — | probe-20260914-st7manual |
@@ -441,7 +441,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 | source | class | active | run_key | status | identifiable | mfr | product-ident | cn8-linkage | depth | cn8-reachable | real product source |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | AS-1 | AS | 0 | — | — | — | — | — | — | — | — | no |
-| AS-10 | AS | 0 | probe-20260914-as10-2 | done | — | — | — | manual | — | — | no |
+| AS-10 | AS | 0 | probe-20260914-as10manual | done | — | — | — | manual | — | — | no |
 | AS-11 | AS | 0 | probe-20260914-as11manual | done | — | — | — | — | — | — | no |
 | AS-12 | AS | 0 | probe-20260914-as12manual | done | — | — | — | — | — | — | no |
 | AS-13 | AS | 0 | probe-20260914-as13manual | done | — | — | — | — | — | — | no |
@@ -451,7 +451,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 | AS-17 | AS | 0 | probe-20260914-as17manual | done | — | — | — | — | — | — | no |
 | AS-18 | AS | 0 | probe-20260914-as18manual | done | — | — | — | — | — | — | no |
 | AS-19 | AS | 0 | probe-20260914-as19manual | done | — | — | — | — | — | — | no |
-| AS-2 | AS | 1 | probe-20260914-as2-3 | done | 17838 count | 1 | 1 | category | 2 | 0 count | yes |
+| AS-2 | AS | 1 | probe-20260914-as2-2 | done | 17838 count | 1 | 1 | category | 2 | 0 count | yes |
 | AS-20 | AS | 0 | probe-20260914-as20manual | done | — | — | — | — | — | — | no |
 | AS-21 | AS | 0 | probe-20260914-as21manual | done | — | — | — | — | — | — | no |
 | AS-22 | AS | 0 | probe-20260914-as22manual | done | — | — | — | — | — | — | no |
@@ -462,16 +462,16 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 | AS-27 | AS | 0 | probe-20260914-as27manual | done | — | — | — | — | — | — | no |
 | AS-28 | AS | 0 | probe-20260914-as28manual | done | — | — | — | — | — | — | no |
 | AS-29 | AS | 0 | probe-20260914-as29manual | done | — | — | — | — | — | — | no |
-| AS-3 | AS | 1 | probe-20260914-as3-3 | done | — | — | — | manual | — | — | no |
+| AS-3 | AS | 1 | probe-20260914-as3manual | done | — | — | — | manual | — | — | no |
 | AS-30 | AS | 0 | probe-20260914-as30manual | done | — | — | — | — | — | — | no |
 | AS-4 | AS | 0 | probe-20260914-as4manual | done | — | — | — | — | — | — | no |
 | AS-5 | AS | 0 | probe-20260914-as5manual | done | — | — | — | — | — | — | no |
-| AS-6 | AS | 1 | probe-20260914-as6-3 | done | — | — | — | manual | — | — | no |
-| AS-7 | AS | 1 | probe-20260914-as7-3 | done | — | — | — | manual | — | — | no |
-| AS-8 | AS | 0 | probe-20260914-as8-2 | done | — | — | — | manual | — | — | no |
-| AS-9 | AS | 0 | probe-20260914-as9-2 | done | — | — | — | manual | — | — | no |
+| AS-6 | AS | 1 | probe-20260914-as6manual | done | — | — | — | manual | — | — | no |
+| AS-7 | AS | 1 | probe-20260914-as7manual | done | — | — | — | manual | — | — | no |
+| AS-8 | AS | 0 | probe-20260914-as8manual | done | — | — | — | manual | — | — | no |
+| AS-9 | AS | 0 | probe-20260914-as9manual | done | — | — | — | manual | — | — | no |
 | CS-1 | CS | 0 | — | — | — | — | — | — | — | — | no |
-| CS-2 | CS | 1 | probe-20260914-cs2-2 | done | — | — | — | — | — | — | no |
+| CS-2 | CS | 1 | probe-20260914-cs2 | done | — | — | — | — | — | — | no |
 | CS-3 | CS | 0 | probe-20260914-cs3manual | done | — | — | — | — | — | — | no |
 | CS-4 | CS | 0 | probe-20260914-cs4manual | done | — | — | — | — | — | — | no |
 | CS-5 | CS | 0 | probe-20260914-cs5manual | done | — | — | — | — | — | — | no |
@@ -539,7 +539,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 | ST-1 | ST | 0 | probe-20260914-st1manual | done | — | — | — | — | — | — | no |
 | ST-2 | ST | 1 | probe-20260914-st2manual | done | — | — | — | — | — | — | no |
 | ST-3 | ST | 0 | — | — | — | — | — | — | — | — | no |
-| ST-4 | ST | 1 | probe-20260914-st4-2 | done | — | — | — | — | — | — | no |
+| ST-4 | ST | 1 | probe-20260914-st4manual | done | — | — | — | — | — | — | no |
 | ST-5 | ST | 0 | probe-20260914-st5manual | done | — | — | — | — | — | — | no |
 | ST-6 | ST | 0 | — | — | — | — | — | — | — | — | no |
 | ST-7 | ST | 0 | — | — | — | — | — | — | — | — | no |
@@ -551,66 +551,60 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 | source | run_key | status | started | finished | notes |
 |---|---|---|---|---|---|
 | AS-1 | probe-20260912-as1manual | done | 2026-09-12T09:38:25Z | 2026-09-12T09:38:25Z | — |
-| AS-10 | probe-20260914-as10manual-2 | done | 2026-09-14T08:39:27Z | 2026-09-14T08:39:27Z | — |
-| AS-6 | probe-20260914-as6manual-2 | done | 2026-09-14T08:39:20Z | 2026-09-14T08:39:20Z | — |
-| AS-7 | probe-20260914-as7manual-2 | done | 2026-09-14T08:39:21Z | 2026-09-14T08:39:21Z | — |
-| AS-8 | probe-20260914-as8manual-2 | done | 2026-09-14T08:39:21Z | 2026-09-14T08:39:21Z | — |
-| AS-9 | probe-20260914-as9manual-2 | done | 2026-09-14T08:39:26Z | 2026-09-14T08:39:26Z | — |
 | CS-1 | probe-20260912-cs1-3 | failed | 2026-09-12T04:52:10Z | 2026-09-12T04:52:16Z | https://swiss-impex.admin.ch/robots.txt: network error after retries |
 | CS-2 | probe-20260912-cs2-10 | done | 2026-09-12T09:40:44Z | 2026-09-12T09:40:58Z | — |
 | PE-1 | probe-20260912-pe1-3 | done | 2026-09-12T04:52:23Z | 2026-09-12T04:52:26Z | — |
-| PE-10 | probe-20260914-pe10-3 | done | 2026-09-14T08:23:38Z | 2026-09-14T08:23:42Z | — |
-| PE-11 | probe-20260914-pe11-3 | done | 2026-09-14T08:23:42Z | 2026-09-14T08:23:56Z | — |
-| PE-12 | probe-20260914-pe12-3 | done | 2026-09-14T08:23:56Z | 2026-09-14T08:24:00Z | — |
-| PE-13 | probe-20260914-pe13-3 | done | 2026-09-14T08:24:00Z | 2026-09-14T08:24:14Z | — |
-| PE-14 | probe-20260914-pe14-3 | done | 2026-09-14T08:24:14Z | 2026-09-14T08:24:18Z | — |
-| PE-15 | probe-20260914-pe15-3 | done | 2026-09-14T08:24:18Z | 2026-09-14T08:24:37Z | — |
-| PE-16 | probe-20260914-pe16-3 | done | 2026-09-14T08:24:37Z | 2026-09-14T08:24:41Z | — |
-| PE-17 | probe-20260914-pe17-3 | done | 2026-09-14T08:24:41Z | 2026-09-14T08:24:47Z | — |
-| PE-18 | probe-20260914-pe18-3 | done | 2026-09-14T08:24:47Z | 2026-09-14T08:25:02Z | — |
-| PE-19 | probe-20260914-pe19-3 | done | 2026-09-14T08:25:02Z | 2026-09-14T08:25:07Z | — |
+| PE-10 | probe-20260914-pe10-2 | done | 2026-09-14T02:15:39Z | 2026-09-14T02:15:43Z | — |
+| PE-11 | probe-20260914-pe11-2 | done | 2026-09-14T02:15:43Z | 2026-09-14T02:15:57Z | — |
+| PE-12 | probe-20260914-pe12-2 | done | 2026-09-14T02:15:57Z | 2026-09-14T02:16:01Z | — |
+| PE-13 | probe-20260914-pe13-2 | done | 2026-09-14T02:16:01Z | 2026-09-14T02:16:16Z | — |
+| PE-14 | probe-20260914-pe14-2 | done | 2026-09-14T02:16:16Z | 2026-09-14T02:16:20Z | — |
+| PE-15 | probe-20260914-pe15-2 | done | 2026-09-14T02:16:20Z | 2026-09-14T02:16:34Z | — |
+| PE-16 | probe-20260914-pe16-2 | done | 2026-09-14T02:16:34Z | 2026-09-14T02:16:38Z | — |
+| PE-17 | probe-20260914-pe17-2 | done | 2026-09-14T02:16:38Z | 2026-09-14T02:16:44Z | — |
+| PE-18 | probe-20260914-pe18-2 | done | 2026-09-14T02:16:44Z | 2026-09-14T02:16:59Z | — |
+| PE-19 | probe-20260914-pe19-2 | done | 2026-09-14T02:16:59Z | 2026-09-14T02:17:04Z | — |
 | PE-2 | probe-20260912-pe2-3 | blocked | 2026-09-12T04:52:26Z | 2026-09-12T04:52:26Z | https://www.coop.ch/robots.txt: HTTP 403 |
-| PE-20 | probe-20260914-pe20-3 | done | 2026-09-14T08:25:07Z | 2026-09-14T08:25:22Z | — |
-| PE-21 | probe-20260914-pe21-3 | done | 2026-09-14T08:25:22Z | 2026-09-14T08:25:28Z | — |
-| PE-22 | probe-20260914-pe22-3 | blocked | 2026-09-14T08:25:28Z | 2026-09-14T08:25:32Z | https://www.bauhaus.info/sitemap.xml: HTTP 403 |
-| PE-23 | probe-20260914-pe23-3 | done | 2026-09-14T08:25:32Z | 2026-09-14T08:25:57Z | — |
-| PE-24 | probe-20260914-pe24-3 | failed | 2026-09-14T08:25:57Z | 2026-09-14T08:26:15Z | https://www.diy.com/sitemap.xml: HTTP 503 after retries |
-| PE-25 | probe-20260914-pe25-3 | done | 2026-09-14T08:26:15Z | 2026-09-14T08:26:19Z | — |
-| PE-26 | probe-20260914-pe26-3 | done | 2026-09-14T08:26:19Z | 2026-09-14T08:26:33Z | — |
-| PE-27 | probe-20260914-pe27-3 | done | 2026-09-14T08:26:33Z | 2026-09-14T08:26:40Z | — |
-| PE-28 | probe-20260914-pe28-3 | done | 2026-09-14T08:26:40Z | 2026-09-14T08:26:44Z | — |
-| PE-29 | probe-20260914-pe29-3 | done | 2026-09-14T08:26:44Z | 2026-09-14T08:26:59Z | — |
+| PE-20 | probe-20260914-pe20-2 | done | 2026-09-14T02:17:04Z | 2026-09-14T02:17:19Z | — |
+| PE-21 | probe-20260914-pe21-2 | done | 2026-09-14T02:17:19Z | 2026-09-14T02:17:25Z | — |
+| PE-22 | probe-20260914-pe22-2 | blocked | 2026-09-14T02:17:25Z | 2026-09-14T02:17:29Z | https://www.bauhaus.info/sitemap.xml: HTTP 403 |
+| PE-23 | probe-20260914-pe23-2 | done | 2026-09-14T02:17:29Z | 2026-09-14T02:17:53Z | — |
+| PE-24 | probe-20260914-pe24-2 | failed | 2026-09-14T02:17:53Z | 2026-09-14T02:18:11Z | https://www.diy.com/sitemap.xml: HTTP 503 after retries |
+| PE-25 | probe-20260914-pe25-2 | done | 2026-09-14T02:18:11Z | 2026-09-14T02:18:15Z | — |
+| PE-26 | probe-20260914-pe26-2 | done | 2026-09-14T02:18:15Z | 2026-09-14T02:18:30Z | — |
+| PE-27 | probe-20260914-pe27-2 | done | 2026-09-14T02:18:30Z | 2026-09-14T02:18:36Z | — |
+| PE-28 | probe-20260914-pe28-2 | done | 2026-09-14T02:18:36Z | 2026-09-14T02:18:40Z | — |
+| PE-29 | probe-20260914-pe29-2 | done | 2026-09-14T02:18:40Z | 2026-09-14T02:18:55Z | — |
 | PE-3 | probe-20260912-pe3-3 | failed | 2026-09-12T04:52:26Z | 2026-09-12T04:52:32Z | https://example.invalid/robots.txt: network error after retries |
-| PE-30 | probe-20260914-pe30-3 | done | 2026-09-14T08:26:59Z | 2026-09-14T08:27:11Z | — |
-| PE-31 | probe-20260914-pe31-3 | blocked | 2026-09-14T08:27:11Z | 2026-09-14T08:27:15Z | https://www.kremer-pigmente.com/sitemap.xml: HTTP 403 |
-| PE-32 | probe-20260914-pe32-3 | done | 2026-09-14T08:27:15Z | 2026-09-14T08:27:20Z | — |
-| PE-33 | probe-20260914-pe33-3 | done | 2026-09-14T08:27:20Z | 2026-09-14T08:27:35Z | — |
-| PE-34 | probe-20260914-pe34-3 | done | 2026-09-14T08:27:35Z | 2026-09-14T08:27:39Z | — |
-| PE-35 | probe-20260914-pe35-3 | failed | 2026-09-14T08:27:39Z | 2026-09-14T08:27:57Z | https://www.alpina-farben.de/sitemap.xml: network error after retries |
-| PE-36 | probe-20260914-pe36-3 | done | 2026-09-14T08:27:57Z | 2026-09-14T08:28:12Z | — |
-| PE-37 | probe-20260914-pe37-3 | done | 2026-09-14T08:28:12Z | 2026-09-14T08:28:16Z | — |
-| PE-38 | probe-20260914-pe38-3 | done | 2026-09-14T08:28:16Z | 2026-09-14T08:28:30Z | — |
-| PE-39 | probe-20260914-pe39-3 | done | 2026-09-14T08:28:30Z | 2026-09-14T08:28:35Z | — |
+| PE-30 | probe-20260914-pe30-2 | done | 2026-09-14T02:18:55Z | 2026-09-14T02:19:07Z | — |
+| PE-31 | probe-20260914-pe31-2 | blocked | 2026-09-14T02:19:07Z | 2026-09-14T02:19:11Z | https://www.kremer-pigmente.com/sitemap.xml: HTTP 403 |
+| PE-32 | probe-20260914-pe32-2 | done | 2026-09-14T02:19:11Z | 2026-09-14T02:19:16Z | — |
+| PE-33 | probe-20260914-pe33-2 | done | 2026-09-14T02:19:16Z | 2026-09-14T02:19:30Z | — |
+| PE-34 | probe-20260914-pe34-2 | done | 2026-09-14T02:19:30Z | 2026-09-14T02:19:34Z | — |
+| PE-35 | probe-20260914-pe35-2 | failed | 2026-09-14T02:19:34Z | 2026-09-14T02:19:53Z | https://www.alpina-farben.de/sitemap.xml: network error after retries |
+| PE-36 | probe-20260914-pe36-2 | done | 2026-09-14T02:19:53Z | 2026-09-14T02:20:07Z | — |
+| PE-37 | probe-20260914-pe37-2 | done | 2026-09-14T02:20:07Z | 2026-09-14T02:20:11Z | — |
+| PE-38 | probe-20260914-pe38-2 | done | 2026-09-14T02:20:11Z | 2026-09-14T02:20:25Z | — |
+| PE-39 | probe-20260914-pe39-2 | done | 2026-09-14T02:20:25Z | 2026-09-14T02:20:30Z | — |
 | PE-4 | probe-20260912-pe4-3 | done | 2026-09-12T04:52:32Z | 2026-09-12T04:52:34Z | — |
-| PE-40 | probe-20260914-pe40-3 | failed | 2026-09-14T08:28:35Z | 2026-09-14T08:28:54Z | https://www.castorama.fr/sitemap.xml: HTTP 503 after retries |
-| PE-41 | probe-20260914-pe41-3 | blocked | 2026-09-14T08:28:54Z | 2026-09-14T08:29:00Z | https://www.gamma.nl/sitemap.xml: persistent 429 after one capped backoff |
-| PE-42 | probe-20260914-pe42-3 | blocked | 2026-09-14T08:29:00Z | 2026-09-14T08:29:04Z | https://www.praxis.nl/sitemap.xml: HTTP 403 |
-| PE-43 | probe-20260914-pe43-3 | done | 2026-09-14T08:29:04Z | 2026-09-14T08:29:19Z | — |
-| PE-44 | probe-20260914-pe44-3 | done | 2026-09-14T08:29:19Z | 2026-09-14T08:29:33Z | — |
-| PE-53 | probe-20260914-pe53-3 | done | 2026-09-14T08:29:33Z | 2026-09-14T08:29:38Z | UnexpectedFormat: sitemap unparseable: undefined entity: line 9, column 164 |
-| PE-54 | probe-20260914-pe54-3 | failed | 2026-09-14T08:29:38Z | 2026-09-14T08:30:23Z | https://www.boeroyachting.com/sitemap.xml: network error after retries |
-| PE-55 | probe-20260914-pe55-3 | done | 2026-09-14T08:30:23Z | 2026-09-14T08:30:32Z | — |
-| PE-56 | probe-20260914-pe56-3 | failed | 2026-09-14T08:30:32Z | 2026-09-14T08:30:50Z | https://www.de-ijssel-coatings.com/sitemap.xml: network error after retries |
-| PE-57 | probe-20260914-pe57-2 | done | 2026-09-14T08:30:50Z | 2026-09-14T08:30:54Z | — |
-| PE-58 | probe-20260914-pe58-2 | failed | 2026-09-14T08:30:54Z | 2026-09-14T08:31:13Z | https://www.talens.com/sitemap.xml: network error after retries |
-| PE-59 | probe-20260914-pe59-2 | done | 2026-09-14T08:31:13Z | 2026-09-14T08:31:17Z | — |
-| PE-60 | probe-20260914-pe60-2 | done | 2026-09-14T08:31:17Z | 2026-09-14T08:31:36Z | — |
-| PE-61 | probe-20260914-pe61-2 | done | 2026-09-14T08:31:36Z | 2026-09-14T08:31:45Z | — |
-| PE-62 | probe-20260914-pe62-2 | done | 2026-09-14T08:31:45Z | 2026-09-14T08:32:00Z | — |
+| PE-40 | probe-20260914-pe40-2 | failed | 2026-09-14T02:20:30Z | 2026-09-14T02:20:48Z | https://www.castorama.fr/sitemap.xml: HTTP 503 after retries |
+| PE-41 | probe-20260914-pe41-2 | blocked | 2026-09-14T02:20:48Z | 2026-09-14T02:20:54Z | https://www.gamma.nl/sitemap.xml: persistent 429 after one capped backoff |
+| PE-42 | probe-20260914-pe42-2 | blocked | 2026-09-14T02:20:54Z | 2026-09-14T02:20:58Z | https://www.praxis.nl/sitemap.xml: HTTP 403 |
+| PE-43 | probe-20260914-pe43-2 | done | 2026-09-14T02:20:58Z | 2026-09-14T02:21:13Z | — |
+| PE-44 | probe-20260914-pe44-2 | done | 2026-09-14T02:21:13Z | 2026-09-14T02:21:27Z | — |
+| PE-53 | probe-20260914-pe53-2 | done | 2026-09-14T02:21:27Z | 2026-09-14T02:21:32Z | UnexpectedFormat: sitemap unparseable: undefined entity: line 9, column 164 |
+| PE-54 | probe-20260914-pe54-2 | failed | 2026-09-14T02:21:32Z | 2026-09-14T02:22:18Z | https://www.boeroyachting.com/sitemap.xml: network error after retries |
+| PE-55 | probe-20260914-pe55-2 | done | 2026-09-14T02:22:18Z | 2026-09-14T02:22:26Z | — |
+| PE-56 | probe-20260914-pe56-2 | failed | 2026-09-14T02:22:26Z | 2026-09-14T02:22:44Z | https://www.de-ijssel-coatings.com/sitemap.xml: network error after retries |
+| PE-57 | probe-20260914-pe57 | done | 2026-09-14T02:14:06Z | 2026-09-14T02:14:11Z | — |
+| PE-58 | probe-20260914-pe58 | failed | 2026-09-14T02:14:11Z | 2026-09-14T02:14:29Z | https://www.talens.com/sitemap.xml: network error after retries |
+| PE-59 | probe-20260914-pe59 | done | 2026-09-14T02:14:29Z | 2026-09-14T02:14:33Z | — |
+| PE-60 | probe-20260914-pe60 | done | 2026-09-14T02:14:33Z | 2026-09-14T02:14:52Z | — |
+| PE-61 | probe-20260914-pe61 | done | 2026-09-14T02:14:52Z | 2026-09-14T02:15:02Z | — |
+| PE-62 | probe-20260914-pe62 | done | 2026-09-14T02:15:02Z | 2026-09-14T02:15:16Z | — |
 | ST-1 | probe-20260914-st1manual-2 | done | 2026-09-14T07:09:38Z | 2026-09-14T07:09:38Z | — |
 | ST-2 | probe-20260912-st2-7 | failed | 2026-09-12T08:40:14Z | 2026-09-12T08:41:50Z | http://spin2000.net/robots.txt: network error after retries |
 | ST-3 | probe-20260914-st3manual | done | 2026-09-14T07:04:58Z | 2026-09-14T07:04:58Z | — |
-| ST-4 | probe-20260914-st4manual-2 | done | 2026-09-14T08:39:27Z | 2026-09-14T08:39:27Z | — |
 | ST-6 | probe-20260914-st6manual-2 | done | 2026-09-14T07:10:15Z | 2026-09-14T07:10:15Z | — |
 | ST-7 | probe-20260914-st7manual | done | 2026-09-14T07:05:52Z | 2026-09-14T07:05:52Z | — |
 
@@ -636,7 +630,6 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format EPD Norway (EPD-Global): digi portal live (per-EPD pages verified 2026-09-14); no bulk export pinned — count deferred · granularity — · coverage — · languages —
 - counts:
 - register note: public EPD database (digi portal verified live 2026-09-14 via Jotun EPD pages); export shape pinned at W2
-- latest run: probe-20260914-as10manual-2 (done)
 
 ### AS-11 — FCiO (Austrian paints association)
 
@@ -832,21 +825,19 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 
 ### AS-6 — IBU (Institut Bauen und Umwelt EPD)
 
-- identity: class AS · active yes · tier c · verification partially_verified · https://ibu-epd.com/en/
+- identity: class AS · active yes · tier d · verification partially_verified · https://ibu-epd.com/en/
 - access: robots — · terms — · rate limit — · free access —
 - content: format IBU EPD: register is a web app; per-product EPD PDFs downloadable; no bulk export pinned — count deferred to a browser pass · granularity — · coverage — · languages —
 - counts:
 - register note: published EPD declarations; EPD file downloads; export shape pinned at W2 (real format check, not landing-page-only)
-- latest run: probe-20260914-as6manual-2 (done)
 
 ### AS-7 — environdec (International EPD System)
 
-- identity: class AS · active yes · tier c · verification partially_verified · https://environdec.com/library
+- identity: class AS · active yes · tier d · verification partially_verified · https://environdec.com/library
 - access: robots — · terms — · rate limit — · free access —
 - content: format environdec: EPD library is a web app; no bulk export pinned; the v0.2.1 unrecorded library-size claim is hereby softened to 'not obtained' (provenance repair) · granularity — · coverage — · languages —
 - counts:
 - register note: published EPDs; library with downloads; export shape pinned at W2; the unrecorded claim from v0.2.1 recorded-or-softened here (provenance repair)
-- latest run: probe-20260914-as7manual-2 (done)
 
 ### AS-8 — NF Environnement (AFNOR Certification)
 
@@ -855,7 +846,6 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format NF Environnement: certified-product lists are per-criteria PDFs (NF130 peintures); no bulk CSV — count deferred to a PDF pass · granularity — · coverage — · languages —
 - counts:
 - register note: NF130 peintures/vernis; certified-product PDF lists; export shape pinned at W2; v0.2.2 addition (strategy source-expansion table)
-- latest run: probe-20260914-as8manual-2 (done)
 
 ### AS-9 — natureplus quality label
 
@@ -864,7 +854,6 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format natureplus: certified-product database is a web app; no bulk export pinned — count deferred · granularity — · coverage — · languages —
 - counts:
 - register note: building products incl. coatings; certified-product database; export shape pinned at W2
-- latest run: probe-20260914-as9manual-2 (done)
 
 ### CS-1 — swiss-impex (EZV)
 
@@ -956,9 +945,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=2 [probe-20260914-pe10-3]
+- priors: sitemap_products=2 [probe-20260914-pe10-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe10-3 (done)
+- latest run: probe-20260914-pe10-2 (done)
 
 ### PE-11 — PPG
 
@@ -966,9 +955,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=146 [probe-20260914-pe11-3]
+- priors: sitemap_products=146 [probe-20260914-pe11-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe11-3 (done)
+- latest run: probe-20260914-pe11-2 (done)
 
 ### PE-12 — Sherwin-Williams
 
@@ -976,9 +965,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=9 [probe-20260914-pe12-3]
+- priors: sitemap_products=9 [probe-20260914-pe12-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe12-3 (done)
+- latest run: probe-20260914-pe12-2 (done)
 
 ### PE-13 — Jotun
 
@@ -986,9 +975,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=1953 [probe-20260914-pe13-3]
+- priors: sitemap_products=1953 [probe-20260914-pe13-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe13-3 (done)
+- latest run: probe-20260914-pe13-2 (done)
 
 ### PE-14 — Hempel
 
@@ -996,9 +985,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=3 [probe-20260914-pe14-3]
+- priors: sitemap_products=3 [probe-20260914-pe14-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe14-3 (done)
+- latest run: probe-20260914-pe14-2 (done)
 
 ### PE-15 — Sika
 
@@ -1006,9 +995,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe15-3]
+- priors: sitemap_products=0 [probe-20260914-pe15-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe15-3 (done)
+- latest run: probe-20260914-pe15-2 (done)
 
 ### PE-16 — Sto
 
@@ -1016,9 +1005,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe16-3]
+- priors: sitemap_products=0 [probe-20260914-pe16-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe16-3 (done)
+- latest run: probe-20260914-pe16-2 (done)
 
 ### PE-17 — Caparol (DAW)
 
@@ -1026,9 +1015,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe17-3]
+- priors: sitemap_products=0 [probe-20260914-pe17-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe17-3 (done)
+- latest run: probe-20260914-pe17-2 (done)
 
 ### PE-18 — Tikkurila
 
@@ -1036,9 +1025,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe18-3]
+- priors: sitemap_products=0 [probe-20260914-pe18-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe18-3 (done)
+- latest run: probe-20260914-pe18-2 (done)
 
 ### PE-19 — Teknos
 
@@ -1046,9 +1035,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=1619 [probe-20260914-pe19-3]
+- priors: sitemap_products=1619 [probe-20260914-pe19-2]
 - register note: channel=mfr; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MFR<=12
-- latest run: probe-20260914-pe19-3 (done)
+- latest run: probe-20260914-pe19-2 (done)
 
 ### PE-2 — DIY chains (seed)
 
@@ -1065,9 +1054,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=199354 [probe-20260914-pe20-3]
+- priors: sitemap_products=199354 [probe-20260914-pe20-2]
 - register note: channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe20-3 (done)
+- latest run: probe-20260914-pe20-2 (done)
 
 ### PE-21 — OBI DE
 
@@ -1075,9 +1064,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe21-3]
+- priors: sitemap_products=0 [probe-20260914-pe21-2]
 - register note: channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe21-3 (done)
+- latest run: probe-20260914-pe21-2 (done)
 
 ### PE-22 — Bauhaus DE
 
@@ -1087,7 +1076,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - counts:
 - priors: sitemap_products=0 [probe-20260912-pe22-2]
 - register note: channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2); URL corrected 2026-09-12 (bauhaus.de resolves to Bauhaus-Archiv museum)
-- latest run: probe-20260914-pe22-3 (blocked; notes: https://www.bauhaus.info/sitemap.xml: HTTP 403)
+- latest run: probe-20260914-pe22-2 (blocked; notes: https://www.bauhaus.info/sitemap.xml: HTTP 403)
 
 ### PE-23 — Leroy Merlin FR
 
@@ -1095,9 +1084,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe23-3]
+- priors: sitemap_products=0 [probe-20260914-pe23-2]
 - register note: channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe23-3 (done)
+- latest run: probe-20260914-pe23-2 (done)
 
 ### PE-24 — B&Q (diy.com)
 
@@ -1106,7 +1095,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format sitemap recon deferred: timed out twice from desk egress · granularity — · coverage — · languages —
 - counts:
 - register note: channel=diy; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe24-3 (failed; notes: https://www.diy.com/sitemap.xml: HTTP 503 after retries)
+- latest run: probe-20260914-pe24-2 (failed; notes: https://www.diy.com/sitemap.xml: HTTP 503 after retries)
 
 ### PE-25 — Epifanes
 
@@ -1114,9 +1103,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe25-3]
+- priors: sitemap_products=0 [probe-20260914-pe25-2]
 - register note: channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe25-3 (done)
+- latest run: probe-20260914-pe25-2 (done)
 
 ### PE-26 — SVB
 
@@ -1124,9 +1113,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe26-3]
+- priors: sitemap_products=0 [probe-20260914-pe26-2]
 - register note: channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe26-3 (done)
+- latest run: probe-20260914-pe26-2 (done)
 
 ### PE-27 — Toplicht
 
@@ -1134,9 +1123,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe27-3]
+- priors: sitemap_products=0 [probe-20260914-pe27-2]
 - register note: channel=marine; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe27-3 (done)
+- latest run: probe-20260914-pe27-2 (done)
 
 ### PE-28 — Raseglarhuset
 
@@ -1144,9 +1133,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe28-3]
+- priors: sitemap_products=0 [probe-20260914-pe28-2]
 - register note: channel=marine; listed_by=PE-4 seed note (BRAVA SE); listed_date=2026-09-12; inclusion=cap MARINE<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe28-3 (done)
+- latest run: probe-20260914-pe28-2 (done)
 
 ### PE-29 — Old Holland
 
@@ -1154,9 +1143,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=4 [probe-20260914-pe29-3]
+- priors: sitemap_products=4 [probe-20260914-pe29-2]
 - register note: channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe29-3 (done)
+- latest run: probe-20260914-pe29-2 (done)
 
 ### PE-3 — B2B / trade portals (placeholder)
 
@@ -1173,9 +1162,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allow-all (404/empty) · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=60 [probe-20260914-pe30-3]
+- priors: sitemap_products=60 [probe-20260914-pe30-2]
 - register note: channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe30-3 (done)
+- latest run: probe-20260914-pe30-2 (done)
 
 ### PE-31 — Kremer Pigmente
 
@@ -1184,7 +1173,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format — · granularity — · coverage — · languages —
 - counts:
 - register note: channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe31-3 (blocked; notes: https://www.kremer-pigmente.com/sitemap.xml: HTTP 403)
+- latest run: probe-20260914-pe31-2 (blocked; notes: https://www.kremer-pigmente.com/sitemap.xml: HTTP 403)
 
 ### PE-32 — Michael Harding
 
@@ -1192,9 +1181,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe32-3]
+- priors: sitemap_products=0 [probe-20260914-pe32-2]
 - register note: channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe32-3 (done)
+- latest run: probe-20260914-pe32-2 (done)
 
 ### PE-33 — Winsor & Newton
 
@@ -1202,9 +1191,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=1541 [probe-20260914-pe33-3]
+- priors: sitemap_products=1541 [probe-20260914-pe33-2]
 - register note: channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe33-3 (done)
+- latest run: probe-20260914-pe33-2 (done)
 
 ### PE-34 — Sennelier
 
@@ -1212,9 +1201,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=2 [probe-20260914-pe34-3]
+- priors: sitemap_products=2 [probe-20260914-pe34-2]
 - register note: channel=art; listed_by=v0.1.1 seed list; listed_date=2026-09-12; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe34-3 (done)
+- latest run: probe-20260914-pe34-2 (done)
 
 ### PE-35 — Alpina
 
@@ -1223,7 +1212,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format sitemap recon deferred: connection refused twice from desk egress · granularity — · coverage — · languages —
 - counts:
 - register note: channel=mfr; listed_by=DATA_SOURCE.md tier A (brand site); listed_date=2026-09-14; inclusion=cap MFR<=40 (widened v0.2.2); desk env could not reach (egress) — verify at W3
-- latest run: probe-20260914-pe35-3 (failed; notes: https://www.alpina-farben.de/sitemap.xml: network error after retries)
+- latest run: probe-20260914-pe35-2 (failed; notes: https://www.alpina-farben.de/sitemap.xml: network error after retries)
 
 ### PE-36 — Farrow & Ball
 
@@ -1231,9 +1220,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe36-3]
+- priors: sitemap_products=0 [probe-20260914-pe36-2]
 - register note: channel=mfr; listed_by=DATA_SOURCE.md tier A; listed_date=2026-09-14; inclusion=cap MFR<=40 (widened v0.2.2)
-- latest run: probe-20260914-pe36-3 (done)
+- latest run: probe-20260914-pe36-2 (done)
 
 ### PE-37 — Beckers Group
 
@@ -1241,9 +1230,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=22 [probe-20260914-pe37-3]
+- priors: sitemap_products=22 [probe-20260914-pe37-2]
 - register note: channel=mfr; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap MFR<=40
-- latest run: probe-20260914-pe37-3 (done)
+- latest run: probe-20260914-pe37-2 (done)
 
 ### PE-38 — Flügger
 
@@ -1251,9 +1240,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe38-3]
+- priors: sitemap_products=0 [probe-20260914-pe38-2]
 - register note: channel=mfr; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap MFR<=40
-- latest run: probe-20260914-pe38-3 (done)
+- latest run: probe-20260914-pe38-2 (done)
 
 ### PE-39 — Rust-Oleum
 
@@ -1261,9 +1250,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe39-3]
+- priors: sitemap_products=0 [probe-20260914-pe39-2]
 - register note: channel=mfr; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap MFR<=40
-- latest run: probe-20260914-pe39-3 (done)
+- latest run: probe-20260914-pe39-2 (done)
 
 ### PE-4 — Marine chandlers & art-supply shops (seed)
 
@@ -1281,7 +1270,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format sitemap recon deferred: timed out twice from desk egress · granularity — · coverage — · languages —
 - counts:
 - register note: channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe40-3 (failed; notes: https://www.castorama.fr/sitemap.xml: HTTP 503 after retries)
+- latest run: probe-20260914-pe40-2 (failed; notes: https://www.castorama.fr/sitemap.xml: HTTP 503 after retries)
 
 ### PE-41 — Gamma NL
 
@@ -1290,7 +1279,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format — · granularity — · coverage — · languages —
 - counts:
 - register note: channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe41-3 (blocked; notes: https://www.gamma.nl/sitemap.xml: persistent 429 after one capped backoff)
+- latest run: probe-20260914-pe41-2 (blocked; notes: https://www.gamma.nl/sitemap.xml: persistent 429 after one capped backoff)
 
 ### PE-42 — Praxis NL
 
@@ -1299,7 +1288,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format — · granularity — · coverage — · languages —
 - counts:
 - register note: channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe42-3 (blocked; notes: https://www.praxis.nl/sitemap.xml: HTTP 403)
+- latest run: probe-20260914-pe42-2 (blocked; notes: https://www.praxis.nl/sitemap.xml: HTTP 403)
 
 ### PE-43 — Toom DE
 
@@ -1307,9 +1296,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=126929 [probe-20260914-pe43-3]
+- priors: sitemap_products=126929 [probe-20260914-pe43-2]
 - register note: channel=diy; listed_by=DATA_SOURCE.md tier C; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe43-3 (done)
+- latest run: probe-20260914-pe43-2 (done)
 
 ### PE-44 — Hagebau DE
 
@@ -1317,9 +1306,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe44-3]
+- priors: sitemap_products=0 [probe-20260914-pe44-2]
 - register note: channel=diy; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap EU-DIY<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe44-3 (done)
+- latest run: probe-20260914-pe44-2 (done)
 
 ### PE-45 — Hellweg DE
 
@@ -1389,10 +1378,10 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 
 - identity: class PE · active yes · tier c · verification open · https://www.veneziani.it
 - access: robots allowed · terms — · rate limit — · free access —
-- content: format sitemap unparseable: undefined entity: line 9, column 164 · granularity — · coverage — · languages —
+- content: format sitemap recon deferred: sitemap shape not parseable (UnexpectedFormat warning); needs manual review · granularity — · coverage — · languages —
 - counts:
 - register note: channel=marine; listed_by=DATA_SOURCE.md tier B (lead-relevant niche); listed_date=2026-09-14; inclusion=cap MARINE<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe53-3 (done; notes: UnexpectedFormat: sitemap unparseable: undefined entity: line 9, column 164)
+- latest run: probe-20260914-pe53-2 (done; notes: UnexpectedFormat: sitemap unparseable: undefined entity: line 9, column 164)
 
 ### PE-54 — Boero Yachting
 
@@ -1401,7 +1390,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format sitemap recon deferred: connection refused twice from desk egress · granularity — · coverage — · languages —
 - counts:
 - register note: channel=marine; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap MARINE<=10 (widened v0.2.2); desk env could not reach (egress) — verify at W3
-- latest run: probe-20260914-pe54-3 (failed; notes: https://www.boeroyachting.com/sitemap.xml: network error after retries)
+- latest run: probe-20260914-pe54-2 (failed; notes: https://www.boeroyachting.com/sitemap.xml: network error after retries)
 
 ### PE-55 — Seajet
 
@@ -1409,9 +1398,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe55-3]
+- priors: sitemap_products=0 [probe-20260914-pe55-2]
 - register note: channel=marine; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap MARINE<=10 (widened v0.2.2)
-- latest run: probe-20260914-pe55-3 (done)
+- latest run: probe-20260914-pe55-2 (done)
 
 ### PE-56 — De IJssel Coatings
 
@@ -1420,7 +1409,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format sitemap recon deferred: connection refused twice from desk egress · granularity — · coverage — · languages —
 - counts:
 - register note: channel=marine; listed_by=DATA_SOURCE.md tier B; URL unverified (desk); desk env could not reach (egress) — verify at W3; listed_date=2026-09-14; inclusion=cap MARINE<=10
-- latest run: probe-20260914-pe56-3 (failed; notes: https://www.de-ijssel-coatings.com/sitemap.xml: network error after retries)
+- latest run: probe-20260914-pe56-2 (failed; notes: https://www.de-ijssel-coatings.com/sitemap.xml: network error after retries)
 
 ### PE-57 — Schmincke
 
@@ -1428,9 +1417,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allow-all (404/empty) · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe57-2]
+- priors: sitemap_products=0 [probe-20260914-pe57]
 - register note: channel=art; listed_by=DATA_SOURCE.md tier B (artists' colours); listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe57-2 (done)
+- latest run: probe-20260914-pe57 (done)
 
 ### PE-58 — Royal Talens
 
@@ -1439,7 +1428,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - content: format sitemap recon deferred: connection refused twice from desk egress · granularity — · coverage — · languages —
 - counts:
 - register note: channel=art; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2); desk env could not reach (egress) — verify at W3
-- latest run: probe-20260914-pe58-2 (failed; notes: https://www.talens.com/sitemap.xml: network error after retries)
+- latest run: probe-20260914-pe58 (failed; notes: https://www.talens.com/sitemap.xml: network error after retries)
 
 ### PE-59 — Maimeri
 
@@ -1447,9 +1436,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe59-2]
+- priors: sitemap_products=0 [probe-20260914-pe59]
 - register note: channel=art; listed_by=DATA_SOURCE.md tier B; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe59-2 (done)
+- latest run: probe-20260914-pe59 (done)
 
 ### PE-60 — Blockx
 
@@ -1457,9 +1446,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe60-2]
+- priors: sitemap_products=0 [probe-20260914-pe60]
 - register note: channel=art; listed_by=DATA_SOURCE.md tier B; URL unverified (desk); listed_date=2026-09-14; inclusion=cap ART<=15
-- latest run: probe-20260914-pe60-2 (done)
+- latest run: probe-20260914-pe60 (done)
 
 ### PE-61 — Gerstaecker
 
@@ -1467,9 +1456,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe61-2]
+- priors: sitemap_products=0 [probe-20260914-pe61]
 - register note: channel=art; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe61-2 (done)
+- latest run: probe-20260914-pe61 (done)
 
 ### PE-62 — Boesner
 
@@ -1477,9 +1466,9 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 - access: robots allowed · terms — · rate limit — · free access —
 - content: format — · granularity — · coverage — · languages —
 - counts:
-- priors: sitemap_products=0 [probe-20260914-pe62-2]
+- priors: sitemap_products=0 [probe-20260914-pe62]
 - register note: channel=art; listed_by=v0.2.2 desk enumeration; listed_date=2026-09-14; inclusion=cap ART<=15 (widened v0.2.2)
-- latest run: probe-20260914-pe62-2 (done)
+- latest run: probe-20260914-pe62 (done)
 
 ### ST-1 — ECHA PCN statistics
 
@@ -1512,7 +1501,7 @@ Preliminary N2 numerator (official registers, floor): sum of products_identifiab
 
 ### ST-4 — Eurostat PRODCOM annual production (DS-059358)
 
-- identity: class ST · active yes · tier c · verification open · https://ec.europa.eu/eurostat/web/prodcom
+- identity: class ST · active yes · tier d · verification open · https://ec.europa.eu/eurostat/web/prodcom
 - access: robots allowed · terms — · rate limit — · free access 1
 - content: format PRODCOM: dedicated API not pinnable by desk probing (dissemination API 404 for DS-059358/DS-066342; prodcom web app JS-rendered); bulk URL + layout pin deferred to the API docs (next pass); SBS producer counts ride ST-3 · granularity — · coverage — · languages — · extraction path: mdb-export exit 1: option parsing failed: Unknown option -1
 Usage:
@@ -1524,7 +1513,6 @@ Help Options:
 Application Opti
 - counts:
 - register note: production values for paints (NACE 20.30); bulk TSV sidesteps the dissemination-API size limit (413 observed 2026-09-14); NACE-to-CN8 via the official correspondence, NACE-proxy fallback with caveat (design c5); exact bulk-URL pinned at W1
-- latest run: probe-20260914-st4manual-2 (done)
 
 ### ST-5 — KEMI Swedish Products Register statistics
 

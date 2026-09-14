@@ -72,7 +72,49 @@ documentation study and takes no position on the regulation itself.
 Switzerland enters the study only as this regulatory frame — the
 market under study is the EU's.
 
-## Current stage: the three-question funnel (v0.2.2)
+## Current stage: pool estimate v2 (v0.2.3)
+
+v0.2.3 replaces the single-model pool headline of v0.2.2 with a
+**meta-benchmarking vote**: seven independent benchmark quantities
+estimate the EU paint pool; each votes into one of five contiguous
+magnitude classes (a 20k–50k … e >300k), and a pinned rule converts
+the vote into a **dual-level verdict** — SKU level (registry/product
+counting) and formulation level (shade/pack-collapsed). Confidence is
+claimed only when ≥3 available benchmarks converge without an
+exclusive non-adjacent conflict; ties render a span plus flip
+assumptions; the vote is fully visible either way.
+
+- **SKU level: class e (>300k products)** — confidence not claimed
+  (three benchmarks sit in non-adjacent classes; recorded as open
+  items).
+- **Formulation level: class c (100k–200k)** — confidence not
+  claimed; the level conversion rides a pinned 1–10 shade-collapse
+  band, flagged as an assumption (the measurable ECAT key-tier dedup
+  is small: name ×1.049, EAN ×1.266).
+- New primary-source extractions feed the benchmarks: Swedish
+  poison-centre paints/coatings 71,231 (2022); PCN dossiers
+  1,444,290 (2021, SWD(2022) 435 Annex 16 — no paint-share constant
+  exists); JRC final Ecolabel report (2026): 36,960 certified
+  products 03/2025 and the official confirmation that **no
+  market-share data exist**; Danish Produktregistret ≈40,000
+  hazardous products (aggregates-only — no adapter possible);
+  Eurostat SBS verify: 3,300 enterprises (NACE C2030, 2020).
+- The funnel section of the published report now carries a
+  supersession banner; its v0.2.2 content is kept for the publish
+  history.
+- The full probe run of 2026-09-14 (waves 1–3) reproduced every
+  headline number (ECAT 17,838 reconciled exactly; Comext 6,316
+  rows; the blocked/failed site sets identical) — findings, gaps and
+  paths in the companion document
+  [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md).
+
+Unit report: [report-0.2.3.md](docs/report/report-0.2.3.md);
+machine-readable tables (benchmark vote, verdicts, all prior
+sections) in the [probe report](docs/report/probe-report.md).
+
+## Previous units
+
+### v0.2.2 — the three-question funnel (2026-09-14)
 
 v0.2.2 executes the **real-network landscape run** (2026-09-14,
 reconnaissance-only: official exports/APIs, no scraping) and assembles
@@ -84,7 +126,9 @@ typed literals:
   products** — producer bounds 800 (CEPE) to 3,200 (Eurostat SBS
   NACE 20.30) × **107.3 products per producer** (ECAT staged pairs ÷
   licence holders) × per-CN8 volume shares from the staged extra-EU
-  trade (largest: HS 32091000 ≈32%). A modeled estimate, never a count.
+  trade (largest: HS 32091000 ≈32%). A modeled estimate, never a
+  count. **Superseded 2026-09-14 by the v0.2.3 benchmark vote
+  (above); kept for the publish history.**
 - **Q2 — for how many products the identity triple is definitively
   known (floor):** **17,170** distinct (manufacturer, product-ident)
   pairs over the staged official registers (ECAT: 17,838 entries,
@@ -102,8 +146,6 @@ until a second register is staged. Unit report:
 [report-0.2.2.md](docs/report/report-0.2.2.md); machine-readable
 tables (CN8 trade, identity, depth matrix, census, reconciliation
 flags) in the [probe report](docs/report/probe-report.md).
-
-## Previous units
 
 ### v0.2.1 — source capability sounding-out (2026-09-14)
 
@@ -189,7 +231,7 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.2 built) — phase tracking, exit gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.3 built) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -214,14 +256,16 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
 ## Status
 
-Tool units v0.1.1–v0.2.2 are built and tested (299 automated offline
+Tool units v0.1.1–v0.2.3 are built and tested (341 automated offline
 tests): evidence database, source register, source probing,
 per-source feasibility reports, counting machinery for catalogue walks
 (idle until a collection go-ahead), the data-landscape map with the
 three headline numbers, the source-level capability sounding-out of
-the official registers, and the three-question funnel executed on the
-real network (2026-09-14): staging database, wave harness, full
-disposition of the 101-row register, and the report with the funnel,
-CN8 trade, identity, depth and census sections — every number a query
-result. The report is published under `docs/report/`. The methodology
-stays open to revision as results come in.
+the official registers, the three-question funnel executed on the
+real network (2026-09-14), and the pool estimate v2 — the
+meta-benchmarking vote with a dual-level magnitude verdict
+(2026-09-14): benchmark engine, adapters package, four new primary
+extractions, report section with supersession banner — every number a
+query result or a dated extraction. The report is published under
+`docs/report/`. The methodology stays open to revision as results
+come in.

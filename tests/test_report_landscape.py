@@ -96,6 +96,35 @@ def test_cn8_trade_table_and_flow_caveat(stg, loaded_conn):
     assert by_flow[("32081010", "2")]["kg"] == 30.0
 
 
+def test_trade_reads_scope_to_latest_run(stg, loaded_conn):
+    """2026-09-14 defect: a wave re-run appends a new run_key; report
+    reads must scope to the latest run per source or double-count."""
+    def _doc(run_key):
+        return {"source_id": "CS-2", "run_key": run_key, "url": "https://example/api.json",
+                "doc_hash": "1" * 64, "retrieval_date": "2026-09-14"}
+
+    rows = [{"cn8": "32081010", "flow": "1", "declarant": "DE", "partner": "CN",
+             "year": "2024", "kg": 100.0, "eur": 500.0}]
+    staging.replace_trade(stg, "CS-2", "probe-cs", _doc("probe-cs"), rows)
+    staging.replace_trade(stg, "CS-2", "probe-cs-2", _doc("probe-cs-2"), rows)
+    data = reportmod.build(loaded_conn, staging_conn=stg)
+    land = data["landscape"]
+    assert land["cn8_trade"]["rows"][0]["rows"] == 1  # not 2
+    assert land["funnel"]["q1"]["shares"][0]["kg"] == 100.0
+    assert [f["detail"] for f in land["reconciliation"] if f["source_id"] == "CS-2"] \
+        == ["staged rows 1 (latest run probe-cs-2)"]
+    # register side stays scoped too (distinct pairs are run-invariant
+    # under duplication, but mixed-run reads would not be)
+    _doc_r = {"source_id": "AS-2", "run_key": "probe-as", "url": "https://as.example/e.csv",
+              "doc_hash": "2" * 64, "retrieval_date": "2026-09-14"}
+    staging.replace_products(stg, "AS-2", "probe-as", _doc_r, _rows("Acme", 4))
+    _doc_r2 = dict(_doc_r, run_key="probe-as-2")
+    staging.replace_products(stg, "AS-2", "probe-as-2", _doc_r2, _rows("Acme", 4))
+    data = reportmod.build(loaded_conn, staging_conn=stg)
+    idt = data["landscape"]["identity"]
+    assert {r["source_id"]: r["entries"] for r in idt["registers"]} == {"AS-2": 4}
+
+
 def _insert_finding(conn, run_key, code, value):
     run_id = conn.execute("SELECT id FROM run WHERE run_key=?", (run_key,)).fetchone()[0]
     conn.execute(
@@ -144,3 +173,44 @@ def test_depth_counts_and_sds_urls(stg, loaded_conn, store, fetcher):
     assert dep["tier_counts"]["2"] == 1 and "ST-1" in dep["tier_members"]["2"]
     assert {"source_id": "ST-1", "sds_doc_urls": 7, "run_key": result["run_key"]} in dep["sds_counts"]
     assert "not a zero claim" in dep["note"]
+
+
+def test_pool_v2_section_banner_and_verdicts(stg, loaded_conn):
+    _stage_products(stg, "AS-2", _rows("M", 5))
+    md = reportmod.render(loaded_conn, format="md", staging_conn=stg)
+    assert "## Pool estimate v2 (v0.2.3" in md
+    assert "Superseded 2026-09-14 (v0.2.3)" in md  # funnel banner (tr8)
+    assert "| B1 |" in md and "| B2-SE |" in md and "| B2-DK |" in md
+    assert "| B3 |" in md and "| B4 |" in md and "| B5 |" in md and "| B6 |" in md
+    assert "**Verdict:" in md
+    assert "formulation level via compression factor" in md  # c2 conversion note
+    assert "X1 measured key-tier structure on the staged ECAT register" in md
+    # sparse fixture DB — absent inputs stay visible indeterminates (c1)
+    assert "indeterminate:" in md
+
+
+def test_pool_v2_json_assembly_structure(stg, loaded_conn):
+    _stage_products(stg, "AS-2", _rows("M", 5))
+    data = json.loads(reportmod.render(loaded_conn, format="json", staging_conn=stg))
+    pv = data["landscape"]["pool_v2"]
+    assert sorted(pv["assembly"]["results"], key=lambda r: r["benchmark"])[0]["benchmark"] == "B1"
+    assert len(pv["assembly"]["results"]) == 7
+    for lvl in ("sku", "formulation"):
+        assert pv["assembly"][f"verdict_{lvl}"]["level"] == lvl
+        assert pv["assembly"][f"verdict_{lvl}"]["verdict"]
+    assert pv["assembly"]["compression"]["measured"]["computed"] is True
+
+
+def test_pool_v2_csv_rows(stg, loaded_conn):
+    _stage_products(stg, "AS-2", _rows("M", 5))
+    out = reportmod.render(loaded_conn, format="csv", staging_conn=stg)
+    rows = [line.split(",") for line in out.splitlines() if line.startswith("pool_v2")]
+    assert rows, "pool_v2 block missing from csv"
+    assert any(r[2] == "band" for r in rows)
+    assert any(r[1].startswith("verdict_") for r in rows)
+
+
+def test_pool_v2_without_staging_degrades(stg, loaded_conn):
+    md = reportmod.render(loaded_conn, format="md")
+    assert "## Pool estimate v2" in md
+    assert "X1 measured key-tier structure: no staging DB connected." in md

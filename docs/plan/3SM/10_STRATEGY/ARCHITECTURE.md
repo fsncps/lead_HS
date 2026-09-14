@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-12
+updated: 2026-09-14
 ---
 
 # Architecture — pipeline, CLI, reporting
@@ -124,7 +124,9 @@ DATA_MODEL.md.
     Makefile               # operator entrypoint (v0.1.2)
     data/raw/              # gitignored raw store
     data/leadhs.sqlite     # gitignored database
-    data/report/           # gitignored report intermediates (regenerated freely)
+    data/report/           # gitignored report renders — timestamped per
+                           # run (render history, v0.2.3 addendum), latest
+                           # copies kept for stable references
     docs/report/           # published final reports only (committed)
     tests/                 # pytest: parse fixtures, seed reproducibility,
                            # CLI smoke
@@ -192,6 +194,9 @@ artifact ships alongside the wheel.
 - Routing: intermediates → `data/report/`; publishing → `docs/report/`
   is an explicit act (`make report-publish`). Finals are committed with
   their run IDs.
+- Render history (v0.2.3 addendum): every `make report` leaves an
+  immutable timestamped set in `data/report/` (one shared UTC ts per
+  run); the unversioned names are refreshed as "latest" copies.
 
 ## Testing & quality (light but real)
 

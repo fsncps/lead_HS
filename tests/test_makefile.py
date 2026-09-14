@@ -66,6 +66,9 @@ def test_dry_run_report_three_outs():
     r = _make("-n", "report")
     assert r.returncode == 0
     assert r.stdout.count("--out") == 3
+    # v0.2.3 addendum: renders are timestamped, latest copies refreshed
+    assert "probe-report.$(TS)." not in r.stdout  # TS expanded, not literal
+    assert r.stdout.count("cp data/report/probe-report.") == 3
 
 
 def test_report_publish_requires_which():

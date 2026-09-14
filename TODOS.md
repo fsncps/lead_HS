@@ -2,7 +2,30 @@
 
 Deferred work items with context — each entry states what, why,
 pros/cons, and where to start. Created by the v0.2.0 ENG review
-(2026-09-12).
+(2026-09-12); extended by the v0.2.3 ENG review (2026-09-14).
+
+## Re-benchmark cadence: re-run B1–B6 when better register data lands
+
+- **What:** When a materially better official data source lands
+  (v0.3+ product-DB seeding, new register exports, ECAT
+  improvements), re-run the six benchmarks (`leadhs/benchmarks.py`)
+  on the refreshed data and re-issue the magnitude-class verdict
+  with its date and inputs.
+- **Why:** The v0.2.3 verdict is a dated synthesis, not a constant —
+  the vote table documents its inputs, and the benchmarks module
+  makes re-computation cheap; without this reminder the verdict
+  silently goes stale while the underlying registers move.
+- **Pros:** Preserves the meta-benchmarking investment; the verdict
+  stays decision-grade for the actors around the lead exception.
+- **Cons:** None beyond the small cost of re-running pure functions
+  over refreshed staging data.
+- **Context:** Introduced by the v0.2.3 ENG review (SMALL CHANGE,
+  2026-09-14). Start: refresh the staging inputs, re-run the
+  benchmark + vote pipeline, compare the new verdict against the
+  published one, and append a dated supersession note if the class
+  changed.
+- **Depends on / blocked by:** Nothing — unit v0.2.3 PHASE01–04 built
+  (2026-09-14); the trigger is future data, not missing machinery.
 
 ## [RETIRED 2026-09-14] Generalize the one-dimension JSON-stat decoder into a small jsonstat module
 
@@ -12,25 +35,14 @@ Landed in unit v0.2.2 PHASE01: `src/leadhs/jsonstat.py` (fu10) —
 `sum_pairs()`, `category_labels()`; fixtures ported to
 `tests/test_jsonstat.py`. Entry kept as a marker; delete at leisure.
 
-## Split adapters.py into per-class modules (size watch)
+## [RETIRED 2026-09-14] Split adapters.py into per-class modules (size watch)
 
-- **What:** When `src/leadhs/probe/adapters.py` crosses ~1,500
-  lines, split it into per-class modules (`probe/adapters/cs.py`,
-  `pe.py`, `as.py`, `st.py`) with the shared helpers
-  (`_sniff`, CSV-shape, `_depth_tier`) in a common module; the
-  adapter registration/dispatch stays where it is.
-- **Why:** The file holds all five adapters (CS/PE/AS/ST, 1,122
-  lines after v0.2.1) and v0.2.2 extends the AS ingest and PE recon
-  further; it is the file most likely to become hard to navigate.
-- **Pros:** Keeps each adapter readable in isolation; clearer
-  ownership of the shared parse helpers.
-- **Cons:** Pure refactor — no behavior change; touches import
-  surface and test files for a problem that is not yet real.
-- **Context:** Check the line count at the start of the unit after
-  v0.2.2; split only if the threshold is crossed or the next unit
-  adds another adapter class. Keep the module-level helper functions
-  import-stable.
-- **Depends on / blocked by:** Nothing; P3 priority.
+Landed in unit v0.2.3 PHASE02: the trigger fired (next unit adds the
+sixth adapter class; file at 1,325 lines). `src/leadhs/probe/adapters/`
+is now a package — `cs.py`, `pe.py`, `as_adapter.py` (the `as.py` name
+is a Python keyword), `st.py`, shared helpers in `_common.py`; the
+public import surface (`leadhs.probe.adapters`) unchanged, dispatch
+order preserved. Entry kept as a marker; delete at leisure.
 
 ## Register an INIES account to unlock the French EPD register's API (user action)
 

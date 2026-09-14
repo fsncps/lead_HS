@@ -28,6 +28,8 @@ from typing import Optional
 
 from jinja2 import Environment, PackageLoader
 
+from . import benchmarks
+
 _TEMPLATE = "probe_report.md.j2"
 
 TITLE = "Source feasibility census report"
@@ -205,18 +207,37 @@ _CN8_PROXY_NOTE = (
 )
 
 
+def _latest(table: str) -> str:
+    """Per-source latest-run JOIN fragment for a staging table.
+
+    Re-runs append new run_keys (citable history by design; the
+    per-(source_id, run_key) replace only guards within a run) — every
+    staging read must scope to the latest run per source or repeat-count
+    older observations. Found 2026-09-14: the CN8 trade table doubled
+    across a same-day wave re-run (CS-2 staged twice under two
+    run_keys). The register sections already used MAX(run_key); this
+    helper makes the convention uniform."""
+    return (
+        f"JOIN (SELECT source_id, MAX(run_key) AS run_key FROM {table} GROUP BY 1) _lr "
+        "ON t.source_id = _lr.source_id AND t.run_key = _lr.run_key"
+    )
+
+
 def _q2_union(stg) -> dict:
     """Q2 floor: distinct (manufacturer_norm, ident_norm) pairs over all
-    staged registers (union; replace semantics keep only latest runs)."""
+    staged registers (union; latest run per source only)."""
     row = stg.execute(
-        "SELECT COUNT(DISTINCT manufacturer_norm || '||' || ident_norm), "
-        "COUNT(DISTINCT manufacturer_norm) FROM stg_register_product"
+        "SELECT COUNT(DISTINCT t.manufacturer_norm || '||' || t.ident_norm), "
+        "COUNT(DISTINCT t.manufacturer_norm) FROM stg_register_product t "
+        + _latest("stg_register_product")
     ).fetchone()
     per_source = [
         dict(source_id=r[0], pairs=r[1], entries=r[2])
         for r in stg.execute(
-            "SELECT source_id, COUNT(DISTINCT manufacturer_norm || '||' || ident_norm), "
-            "COUNT(*) FROM stg_register_product GROUP BY 1 ORDER BY 1"
+            "SELECT t.source_id, COUNT(DISTINCT t.manufacturer_norm || '||' || t.ident_norm), "
+            "COUNT(*) FROM stg_register_product t "
+            + _latest("stg_register_product")
+            + " GROUP BY 1 ORDER BY 1"
         ).fetchall()
     ]
     return {"distinct_pairs": row[0] or 0, "distinct_manufacturers": row[1] or 0, "per_source": per_source}
@@ -224,12 +245,16 @@ def _q2_union(stg) -> dict:
 
 def _overlap_pilot(stg, ids=OVERLAP_PAIR) -> dict:
     """ECAT ∩ Nordic containment + Jaccard on normalized pairs — only
-    when both registers are staged; else an explicit zero-state."""
+    when both registers are staged; else an explicit zero-state.
+    Latest run per source (re-runs append run_keys)."""
     sets = {}
     for sid in ids:
         rows = stg.execute(
-            "SELECT DISTINCT manufacturer_norm || '||' || ident_norm "
-            "FROM stg_register_product WHERE source_id=?", (sid,)
+            "SELECT DISTINCT t.manufacturer_norm || '||' || t.ident_norm "
+            "FROM stg_register_product t "
+            "WHERE t.source_id=? AND t.run_key="
+            "(SELECT MAX(run_key) FROM stg_register_product WHERE source_id=?)",
+            (sid, sid),
         ).fetchall()
         sets[sid] = {r[0] for r in rows}
     missing = [sid for sid, s in sets.items() if not s]
@@ -251,11 +276,17 @@ def _overlap_pilot(stg, ids=OVERLAP_PAIR) -> dict:
 def _cn8_trade(stg) -> dict:
     """G3/G4: per-CN8 extra-EU import/export sums (kg, EUR) from the
     staged trade rows; flow-code caveat + proxy note carried."""
-    flows = {r[0] for r in stg.execute("SELECT DISTINCT flow FROM stg_trade_cn8").fetchall()}
+    flows = {
+        r[0]
+        for r in stg.execute(
+            "SELECT DISTINCT t.flow FROM stg_trade_cn8 t " + _latest("stg_trade_cn8")
+        ).fetchall()
+    }
     rows = []
     for r in stg.execute(
-        "SELECT cn8, flow, SUM(kg), SUM(eur), COUNT(*) FROM stg_trade_cn8 "
-        "GROUP BY 1, 2 ORDER BY 1, 2"
+        "SELECT t.cn8, t.flow, SUM(t.kg), SUM(t.eur), COUNT(*) FROM stg_trade_cn8 t "
+        + _latest("stg_trade_cn8")
+        + " GROUP BY 1, 2 ORDER BY 1, 2"
     ).fetchall():
         rows.append({"cn8": r[0], "flow": r[1], "kg": r[2], "eur": r[3], "rows": r[4]})
     verified = stg.execute("SELECT COUNT(*) FROM dict_cn8 WHERE verified=1").fetchone()[0]
@@ -372,20 +403,27 @@ def _reconcile(stg, entries: list) -> list:
                 flags.append({"source_id": sid, "kind": "ok", "detail": f"staged rows {n} == metric {metric} (run {runs[sid]})"})
         elif metric is not None:
             flags.append({"source_id": sid, "kind": "staging-absent", "detail": "metric present but no staged rows"})
-    trade_sources = [r[0] for r in stg.execute("SELECT DISTINCT source_id FROM stg_trade_cn8").fetchall()]
-    for sid in trade_sources:
-        n = stg.execute("SELECT COUNT(*) FROM stg_trade_cn8 WHERE source_id=?", (sid,)).fetchone()[0]
-        flags.append({"source_id": sid, "kind": "ok", "detail": f"{n} staged trade rows"})
+    trade_sources = [
+        (r[0], r[1])
+        for r in stg.execute("SELECT source_id, MAX(run_key) FROM stg_trade_cn8 GROUP BY 1").fetchall()
+    ]
+    for sid, run_key in sorted(trade_sources):
+        n = stg.execute(
+            "SELECT COUNT(*) FROM stg_trade_cn8 WHERE source_id=? AND run_key=?", (sid, run_key)
+        ).fetchone()[0]
+        flags.append({"source_id": sid, "kind": "ok", "detail": f"staged rows {n} (latest run {run_key})"})
     return flags
 
 
 def _ppp(stg) -> Optional[float]:
     """Products-per-producer estimate (v0): distinct pairs ÷ distinct
-    licence holders over the largest staged register — DB-cited."""
+    licence holders over the largest staged register — DB-cited.
+    Latest run per source (re-runs append run_keys)."""
     row = stg.execute(
-        "SELECT source_id, COUNT(DISTINCT manufacturer_norm || '||' || ident_norm), "
-        "COUNT(DISTINCT manufacturer_norm) FROM stg_register_product "
-        "GROUP BY 1 ORDER BY 2 DESC LIMIT 1"
+        "SELECT t.source_id, COUNT(DISTINCT t.manufacturer_norm || '||' || t.ident_norm), "
+        "COUNT(DISTINCT t.manufacturer_norm) FROM stg_register_product t "
+        + _latest("stg_register_product")
+        + " GROUP BY 1 ORDER BY 2 DESC LIMIT 1"
     ).fetchone()
     if not row or not row[2]:
         return None
@@ -400,10 +438,18 @@ def _funnel(stg, entries: list) -> dict:
     q2 = _q2_union(stg)["distinct_pairs"] if stg else None
     ppp = _ppp(stg) if stg else None
     shares = []
-    total_kg = stg.execute("SELECT SUM(kg) FROM stg_trade_cn8").fetchone()[0] if stg else None
+    total_kg = (
+        stg.execute(
+            "SELECT SUM(t.kg) FROM stg_trade_cn8 t " + _latest("stg_trade_cn8")
+        ).fetchone()[0]
+        if stg
+        else None
+    )
     if stg and total_kg:
         for r in stg.execute(
-            "SELECT cn8, SUM(kg) FROM stg_trade_cn8 GROUP BY 1 ORDER BY 2 DESC"
+            "SELECT t.cn8, SUM(t.kg) FROM stg_trade_cn8 t "
+            + _latest("stg_trade_cn8")
+            + " GROUP BY 1 ORDER BY 2 DESC"
         ).fetchall():
             share = r[1] / total_kg
             shares.append({
@@ -456,9 +502,63 @@ def _funnel(stg, entries: list) -> dict:
     return funnel
 
 
+POOL_V2_INTRO = (
+    "The v0.2.3 pool estimate: seven benchmark quantities vote into the "
+    "magnitude taxonomy (a 20k\u201350k \u00b7 b 50k\u2013100k \u00b7 c 100k\u2013200k \u00b7 "
+    "d 200k\u2013300k \u00b7 e >300k); the pinned rule converts the vote into a "
+    "dual-level verdict (SKU = registry/product level, formulation = "
+    "shade/pack-collapsed). Estimates are bands, never points; "
+    "indeterminate benchmarks stay visible; confidence is claimed only "
+    "when \u22653 benchmarks converge at base with no exclusive non-adjacent "
+    "conflict."
+)
+
+SUPERSESSION_BANNER = (
+    "Superseded 2026-09-14 (v0.2.3): the funnel-modeled Q1 (M-bounds \u00d7 "
+    "uniform products-per-producer) is superseded by the pool estimate v2 "
+    "section below (7-benchmark vote, dual-level verdict). The funnel "
+    "block is kept for the publish history \u2014 republishes append "
+    "timestamp-hash snapshots."
+)
+
+
+def _pool_v2(conn, staging_conn) -> dict:
+    """v0.2.3 pool estimate (X5/X6): benchmarks.assemble() on the real
+    inputs (evidence DB + staging via the named query functions);
+    pre-rendered md blocks for the template + the structured assembly
+    for json (i12/i16). Staging-optional (e5) \u2014 the measured key-tier
+    refinement degrades to a note."""
+    a = benchmarks.assemble(conn, staging_conn)
+    measured = a["compression"]["measured"]
+    if measured.get("computed"):
+        tiers = measured["compression"]["per_tier"]
+        tier_txt = ", ".join(
+            f"{name} \u00d7{factor:.3f}" for name, factor in sorted(tiers.items())
+        )
+        measured_note = (
+            f"X1 measured key-tier structure on the staged ECAT register "
+            f"({measured.get('rows', 0)} rows): {tier_txt}, "
+            f"{measured.get('licence_distinct', 0)} licences "
+            "(the licence tier is a catalogue, not a compression)."
+        )
+    else:
+        measured_note = f"X1 measured key-tier structure: {measured.get('note', 'absent')}."
+    return {
+        "intro": POOL_V2_INTRO,
+        "supersession_banner": SUPERSESSION_BANNER,
+        "vote_sku_md": benchmarks.render_vote_table_md(a["vote_sku"]),
+        "verdict_sku_md": benchmarks.render_verdict_md(a["vote_sku"], a["verdict_sku"]),
+        "vote_formulation_md": benchmarks.render_vote_table_md(a["vote_formulation"]),
+        "verdict_formulation_md": benchmarks.render_verdict_md(a["vote_formulation"], a["verdict_formulation"]),
+        "compression_note": f"{a['compression']['note']}. {measured_note}",
+        "assembly": a,
+    }
+
+
 def _landscape(conn, staging_conn, entries: list) -> dict:
     """PHASE06 extension assembly: funnel + CN8 trade + identity +
-    depth + census + reconciliation flags. Staging-optional (e5)."""
+    depth + census + reconciliation flags + pool estimate v2 (v0.2.3).
+    Staging-optional (e5)."""
     stg = staging_conn
     has_products = bool(
         stg and stg.execute("SELECT COUNT(*) FROM stg_register_product").fetchone()[0]
@@ -475,6 +575,7 @@ def _landscape(conn, staging_conn, entries: list) -> dict:
         "depth": _depth(entries),
         "census": _census_sections(conn, entries),
         "reconciliation": _reconcile(stg, entries) if (has_products or has_trade) else [],
+        "pool_v2": _pool_v2(conn, staging_conn),
     }
 
 
@@ -998,5 +1099,24 @@ def _landscape_rows(writer, landscape: dict) -> None:
     writer.writerow(["census", "counted", "", census.get("counted")])
     for flag in landscape.get("reconciliation", []):
         writer.writerow(["reconciliation", flag["source_id"], flag["kind"], flag["detail"]])
+    pv = landscape.get("pool_v2")
+    if pv:
+        a = pv["assembly"]
+        for row in a["results"]:
+            if row.get("indeterminate"):
+                writer.writerow(["pool_v2", row["benchmark"], "indeterminate", row["indeterminate"]])
+            else:
+                band = row["band"]
+                writer.writerow([
+                    "pool_v2", row["benchmark"], "band",
+                    f"low={band['low']} base={band['base']} high={band['high']} "
+                    f"base_class={','.join(row['classes']['base'])}",
+                ])
+        for lvl in ("sku", "formulation"):
+            v = a[f"verdict_{lvl}"]
+            writer.writerow([
+                "pool_v2", f"verdict_{lvl}", v["verdict"],
+                f"available={v['available']} confidence={v['confidence']}",
+            ])
     if landscape.get("staging_absent_note"):
         writer.writerow(["staging", "absent", "", landscape["staging_absent_note"]])

@@ -238,8 +238,9 @@ def test_recon_malformed_sitemap(site, conn, store, make_fetcher):
 def test_recon_size_cap_floor_partial(site, conn, store, monkeypatch, make_fetcher):
     """e3: oversized sitemap → SizeLimit → count 0 + floor-partial note."""
     from leadhs.probe import adapters
+    from leadhs.probe.adapters import pe as pe_mod
 
-    monkeypatch.setattr(adapters, "_RECON_MAX_BYTES", 1024)
+    monkeypatch.setattr(pe_mod, "_RECON_MAX_BYTES", 1024)
     src = _make_recon_source(site, 27)
     result = adapters.PEAdapter().probe(src, _recon_ctx(make_fetcher, conn, store))
     m = {f.metric_code: f for f in result.findings}

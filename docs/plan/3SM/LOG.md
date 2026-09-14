@@ -527,3 +527,97 @@ results.
 
 Strategy `10_STRATEGY/v0.2.2.md` remains DRAFT (freeze is an explicit
 user action); nothing committed, nothing advanced without instruction.
+
+## 2026-09-14 — v0.2.3 built — pool estimate v2 (meta-benchmarking, dual-level magnitude verdict)
+
+Unit v0.2.3 built end to end (PHASE01–05, one session): the
+single-model funnel headline (Q1) replaced by a **meta-benchmarking
+vote** — seven independent benchmark quantities vote into five
+contiguous magnitude classes (a 20k–50k … e >300k); a pinned rule
+converts the vote into a **dual-level verdict** with a pinned
+confidence rule (≥3 converge, no exclusive non-adjacent conflict ⇒
+"reasonable-high"; tie ⇒ span + flip assumptions; <3 ⇒ visible
+refusal).
+
+- **Verdict on real data:** SKU level **class e (>300k)**,
+  formulation level **class c (100k–200k)** — both confidence-
+  withheld, divergences recorded (SKU: B1→b, B4→c, B6→a;
+  formulation: B1→<a, B2-SE→e, B6→a). The formulation conversion
+  rides a pinned 1–10 shade-collapse band (flagged assumption —
+  the measurable ECAT key-tier dedup is small: name ×1.049,
+  EAN ×1.266 over 17,838 rows, 199 licences).
+- **Code:** `src/leadhs/benchmarks.py` (pure verdict engine —
+  taxonomy, result constructors, named DB queries, compute_b1–b6,
+  vote table, verdict, md renderers, assemble()); the 1,325-line
+  `adapters.py` split into the `probe/adapters/` package (import
+  surface unchanged); report content layer extended (pool estimate
+  v2 section in md/csv/json, funnel supersession banner); goldens
+  regenerated and reviewed.
+- **Extractions (all primary-source verified, GO=1-gated):**
+  BfR-Akademie SE deck — pc-pnt-* counts are poison-centre
+  submissions, not register products (71,231 paints/coatings,
+  Echo DB 2022-09-15); SWD(2022) 435 Annex 16 — 1,444,290 PCN
+  dossiers 2021, no paint-share/non-hazardous constant; JRC final
+  Ecolabel report (DOI 10.2760/4572222, supersedes JRC145238) —
+  no market-share data exist (official), 217 licences/36,960
+  products 03/2025; DK Produktregistret ≈40,000 hazardous products
+  (aggregates-only via Power BI — no adapter, PHASE02 shape gate);
+  Eurostat SBS verify — 3,300 enterprises (C2030, 2020).
+- **Evidence DB:** four new records (ST-1 1,444,290; ST-3 3,300;
+  ST-6 40,000; ST-7 71,231 — ST-6/ST-7 newly registered); no
+  metric-vocabulary migration (estimate constants live in the
+  module + method sheet); `db audit --unreferenced` clean.
+- **Contract fixes caught by the golden/content layer:**
+  compute_b5 ignored its base-penetration scenario (span midpoint
+  ≠ base scenario — fixed + asserted); the formulation vote was
+  initially built from unconverted rows (fixed); B6 band now
+  carries landscape-scale anchors only.
+- **Tests:** 341 passed, 2 deselected (38 benchmark tests on
+  synthetic staging; 4 new report-layer tests); wheel
+  `leadhs-0.2.3` builds and installs (0.2.3 imports verified);
+  published report re-staged with timestamp-hash snapshots.
+
+Strategy `10_STRATEGY/v0.2.3.md` remains DRAFT (freeze is an
+explicit user action); nothing committed, nothing advanced without
+instruction.
+
+## 2026-09-14 — render history policy (v0.2.3 addendum, user-reported)
+
+`data/report/` renders were unversioned — every `make report`
+overwrote the previous report, hiding the render history (only
+`docs/report/` publish snapshots preserved it). User decision:
+timestamp all saved report files, folded into v0.2.3 as an addendum,
+no new unit.
+
+- Makefile `report` now renders `probe-report.<UTC ts>.{md,csv,json}`
+  (one shared ts per run, nothing overwritten) and refreshes the
+  unversioned names as "latest" copies; every network chain that
+  calls `make report` inherits the policy.
+- Makefile `report-publish` normalizes the stem, so publishing a
+  timestamped render still stages the stable `probe-report.md` name
+  plus its `<pub-ts>.<sha256-8>` snapshot (no double timestamps).
+- Dry-run test extended; AGENTS.md conventions bullet and
+  ARCHITECTURE.md routing note updated; verified with two
+  consecutive renders + a publish dry-check.
+
+## 2026-09-14 — full probe re-run; trade double-count defect fixed (v0.2.3 PHASE05 addendum 2)
+
+User-requested full probe run with the timestamped report
+(`probe-report.20260914-083931`, published snapshots
+`probe-report.20260914-084007.*`). Waves 1–3 reproduced every
+headline (ECAT 17,838 exact; Comext 6,316; verdicts e/c unchanged);
+W3's blocked/failed sets identical to the morning run; only live
+drift: PE-20 SDS links 659→652.
+
+The re-run caught a report-layer defect: staging history is
+append-per-run_key by design, but the report's trade/register-helper
+queries read across runs — CN8 trade values doubled. Fixed with a
+uniform latest-run-per-source scope (`_latest()` JOIN) + regression
+test; 342 tests. W2's generic format-findings were re-recorded over
+via the manual fallback (curated IBU/environdec/NF/natureplus/
+EPD-Norway/PRODCOM notes restored).
+
+New companion document
+`docs/report/benchmarking-0.2.3.md`: run record, per-benchmark
+comparison considerations, cross-benchmark/method considerations,
+gaps, paths — linked from the unit report and all three READMEs.

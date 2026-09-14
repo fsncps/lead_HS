@@ -40,13 +40,13 @@ def test_cli_bare_groups_help():
         assert "Usage:" in r.stdout and not r.stderr, group
 
 
-def test_cli_version_0_2_2():
+def test_cli_version_0_2_3():
     env = dict(os.environ, LEADHS_CONTACT="test@example.com")
     r = subprocess.run(
         [sys.executable, "-m", "leadhs.cli", "--version"],
         capture_output=True, text=True, env=env,
     )
-    assert r.returncode == 0 and "0.2.2" in r.stdout
+    assert r.returncode == 0 and "0.2.3" in r.stdout
 
 
 def test_cli_probe_record_and_report(db_path, fixture_register, tmp_path):
