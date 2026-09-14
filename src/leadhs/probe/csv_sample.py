@@ -31,7 +31,8 @@ import random
 from datetime import datetime, timezone
 
 from .. import ids
-from ..fetch import FetchError
+from ..fetch import FetchError, ProbeNetworkError
+from ..store import StoreError
 from ..logutil import log_event
 from ..models import DocumentDraft, FindingDraft, ProbeResult
 from . import engine as probeengine
@@ -81,6 +82,16 @@ _CROSS_ID_DELIVERED = (
     "identifier columns in this sample: {idcols}; cross-identification "
     "candidates: EAN13/GTIN ↔ retail/manufacturer catalogues (the v0.3 "
     "seeding path); name + licence holder ↔ other certified-product registers"
+)
+
+# AS-3 (D38): the Nordic Swan export carries no EAN column — its
+# identity carriers are the licence number and the name+licensee pair.
+_CROSS_ID_DELIVERED_NS = (
+    "identifier columns in this sample: {idcols}; cross-identification "
+    "candidates: licence number (100% — one licence, many products); "
+    "name + licence holder ↔ other certified-product registers; the "
+    "export mixes EU Ecolabel and Nordic Swan licences (data model, "
+    "joinable by licence number)"
 )
 
 # AS-3 bounded discovery (PHASE03): candidate export endpoints tried in
@@ -181,20 +192,18 @@ def _parse_export(content: bytes, content_type: str | None, expected) -> tuple:
 
 
 def _sample_delivered(conn, store, source, run_id, run_key, header, records, content, content_type, content_url,
-                      n, seed, out_dir, ts, logger=None):
+                      n, seed, out_dir, ts, logger=None, key_fields=None):
     """The delivered path: dedupe → seeded draw → CSV + finding +
-    archive. Shared by AS-2 (group-044 pool) and AS-3 (criterion-096
+    archive. Shared by AS-2 (group-044 pool) and AS-3 (paint-group
     pool) — the pool is already filtered by the caller (de3)."""
-    # Dedupe to DISTINCT product items (review amendment 2): the
-    # identity triple is the item identity the register exposes.
+    # Dedupe to DISTINCT product items (review amendment 2; D38: the
+    # identity columns are source-parameterized — the ECAT fallback
+    # chain collapsed the Nordic Swan pool to its distinct Category
+    # values, the "14 distinct" defect).
+    fields = key_fields or _KEY_FIELDS_DEFAULT
     pool: dict = {}
     for rec in records:
-        key = (
-            (rec.get("product_or_service_name") or rec.get("product_name") or rec.get("name") or "").strip().lower(),
-            (rec.get("company_name") or rec.get("manufacturer") or "").strip().lower(),
-            (rec.get("group_name") or rec.get("group") or rec.get("category") or "").strip().lower(),
-        )
-        pool.setdefault(key, rec)
+        pool.setdefault(_identity_key(rec, fields), rec)
     pool_size = len(pool)
 
     # Canonical pool order (sorted unique triples) → the seeded draw is
@@ -225,7 +234,7 @@ def _sample_delivered(conn, store, source, run_id, run_key, header, records, con
     if logger:
         log_event(logger, "csv_sample", "drawn", source=source.id, run_key=run_key, rows=k, pool=pool_size)
 
-    idcols = [c for c in header if c in ("code_value", "licence_no", "ean", "gtin", "product_ident")]
+    idcols = [c for c in header if c in ("code_value", "licence_no", "license number", "ean", "gtin", "product_ident")]
     return _summary(
         source.id, "delivered", run_key, rows=k, fields=list(header), idcols=idcols, file=file_name,
         reason=(f"pool smaller than n: {k} of {n} requested (distinct items: {pool_size})" if shortfall else None),
@@ -256,20 +265,48 @@ def _sample_ecat(conn, store, fetcher, source, n, seed, out_dir, ts, parameters,
                              n, seed, out_dir, ts, logger)
 
 
-def _in_scope_criterion096(rec) -> bool:
-    """The Nordic Swan criterion-096 (paints & varnishes) row filter —
-    the category mechanism (de3); the register carries no CN8 codes."""
-    text = " ".join(
-        str(v) for k, v in rec.items()
-        if v and isinstance(v, str)
-        and k in ("product_or_service_name", "product_name", "name", "category", "group_name", "group")
-    ).casefold()
-    return any(t in text for t in ("paint", "varnish", "coating", "096", "färg", "lack"))
+# The Nordic Swan paint scope: exact match on the `product group`
+# column value (the category mechanism, de3 — the register carries no
+# CN8 codes). D38: whole-record substrings ("lack" inside "Black")
+# let toner/cleaning rows through; the structured column does not.
+_NS_PAINT_GROUPS = (
+    "EU44 Decorative paints, varnishes, and related products",
+    "096 Paints and varnishes",
+)
+
+
+def _in_scope_ns_group(rec) -> bool:
+    return (rec.get("product group") or "").strip() in _NS_PAINT_GROUPS
+
+
+def _identity_key(rec, key_fields) -> tuple:
+    """Dedupe key from per-source column chains (D38): the AS-2 default
+    is the ECAT fallback chain; AS-3 passes its own column names
+    (product, licensee, product group)."""
+    def first(names):
+        for nm in names:
+            v = rec.get(nm)
+            if v:
+                return str(v).strip().casefold()
+        return ""
+    return tuple(first(names) for names in key_fields)
+
+
+_KEY_FIELDS_DEFAULT = (
+    ("product_or_service_name", "product_name", "name"),
+    ("company_name", "manufacturer"),
+    ("group_name", "group", "category"),
+)
+_KEY_FIELDS_NS = (
+    ("product", "product_name", "name"),
+    ("licensee", "company_name", "manufacturer"),
+    ("product group", "group_name", "group"),
+)
 
 
 def _sample_nordic_swan(conn, store, fetcher, source, n, seed, out_dir, ts, parameters, logger=None):
     """AS-3: bounded discovery (PHASE03 trial). A CSV response feeds the
-    ECAT path with the criterion-096 filter; anything else is an honest
+    ECAT path with the paint-group filter (EU44/096); anything else is an honest
     unavailable record after ≤5 GETs."""
     run_id, run_key = _begin_run(conn, source.id, parameters)
     base = source.export_url or source.url
@@ -290,15 +327,15 @@ def _sample_nordic_swan(conn, store, fetcher, source, n, seed, out_dir, ts, para
             except UnexpectedFormat as exc:
                 detail = f"format: {exc.detail}"
                 break
-            in_scope = [rec for rec in records if _in_scope_criterion096(rec)]
+            in_scope = [rec for rec in records if _in_scope_ns_group(rec)]
             if not in_scope:
-                reason = f"export reached but 0 criterion-096 rows ({len(records)} rows)"
+                reason = f"export reached but 0 paint-group rows (EU44/096) among {len(records)} rows"
                 probeengine.persist(conn, store, source.id, run_id, _unavailable_result(reason))
                 _finish(conn, run_id, "unavailable", [f"AS-3: 0 in-scope rows ({gets} GETs)"])
                 return _summary(source.id, "unavailable", run_key, fields=list(header), reason=reason)
             delivered = _sample_delivered(conn, store, source, run_id, run_key, header, in_scope,
                                           resp.content, resp.headers.get("Content-Type"), url,
-                                          n, seed, out_dir, ts, logger)
+                                          n, seed, out_dir, ts, logger, key_fields=_KEY_FIELDS_NS)
             break
         detail = f"{gets} GET(s): {kind} at {url}"
     if delivered is not None:
@@ -349,9 +386,10 @@ def _render_manifest_md(ts, n, seed, entries) -> str:
         lines.append("")
         if e["status"] == "delivered":
             idcols = ", ".join(e["idcols"]) if e["idcols"] else "(none in the header)"
+            xline = (_CROSS_ID_DELIVERED_NS if e["source"] == "AS-3" else _CROSS_ID_DELIVERED)
             lines.append(f"- rows drawn: **{e['rows']}** (of the in-scope pool) → `{e['file']}`")
             lines.append(f"- fields returned: {', '.join(e['fields'])}")
-            lines.append(f"- {_CROSS_ID_DELIVERED.format(idcols=idcols)}")
+            lines.append(f"- {xline.format(idcols=idcols)}")
             if e.get("reason"):
                 lines.append(f"- note: {e['reason']}")
         else:
@@ -380,8 +418,62 @@ def _render_manifest_csv(entries) -> str:
 # --- orchestration ----------------------------------------------------------
 
 
+# --- offline re-render transport (D38) ---------------------------------------
+
+
+class _StoreResponse:
+    def __init__(self, content: bytes, content_type: str):
+        self.content = content
+        self.headers = {"Content-Type": content_type}
+
+
+class StoreFetcher:
+    """Serves a source's newest archived CSV export from the raw store
+    instead of the network (D38 re-render; zero GETs). A request is
+    served when it targets one of the source's register URLs (url /
+    export_url, prefix match) — the discovery handlers may construct
+    candidate URLs that differ from the original document URL, and the
+    bytes are what the re-render needs (the original URL stays on the
+    original document row)."""
+
+    def __init__(self, docs: dict, bases: dict):
+        self.docs = docs    # source_id → (bytes, content_type)
+        self.bases = bases  # source_id → [url, ...]
+
+    def get(self, url: str):
+        for sid, content in self.docs.items():
+            for base in self.bases.get(sid, ()):
+                if base and (url == base or url.startswith(base.rstrip("/") + "/")
+                             or url.startswith(base + "?")):
+                    return _StoreResponse(content[0], content[1])
+        raise ProbeNetworkError(url, "no archived document serves this URL in re-render mode")
+
+
+def fetcher_from_store(conn, store) -> StoreFetcher:
+    """Newest archived CSV export per source (raw store, content-addressed),
+    mapped to the source's register URLs."""
+    docs: dict = {}
+    bases: dict = {}
+    rows = conn.execute(
+        "SELECT d.source_id, d.raw_hash, d.content_type FROM document d "
+        "WHERE d.raw_hash IS NOT NULL AND d.content_type LIKE '%csv%' "
+        "AND d.id = (SELECT MAX(d2.id) FROM document d2 WHERE d2.source_id = d.source_id "
+        "AND d2.raw_hash IS NOT NULL AND d2.content_type LIKE '%csv%')"
+    ).fetchall()
+    for sid, digest, ctype in rows:
+        try:
+            docs[sid] = (store.get(digest), ctype)
+        except (OSError, StoreError):
+            continue  # archived file missing — source falls back to honest failure
+        src = conn.execute("SELECT url, export_url FROM source WHERE id = ?", (sid,)).fetchone()
+        if src:
+            bases[sid] = [u for u in (src[0], src[1]) if u]
+    return StoreFetcher(docs, bases)
+
+
 def sample(conn, store, fetcher, source_rows: dict, n: int, seed: int, out_dir: str,
-           dry_run: bool = False, ts: str | None = None, logger=None) -> tuple:
+           dry_run: bool = False, ts: str | None = None, logger=None,
+           from_store: bool = False) -> tuple:
     """Run the per-registry sample. ``source_rows`` maps id → SourceRef
     (validated by the CLI). Returns (exit_code, entries).
 
@@ -397,7 +489,7 @@ def sample(conn, store, fetcher, source_rows: dict, n: int, seed: int, out_dir: 
                     fetcher.plan((src.export_url or src.url) + suffix)
         return 0, []
 
-    parameters = {"n": n, "seed": seed, "dry_run": False}
+    parameters = {"n": n, "seed": seed, "dry_run": False, "from_store": from_store}
     handlers = {"AS-2": _sample_ecat, "AS-3": _sample_nordic_swan}
     os.makedirs(out_dir, exist_ok=True)
     entries = []

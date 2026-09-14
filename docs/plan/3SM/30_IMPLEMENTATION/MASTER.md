@@ -50,9 +50,13 @@ probe download-csv-sample`): strategy + design + CEO/ENG reviews
 (both HOLD SCOPE) same day; plans drafted (`v0.2.4/PHASE01–04`) and
 **built 2026-09-14** (364 offline tests) — the real sample run
 executed same day (`GO=1 make sample-csv`): AS-2 delivered 100 of
-17,013 distinct; AS-3 delivered trial-grade (`?format=csv`
-discovery, 14 distinct); ST-* honest no-fetch records; report
-`docs/report/report-0.2.4.md`.
+17,013 distinct; AS-3 delivered (`?format=csv` discovery; record
+corrected by addendum D38 to 100 of 2,322 distinct — the initial
+"14 distinct" was a tool defect); ST-* honest no-fetch records;
+report `docs/report/report-0.2.4.md`. Addenda D37 + D38 built and
+executed 2026-09-14 (AS-class source probe, all 30 sources; source
+corrections, evidence archiving, data_sources.csv; 393 offline
+tests).
 
 ## Units
 
@@ -64,7 +68,7 @@ discovery, 14 distinct); ST-* honest no-fetch records; report
 | v0.2.0 (market scale & data availability, D31) | IMPLEMENTATION | built 2026-09-12 (PHASE01–07 done; 205 offline tests; probe report published; N1/N2/N3 documented) |
 | v0.2.1 (source-level capability sounding-out, D33) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor) |
 | v0.2.2 (product-identity & granularity sounding-out, D34) | IMPLEMENTATION | design converged 2026-09-14 (fu1–fu10; CEO HOLD SCOPE c1–c6; ENG BIG CHANGE e1–e8); plans drafted (PHASE01–07); build awaits explicit go, PHASE05 additionally GO=1 |
-| v0.2.4 (management CSV sample, D36) | IMPLEMENTATION | built + real run 2026-09-14 (PHASE01–04 done; 364 offline tests; AS-2 100/17,013; AS-3 trial-grade `?format=csv` 14; report-0.2.4.md) |
+| v0.2.4 (management CSV sample, D36) | IMPLEMENTATION | built + real run 2026-09-14 (PHASE01–04 done; 364 offline tests; AS-2 100/17,013; AS-3 `?format=csv` discovery; report-0.2.4.md); **addenda D37+D38 done 2026-09-14** (PHASE05–07; 393 offline tests; AS-3 record corrected to 100/2,322; data_sources.csv) |
 
 ## Phase tracking (v0.1.1 — summary)
 

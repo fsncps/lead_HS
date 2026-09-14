@@ -467,12 +467,23 @@ lead). Open questions and the phased roadmap follow.
   pinned 25–150 assortment band); B6 total-market anchors — none
   exist (documented gap); SPIN reachability (low priority —
   substance-level anyway).
-- OPEN (v0.2.4, D36): Nordic Swan (AS-3) export mechanics (GET vs
-  form-POST; JS-bound search surface) — bounded discovery attempt in
-  the sample command; browser pass stays the fallback.
+- CLOSED (v0.2.4 D38, 2026-09-14): Nordic Swan (AS-3) export
+  mechanics — pinned: GET on the search URL with `?format=csv`
+  serves a semicolon CSV (52,539 rows archived, sha256-verified);
+  the first run's "trial-grade" verdict was a tool defect (scope
+  filter + dedupe keys), corrected and re-rendered from the archived
+  export. Residual refactor (pin the URL as first candidate) stays
+  in TODOS.md.
 
 ## ROADMAP (strategy altitude)
 
+- INPUT (2026-09-14, not adopted): consultant handover — source
+  expansion (KemiDigi/BASTA/WINGIS/INIES/eBVD/Quick-FDS/PT21 probe
+  queue, entry gate = confirmed bulk + identity tuple, D38 de5) +
+  capture-recapture/MSE methodology turn + manufacturer-census
+  estimator. Filed as `INPUT-source-expansion-MSE.md`; decision
+  deferred to the next strategy turn (unit numbering open — the v0.3
+  label is double-booked, see below).
 - Phase 0 — close gaps: verify current legal
   texts (ChemRRV Anhang 2.8, consolidated VIPaV); document the CdD
   governance chain for the lead exception from public sources (requester/
@@ -600,10 +611,20 @@ lead). Open questions and the phased roadmap follow.
   sources, one finding each (product-row CSV where obtainable, else
   exact-or-estimated count with provenance, else why-not +
   what-is-instead; associations 1 liveness GET). Real run same day
+  pending probe. Real run same day
   (migration 0010, 385 offline tests): 2 delivered (AS-2/AS-3
   reuse), 2 estimated (AS-4 ≈70k, AS-7 ≈2k), 5
   unavailable-with-why-not, 18 associations live + 3 unreachable —
-  published summary in `docs/report/`.
+  published summary in `docs/report/`. **Addendum D38 (2026-09-14,
+  PHASE07; 393 offline tests):** AS-3 record corrected — the
+  "trial-grade 14 distinct" was a tool defect (scope filter +
+  dedupe keys), true pool 2,424 rows / 2,322 distinct / 53
+  licences; sample re-rendered from the archived export
+  (`--from-store`); estimates carry archived landing-page evidence;
+  `--rebuild-summary`; **data_sources.csv** behind the
+  confirmed-bulk gate (DS-1 AS-2, DS-2 AS-3). Consultant
+  source-expansion + MSE handover filed as next-unit INPUT
+  (`INPUT-source-expansion-MSE.md`; not adopted).
 - **v0.3 (goal noted 2026-09-12, D32; the D32 vanilla-Windows
   distribution goal):** easy install on **vanilla Windows** (no make,
   no preinstalled Python) via a self-contained per-OS artifact; PyPI

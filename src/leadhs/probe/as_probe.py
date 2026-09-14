@@ -140,6 +140,23 @@ def _persist(conn, store, source_id, run_id, doc, finding):
 # --- handlers ----------------------------------------------------------------
 
 
+def _register_pool(conn, source_id) -> int | None:
+    """The register's distinct-item pool from the newest csv_sample_rows
+    finding (D38 relabel: the sample size must never read as the
+    register size)."""
+    row = conn.execute(
+        "SELECT pf.notes FROM probe_finding pf JOIN run r ON r.id = pf.run_id "
+        "WHERE pf.metric_code = 'csv_sample_rows' AND r.source_id = ? "
+        "AND pf.notes IS NOT NULL ORDER BY pf.id DESC LIMIT 1",
+        (source_id,),
+    ).fetchone()
+    if row and row[0]:
+        m = re.search(r"pool distinct=(\d+)", row[0])
+        if m:
+            return int(m.group(1))
+    return None
+
+
 def _reuse(conn, store, source, out_dir, ts, parameters, logger=None):
     """AS-2/AS-3 (2A): copy the newest same-day csv-sample artifact —
     no refetch; missing artifact → honest unavailable."""
@@ -169,7 +186,10 @@ def _reuse(conn, store, source, out_dir, ts, parameters, logger=None):
     _finish(conn, run_id, "delivered", [f"reuse copy: {file_name} ({n_rows} rows)"])
     if logger:
         log_event(logger, "as_probe", "reused", source=source.id, run_key=run_key, rows=n_rows)
-    return _entry(source.id, source.name, "delivered", run_key, records=f"{n_rows} (exact)",
+    pool = _register_pool(conn, source.id)
+    records = (f"{n_rows} rows (sample of {pool:,} distinct register products)"
+               if pool else f"{n_rows} (exact)")
+    return _entry(source.id, source.name, "delivered", run_key, records=records,
                   basis=f"reused {file_name}", file=file_name, gets=0)
 
 
@@ -189,6 +209,7 @@ def _registry(conn, store, fetcher, source, out_dir, ts, parameters, logger=None
     run_id, run_key = _begin_run(conn, source.id, parameters)
     base = (source.export_url or source.url).rstrip("/")
     landing_text, detail = None, None
+    landing_bytes, landing_url, landing_ct = None, None, None
     for gets, suffix in enumerate(_CANDIDATE_SUFFIXES, 1):
         url = base + suffix
         try:
@@ -259,6 +280,7 @@ def _registry(conn, store, fetcher, source, out_dir, ts, parameters, logger=None
                           file=file_name, gets=gets)
         if kind == "html":
             landing_text = resp.content.decode("utf-8", "replace")
+            landing_bytes, landing_url, landing_ct = resp.content, url, resp.headers.get("Content-Type")
         detail = f"{gets} GET(s): {kind} at {url}"
     # Budget spent — estimate from the landing text or record the gap.
     instead = _INSTEAD.get(source.id, "the register's web interface")
@@ -269,9 +291,15 @@ def _registry(conn, store, fetcher, source, out_dir, ts, parameters, logger=None
             noun = m.group(2)
             basis = (f"estimate from visible page text ({noun}) on {base}, "
                      f"accessed {_today()}")
-            _persist(conn, store, source.id, run_id, None, FindingDraft(
-                metric_code="as_probe_records", method_code="download",
-                value_text=f"estimated {count} — {basis}; available instead: {instead}"))
+            # D38: archive the landing page — the estimate's evidence
+            # (the AS-4 ≈70k number had a URL + date but no stored page).
+            digest, _rel = store.put(source.id, landing_bytes, "html")
+            doc = DocumentDraft(url=landing_url, content=landing_bytes,
+                                content_type=landing_ct, retrieval_method_code="download")
+            _persist(conn, store, source.id, run_id, doc, FindingDraft(
+                metric_code="as_probe_records", method_code="download", document=doc,
+                value_text=(f"estimated {count} — {basis}; doc_hash={digest}; "
+                            f"available instead: {instead}")))
             _finish(conn, run_id, "unavailable", [f"estimate: {count} {noun}"])
             return _entry(source.id, source.name, "records", run_key,
                           records=f"≈{count} (estimated)", basis=basis, instead=instead,
@@ -380,6 +408,135 @@ def _render_summary_csv(entries) -> str:
         writer.writerow([e["source"], e["name"], e["status"], e["records"] or "", e["basis"] or "",
                          e["instead"] or "", e["file"] or "", e["gets"] if e["gets"] is not None else "", e["reason"] or ""])
     return buf.getvalue()
+
+
+# --- summary rebuild (D38, offline) ------------------------------------------
+
+
+def _parse_instead(value_text: str) -> tuple[str, str]:
+    """Split the pinned ``...; available instead: X`` tail off a
+    value_text. Returns (head, instead-or-empty)."""
+    marker = "; available instead: "
+    if marker in value_text:
+        head, tail = value_text.split(marker, 1)
+        return head, tail
+    return value_text, ""
+
+
+def rebuild_summary(conn, out_dir: str, ts: str | None = None) -> list:
+    """Re-render ``as-source-probe.summary.{md,csv}`` (timestamped +
+    latest) from the LATEST as_source_probe run per source — zero
+    network (D38). Entry facts are re-derived from the pinned finding
+    value_text formats (i4); the summary is ALWAYS written."""
+    ts = ts or _utc_ts()
+    runs = conn.execute(
+        "SELECT r.source_id, r.run_key, r.status_code, r.notes FROM run r "
+        "JOIN probe_run pr ON pr.run_id = r.id "
+        "WHERE pr.mode_code = 'as_source_probe' AND r.id = ("
+        "  SELECT MAX(r2.id) FROM run r2 JOIN probe_run p2 ON p2.run_id = r2.id"
+        "  WHERE r2.source_id = r.source_id AND p2.mode_code = 'as_source_probe')"
+    ).fetchall()
+    names = dict(conn.execute("SELECT id, name FROM source").fetchall())
+    order = [r[0] for r in conn.execute(
+        "SELECT id FROM source WHERE class_code = 'AS' ORDER BY rowid")]
+    by_source = {r[0]: r for r in runs}
+    entries = []
+    for sid in order:
+        if sid not in by_source:
+            continue
+        _sid, run_key, _status, run_notes = by_source[sid]
+        fnd = dict((m, (vn, vt, notes)) for m, vn, vt, notes in conn.execute(
+            "SELECT metric_code, value_numeric, value_text, notes FROM probe_finding "
+            "WHERE run_id = (SELECT id FROM run WHERE run_key = ?)",
+            (run_key,)).fetchall())
+        if "as_probe_rows" in fnd:
+            vn, _vt, notes = fnd["as_probe_rows"]
+            n_rows = int(vn or 0)
+            if notes and "reused same-day csv-sample artifact" in notes:
+                mfile = re.search(r"artifact (\S+?) \(", notes)
+                file_name = mfile.group(1) if mfile else None
+                pool = _register_pool(conn, sid)
+                records = (f"{n_rows} rows (sample of {pool:,} distinct register products)"
+                           if pool else f"{n_rows} (exact)")
+                entry = _entry(sid, names.get(sid, sid), "delivered", run_key,
+                               records=records, basis=f"reused {file_name}",
+                               file=file_name, gets=0)
+            else:
+                mfile = re.search(r"file=(\S+?)[,;]", notes or "")
+                mgets = re.search(r"\((\d+) GETs\)", run_notes or "")
+                entry = _entry(sid, names.get(sid, sid), "delivered", run_key,
+                               records=f"{n_rows} (exact)",
+                               basis="full export from the pinned surface",
+                               file=mfile.group(1) if mfile else None,
+                               gets=int(mgets.group(1)) if mgets else None)
+            entries.append(entry)
+            continue
+        if "as_probe_records" in fnd:
+            _vn, vt, _notes = fnd["as_probe_records"]
+            head, instead = _parse_instead(vt or "")
+            mnum = re.match(r"estimated (\S+)", head)
+            mhash = re.search(r"doc_hash=([0-9a-f]{64})", vt or "")
+            records = f"≈{mnum.group(1)} (estimated)" if mnum else (head or "unknown")
+            basis = head.split(" — ", 1)[1] if " — " in head else head
+            if mhash:
+                basis = basis.replace(f"; doc_hash={mhash.group(1)}", "")
+            entry = _entry(sid, names.get(sid, sid), "records", run_key,
+                           records=records, basis=basis, instead=instead or None)
+            entries.append(entry)
+            continue
+        if "as_probe_unavailable" in fnd:
+            _vn, vt, _notes = fnd["as_probe_unavailable"]
+            if (vt or "").startswith("FAILED: "):
+                entries.append(_entry(sid, names.get(sid, sid), "failed", run_key,
+                                      records="unknown", reason=vt[len("FAILED: "):]))
+                continue
+            if not (vt or "").startswith("no product-row CSV obtainable"):
+                # reuse-missing and other bespoke unavailable texts: the
+                # live entry carries a reason only, no records/basis
+                entries.append(_entry(sid, names.get(sid, sid), "unavailable", run_key,
+                                      reason=vt))
+                continue
+            head, instead = _parse_instead(vt or "")
+            head = re.sub(r"; accessed \d{4}-\d{2}-\d{2}$", "", head)
+            body = head.split("no product-row CSV obtainable — ", 1)[-1]
+            entries.append(_entry(sid, names.get(sid, sid), "unavailable", run_key,
+                                  records="unknown", basis=body, instead=instead or None))
+            continue
+        if "as_probe_assoc" in fnd:
+            _vn, vt, _notes = fnd["as_probe_assoc"]
+            head, tail = _parse_instead(vt or "")
+            # live: tail = "member list at URL; ≈N members visible (...)"
+            # down: tail = "" and head carries "member list (unverified): URL"
+            if "member list at " in (tail or ""):
+                instead = "member list " + tail.split("member list at ", 1)[1].split("; ", 1)[0]
+                basis = "association landing page live" + ("; members visible" if "visible" in tail else "")
+                records = "0 product records (not a register)"
+            else:
+                murl = re.search(r"member list \(unverified\): (\S+)", head)
+                instead = murl.group(1) if murl else None
+                mhttp = re.search(r"not serving \(HTTP (\d+)\)", head)
+                if "unreachable" in head:
+                    basis = "site unreachable at probe time"
+                elif mhttp:
+                    basis = f"site not serving (HTTP {mhttp.group(1)})"
+                else:
+                    basis = head
+                records = None
+            entries.append(_entry(sid, names.get(sid, sid), "assoc", run_key,
+                                  records=records,
+                                  basis=basis, instead=instead, gets=1))
+    os.makedirs(out_dir, exist_ok=True)
+    md = _render_summary_md(f"{ts} (rebuilt)", entries)
+    csv_text = _render_summary_csv(entries)
+    for name, text in (
+        (f"as-source-probe.summary.{ts}.md", md),
+        (f"as-source-probe.summary.{ts}.csv", csv_text),
+        ("as-source-probe.summary.md", md),
+        ("as-source-probe.summary.csv", csv_text),
+    ):
+        with open(os.path.join(out_dir, name), "w", encoding="utf-8") as fh:
+            fh.write(text)
+    return entries
 
 
 # --- orchestration -----------------------------------------------------------

@@ -216,6 +216,64 @@ def test_dry_run_zero_network_zero_files(conn, store, make_fetcher, tmp_path, si
     assert not any(k.startswith("/robots") for k in site_hits)
 
 
+# --- D38: offline re-render from the raw store --------------------------------
+
+
+def test_from_store_rerender_zero_network(conn, store, make_fetcher, tmp_path, site, site_hits):
+    """First run fetches and archives; the from-store re-render then
+    reproduces the sample from the archived bytes with zero GETs —
+    same parse pipeline, corrected pool (D38)."""
+    port = site.rsplit(":", 1)[1]
+
+    def h(i):
+        return f"http://127.0.0.{i}:{port}"
+
+    reg = _reg([
+        f"AS-2,AS,ECAT,{h(40)}/,download,,verified,1,fixture,{h(40)}/ecat-pool.csv,csv",
+        f"AS-3,AS,Nordic Swan,{h(41)}/,download,,verified,1,fixture,{h(41)}/ns-pool.csv,csv",
+    ], tmp_path)
+    _load(conn, reg)
+    out1 = tmp_path / "out1"
+    code1, _ = csvsample.sample(
+        conn, store, make_fetcher(), _sources(conn, ["AS-2", "AS-3"]),
+        n=100, seed=42, out_dir=str(out1), ts="20260914-000011",
+    )
+    assert code1 == 0
+    hits_after_first = dict(site_hits)
+
+    out2 = tmp_path / "out2"
+    code2, entries = csvsample.sample(
+        conn, store, csvsample.fetcher_from_store(conn, store),
+        _sources(conn, ["AS-2", "AS-3"]),
+        n=100, seed=42, out_dir=str(out2), ts="20260914-000012", from_store=True,
+    )
+    assert code2 == 0
+    assert site_hits == hits_after_first  # zero network on the re-render
+    assert {e["source"]: e["status"] for e in entries} == {"AS-2": "delivered", "AS-3": "delivered"}
+    # AS-3: the NS-shaped fixture pool (20 distinct items) — clamp note,
+    # correct structured pool, no out-of-scope rows
+    e3 = [e for e in entries if e["source"] == "AS-3"][0]
+    assert e3["rows"] == 20
+    rows = _read_csv(out2 / "csv-sample.20260914-000012.AS-3.csv")
+    hdr = rows[0]
+    gcol = hdr.index("product group")
+    assert {r[gcol] for r in rows[1:]} <= set(csvsample._NS_PAINT_GROUPS)
+    # AS-2: deterministic re-draw from the same archived bytes — identical
+    # product rows (provenance columns run_key/ts differ per run, by design)
+    r1 = _read_csv(out1 / "csv-sample.20260914-000011.AS-2.csv")
+    r2 = _read_csv(out2 / "csv-sample.20260914-000012.AS-2.csv")
+    assert [row[0] for row in r1[1:]] == [row[0] for row in r2[1:]]
+    # manifest regenerated for the re-render run
+    assert (out2 / "csv-sample.manifest.20260914-000012.md").exists()
+    # run rows carry from_store provenance
+    r = conn.execute(
+        "SELECT parameters_json FROM run r JOIN probe_run pr ON pr.run_id=r.id "
+        "WHERE pr.mode_code='csv_sample' AND r.run_key=?",
+        (entries[0]["run_key"],),
+    ).fetchone()
+    assert '"from_store": true' in r[0]
+
+
 # --- AS-3 bounded discovery (PHASE03) ----------------------------------------
 
 
@@ -234,9 +292,9 @@ def test_as3_html_surface_unavailable_bounded(conn, store, make_fetcher, tmp_pat
     assert gets <= csvsample._NS_MAX_GETS
 
 
-def test_as3_csv_response_delivered_via_096_filter(conn, store, make_fetcher, tmp_path, site):
+def test_as3_csv_response_delivered_via_group_filter(conn, store, make_fetcher, tmp_path, site):
     port = site.rsplit(":", 1)[1]
-    reg = _reg([f"AS-3,AS,Nordic Swan,http://127.0.0.33:{port}/,download,,verified,1,fixture,http://127.0.0.33:{port}/ecat-pool.csv,csv"], tmp_path)
+    reg = _reg([f"AS-3,AS,Nordic Swan,http://127.0.0.33:{port}/,download,,verified,1,fixture,http://127.0.0.33:{port}/ns-pool.csv,csv"], tmp_path)
     _load(conn, reg)
     out = tmp_path / "out"
     code, entries = csvsample.sample(
@@ -247,12 +305,21 @@ def test_as3_csv_response_delivered_via_096_filter(conn, store, make_fetcher, tm
     e = entries[0]
     assert e["status"] == "delivered" and e["rows"] == 10
     rows = _read_csv(out / "csv-sample.20260914-000009.AS-3.csv")
-    assert all("Paint" in r[0] for r in rows[1:])  # criterion-096 filter held
+    hdr = rows[0]
+    gcol = hdr.index("product group")
+    pcol = hdr.index("product")
+    groups = {r[gcol] for r in rows[1:]}
+    assert groups <= set(csvsample._NS_PAINT_GROUPS)  # structured filter held
+    products = {r[pcol] for r in rows[1:]}
+    assert not any("TURBON" in p or "ABENA" in p for p in products)  # Black/painting decoys excluded
+    # dedupe triple is source-parameterized: 20 distinct items in the
+    # fixture pool (not collapsed to 14 category values, D38)
+    assert len({r[pcol] for r in rows[1:]}) == 10  # n=10 distinct items drawn
 
 
 def test_as3_zero_in_scope_unavailable(conn, store, make_fetcher, tmp_path, site):
     port = site.rsplit(":", 1)[1]
-    reg = _reg([f"AS-3,AS,Nordic Swan,http://127.0.0.36:{port}/,download,,verified,1,fixture,http://127.0.0.36:{port}/ecat-furniture.csv,csv"], tmp_path)
+    reg = _reg([f"AS-3,AS,Nordic Swan,http://127.0.0.36:{port}/,download,,verified,1,fixture,http://127.0.0.36:{port}/ns-furniture.csv,csv"], tmp_path)
     _load(conn, reg)
     code, entries = csvsample.sample(
         conn, store, make_fetcher(), _sources(conn, ["AS-3"]),
@@ -260,7 +327,7 @@ def test_as3_zero_in_scope_unavailable(conn, store, make_fetcher, tmp_path, site
     )
     assert code == 0
     assert entries[0]["status"] == "unavailable"
-    assert "0 criterion-096 rows" in entries[0]["reason"]
+    assert "0 paint-group rows" in entries[0]["reason"]
 
 
 # --- CLI wiring (subprocess, house smoke pattern) ----------------------------

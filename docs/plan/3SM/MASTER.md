@@ -30,7 +30,7 @@ dashboard. Current stage: **v0.2.4 — the management CSV sample
 (per-registry product-row evidence) + AS-class source probe**
 (`10_STRATEGY/v0.2.4.md`, D36/D37; strategy DRAFT — freeze untouched).
 **Built and executed 2026-09-14:** PHASE01–06 + addendum done,
-offline suite green (385 passed, 2 deselected), `db audit` clean.
+offline suite green (393 passed, 2 deselected), `db audit` clean.
 The real runs: `download-csv-sample` — AS-2 ECAT delivered
 100/17,013 distinct (identifiers: licence 100%, VAT 86%, EAN13 17%),
 AS-3 Nordic Swan delivered trial-grade (14 distinct via `?format=csv`,
@@ -114,7 +114,7 @@ no paid data sources, minimal cost.
 | v0.2.1 (source-level sounding-out of the expanded universe) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor; strategy `v0.2.1.md` stays DRAFT) |
 | v0.2.2 (the three-question funnel) | IMPLEMENTATION | built 2026-09-14 (PHASE01–07 done; 299 offline tests; real-network landscape run, report published — Q1 [85,840–343,360] modeled / Q2 17,170 floor / Q3 3,590; strategy `v0.2.2.md` stays DRAFT); Q1 superseded 2026-09-14 by v0.2.3 (kept for the publish history) |
 | v0.2.3 (pool estimate v2 — meta-benchmarking) | IMPLEMENTATION | built 2026-09-14 (PHASE01–05 done; 341 offline tests; verdict SKU class e / formulation class c, both confidence-withheld; adapters package, four primary extractions, report re-published with supersession banner; strategy `v0.2.3.md` stays DRAFT) |
-| v0.2.4 (management CSV sample) | IMPLEMENTATION | built 2026-09-14 (PHASE01–04 done; 364 offline tests; CEO+ENG review HOLD SCOPE 1A+amendments folded); **real run executed 2026-09-14** — AS-2 delivered 100/17,013 distinct; AS-3 delivered trial-grade (`?format=csv` discovery, 14 distinct); ST-\* honest no-fetch records; report `docs/report/report-0.2.4.md`; **addendum D37 built + executed 2026-09-14** (`as-source-probe`, migration 0010, 385 offline tests; all 30 AS sources, one finding each; summary published) |
+| v0.2.4 (management CSV sample) | IMPLEMENTATION | built 2026-09-14 (PHASE01–04 done; 364 offline tests; CEO+ENG review HOLD SCOPE 1A+amendments folded); **real run executed 2026-09-14** — AS-2 delivered 100/17,013 distinct; AS-3 delivered (`?format=csv` discovery); ST-\* honest no-fetch records; report `docs/report/report-0.2.4.md`; **addendum D37 built + executed 2026-09-14** (`as-source-probe`, migration 0010; all 30 AS sources, one finding each; summary published); **addendum D38 built + executed 2026-09-14** (PHASE07; 393 offline tests; audit clean) — AS-3 record corrected (the "trial-grade 14 distinct" was a tool defect: scope filter + dedupe keys; true pool 2,424 rows / 2,322 distinct / 53 licences; sample re-rendered from the archived export via the new `--from-store`), estimates carry archived landing-page evidence, as-probe summaries re-render offline (`--rebuild-summary`), **data_sources.csv** introduced behind the confirmed-bulk gate (DS-1 AS-2, DS-2 AS-3 only); consultant source-expansion + MSE handover filed as next-unit strategy INPUT (not adopted) |
 
 ## Documents
 

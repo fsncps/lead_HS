@@ -354,3 +354,65 @@ def test_cli_end_to_end_offline(db_path, cli_state, reuse_state):
     assert any(p.startswith("as-probe.") and p.endswith(".AS-6.csv") for p in files)
     assert "as-source-probe.summary.md" in files
     _lead(db_path, "db", "audit", expect=0)
+
+
+# --- D38: evidence archiving, relabel, offline rebuild ------------------------
+
+
+def test_estimate_archives_landing_evidence(conn, store, make_fetcher, tmp_path, site):
+    """The estimate's landing page is archived (D38) and the finding
+    cites its doc_hash — no URL-only provenance."""
+    _load(conn, _as_register(tmp_path, site))
+    out = tmp_path / "out"
+    code, entries = as_probe.sample(conn, store, make_fetcher(), _sources(conn, ["AS-5"]),
+                                    out_dir=str(out), ts="20260914-150000")
+    assert code == 0
+    e = [x for x in entries if x["source"] == "AS-5"][0]
+    assert e["status"] == "records"
+    doc = conn.execute(
+        "SELECT raw_hash, content_type FROM document WHERE source_id='AS-5' "
+        "AND content_type LIKE '%html%' ORDER BY id DESC LIMIT 1").fetchone()
+    assert doc and doc[1].startswith("text/html")
+    f = _finding(conn, e["run_key"], "as_probe_records")
+    assert f[1] and f"doc_hash={doc[0]}" in f[1]
+
+
+def test_reuse_records_relabel_with_pool(conn, store, make_fetcher, tmp_path, site):
+    """D38 relabel: the reuse entry reads 'N rows (sample of P distinct
+    register products)' — P from the newest csv_sample_rows finding."""
+    from leadhs.probe import csv_sample as csvsample
+    port = site.rsplit(":", 1)[1]
+    reg = _reg([f"AS-2,AS,ECAT,http://127.0.0.40:{port}/,download,,verified,1,fixture,http://127.0.0.40:{port}/ecat-pool.csv,csv"], tmp_path)
+    _load(conn, reg)
+    out_csv = tmp_path / "csv"
+    code, _ = csvsample.sample(conn, store, make_fetcher(), _sources(conn, ["AS-2"]),
+                               n=100, seed=42, out_dir=str(out_csv), ts="20260914-150001")
+    assert code == 0
+    out = tmp_path / "out"
+    code2, entries = as_probe.sample(conn, store, make_fetcher(), _sources(conn, ["AS-2"]),
+                                     out_dir=str(out), ts="20260914-150002", reuse_dir=str(out_csv))
+    assert code2 == 0
+    e = entries[0]
+    assert e["status"] == "delivered" and e["gets"] == 0
+    # the fixture pool is 10 distinct items (clamped draw of 10 rows)
+    assert e["records"] == "10 rows (sample of 10 distinct register products)"
+
+
+def test_rebuild_summary_from_findings(conn, store, make_fetcher, tmp_path, site):
+    """rebuild_summary re-derives the entries from the latest
+    as_source_probe run per source — statuses and key fields match the
+    live run; zero network."""
+    _load(conn, _as_register(tmp_path, site))
+    out = tmp_path / "out"
+    code, entries = as_probe.sample(conn, store, make_fetcher(), _sources(conn),
+                                    out_dir=str(out), ts="20260914-150003")
+    assert code == 0
+    entries2 = as_probe.rebuild_summary(conn, out, ts="20260914-150004")
+    assert [e["source"] for e in entries2] == [e["source"] for e in entries]
+    for a, b in zip(entries, entries2):
+        assert b["status"] == a["status"], (a, b)
+        if a["status"] in ("records", "unavailable", "assoc"):
+            assert b["records"] == a["records"], (a["source"], a, b)
+            assert b["instead"] == a["instead"], (a["source"], a, b)
+    assert (out / "as-source-probe.summary.20260914-150004.md").exists()
+    assert (out / "as-source-probe.summary.md").exists()

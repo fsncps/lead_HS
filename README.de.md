@@ -102,11 +102,14 @@ verschweigt einen Fehlschlag nie.
   Artikel; Identifikatoren: Lizenznummer (100%), Unternehmen + USt
   (86%), EAN13/GTIN (17% der Stichprobe). Kreuz-ID: EAN ↔
   Handelskataloge (der v0.3-Aufbaupfad) steht auf echten Spalten.
-- **AS-3 — Nordischer Schwan: geliefert, Versuchsstufe, 14
-  unterscheidbare Produkte.** Die begrenzte Suche fand einen echten
-  Export — die Such-URL liefert ein CSV unter `?format=csv` (9,8 MB).
-  Qualitätsvorbehalte im Manifest vermerkt (fehlende Komma-Zitate,
-  gemischte EU Ecolabel-/Schwan-Lizenzen); der
+- **AS-3 — Nordischer Schwan: geliefert, 100 von 2'322
+  unterscheidbaren Farbpositionen.** Die begrenzte Suche fand einen
+  echten Export — die Such-URL liefert ein Semikolon-CSV unter
+  `?format=csv` (9,8 MB; Farbpool 2'424 Zeilen, 53 Lizenzen, 20
+  Lizenznehmer). (Der erste Lauf mit «Versuchsstufe, 14
+  unterscheidbare» war ein Werkzeugdefekt — ein laxer Scope-Filter
+  und ein ECAT-förmiger Dedupe-Schlüssel — korrigiert und aus dem
+  archivierten Export neu gerendert, D38.) Der
   Ecolabel-Überlappungs-Pilot ist über Name + Lizenzhalter
   verknüpfbar — der Export trägt sogar EU-Ecolabel-Lizenznummern.
 - **ST-1 / ST-3 / ST-6 / ST-7: keine Produktzeilen publiziert** —
@@ -128,14 +131,26 @@ AS-Klassen-Quelle, alle 30 (`leadhs probe as-source-probe`):
 Produktzeilen-CSV wo erhältlich, sonst exakte oder geschätzte
 Datensatzzahl mit Provenienz, sonst Warumnicht + was stattdessen
 verfügbar ist. Die beiden Ökolabel-Kataloge wiederverwenden die
-csv-sample-Zeilen (AS-2: 100, AS-3: 14); Blue Angel (≈70 000) und
-environdec (≈2 025) bieten nur Seitenzählungen; die übrigen fünf
+csv-sample-Zeilen (AS-2: 100 von 17'013 distinct; AS-3: 100 von
+2'322 distinct); Blue Angel (≈70'000, registerseits behauptet, alle
+Kategorien) und environdec (≈2'025) bieten nur Seitenzählungen —
+seit D38 mit archivierter Landingpage als Beleg; die übrigen fünf
 Register (INIES, IBU, NF Env, natureplus, EPD Norway) haben keine
-Bulk-Oberfläche — Einzeldokumente hinter Such-UIs, Grund vermerkt. Die
-21 Branchenverbände sind Mitgliederverzeichnisse, keine
+Bulk-Oberfläche — Einzeldokumente hinter Such-UIs, Grund vermerkt.
+Die 21 Branchenverbände sind Mitgliederverzeichnisse, keine
 Produktregister (18 live, 3 zur Probezeit nicht erreichbar).
-Zusammenfassung:
-[as-source-probe.summary.20260914-125322.md](docs/report/as-source-probe.summary.20260914-125322.md) (EN).
+Zusammenfassung (D38-korrigierter Re-Publish):
+[as-source-probe.summary.20260914-165555.md](docs/report/as-source-probe.summary.20260914-165555.md) (EN).
+
+**Addendum — data_sources.csv (2026-09-14, D38).** Eine kuratierte
+Liste der Quellen mit **bestätigten Bulk-Produktdaten** samt
+Identitäts-Tupel (Hersteller + Produkt-Identifikator) — zunächst
+genau AS-2 und AS-3, die einzigen Quellen, die die Schwelle derzeit
+erfüllen. Sie wächst nur, wenn künftige Sondierungen die Schwelle
+bestätigen; gesperrte nationale Register und unsondierte Kandidaten
+bleiben in
+[docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md)
+dokumentiert.
 
 ## Frühere Einheiten
 

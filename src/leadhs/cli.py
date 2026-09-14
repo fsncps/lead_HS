@@ -415,8 +415,10 @@ def report(ctx, source_id, fmt, out_path, staging_db):
 @click.option("--source", "source_ids", multiple=True, help="registry ID (default: the six-registry D36 target set)")
 @click.option("--out-dir", "out_dir", default="data/report", show_default=True, help="CSV + manifest destination (D22 routing)")
 @click.option("--dry-run", is_flag=True, help="plan requests; zero network, zero files")
+@click.option("--from-store", is_flag=True,
+              help="re-render from the newest archived exports in the raw store (D38; zero network)")
 @click.pass_context
-def download_csv_sample(ctx, n, seed, source_ids, out_dir, dry_run):
+def download_csv_sample(ctx, n, seed, source_ids, out_dir, dry_run, from_store):
     """Per-registry product-row samples + manifest for management review (v0.2.4, D36)."""
     from . import db as dbmod, fetch as fetchmod, store as storemod
     from . import source as sourcemod
@@ -437,16 +439,23 @@ def download_csv_sample(ctx, n, seed, source_ids, out_dir, dry_run):
             source_rows[sid] = source
         if not dry_run:
             os.makedirs(out_dir, exist_ok=True)
+        if from_store:
+            fetcher = csvsample.fetcher_from_store(conn, storemod.RawStore(rt.store_root()))
+        else:
+            fetcher = fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger)
         exit_code, entries = csvsample.sample(
             conn, storemod.RawStore(rt.store_root()),
-            fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger),
+            fetcher,
             source_rows, n=n, seed=seed, out_dir=out_dir, dry_run=dry_run, logger=rt.logger,
+            from_store=from_store,
         )
     finally:
         conn.close()
     if dry_run:
         click.echo("dry-run: requests planned; zero network, zero files")
     else:
+        if from_store:
+            click.echo("re-render from archived exports (zero network)")
         for e in entries:
             detail = e["file"] if e["status"] == "delivered" else (e["reason"] or "")
             click.echo(f"{e['source']:<6} {e['status']:<12} {'' if e['rows'] is None else str(e['rows']):>4}  {detail}")
@@ -461,8 +470,10 @@ def download_csv_sample(ctx, n, seed, source_ids, out_dir, dry_run):
 @click.option("--reuse-dir", "reuse_dir", default="data/report", show_default=True,
               help="where to look for same-day csv-sample artifacts (AS-2/AS-3 reuse)")
 @click.option("--dry-run", is_flag=True, help="plan requests; zero network, zero files")
+@click.option("--rebuild-summary", "rebuild", is_flag=True,
+              help="re-render the summary from DB findings (D38; zero network)")
 @click.pass_context
-def as_source_probe(ctx, out_dir, source_ids, reuse_dir, dry_run):
+def as_source_probe(ctx, out_dir, source_ids, reuse_dir, dry_run, rebuild):
     """One finding per AS source (v0.2.4 addendum, D37): product-row CSV
 where obtainable, else why not + what is available instead, plus
 exact-or-estimated record counts; associations get member-list findings."""
@@ -474,6 +485,11 @@ exact-or-estimated record counts; associations get member-list findings."""
     _ensure_initialized(ctx, rt)
     conn = dbmod.connect(rt.db_path)
     try:
+        if rebuild:
+            os.makedirs(out_dir, exist_ok=True)
+            entries = as_probe.rebuild_summary(conn, out_dir)
+            click.echo(f"summary rebuilt from findings (zero network): {out_dir}/as-source-probe.summary.md")
+            ctx.exit(0)
         if source_ids:
             wanted = list(source_ids)
         else:

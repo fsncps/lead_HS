@@ -295,6 +295,56 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/csv")
             self.end_headers()
             self.wfile.write(body)
+        elif p == "/ns-pool.csv":
+            # D38 fixture: Nordic-Swan-shaped export (semicolon, the
+            # real header). 20 distinct paint items (10 NS + 10 EU
+            # Ecolabel rows) x 3 duplicate rows + out-of-scope rows a
+            # whole-record substring filter would wrongly admit
+            # ("Black" contains "lack", "painting" contains "paint") —
+            # the structured product-group filter must drop them.
+            hdr = ("Product;License number;Ecolabel;Category;Product group;"
+                   "Criteria generation;Brand;Licensee;Address;City")
+            lines = [hdr]
+            for i in range(10):
+                for _ in range(3):
+                    lines.append(
+                        f"NS Paint {i:02d};4096 00{i:02d};Nordic Swan Ecolabel;"
+                        f"Indoor paints.;096 Paints and varnishes;4;Teknos;"
+                        f"Teknos Oy;Takkatie 3;Helsinki"
+                    )
+                    lines.append(
+                        f"EU Paint {i:02d};DK/044/00{i};EU Ecolabel;"
+                        f"Indoor paints (EU-Ecolabel);"
+                        f"EU44 Decorative paints, varnishes, and related products;"
+                        f"1;PPG;PPG Coatings A/S;Gladsaxevej 300;Søborg"
+                    )
+            lines.append(
+                "TURBON Toner Black, (TN 135C);3008 0046 (308046);"
+                "Nordic Swan Ecolabel;Brother;"
+                "008 Refurbished OEM Toner and Ink Cartridges;5;Turbon;"
+                "Turbon SRL;Jud.Calarasi;Oltenita"
+            )
+            lines.append(
+                "ABENA Puri Line Grundrent;5026 0015;Nordic Swan Ecolabel;"
+                "Interior cleaning agent before painting;026 Cleaning products;"
+                "6;ABENA;Novadan ApS;Platinvej 21;Kolding"
+            )
+            body = ("\n".join(lines) + "\n").encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/ns-furniture.csv":
+            hdr = ("Product;License number;Ecolabel;Category;Product group;"
+                   "Criteria generation;Brand;Licensee;Address;City")
+            lines = [hdr,
+                     "Mood Learn Chair;DK/049/007;EU Ecolabel;Chair (EU Ecolabel);"
+                     "EU49 Furniture;1;Mood;Mood A/S;Islevdalvej 151;Rødovre"]
+            body = ("\n".join(lines) + "\n").encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
         elif p == "/ecat.html":
             self._html(b"<html><body>landing page</body></html>")
         elif p == "/sitemap.xml":

@@ -30,12 +30,15 @@ manifest is never silent about a failure).
 copies; working renders per run live in `data/report/`, gitignored):
 [csv-sample.manifest.md](csv-sample.manifest.md)
 (timestamped copies `csv-sample.manifest.20260914-111921.*`, samples
-`csv-sample.20260914-111921.AS-2.csv` / `.AS-3.csv`).
+`csv-sample.20260914-111921.AS-2.csv` / `.AS-3.csv`; **D38 re-render**
+from the archived export, run `20260914-164304`: samples
+`csv-sample.20260914-164304.AS-2.csv` / `.AS-3.csv`, regenerated
+manifest).
 
 | Registry | Outcome | Rows | Identifier columns observed |
 |---|---|---|---|
 | AS-2 — EU Ecolabel (ECAT) | **delivered** | 100 of 17,013 distinct (17,838 in-scope rows) | `licence_number` (100%), `vat_number` (86%), `code_value` EAN13 (17%), plus company + country |
-| AS-3 — Nordic Swan | **delivered** (trial-grade) | 14 distinct (2,283 filter hits) | none in the header beyond the ecolabel licence number |
+| AS-3 — Nordic Swan | **delivered** (D38-corrected: 100 of 2,322 distinct; the "14 distinct" first record was a tool defect) | 100 (re-rendered sample) | `license number` (100%), name + licensee; no EAN column |
 | ST-1 — ECHA PCN | unavailable | 0 | — restricted to member-state appointed bodies (login/eDelivery) |
 | ST-3 — Eurostat SBS | unavailable | 0 | — enterprise statistics (NACE 20.30), not a product registry |
 | ST-6 — Danish AT register | unavailable | 0 | — aggregates only, embedded Power BI, no download URL |
@@ -64,18 +67,22 @@ holder ↔ other certified-product registers.
 
 **AS-3 / Nordic Swan** — the bounded discovery (≤5 polite GETs on the
 pinned search surface) **found a real export**: the search URL itself
-serves a CSV at `?format=csv` (9.8 MB, text/csv). The paint filter
-(group 096 / EU44 text) matched 2,283 rows; deduplication collapsed
-them to **14 distinct product items** — drawn in full (shortfall
-flagged in the manifest). The quality is **trial-grade** and the
-manifest says so: several rows suffer field misalignment from
-unquoted commas inside product names, the export mixes ecolabel
-schemes (EU Ecolabel DK/044 licences alongside Nordic Swan ones), and
-the header carries no dedicated identifier column beyond the ecolabel
-licence number. Reconciliation (pin the real export mechanics, repair
-the parsing) stays in TODOS.md — the discovery answer to the pilot
-question (EU Ecolabel ∩ Nordic Swan overlap) is now concrete: the
-overlap is joinable at least by **name + licence holder**.
+serves a CSV at `?format=csv` (9.8 MB, text/csv). **Corrected
+2026-09-14 (D38):** the first run's "trial-grade, 14 distinct" record
+was a **tool defect, not a data defect** — the export (semicolon-
+delimited, 52,539 rows) parsed correctly; a loose substring scope
+filter ("lack" inside "Black") and an ECAT-shaped dedupe key (which
+collapsed the pool to 14 distinct Category values) produced the wrong
+figures. After the fix, the paint pool (groups 096 + EU44) is
+**2,424 rows / 2,322 distinct product items across 53 licences from
+20 licensees** (Nordic Swan 41 licences incl. 4 dual-listed, EU
+Ecolabel 16 incl. 4 dual); the re-rendered sample (n=100, seed=42,
+same archived document) is fully in-scope. The export mixes EU
+Ecolabel and Nordic Swan licences — the source's data model, joinable
+by **licence number** + name/licensee. The discovery answer to the
+pilot question (EU Ecolabel ∩ Nordic Swan overlap) stands, now on
+clean numbers: the overlap is joinable at least by **name + licence
+holder**, and the export carries EU Ecolabel licence numbers directly.
 
 **ST-1 / ST-3 / ST-6 / ST-7** — no fetch at all (zero network, method
 `manual`): each record cites the verified structural reason with URL
@@ -90,7 +97,8 @@ identifier columns.
   holder + VAT. The v0.3 seeding path (ECAT EAN ↔ retail catalogues)
   stands on real columns.
 - **Pilot-feasible (AS-2 ↔ AS-3):** name + licence holder; the AS-3
-  export even carries EU Ecolabel licence numbers directly.
+  export even carries EU Ecolabel licence numbers directly (and vice
+  versa — the mixed-scheme export is joinable by licence number).
 - **Impossible today (ST-1/3/6/7):** no product rows are published —
   no join key exists.
 
@@ -111,11 +119,60 @@ manifest are the review artifacts.
 
 ## Open items carried
 
-- AS-3 reconciliation (TODOS.md): pin the `?format=csv` mechanics,
-  repair the ragged-comma parsing, split the mixed-scheme export.
+- ~~AS-3 reconciliation (TODOS.md): pin the `?format=csv` mechanics,
+  repair the ragged-comma parsing, split the mixed-scheme export.~~
+  **Closed (D38):** the mechanics are pinned (GET `?format=csv`,
+  semicolon CSV); the "ragged commas" were a tool defect (scope
+  filter + dedupe keys), fixed and re-rendered. The mixed-scheme
+  export stays a documented data-model fact (licence-number join).
 - The AS-2 sample's EAN coverage (17%) is a sample statistic, not the
   register's rate — the staged full register (17,838 rows) is the
   right base for the v0.3 seeding-path estimate.
+
+## Addendum — D38 (2026-09-14): corrections, evidence archiving, data_sources.csv
+
+A review of the raw store + the AS-probe report surfaced three
+defects, all fixed offline (zero network):
+
+1. **AS-3 numbers corrected** (see the AS-3 section above): the paint
+   pool is 2,424 rows / 2,322 distinct items / 53 licences / 20
+   licensees; the sample was re-rendered from the archived export
+   (n=100, seed=42, same `raw_hash`). `--from-store` re-renders
+   samples from the raw store without refetching.
+2. **Estimates carry archived evidence:** the AS-probe now stores the
+   landing page (ext `html`) and cites its `doc_hash` whenever an
+   estimate is derived from page text (the AS-4 ≈70,000 number —
+   register-claimed, all ~170 categories, not paints — previously had
+   a URL + date only). AS-probe summaries re-render offline via
+   `--rebuild-summary`; reuse entries now read "100 rows (sample of
+   17,013 distinct register products)" so the sample size never reads
+   as the register size.
+3. **data_sources.csv** (`src/leadhs/dict/data_sources.csv`, review
+   artifact — never loaded by `source load`): lists only sources
+   where a probe **confirmed bulk data + manufacturer + product
+   ident-nr** (identity tuple) with in-scope membership derivable from
+   the category filter. Initial content: **DS-1 (AS-2)** and **DS-2
+   (AS-3)** — the only two sources on record meeting the gate
+   (selection-bias caveat recorded: ecolabel-certified stratum,
+   identity source, not a lead-prevalence frame). The file grows only
+   as future probes confirm the gate; gated registers (KemI, Danish
+   AT, PCN, KemiDigi, Norwegian P-no) and unprobed candidates stay
+   out — they remain in DATA_SOURCE.md / strategy documentation.
+4. **AS-2 size reconciliation (provenance note):** the JRC final
+   Ecolabel report (2026) counts **36,960 certified products**
+   (03/2025, **all** product groups); the staged ECAT export carries
+   only the **in-scope** group-044 paint rows (17,838 rows / 17,013
+   distinct). The two numbers differ by scope, not by error — the
+   export publishes no group-independent total, so the JRC figure
+   stays the citation for the register total, and 17,013 is the
+   in-scope pool the sample draws from. The summary's reuse line
+   reads accordingly: "100 rows (sample of 17,013 distinct register
+   products)".
+
+Also filed: the consultant source-expansion + capture-recapture
+handover (2026-09-14) as next-unit strategy input
+(`10_STRATEGY/INPUT-source-expansion-MSE.md`; verbatim copy under
+`10_STRATEGY/_inputs/`) — not adopted policy in v0.2.4.
 
 ## Addendum — the AS-class source probe (D37, 2026-09-14)
 
@@ -132,11 +189,14 @@ artifacts for AS-2/AS-3 are reused, not refetched.
 `GO=1 make as-probe` · run `20260914-125322` · exit 0 · summary
 (published copies; working renders in `data/report/AS-source-probe/`,
 gitignored): [as-source-probe.summary.20260914-125322.md](as-source-probe.summary.20260914-125322.md)
-/ `.csv`.
+/ `.csv` — **superseded for AS-2/AS-3 by the D38-corrected rebuild**
+[as-source-probe.summary.20260914-165555.md](as-source-probe.summary.20260914-165555.md)
+/ `.csv` (re-rendered offline from the evidence DB; the D37 snapshot
+stays for the publish history).
 
 | Outcome | Sources | Detail |
 |---|---|---|
-| **delivered** (product-row CSV) | 2 | AS-2 ECAT (100 rows, reuse), AS-3 Nordic Swan (14 rows, reuse) |
+| **delivered** (product-row CSV) | 2 | AS-2 ECAT (100 rows, reuse), AS-3 Nordic Swan (100 rows, reuse; D38-corrected sample) |
 | **record count, estimated** | 2 | AS-4 Blue Angel ≈70,000 products (page text); AS-7 environdec ≈2,025 EPDs (page text) — basis + access date recorded |
 | **unavailable, why-not recorded** | 5 | AS-5 INIES (auth-gated), AS-6 IBU, AS-8 NF Env (PDF lists instead), AS-9 natureplus, AS-10 EPD Norway — no export endpoint after ≤5 bounded GETs, count not visible |
 | **association, live** | 18 | no product register by design; member-list pointer recorded (members visible on AS-15 FIPEC, AS-16 VdL) |

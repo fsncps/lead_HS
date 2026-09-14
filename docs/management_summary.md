@@ -293,16 +293,22 @@ Einheitsbericht: `docs/report/report-0.2.4.md` (EN).
 
 Ergänzend (14.09.2026): Quellenprobe über alle 30 Quellen der Klasse
 «Verbände & Register» — je Quelle ein Befund. Die beiden
-Ökolabel-Kataloge liefern Produktzeilen (AS-2: 100, AS-3: 14);
-Blue Angel (≈70 000) und environdec (≈2 025) nur Seitenzählungen;
+Ökolabel-Kataloge liefern Produktzeilen (AS-2: 100 von 17'013
+distinct; AS-3: 100 von 2'322 distinct); Blue Angel (≈70 000,
+registerseits behauptet, alle Kategorien) und environdec (≈2 025)
+nur Seitenzählungen (seit der Korrektur D38 mit archivierter
+Landingpage als Beleg);
 die übrigen fünf Register keine Bulk-Oberfläche (Einzeldokumente
 hinter Such-UIs; Grund vermerkt). Die 21 Branchenverbände sind
-Mitgliederverzeichnisse, keine Produktregister.
+Mitgliederverzeichnisse, keine Produktregister. Eine kuratierte
+Liste `data_sources.csv` führt die Quellen mit bestätigten
+Bulk-Produktdaten samt Identitäts-Tupel — derzeit genau die beiden
+Ökolabel-Kataloge.
 
 Projektstand (14.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
 jeden Befund nachvollziehbar hält — ist in neun Ausbaustufen gebaut und
-getestet (385 automatisierte Offline-Tests): Evidenzdatenbank,
+getestet (393 automatisierte Offline-Tests): Evidenzdatenbank,
 Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
 Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe),
 die Datenlandschaft-Karte mit den drei Leitgrössen, die
@@ -640,17 +646,24 @@ récupération, hachage du document, seed). Rapport d'unité :
 
 En complément (14.09.2026) : sondage des sources sur les 30 sources de
 la classe « associations & registres » — un constat par source. Les
-deux catalogues d'écolabels livrent des lignes produit (AS-2 : 100,
-AS-3 : 14) ; Blue Angel (≈70 000) et environdec (≈2 025) seulement des
-comptes en texte de page ; les cinq autres registres n'ont pas de
+deux catalogues d'écolabels livrent des lignes produit (AS-2 : 100 sur
+17'013 distincts ; AS-3 : 100 sur 2'322 distincts) ; Blue Angel
+(≈70 000, revendiqué par le registre, toutes catégories) et
+environdec (≈2 025) seulement des
+comptes en texte de page (depuis la correction D38 avec la page
+d'atterrissage archivée comme preuve) ; les cinq autres registres
+n'ont pas de
 surface de masse (documents à l'unité derrière des interfaces de
 recherche ; raison consignée). Les 21 associations professionnelles
-sont des annuaires de membres, pas des registres de produits.
+sont des annuaires de membres, pas des registres de produits. Une
+liste curatée `data_sources.csv` répertorie les sources à données
+produits de masse confirmées avec le tuple d'identité — actuellement
+exactement les deux catalogues d'écolabels.
 
 État du projet (14.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
 et rend chaque constat traçable — est construit et testé en neuf étapes
-(385 tests automatisés hors ligne) : base de preuves, registre des
+(393 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
 attente d'un feu vert de collecte), carte du paysage des données avec

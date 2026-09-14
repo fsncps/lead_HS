@@ -181,7 +181,25 @@ date), else why-not + what-is-instead; associations 1 liveness GET.
 Executed 2026-09-14 (exit 0): delivered AS-2/AS-3 (reuse), estimated
 AS-4 ≈70k / AS-7 ≈2k, unavailable AS-5/6/8/9/10, 18 associations live
 + 3 unreachable. Summary published in `docs/report/`; detail:
-10_STRATEGY/v0.2.4.md.
+10_STRATEGY/v0.2.4.md. **D38 (2026-09-14):** estimates carry the
+archived landing page as evidence (`doc_hash` in the finding); the
+AS-3 record corrected — the "trial-grade 14 distinct" was a tool
+defect (scope filter + dedupe keys), true paint pool 2,424 rows /
+2,322 distinct / 53 licences / 20 licensees; `--from-store` /
+`--rebuild-summary` re-render offline from the raw store.
+
+**data_sources.csv (v0.2.4 addendum, D38):** curated list at
+`src/leadhs/dict/data_sources.csv` (review artifact, never loaded by
+`source load`): only sources with **probe-confirmed bulk data**
+carrying the identity tuple (manufacturer + product ident-nr) and
+in-scope membership derivable from the category filter. Initial
+content: AS-2 (88,920 rows; 17,838 in-scope / 17,013 distinct) and
+AS-3 (52,539 rows; 2,424 in-scope / 2,322 distinct). Gated registers
+(KemI, Danish AT, PCN, KemiDigi, Norwegian P-no) and unprobed
+candidates stay documented here and in the strategy files — they
+never enter data_sources.csv on claims. Next-unit probe queue
+(KemiDigi, BASTA, WINGIS, INIES, eBVD, Quick-FDS, PT21):
+10_STRATEGY/INPUT-source-expansion-MSE.md.
 
 ## Probing pass (unit v0.1.1)
 

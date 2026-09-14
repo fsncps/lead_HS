@@ -89,12 +89,15 @@ silent about a failure.
   (100%), company + VAT (86%), EAN13/GTIN (17% of the sample).
   Cross-ID: EAN ↔ retail catalogues (the v0.3 seeding path) stands on
   real columns.
-- **AS-3 — Nordic Swan: delivered, trial-grade, 14 distinct
-  products.** The bounded discovery found a real export — the search
-  URL serves a CSV at `?format=csv` (9.8 MB). Quality caveats flagged
-  in the manifest (unquoted commas, mixed EU Ecolabel/Nordic Swan
-  licences); the Ecolabel-overlap pilot is joinable by name + licence
-  holder — the export even carries EU Ecolabel licence numbers.
+- **AS-3 — Nordic Swan: delivered, 100 of 2,322 distinct paint
+  items.** The bounded discovery found a real export — the search
+  URL serves a semicolon CSV at `?format=csv` (9.8 MB; paint pool
+  2,424 rows, 53 licences, 20 licensees). (The first run's
+  "trial-grade, 14 distinct" record was a tool defect — a loose
+  scope filter and an ECAT-shaped dedupe key — corrected and
+  re-rendered from the archived export the same day, D38.) The
+  Ecolabel-overlap pilot is joinable by name + licence holder — the
+  export even carries EU Ecolabel licence numbers.
 - **ST-1 / ST-3 / ST-6 / ST-7: no product rows published** — zero
   network, each record cites the structural reason (PCN
   authorities-only; SBS enterprise stats; Danish AT aggregates-only;
@@ -113,14 +116,24 @@ per run in `data/report/`).
 AS-class source, all 30 of them (`leadhs probe as-source-probe`):
 product-row CSV where obtainable, else an exact-or-estimated record
 count with provenance, else why-not + what is available instead. The
-two ecolabel catalogues reuse the csv-sample rows (AS-2: 100, AS-3:
-14); Blue Angel (≈70,000) and environdec (≈2,025) expose only
-page-text counts; the other five registries (INIES, IBU, NF Env,
-natureplus, EPD Norway) have no bulk surface — per-product documents
-behind search UIs, reason recorded. The 21 trade associations are
-member directories, not product registers (18 live, 3 unreachable at
-probe time). Summary:
-[as-source-probe.summary.20260914-125322.md](docs/report/as-source-probe.summary.20260914-125322.md).
+two ecolabel catalogues reuse the csv-sample rows (AS-2: 100 of
+17,013 distinct; AS-3: 100 of 2,322 distinct); Blue Angel (≈70,000
+register-claimed, all categories) and environdec (≈2,025) expose only
+page-text counts — now with the landing page archived as evidence;
+the other five registries (INIES, IBU, NF Env, natureplus, EPD
+Norway) have no bulk surface — per-product documents behind search
+UIs, reason recorded. The 21 trade associations are member
+directories, not product registers (18 live, 3 unreachable at probe
+time). Summary (D38-corrected republish):
+[as-source-probe.summary.20260914-165555.md](docs/report/as-source-probe.summary.20260914-165555.md).
+
+**Addendum — data_sources.csv (2026-09-14, D38).** A curated list of
+sources with **confirmed bulk product data** carrying the identity
+tuple (manufacturer + product ident) — initially exactly AS-2 and
+AS-3, the only two sources on record meeting the gate. It grows only
+as future probes confirm further sources; gated national registers
+and unprobed candidates stay documented in
+[docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
 
 ## Previous units
 

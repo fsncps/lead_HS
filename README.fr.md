@@ -106,14 +106,17 @@ taire jamais un échec.
   TVA (86 %), EAN13/GTIN (17 % de l'échantillon). Recoupement : EAN ↔
   catalogues de distribution (le chemin d'amorçage v0.3) repose sur
   de vraies colonnes.
-- **AS-3 — Cygne nordique : livré, niveau d'essai, 14 produits
-  distincts.** La découverte bornée a trouvé un vrai export — l'URL
-  de recherche sert un CSV via `?format=csv` (9,8 Mo). Réserves de
-  qualité consignées dans le manifeste (virgules non citées entre
-  guillemets, licences mixtes Écolabel européen/Cygne nordique) ; le
-  pilote de recouvrement des écolabels est joignable par nom +
-  titulaire de licence — l'export porte même des numéros de licence
-  Écolabel européen.
+- **AS-3 — Cygne nordique : livré, 100 articles sur 2'322
+  produits de peinture distincts.** La découverte bornée a trouvé un
+  vrai export — l'URL de recherche sert un CSV à point-virgule via
+  `?format=csv` (9,8 Mo ; pool peinture 2'424 lignes, 53 licences,
+  20 titulaires). (Le premier enregistrement « niveau d'essai,
+  14 distincts » était un défaut d'outil — un filtre de périmètre
+  trop laxiste et une clé de dédoublonnage façonnée ECAT — corrigé et
+  re-rendu depuis l'export archivé le jour même, D38.) Le pilote de
+  recouvrement des écolabels est joignable par nom + titulaire de
+  licence — l'export porte même des numéros de licence Écolabel
+  européen.
 - **ST-1 / ST-3 / ST-6 / ST-7 : aucune ligne produit publiée** —
   réseau nul, chaque enregistrement cite la raison structurelle (PCN
   réservé aux autorités ; SBS statistiques d'entreprises ; AT danois
@@ -135,15 +138,26 @@ constat par source de classe AS, les 30 (`leadhs probe
 as-source-probe`) : CSV de lignes produit là où il est obtenable, sinon
 nombre d'enregistrements exact ou estimé avec provenance, sinon
 pourquoi-pas + ce qui est disponible à la place. Les deux catalogues
-d'écolabels réutilisent les lignes csv-sample (AS-2 : 100, AS-3 : 14) ;
-Blue Angel (≈70 000) et environdec (≈2 025) n'exposent que des comptes
-en texte de page ; les cinq autres registres (INIES, IBU, NF Env,
-natureplus, EPD Norway) n'ont pas de surface de masse — documents
-produit par produit derrière des interfaces de recherche, raison
-consignée. Les 21 associations professionnelles sont des annuaires de
-membres, pas des registres de produits (18 vivantes, 3 inaccessibles
-au moment de la sonde). Synthèse :
-[as-source-probe.summary.20260914-125322.md](docs/report/as-source-probe.summary.20260914-125322.md) (EN).
+d'écolabels réutilisent les lignes csv-sample (AS-2 : 100 sur 17'013
+distincts ; AS-3 : 100 sur 2'322 distincts) ; Blue Angel (≈70'000,
+revendiqué par le registre, toutes catégories) et environdec (≈2'025)
+n'exposent que des comptes en texte de page — depuis D38 avec la page
+d'atterrissage archivée comme preuve ; les cinq autres registres
+(INIES, IBU, NF Env, natureplus, EPD Norway) n'ont pas de surface de
+masse — documents produit par produit derrière des interfaces de
+recherche, raison consignée. Les 21 associations professionnelles sont
+des annuaires de membres, pas des registres de produits (18 vivantes,
+3 inaccessibles au moment de la sonde). Synthèse (re-publication corrigée D38) :
+[as-source-probe.summary.20260914-165555.md](docs/report/as-source-probe.summary.20260914-165555.md) (EN).
+
+**Addendum — data_sources.csv (2026-09-14, D38).** Une liste curatée
+des sources à **données produits de masse confirmées** portant le
+tuple d'identité (fabricant + identifiant produit) — initialement
+exactement AS-2 et AS-3, les deux seules sources du registre qui
+atteignent ce seuil. Elle ne s'allonge que lorsque des sondages
+futures le confirment ; les registres nationaux fermés et les
+candidats non sondés restent documentés dans
+[docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
 
 ## Unités antérieures
 

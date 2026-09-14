@@ -52,15 +52,17 @@ the strategy turn). Product data only (D27); recon-only (D31).
 | 04 | Makefile `sample-csv` + makefile test + full suite + audit + docs close-out | 02 | suite green; audit clean; docs current | **done 2026-09-14** (364 offline tests; version 0.2.4; guard/dry/exit-2-tolerance verified) |
 | 05 | Addendum (D37): migration 0010 + `probe/as_probe.py` + CLI `as-source-probe` + Makefile `as-probe` + tests + split guard | 04 | offline suite green incl. 18 as-probe tests; register split guard holds | **done 2026-09-14** (ENG-review SMALL CHANGE, 1A/2A/3A folded; 385 offline tests) |
 | 06 | Addendum (D37): dry-run + real run + publish + docs close-out | 05 | folder populated; summary published; docs current | **done 2026-09-14** (run 20260914-125322, all 30 AS sources, exit 0; summary published in `docs/report/`) |
+| 07 | Addendum (D38): AS-3 filter/dedupe fix + `--from-store` re-render + evidence archiving + `--rebuild-summary` + data_sources.csv + strategy input | 06 | published AS-3 record corrected; estimates archived; data_sources behind the gate; suite green | **done 2026-09-14** (393 offline tests; audit clean; re-render run 20260914-164304) |
 
 Statuses: all four phases **done 2026-09-14** (364 offline tests
 green, 2 net-deselected; `db audit` exit 0 on the CLI end-to-end
 flow; version 0.2.4). The real-network run executed same day
 (`GO=1 make sample-csv`, 11:19 UTC): AS-2 delivered 100 of 17,013
 distinct (header re-pinned, matches v0.2.3 staging); **AS-3
-delivered trial-grade** — the `?format=csv` discovery found a real
-9.8 MB export, 14 distinct items drawn, quality caveats flagged in
-the manifest; ST-1/3/6/7 honest no-fetch records; exit 0.
+delivered** — the `?format=csv` discovery found a real 9.8 MB
+export (initially read as 14 distinct items; **D38 corrected the
+record to 100 of 2,322 distinct** — the "14" was a tool defect);
+ST-1/3/6/7 honest no-fetch records; exit 0.
 Report: `docs/report/report-0.2.4.md`. The addendum (D37) executed
 the same day (`GO=1 make as-probe`, run 20260914-125322, exit 0):
 all 30 AS-class sources carry one finding each — delivered 2
