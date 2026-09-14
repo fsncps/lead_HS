@@ -105,6 +105,7 @@ no paid data sources, minimal cost.
 | v0.2.1 (source-level sounding-out of the expanded universe) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor; strategy `v0.2.1.md` stays DRAFT) |
 | v0.2.2 (the three-question funnel) | IMPLEMENTATION | built 2026-09-14 (PHASE01–07 done; 299 offline tests; real-network landscape run, report published — Q1 [85,840–343,360] modeled / Q2 17,170 floor / Q3 3,590; strategy `v0.2.2.md` stays DRAFT); Q1 superseded 2026-09-14 by v0.2.3 (kept for the publish history) |
 | v0.2.3 (pool estimate v2 — meta-benchmarking) | IMPLEMENTATION | built 2026-09-14 (PHASE01–05 done; 341 offline tests; verdict SKU class e / formulation class c, both confidence-withheld; adapters package, four primary extractions, report re-published with supersession banner; strategy `v0.2.3.md` stays DRAFT) |
+| v0.2.4 (management CSV sample) | IMPLEMENTATION | built 2026-09-14 (PHASE01–04 done; 364 offline tests; CEO+ENG review HOLD SCOPE 1A+amendments folded); **real run executed 2026-09-14** — AS-2 delivered 100/17,013 distinct; AS-3 delivered trial-grade (`?format=csv` discovery, 14 distinct); ST-\* honest no-fetch records; report `docs/report/report-0.2.4.md` |
 
 ## Documents
 

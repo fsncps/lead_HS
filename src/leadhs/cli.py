@@ -409,6 +409,51 @@ def report(ctx, source_id, fmt, out_path, staging_db):
         click.echo(output)
 
 
+@probe.command("download-csv-sample")
+@click.option("--n", "n", type=click.IntRange(min=1), default=100, show_default=True, help="sample size per registry")
+@click.option("--seed", "seed", type=int, default=42, show_default=True, help="seeded reproducible draw (recorded in run + CSV)")
+@click.option("--source", "source_ids", multiple=True, help="registry ID (default: the six-registry D36 target set)")
+@click.option("--out-dir", "out_dir", default="data/report", show_default=True, help="CSV + manifest destination (D22 routing)")
+@click.option("--dry-run", is_flag=True, help="plan requests; zero network, zero files")
+@click.pass_context
+def download_csv_sample(ctx, n, seed, source_ids, out_dir, dry_run):
+    """Per-registry product-row samples + manifest for management review (v0.2.4, D36)."""
+    from . import db as dbmod, fetch as fetchmod, store as storemod
+    from . import source as sourcemod
+    from .fetch import FetchConfig
+    from .probe import csv_sample as csvsample
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    wanted = list(source_ids) or list(csvsample.DEFAULT_SOURCES)
+    conn = dbmod.connect(rt.db_path)
+    try:
+        source_rows = {}
+        for sid in wanted:
+            source = sourcemod.get_source(conn, sid)
+            if source is None:
+                click.echo(f"error: unknown source {sid!r} (run `leadhs source load` first)", err=True)
+                ctx.exit(1)
+            source_rows[sid] = source
+        if not dry_run:
+            os.makedirs(out_dir, exist_ok=True)
+        exit_code, entries = csvsample.sample(
+            conn, storemod.RawStore(rt.store_root()),
+            fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger),
+            source_rows, n=n, seed=seed, out_dir=out_dir, dry_run=dry_run, logger=rt.logger,
+        )
+    finally:
+        conn.close()
+    if dry_run:
+        click.echo("dry-run: requests planned; zero network, zero files")
+    else:
+        for e in entries:
+            detail = e["file"] if e["status"] == "delivered" else (e["reason"] or "")
+            click.echo(f"{e['source']:<6} {e['status']:<12} {'' if e['rows'] is None else str(e['rows']):>4}  {detail}")
+        click.echo(f"manifest: {out_dir}/csv-sample.manifest.md")
+    ctx.exit(exit_code)
+
+
 cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)

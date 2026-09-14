@@ -72,9 +72,48 @@ documentation study and takes no position on the regulation itself.
 Switzerland enters the study only as this regulatory frame — the
 market under study is the EU's.
 
-## Current stage: pool estimate v2 (v0.2.3)
+## Current stage: the management CSV sample (v0.2.4)
 
-v0.2.3 replaces the single-model pool headline of v0.2.2 with a
+v0.2.4 asks the management question per large register: **what does a
+product row look like there** — which data fields come back per
+product item, which identifier columns exist, is cross-identification
+of individual products possible? Answered with real downloaded rows
+where a register publishes them (`leadhs probe download-csv-sample`,
+real run 2026-09-14, n=100 per registry, seed=42 — reproducible) and
+an honest, cited reason where it does not. The manifest is never
+silent about a failure.
+
+- **AS-2 — EU Ecolabel (ECAT): delivered, 100 of 17,013 distinct
+  products** (17,838 in-scope rows; export header re-pinned exactly as
+  staged in v0.2.3). 12 fields per item; identifiers: licence number
+  (100%), company + VAT (86%), EAN13/GTIN (17% of the sample).
+  Cross-ID: EAN ↔ retail catalogues (the v0.3 seeding path) stands on
+  real columns.
+- **AS-3 — Nordic Swan: delivered, trial-grade, 14 distinct
+  products.** The bounded discovery found a real export — the search
+  URL serves a CSV at `?format=csv` (9.8 MB). Quality caveats flagged
+  in the manifest (unquoted commas, mixed EU Ecolabel/Nordic Swan
+  licences); the Ecolabel-overlap pilot is joinable by name + licence
+  holder — the export even carries EU Ecolabel licence numbers.
+- **ST-1 / ST-3 / ST-6 / ST-7: no product rows published** — zero
+  network, each record cites the structural reason (PCN
+  authorities-only; SBS enterprise stats; Danish AT aggregates-only;
+  KemI product-level secrecy). Of the six large registers exactly two
+  publish product rows at all; only ECAT has per-item identifier
+  columns.
+
+Every sampled row carries full provenance (source, run key, retrieval
+date, document hash, seed, draw index). Unit report:
+[report-0.2.4.md](docs/report/report-0.2.4.md); the manifest and the
+samples are published in
+[docs/report/](docs/report/csv-sample.manifest.md) (working renders
+per run in `data/report/`).
+
+## Previous units
+
+### v0.2.3 — pool estimate v2: meta-benchmarking vote (2026-09-14)
+
+v0.2.3 replaced the single-model pool headline of v0.2.2 with a
 **meta-benchmarking vote**: seven independent benchmark quantities
 estimate the EU paint pool; each votes into one of five contiguous
 magnitude classes (a 20k–50k … e >300k), and a pinned rule converts
@@ -108,11 +147,9 @@ assumptions; the vote is fully visible either way.
   paths in the companion document
   [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md).
 
-Unit report: [report-0.2.3.md](docs/report/report-0.2.3.md);
+Details: [report-0.2.3.md](docs/report/report-0.2.3.md);
 machine-readable tables (benchmark vote, verdicts, all prior
 sections) in the [probe report](docs/report/probe-report.md).
-
-## Previous units
 
 ### v0.2.2 — the three-question funnel (2026-09-14)
 
@@ -231,7 +268,7 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.3 built) — phase tracking, exit gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.4 built) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -256,14 +293,15 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
 ## Status
 
-Tool units v0.1.1–v0.2.3 are built and tested (341 automated offline
+Tool units v0.1.1–v0.2.4 are built and tested (364 automated offline
 tests): evidence database, source register, source probing,
 per-source feasibility reports, counting machinery for catalogue walks
 (idle until a collection go-ahead), the data-landscape map with the
 three headline numbers, the source-level capability sounding-out of
 the official registers, the three-question funnel executed on the
-real network (2026-09-14), and the pool estimate v2 — the
-meta-benchmarking vote with a dual-level magnitude verdict
+real network (2026-09-14), the pool estimate v2 — the
+meta-benchmarking vote with a dual-level magnitude verdict — and the
+management CSV sample with per-registry product-row evidence
 (2026-09-14): benchmark engine, adapters package, four new primary
 extractions, report section with supersession banner — every number a
 query result or a dated extraction. The report is published under

@@ -6,6 +6,7 @@
 	sources-list setup probe-dry probe-single record report \
 	report-publish probe census recon probe-recon test smoke test-net \
 	probe-capability capability probe-landscape landscape \
+	sample-csv \
 	clean clobber frame sample acquire ingest parse analyze full
 .DEFAULT_GOAL := help
 
@@ -141,6 +142,13 @@ landscape: guard-landscape setup ## setup → waves → report → audit (GO=1)
 	@for w in $(WAVES); do $(LEADHS) probe run --wave $$w --budget $(BUDGET) --staging-db $(STAGING) || test $$? -eq 2; done
 	$(MAKE) report
 	$(MAKE) db-audit
+
+# v0.2.4 (D36): the management CSV sample — per-registry seeded product
+# samples + the generated manifest into $(REPORT_DIR). The M1-gated
+# `sample` stub below is a DIFFERENT thing and stays untouched.
+sample-csv: guard-sample-csv ## management CSV samples per registry (GO=1; N=, SEED= optional)
+	@mkdir -p $(REPORT_DIR)
+	$(LEADHS) probe download-csv-sample --out-dir $(REPORT_DIR) $(if $(N),--n $(N)) $(if $(SEED),--seed $(SEED)) || test $$? -eq 2
 
 test: ## offline suite (net/mdbtools markers deselected)
 	$(PYTHON) -m pytest

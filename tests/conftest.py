@@ -241,6 +241,22 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/csv")
             self.end_headers()
             self.wfile.write(body)
+        elif p == "/ecat-pool.csv":
+            # v0.2.4 sample fixture: 10 distinct paint products x 3
+            # duplicate rows each + 2 furniture rows — a pool with
+            # headroom (determinism/dedupe tests draw n=10 of 10 distinct
+            # items; the furniture rows exercise the group filter).
+            lines = ["product_or_service_name,company_name,group_name,code_value"]
+            for i in range(10):
+                for _ in range(3):
+                    lines.append(f"Paint {i:02d},Acme GmbH,Decorative paints,00760000{i:02d}")
+            lines.append("Office chair,Chairs Ltd,Furniture,42")
+            lines.append("Desk lamp,Chairs Ltd,Furniture,43")
+            body = ("\n".join(lines) + "\n").encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
         elif p == "/ecat.html":
             self._html(b"<html><body>landing page</body></html>")
         elif p == "/sitemap.xml":

@@ -71,6 +71,8 @@ to 20_DESIGN.
     leadhs source load|list|add          # seed register from repo CSV; manage
     leadhs probe run --source PE-1|--all # source census → probe_finding
     leadhs probe report                  # census summary + anchor candidates
+    leadhs probe download-csv-sample     # per-registry 100-row seeded CSV
+                                         # samples + manifest (v0.2.4, D36)
     leadhs acquire run --source PE-1     # rate-limited fetch → raw store
     leadhs ingest sightings --file …     # upsert products/sightings
     leadhs parse sds [--product ID|all]  # parse queue → findings

@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-12
+updated: 2026-09-14
 ---
 
 # Data sources — register, access, provenance
@@ -162,6 +162,16 @@ live and its producers_registered recorded; ST-3 (Eurostat SBS NACE
 `sources.csv`, mirrored to the `source` table (34 rows). Recon is a
 floor: sitemap_products counts only product-URL matches and is partial
 where an index/size cap or a non-`product` URL scheme applies.
+
+**Management CSV sample (v0.2.4, D36):** `leadhs probe
+download-csv-sample` draws, per registry, 100 random in-scope product
+rows with all available fields into CSVs + a manifest
+(`data/report/`; GO=1 make target `sample-csv`). Only ECAT publishes
+product rows publicly; PCN (authority-only), the Swedish Products
+Register (secrecy-protected), the Danish Produktregistret
+(aggregates-only) and SBS (enterprise-level) get honest
+no-product-rows records — the manifest is itself the data-landscape
+demonstration. Detail: 10_STRATEGY/v0.2.4.md.
 
 ## Probing pass (unit v0.1.1)
 

@@ -84,7 +84,48 @@ Dokumentstudie und bezieht keine Position zur Regelung selbst. Die
 Schweiz kommt in der Studie nur als dieser regulatorische Rahmen vor —
 untersuchter Markt ist der EU-Markt.
 
-## Aktueller Stand: Pool-Schätzung v2 (v0.2.3)
+## Aktueller Stand: die Verwaltungs-CSV-Stichprobe (v0.2.4)
+
+Die Einheit v0.2.4 stellt pro grosser Registerdatenbank die
+Verwaltungsfrage: **wie sieht eine Produktzeile dort aus** — welche
+Datenfelder kommen pro Produkt zurück, welche Identifikator-Spalten
+existieren, ist die Kreuzidentifikation einzelner Produkte möglich?
+Beantwortet mit echt geladenen Zeilen, wo ein Register welche
+publiziert (`leadhs probe download-csv-sample`; echter Lauf
+14.09.2026, n=100 pro Register, seed=42 — reproduzierbar) und mit
+einer ehrlichen, belegten Begründung, wo nicht. Das Manifest
+verschweigt einen Fehlschlag nie.
+
+- **AS-2 — EU Ecolabel (ECAT): geliefert, 100 von 17'013
+  unterscheidbaren Produkten** (17'838 In-Scope-Zeilen;
+  Export-Header exakt wie in v0.2.3 gestuft re-gepinnt). 12 Felder je
+  Artikel; Identifikatoren: Lizenznummer (100%), Unternehmen + USt
+  (86%), EAN13/GTIN (17% der Stichprobe). Kreuz-ID: EAN ↔
+  Handelskataloge (der v0.3-Aufbaupfad) steht auf echten Spalten.
+- **AS-3 — Nordischer Schwan: geliefert, Versuchsstufe, 14
+  unterscheidbare Produkte.** Die begrenzte Suche fand einen echten
+  Export — die Such-URL liefert ein CSV unter `?format=csv` (9,8 MB).
+  Qualitätsvorbehalte im Manifest vermerkt (fehlende Komma-Zitate,
+  gemischte EU Ecolabel-/Schwan-Lizenzen); der
+  Ecolabel-Überlappungs-Pilot ist über Name + Lizenzhalter
+  verknüpfbar — der Export trägt sogar EU-Ecolabel-Lizenznummern.
+- **ST-1 / ST-3 / ST-6 / ST-7: keine Produktzeilen publiziert** —
+  null Netz, jeder Datensatz belegt den strukturellen Grund (PCN nur
+  für Behörden; SBS Unternehmensstatistik; dänisches AT nur Aggregate;
+  KemI Produktgeheimhaltung). Von den sechs grossen Registern
+  publizieren genau zwei überhaupt Produktzeilen; nur ECAT hat
+  Identifikator-Spalten je Artikel.
+
+Jede Stichprobenzeile trägt volle Provenienz (Quelle, Lauf-Schlüssel,
+Abrufdatum, Dokument-Hash, seed, Zieindex). Einheitsbericht:
+[report-0.2.4.md](docs/report/report-0.2.4.md) (EN); Manifest und
+Stichproben sind veröffentlicht unter
+[docs/report/](docs/report/csv-sample.manifest.md) (Arbeitsrenderungen
+je Lauf in `data/report/`).
+
+## Frühere Einheiten
+
+### v0.2.3 — Pool-Schätzung v2: Meta-Benchmark-Abstimmung (14.09.2026)
 
 Die Einheit v0.2.3 ersetzt die Ein-Modell-Überschrift von v0.2.2 durch
 eine **Meta-Benchmark-Abstimmung**: sieben unabhängige Benchmark-Grössen
@@ -122,12 +163,10 @@ Abstimmung ist in jedem Fall vollständig sichtbar.
   Begleitdokument
   [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
 
-Einheitsbericht: [report-0.2.3.md](docs/report/report-0.2.3.md);
+Details: [report-0.2.3.md](docs/report/report-0.2.3.md) (EN);
 maschinenlesbare Tabellen (Benchmark-Abstimmung, Urteile, alle
 bisherigen Abschnitte) im
 [Sondierungsbericht](docs/report/probe-report.md).
-
-## Frühere Einheiten
 
 ### v0.2.2 — der Drei-Fragen-Trichter (14.09.2026)
 
@@ -252,7 +291,7 @@ begutachtete technische Design in
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0–v0.2.3 gebaut) — Phasenverfolgung, Abnahme-Gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0–v0.2.4 gebaut) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -281,7 +320,7 @@ begutachtete technische Design in
 
 ## Status
 
-Die Werkzeug-Einheiten v0.1.1–v0.2.3 sind gebaut und getestet (341
+Die Werkzeug-Einheiten v0.1.1–v0.2.4 sind gebaut und getestet (364
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
 Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
 Katalogdurchläufe (wartet auf eine Sammel-Freigabe), die
@@ -292,5 +331,7 @@ Pool-Schätzung v2 — die Meta-Benchmark-Abstimmung mit doppelstufigem
 Grössenklassen-Urteil (14.09.2026): Benchmark-Maschine,
 Adapter-Paket, vier neue Primärextraktionen, Berichtsabschnitt mit
 Überholt-Banner — jede Zahl ein Abfrageergebnis oder eine datierte
-Extraktion. Der Bericht ist unter `docs/report/` veröffentlicht. Die
+Extraktion — und die Verwaltungs-CSV-Stichprobe mit Produktzeilen-
+Evidenz je Register (14.09.2026). Der Bericht ist unter `docs/report/`
+veröffentlicht. Die
 Methodik bleibt offen für Revision, während Ergebnisse eintreffen.

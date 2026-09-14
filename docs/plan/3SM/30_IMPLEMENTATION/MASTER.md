@@ -43,6 +43,17 @@ review BIG CHANGE e1–e8 folded); implementation plans drafted
 2026-09-14 (`v0.2.2/PHASE01–07`); build awaits explicit go, PHASE05
 additionally the real-network go-ahead.
 
+Unit **v0.2.3** (pool-estimate meta-benchmarking, D35) is **built
+2026-09-14** (PHASE01–05; 341 offline tests; verdict published). The
+current unit is **v0.2.4** (management CSV sample, D36 — `leadhs
+probe download-csv-sample`): strategy + design + CEO/ENG reviews
+(both HOLD SCOPE) same day; plans drafted (`v0.2.4/PHASE01–04`) and
+**built 2026-09-14** (364 offline tests) — the real sample run
+executed same day (`GO=1 make sample-csv`): AS-2 delivered 100 of
+17,013 distinct; AS-3 delivered trial-grade (`?format=csv`
+discovery, 14 distinct); ST-* honest no-fetch records; report
+`docs/report/report-0.2.4.md`.
+
 ## Units
 
 | Unit | Stage | Status |
@@ -53,6 +64,7 @@ additionally the real-network go-ahead.
 | v0.2.0 (market scale & data availability, D31) | IMPLEMENTATION | built 2026-09-12 (PHASE01–07 done; 205 offline tests; probe report published; N1/N2/N3 documented) |
 | v0.2.1 (source-level capability sounding-out, D33) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor) |
 | v0.2.2 (product-identity & granularity sounding-out, D34) | IMPLEMENTATION | design converged 2026-09-14 (fu1–fu10; CEO HOLD SCOPE c1–c6; ENG BIG CHANGE e1–e8); plans drafted (PHASE01–07); build awaits explicit go, PHASE05 additionally GO=1 |
+| v0.2.4 (management CSV sample, D36) | IMPLEMENTATION | built + real run 2026-09-14 (PHASE01–04 done; 364 offline tests; AS-2 100/17,013; AS-3 trial-grade `?format=csv` 14; report-0.2.4.md) |
 
 ## Phase tracking (v0.1.1 — summary)
 
@@ -128,6 +140,18 @@ Per-phase status, dependencies and detail: `v0.2.1/MASTER.md` and
 
 Per-phase status, dependencies and detail: `v0.2.2/MASTER.md` and
 `v0.2.2/PHASE01..07.md`.
+
+## Phase tracking (v0.2.4 — summary)
+
+| Phase | Focus | Status | Exit gate (summary) |
+|---|---|---|---|
+| 01 | Migration 0009 (probe_mode csv_sample + 2 metric seeds, lookup-only) + metrics.py + sync updates | done 2026-09-14 | 0009 applies idempotently; t6 sync green (41) |
+| 02 | `probe/csv_sample.py` (ECAT handler, ST no-fetch records, seeded draw, manifest) + CLI + tests | done 2026-09-14 | sample command offline-green; manifest/exit-code conformance |
+| 03 | AS-3 bounded discovery (≤5 GETs, criterion-096 filter) + tests | done 2026-09-14 | HTML surface → honest unavailable; CSV → delivered |
+| 04 | Makefile `sample-csv` (GO=1) + makefile test + full suite + docs | done 2026-09-14 | 364 offline tests; audit clean; version 0.2.4 |
+
+Per-phase status, dependencies and detail: `v0.2.4/MASTER.md` and
+`v0.2.4/PHASE01..04.md`.
 
 ## Governing references
 

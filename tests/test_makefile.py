@@ -138,3 +138,32 @@ def test_probe_single_mode_capability_passthrough():
     r = _make("-n", "probe-single", env_extra={"SOURCE": "AS-1", "MODE": "capability"})
     assert r.returncode == 0
     assert "--mode capability" in r.stdout
+
+
+# --- v0.2.4: the management CSV sample target -------------------------------
+
+
+def test_guard_sample_csv_blocks_without_go():
+    r = _make("sample-csv")
+    assert r.returncode != 0
+    assert "set GO=1" in r.stderr
+
+
+def test_sample_csv_dry_run():
+    r = _make("-n", "sample-csv", env_extra={"GO": "1"})
+    assert r.returncode == 0
+    assert "probe download-csv-sample --out-dir data/report" in r.stdout
+
+
+def test_sample_csv_n_seed_passthrough():
+    r = _make("-n", "sample-csv", env_extra={"GO": "1", "N": "25", "SEED": "7"})
+    assert r.returncode == 0
+    assert "--n 25" in r.stdout and "--seed 7" in r.stdout
+
+
+def test_sample_csv_exit_2_tolerance():
+    """1A: expected-unavailable is exit 0; should-deliver failure is exit
+    2 — the recipe tolerates exactly 2 (census/recon idiom)."""
+    makefile = (REPO / "Makefile").read_text(encoding="utf-8")
+    block = makefile.split("\nsample-csv:")[1]
+    assert "|| test $$? -eq 2" in block

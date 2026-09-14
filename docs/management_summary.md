@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-09-14 (Einheit v0.2.3 / unité v0.2.3).
+Stand / État: 2026-09-14 (Einheit v0.2.4 / unité v0.2.4).
 
 ---
 
@@ -261,17 +261,48 @@ nicht-angrenzenden Konflikt erklärt:
   Veröffentlichungshistorie erhalten. Einheitsbericht:
   `docs/report/report-0.2.3.md`.
 
+### Verwaltungs-CSV-Stichprobe (Einheit v0.2.4, Stand 14.09.2026)
+
+Die Einheit v0.2.4 beantwortet die Verwaltungsfrage pro grosser
+Registerdatenbank mit echten Daten: **wie sieht eine Produktzeile
+dort aus** — welche Datenfelder, welche Identifikator-Spalten, ist
+Kreuzidentifikation möglich? Echter Lauf 14.09.2026
+(`leadhs probe download-csv-sample`, n=100 je Register, seed=42 —
+reproduzierbar; Manifest nie schweigend über einen Fehlschlag):
+
+- **EU Ecolabel (ECAT): geliefert** — 100 von 17'013 unterscheidbaren
+  Produkten (17'838 In-Scope-Zeilen). 12 Felder je Artikel;
+  Identifikatoren: Lizenznummer (100%), Unternehmen + USt (86%),
+  EAN13/GTIN (17% der Stichprobe). Kreuz-ID: EAN ↔ Handelskataloge
+  (der v0.3-Aufbaupfad) steht auf echten Spalten.
+- **Nordischer Schwan: geliefert, Versuchsstufe** — 14
+  unterscheidbare Produkte. Die begrenzte Suche fand einen echten
+  Export (die Such-URL liefert ein CSV unter `?format=csv`, 9,8 MB).
+  Qualitätsvorbehalte vermerkt (fehlende Komma-Zitate, gemischte
+  Ecolabel-Lizenzen); der Überlappungspilot ist über Name +
+  Lizenzhalter verknüpfbar.
+- **PCN, Eurostat SBS, dänisches AT-Register, schwedisches KemI: keine
+  Produktzeilen publiziert** — jeder Datensatz belegt den
+  strukturellen Grund mit Quelle und Zugriffsdatum.
+
+Kernbefund für die Entscheidungsträger: **von den sechs grossen
+Registern publizieren genau zwei überhaupt Produktzeilen; nur ECAT
+hat Identifikator-Spalten je Artikel.** Jede Stichprobenzeile trägt
+volle Provenienz (Quelle, Lauf, Abrufdatum, Dokument-Hash, seed).
+Einheitsbericht: `docs/report/report-0.2.4.md` (EN).
+
 Projektstand (14.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
-jeden Befund nachvollziehbar hält — ist in acht Ausbaustufen gebaut und
-getestet (341 automatisierte Offline-Tests): Evidenzdatenbank,
+jeden Befund nachvollziehbar hält — ist in neun Ausbaustufen gebaut und
+getestet (364 automatisierte Offline-Tests): Evidenzdatenbank,
 Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
 Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe),
 die Datenlandschaft-Karte mit den drei Leitgrössen, die
 Quellenfähigkeits-Sondierung der amtlichen Register, der
-Drei-Fragen-Trichter im echten Netz sowie die Pool-Schätzung v2
+Drei-Fragen-Trichter im echten Netz, die Pool-Schätzung v2
 (Benchmark-Maschine, Adapter-Paket, Primärextraktionen, Berichts-
-abschnitt). Die aktive Einheit **v0.2.3** ist damit abgeschlossen.
+abschnitt) sowie die Verwaltungs-CSV-Stichprobe. Die aktive Einheit
+**v0.2.4** ist damit abgeschlossen.
 
 ### Grenzen der Studie
 
@@ -286,10 +317,13 @@ sie werden als klar ausgewiesene Einschränkungen dokumentiert.
 
 Erledigt: Datenlandschaft-Karte und Leitgrössen (v0.2.0),
 Quellenfähigkeit (v0.2.1), Drei-Fragen-Trichter im echten Netz
-(v0.2.2), Pool-Schätzung v2 als Meta-Benchmark-Abstimmung (v0.2.3) —
+(v0.2.2), Pool-Schätzung v2 als Meta-Benchmark-Abstimmung (v0.2.3),
+Verwaltungs-CSV-Stichprobe je Register (v0.2.4) —
 das Zahlenfundament für die Akteure um die
 Blei-Ausnahme steht. Als nächstes: zweite Register-Unterlage für den
-Überlappungspilot (z. B. Nordic Swan per Browser-Pass), dann
+Überlappungspilot (Nordic Swan — die `?format=csv`-Entdeckung des
+14.09.2026 macht den Pass konkreter als erwartet; Aufarbeitung der
+Zeilenqualität steht in den offenen Punkten), dann
 Piloterhebung (Blei-Verzeichnis einfrieren, SDB-Sammlung an einer
 ersten Stichprobe), dann Erhebung im vollen Umfang, Abgleich und
 Auswertung; Bericht (Diskussionsgrundlage) und Abschluss der
@@ -563,17 +597,49 @@ adjacent :
   péremption ; le contenu v0.2.2 reste dans l'historique de
   publication. Rapport d'unité : `docs/report/report-0.2.3.md`.
 
+### Échantillon CSV de gestion (unité v0.2.4, état au 14.09.2026)
+
+L'unité v0.2.4 répond à la question de gestion pour chaque grand
+registre avec des données réelles : **à quoi ressemble une ligne
+produit** — quels champs, quelles colonnes d'identifiants, le
+recoupement est-il possible ? Exécution réelle du 14.09.2026
+(`leadhs probe download-csv-sample`, n=100 par registre, seed=42 —
+reproductible ; le manifeste ne tait jamais un échec) :
+
+- **Écolabel européen (ECAT) : livré** — 100 de 17 013 produits
+  distincts (17 838 lignes dans le périmètre). 12 champs par article ;
+  identifiants : numéro de licence (100 %), entreprise + TVA (86 %),
+  EAN13/GTIN (17 % de l'échantillon). Recoupement : EAN ↔ catalogues
+  de distribution (le chemin d'amorçage v0.3) repose sur de vraies
+  colonnes.
+- **Cygne nordique : livré, niveau d'essai** — 14 produits distincts.
+  La découverte bornée a trouvé un vrai export (l'URL de recherche
+  sert un CSV via `?format=csv`, 9,8 Mo). Réserves de qualité
+  consignées (virgules non citées, licences Écolabel mixtes) ; le
+  pilote de recouvrement est joignable par nom + titulaire de licence.
+- **PCN, Eurostat SBS, registre AT danois, KemI suédois : aucune
+  ligne produit publiée** — chaque enregistrement cite la raison
+  structurelle avec source et date d'accès.
+
+Constat clé pour les décideurs : **des six grands registres,
+exactement deux publient des lignes produit ; seul ECAT possède des
+colonnes d'identifiants par article.** Chaque ligne échantillonnée
+porte une provenance complète (source, exécution, date de
+récupération, hachage du document, seed). Rapport d'unité :
+`docs/report/report-0.2.4.md` (EN).
+
 État du projet (14.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
-et rend chaque constat traçable — est construit et testé en huit étapes
-(341 tests automatisés hors ligne) : base de preuves, registre des
+et rend chaque constat traçable — est construit et testé en neuf étapes
+(364 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
 attente d'un feu vert de collecte), carte du paysage des données avec
 les trois chiffres phares, reconnaissance de la capacité des registres
-officiels, l'entonnoir à trois questions sur le réseau réel, et
+officiels, l'entonnoir à trois questions sur le réseau réel,
 l'estimation de pool v2 (moteur de benchmarks, paquet d'adaptateurs,
-extractions primaires, section de rapport). L'unité active **v0.2.3**
+extractions primaires, section de rapport) et l'échantillon CSV de
+gestion. L'unité active **v0.2.4**
 est ainsi achevée.
 
 ### Limites de l'étude
@@ -590,10 +656,13 @@ sont documentés comme restrictions explicitement signalées.
 Fait : carte du paysage des données et chiffres phares (v0.2.0),
 capacité des sources (v0.2.1), entonnoir à trois questions sur le
 réseau réel (v0.2.2), estimation de pool v2 comme vote méta-benchmark
-(v0.2.3) — le socle chiffré pour les acteurs de la
+(v0.2.3), échantillon CSV de gestion par registre (v0.2.4) — le socle
+chiffré pour les acteurs de la
 dérogation plomb est posé. Ensuite : deuxième établissement de
-registre pour le pilote de chevauchement (p. ex. Nordic Swan via une
-passe navigateur), puis collecte pilote (figer le dictionnaire du
+registre pour le pilote de chevauchement (Nordic Swan — la découverte
+`?format=csv` du 14.09.2026 rend la passe plus concrète que prévu ;
+la remise en état de la qualité des lignes figure aux points
+ouverts), puis collecte pilote (figer le dictionnaire du
 plomb, collecte des FDS sur un premier échantillon), puis collecte à
 pleine échelle, recoupement et analyse ; rapport (base de discussion)
 et finalisation de la base de données produits. En parallèle :

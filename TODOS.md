@@ -2,7 +2,32 @@
 
 Deferred work items with context — each entry states what, why,
 pros/cons, and where to start. Created by the v0.2.0 ENG review
-(2026-09-12); extended by the v0.2.3 ENG review (2026-09-14).
+(2026-09-12); extended by the v0.2.3 ENG review (2026-09-14) and the
+v0.2.4 ENG review (2026-09-14).
+
+## Reconcile the v0.2.4 AS-3 discovery trial with the pilot unit's pinned mechanics
+
+- **What:** When a later unit pins the Nordic Swan (AS-3) export
+  mechanics for real (the pending second-register pilot), revisit
+  the bounded-discovery handler in `src/leadhs/probe/csv_sample.py`
+  (`_NS_CANDIDATE_PATHS` + failure text) and replace the trial
+  endpoint guesses with the pinned export URL + parse path.
+- **Why:** The v0.2.4 handler is a bounded best-effort attempt over
+  candidate endpoints; once the real mechanics are known the trial
+  code lingers as guesswork that neither fails nor succeeds
+  honestly.
+- **Pros:** The sample command keeps working unchanged; the pilot's
+  knowledge lands in one place instead of drifting between modules.
+- **Cons:** None beyond a small refactor when the pilot lands.
+- **Context:** Proposed by the v0.2.4 ENG review (2026-09-14,
+  approved). The trial code is offline-tested against the fixture
+  site; its failure mode is an honest `csv_sample_unavailable`
+  record. Start: take the pilot unit's pinned export URL, swap it
+  into `_NS_CANDIDATE_PATHS` as the first candidate (or drop the
+  candidate list entirely), update the criterion-096 filter if the
+  real header differs, and retire this entry.
+- **Depends on / blocked by:** The second-register pilot unit
+  (Strategy OPEN ITEMS); nothing in v0.2.4 blocks on it.
 
 ## Re-benchmark cadence: re-run B1–B6 when better register data lands
 

@@ -386,6 +386,24 @@ lead). Open questions and the phased roadmap follow.
     formulation-level, D2 variant collapse); the final range comes
     from the anchors.
 
+36. **Management CSV sample command (2026-09-14; user direction, opens
+    unit v0.2.4):** the benchmark registries' per-product fields and
+    the cross-identification question get a manual check — per
+    registry, 100 random 3208/3209 product items with all available
+    fields as CSV for management review, delivered by a new probe
+    command (`leadhs probe download-csv-sample`; seeded reproducible
+    draw; CSVs + manifest → data/report/ per D22; GO=1 make target).
+    Target set: the five benchmark registries + Nordic Swan (AS-3).
+    Research finding (2026-09-14): only ECAT publishes product-level
+    rows publicly (EAN13/GTIN the only public unique
+    product-identifier column); PCN is authority-only, the Swedish
+    Products Register secrecy-protected, the Danish Produktregistret
+    aggregates-only, SBS enterprise-level — the four get honest
+    no-product-rows manifest records. Cross-identification across the
+    five is therefore not possible today; the realistic paths are
+    ECAT ↔ Nordic Swan (the pending second-register pilot) and ECAT
+    EAN ↔ retail catalogues (v0.3 seeding).
+
 ## OPEN ITEMS
 
 - CLOSED 2026-09-12 (scope, D31): EZV/swiss-impex — Swiss market
@@ -449,6 +467,9 @@ lead). Open questions and the phased roadmap follow.
   pinned 25–150 assortment band); B6 total-market anchors — none
   exist (documented gap); SPIN reachability (low priority —
   substance-level anyway).
+- OPEN (v0.2.4, D36): Nordic Swan (AS-3) export mechanics (GET vs
+  form-POST; JS-bound search surface) — bounded discovery attempt in
+  the sample command; browser pass stays the fallback.
 
 ## ROADMAP (strategy altitude)
 
@@ -563,6 +584,18 @@ lead). Open questions and the phased roadmap follow.
   MASTER.md): verdict on real data — SKU class e, formulation class
   c, both confidence-withheld; the Danish staging turned out
   aggregates-only (shape gate) and did not deliver register rows.
+- `v0.2.4.md` — management CSV sample (D36): `leadhs probe
+  download-csv-sample` — per-registry 100-row seeded CSV samples
+  (ECAT delivers; Nordic Swan discovery attempt; PCN/SE/DK/SBS honest
+  no-product-rows records) + generated manifest for management
+  review. **Built 2026-09-14** (PHASE01–04; 364 offline tests; CEO+ENG
+  HOLD SCOPE, 1A+amendments folded); the real sample run executed
+  same day — AS-2 delivered 100 of 17,013 distinct (header re-pinned,
+  matches v0.2.3 staging); AS-3 delivered trial-grade (the
+  `?format=csv` discovery found a real 9.8 MB export, 14 distinct
+  drawn); ST-* honest no-fetch records; exit 0. Report:
+  `docs/report/report-0.2.4.md`; AS-3 reconciliation stays in
+  TODOS.md.
 - **v0.3 (goal noted 2026-09-12, D32; the D32 vanilla-Windows
   distribution goal):** easy install on **vanilla Windows** (no make,
   no preinstalled Python) via a self-contained per-OS artifact; PyPI

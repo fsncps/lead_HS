@@ -57,6 +57,8 @@ METRIC_CAP_CN8_LINKAGE = "cap_cn8_linkage"
 METRIC_CAP_DEPTH_TIER = "cap_depth_tier"
 METRIC_CN8_REACHABLE = "cn8_reachable"
 METRIC_SDS_DOC_URLS = "sds_doc_urls"
+METRIC_CSV_SAMPLE_ROWS = "csv_sample_rows"
+METRIC_CSV_SAMPLE_UNAVAILABLE = "csv_sample_unavailable"
 
 
 PROBE_METRIC_SEEDS = (
@@ -105,6 +107,9 @@ PROBE_METRIC_SEEDS = (
     Metric(METRIC_CN8_REACHABLE, "CN8 codes reachable", "numeric"),
     # 0008__landscape.sql (v0.2.2, fu3)
     Metric(METRIC_SDS_DOC_URLS, "SDS document URLs visible", "numeric"),
+    # 0009__csv_sample.sql (v0.2.4, D36)
+    Metric(METRIC_CSV_SAMPLE_ROWS, "CSV sample rows drawn", "numeric"),
+    Metric(METRIC_CSV_SAMPLE_UNAVAILABLE, "CSV sample unavailable", "text"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)

@@ -87,7 +87,52 @@ c'est une étude documentaire qui ne prend pas position sur la
 réglementation elle-même. La Suisse n'intervient dans l'étude que
 comme ce cadre réglementaire — le marché étudié est celui de l'UE.
 
-## Étape actuelle : estimation de pool v2 (v0.2.3)
+## Étape actuelle : l'échantillon CSV de gestion (v0.2.4)
+
+L'unité v0.2.4 pose la question de gestion pour chaque grand
+registre : **à quoi ressemble une ligne produit** — quels champs de
+données reviennent par produit, quelles colonnes d'identifiants
+existent, le recoupement de produits individuels est-il possible ?
+Répondu avec des lignes réellement téléchargées là où un registre en
+publie (`leadhs probe download-csv-sample` ; exécution réelle du
+14.09.2026, n=100 par registre, seed=42 — reproductible) et avec une
+raison honnête et sourcée là où il n'en publie pas. Le manifeste ne
+taire jamais un échec.
+
+- **AS-2 — Écolabel européen (ECAT) : livré, 100 de 17 013 produits
+  distincts** (17 838 lignes dans le périmètre ; en-tête d'export
+  ré-épinglé exactement comme échafaudé en v0.2.3). 12 champs par
+  article ; identifiants : numéro de licence (100 %), entreprise +
+  TVA (86 %), EAN13/GTIN (17 % de l'échantillon). Recoupement : EAN ↔
+  catalogues de distribution (le chemin d'amorçage v0.3) repose sur
+  de vraies colonnes.
+- **AS-3 — Cygne nordique : livré, niveau d'essai, 14 produits
+  distincts.** La découverte bornée a trouvé un vrai export — l'URL
+  de recherche sert un CSV via `?format=csv` (9,8 Mo). Réserves de
+  qualité consignées dans le manifeste (virgules non citées entre
+  guillemets, licences mixtes Écolabel européen/Cygne nordique) ; le
+  pilote de recouvrement des écolabels est joignable par nom +
+  titulaire de licence — l'export porte même des numéros de licence
+  Écolabel européen.
+- **ST-1 / ST-3 / ST-6 / ST-7 : aucune ligne produit publiée** —
+  réseau nul, chaque enregistrement cite la raison structurelle (PCN
+  réservé aux autorités ; SBS statistiques d'entreprises ; AT danois
+  agrégats uniquement ; secret des affaires KemI au niveau produit).
+  Des six grands registres, exactement deux publient des lignes
+  produit ; seul ECAT possède des colonnes d'identifiants par
+  article.
+
+Chaque ligne échantillonnée porte une provenance complète (source,
+clé d'exécution, date de récupération, hachage du document, seed,
+index de tirage). Rapport d'unité :
+[report-0.2.4.md](docs/report/report-0.2.4.md) (EN) ; le manifeste et
+les échantillons sont publiés dans
+[docs/report/](docs/report/csv-sample.manifest.md) (rendus de travail
+par exécution dans `data/report/`).
+
+## Unités antérieures
+
+### v0.2.3 — estimation de pool v2 : vote méta-benchmark (14.09.2026)
 
 L'unité v0.2.3 remplace le titre à modèle unique de v0.2.2 par un
 **vote méta-benchmark** : sept quantités de référence indépendantes
@@ -127,12 +172,10 @@ basculement ; le vote reste visible dans tous les cas.
   constats, lacunes et pistes dans le document compagnon
   [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
 
-Rapport d'unité : [report-0.2.3.md](docs/report/report-0.2.3.md) ;
+Détails : [report-0.2.3.md](docs/report/report-0.2.3.md) (EN) ;
 tableaux lisibles par machine (vote des benchmarks, verdicts, toutes
 les sections antérieures) dans le
 [rapport de sondage](docs/report/probe-report.md).
-
-## Unités antérieures
 
 ### v0.2.2 — l'entonnoir à trois questions (14.09.2026)
 
@@ -258,7 +301,7 @@ conception technique revue dans
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0–v0.2.3 construites) — suivi des phases, critères de sortie |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0–v0.2.4 construites) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -287,7 +330,7 @@ conception technique revue dans
 
 ## État
 
-Les unités outil v0.1.1–v0.2.3 sont construites et testées (341 tests
+Les unités outil v0.1.1–v0.2.4 sont construites et testées (364 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente
@@ -298,6 +341,8 @@ l'entonnoir à trois questions exécuté sur le réseau réel
 avec un verdict de magnitude à deux niveaux (14.09.2026) : moteur de
 benchmarks, paquet d'adaptateurs, quatre nouvelles extractions
 primaires, section de rapport avec bandeau de péremption — chaque
-chiffre est un résultat de requête ou une extraction datée. Le rapport
+chiffre est un résultat de requête ou une extraction datée — et
+l'échantillon CSV de gestion avec la preuve par lignes produit pour
+chaque registre (14.09.2026). Le rapport
 est publié sous `docs/report/`. La méthodologie reste ouverte à
 révision à mesure que les résultats arrivent.
