@@ -6,9 +6,7 @@ type: unit report (detailed, human-readable)
 language: en
 ---
 
-# Unit v0.2.4 — the management CSV sample (per-registry product-row evidence)
-
-v0.2.3 answered the pool question with a benchmark vote. v0.2.4 turns
+# Unit v0.2.4 — the management CSV sample (per-registry product-row evidence)v0.2.3 answered the pool question with a benchmark vote. v0.2.4 turns
 to the management question behind the sample: **what does a product
 row actually look like in each of the large registers** — which data
 fields come back per product item, which identifier columns exist, and
@@ -118,3 +116,43 @@ manifest are the review artifacts.
 - The AS-2 sample's EAN coverage (17%) is a sample statistic, not the
   register's rate — the staged full register (17,838 rows) is the
   right base for the v0.3 seeding-path estimate.
+
+## Addendum — the AS-class source probe (D37, 2026-09-14)
+
+The unit's scope folded in one more probe (ENG-review SMALL CHANGE):
+**all 30 AS-class sources** ("Associations & registers") get exactly
+one finding each — product-row CSV where obtainable, else an
+exact-or-estimated record count with provenance (method + access
+date; `unknown` is a valid outcome), else why-not + what is available
+instead. The 9 registries/databases (AS-2..AS-10) get bounded export
+discovery (≤5 polite GETs each); the 21 trade associations get one
+liveness GET (member list noted when visible). Same-day csv-sample
+artifacts for AS-2/AS-3 are reused, not refetched.
+
+`GO=1 make as-probe` · run `20260914-125322` · exit 0 · summary
+(published copies; working renders in `data/report/AS-source-probe/`,
+gitignored): [as-source-probe.summary.20260914-125322.md](as-source-probe.summary.20260914-125322.md)
+/ `.csv`.
+
+| Outcome | Sources | Detail |
+|---|---|---|
+| **delivered** (product-row CSV) | 2 | AS-2 ECAT (100 rows, reuse), AS-3 Nordic Swan (14 rows, reuse) |
+| **record count, estimated** | 2 | AS-4 Blue Angel ≈70,000 products (page text); AS-7 environdec ≈2,025 EPDs (page text) — basis + access date recorded |
+| **unavailable, why-not recorded** | 5 | AS-5 INIES (auth-gated), AS-6 IBU, AS-8 NF Env (PDF lists instead), AS-9 natureplus, AS-10 EPD Norway — no export endpoint after ≤5 bounded GETs, count not visible |
+| **association, live** | 18 | no product register by design; member-list pointer recorded (members visible on AS-15 FIPEC, AS-16 VdL) |
+| **association, unreachable** | 3 | AS-12 IVP, AS-19 MAFEOSZ, AS-24 MALINGOGLAKK — down at probe time, URL recorded |
+
+Reading: the AS class holds **2 of 9 registries** publishing
+product rows (both ecolabel catalogues; same two as the csv-sample
+run), 2 more with estimable register sizes, and 5 without any bulk
+surface — the EPD registers (AS-5/6/7/10) expose their documents
+per-product behind search UIs, not as data. The 21 associations are
+member directories, not product registers — recorded as such, one
+liveness GET each. Evidence DB: 30 runs (mode `as_source_probe`),
+60 findings across `as_probe_rows` / `as_probe_records` /
+`as_probe_unavailable` / `as_probe_assoc` (migration 0010).
+
+Open item: the per-product EPD-API follow-up (AS-5 INIES
+registration, AS-6/AS-7/AS-10 library APIs) stays in TODOS.md —
+ pursued only if the census pass surfaces evidence it is needed
+(D37, evidence-first).

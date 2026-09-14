@@ -291,17 +291,26 @@ hat Identifikator-Spalten je Artikel.** Jede Stichprobenzeile trägt
 volle Provenienz (Quelle, Lauf, Abrufdatum, Dokument-Hash, seed).
 Einheitsbericht: `docs/report/report-0.2.4.md` (EN).
 
+Ergänzend (14.09.2026): Quellenprobe über alle 30 Quellen der Klasse
+«Verbände & Register» — je Quelle ein Befund. Die beiden
+Ökolabel-Kataloge liefern Produktzeilen (AS-2: 100, AS-3: 14);
+Blue Angel (≈70 000) und environdec (≈2 025) nur Seitenzählungen;
+die übrigen fünf Register keine Bulk-Oberfläche (Einzeldokumente
+hinter Such-UIs; Grund vermerkt). Die 21 Branchenverbände sind
+Mitgliederverzeichnisse, keine Produktregister.
+
 Projektstand (14.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
 jeden Befund nachvollziehbar hält — ist in neun Ausbaustufen gebaut und
-getestet (364 automatisierte Offline-Tests): Evidenzdatenbank,
+getestet (385 automatisierte Offline-Tests): Evidenzdatenbank,
 Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
 Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe),
 die Datenlandschaft-Karte mit den drei Leitgrössen, die
 Quellenfähigkeits-Sondierung der amtlichen Register, der
 Drei-Fragen-Trichter im echten Netz, die Pool-Schätzung v2
 (Benchmark-Maschine, Adapter-Paket, Primärextraktionen, Berichts-
-abschnitt) sowie die Verwaltungs-CSV-Stichprobe. Die aktive Einheit
+abschnitt) sowie die Verwaltungs-CSV-Stichprobe samt
+AS-Klassen-Quellenprobe. Die aktive Einheit
 **v0.2.4** ist damit abgeschlossen.
 
 ### Grenzen der Studie
@@ -318,7 +327,8 @@ sie werden als klar ausgewiesene Einschränkungen dokumentiert.
 Erledigt: Datenlandschaft-Karte und Leitgrössen (v0.2.0),
 Quellenfähigkeit (v0.2.1), Drei-Fragen-Trichter im echten Netz
 (v0.2.2), Pool-Schätzung v2 als Meta-Benchmark-Abstimmung (v0.2.3),
-Verwaltungs-CSV-Stichprobe je Register (v0.2.4) —
+Verwaltungs-CSV-Stichprobe je Register samt AS-Klassen-Quellenprobe
+(v0.2.4) —
 das Zahlenfundament für die Akteure um die
 Blei-Ausnahme steht. Als nächstes: zweite Register-Unterlage für den
 Überlappungspilot (Nordic Swan — die `?format=csv`-Entdeckung des
@@ -628,10 +638,19 @@ porte une provenance complète (source, exécution, date de
 récupération, hachage du document, seed). Rapport d'unité :
 `docs/report/report-0.2.4.md` (EN).
 
+En complément (14.09.2026) : sondage des sources sur les 30 sources de
+la classe « associations & registres » — un constat par source. Les
+deux catalogues d'écolabels livrent des lignes produit (AS-2 : 100,
+AS-3 : 14) ; Blue Angel (≈70 000) et environdec (≈2 025) seulement des
+comptes en texte de page ; les cinq autres registres n'ont pas de
+surface de masse (documents à l'unité derrière des interfaces de
+recherche ; raison consignée). Les 21 associations professionnelles
+sont des annuaires de membres, pas des registres de produits.
+
 État du projet (14.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
 et rend chaque constat traçable — est construit et testé en neuf étapes
-(364 tests automatisés hors ligne) : base de preuves, registre des
+(385 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
 attente d'un feu vert de collecte), carte du paysage des données avec
@@ -639,7 +658,8 @@ les trois chiffres phares, reconnaissance de la capacité des registres
 officiels, l'entonnoir à trois questions sur le réseau réel,
 l'estimation de pool v2 (moteur de benchmarks, paquet d'adaptateurs,
 extractions primaires, section de rapport) et l'échantillon CSV de
-gestion. L'unité active **v0.2.4**
+gestion avec le sondage des sources de classe AS. L'unité active
+**v0.2.4**
 est ainsi achevée.
 
 ### Limites de l'étude
@@ -656,7 +676,8 @@ sont documentés comme restrictions explicitement signalées.
 Fait : carte du paysage des données et chiffres phares (v0.2.0),
 capacité des sources (v0.2.1), entonnoir à trois questions sur le
 réseau réel (v0.2.2), estimation de pool v2 comme vote méta-benchmark
-(v0.2.3), échantillon CSV de gestion par registre (v0.2.4) — le socle
+(v0.2.3), échantillon CSV de gestion par registre avec le sondage des
+sources de classe AS (v0.2.4) — le socle
 chiffré pour les acteurs de la
 dérogation plomb est posé. Ensuite : deuxième établissement de
 registre pour le pilote de chevauchement (Nordic Swan — la découverte

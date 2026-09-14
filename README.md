@@ -109,6 +109,19 @@ samples are published in
 [docs/report/](docs/report/csv-sample.manifest.md) (working renders
 per run in `data/report/`).
 
+**Addendum — AS-class source probe (2026-09-14).** One finding per
+AS-class source, all 30 of them (`leadhs probe as-source-probe`):
+product-row CSV where obtainable, else an exact-or-estimated record
+count with provenance, else why-not + what is available instead. The
+two ecolabel catalogues reuse the csv-sample rows (AS-2: 100, AS-3:
+14); Blue Angel (≈70,000) and environdec (≈2,025) expose only
+page-text counts; the other five registries (INIES, IBU, NF Env,
+natureplus, EPD Norway) have no bulk surface — per-product documents
+behind search UIs, reason recorded. The 21 trade associations are
+member directories, not product registers (18 live, 3 unreachable at
+probe time). Summary:
+[as-source-probe.summary.20260914-125322.md](docs/report/as-source-probe.summary.20260914-125322.md).
+
 ## Previous units
 
 ### v0.2.3 — pool estimate v2: meta-benchmarking vote (2026-09-14)

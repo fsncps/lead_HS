@@ -123,6 +123,20 @@ Stichproben sind veröffentlicht unter
 [docs/report/](docs/report/csv-sample.manifest.md) (Arbeitsrenderungen
 je Lauf in `data/report/`).
 
+**Addendum — AS-Klassen-Quellenprobe (2026-09-14).** Ein Befund je
+AS-Klassen-Quelle, alle 30 (`leadhs probe as-source-probe`):
+Produktzeilen-CSV wo erhältlich, sonst exakte oder geschätzte
+Datensatzzahl mit Provenienz, sonst Warumnicht + was stattdessen
+verfügbar ist. Die beiden Ökolabel-Kataloge wiederverwenden die
+csv-sample-Zeilen (AS-2: 100, AS-3: 14); Blue Angel (≈70 000) und
+environdec (≈2 025) bieten nur Seitenzählungen; die übrigen fünf
+Register (INIES, IBU, NF Env, natureplus, EPD Norway) haben keine
+Bulk-Oberfläche — Einzeldokumente hinter Such-UIs, Grund vermerkt. Die
+21 Branchenverbände sind Mitgliederverzeichnisse, keine
+Produktregister (18 live, 3 zur Probezeit nicht erreichbar).
+Zusammenfassung:
+[as-source-probe.summary.20260914-125322.md](docs/report/as-source-probe.summary.20260914-125322.md) (EN).
+
 ## Frühere Einheiten
 
 ### v0.2.3 — Pool-Schätzung v2: Meta-Benchmark-Abstimmung (14.09.2026)

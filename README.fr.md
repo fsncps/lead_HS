@@ -130,6 +130,21 @@ les échantillons sont publiés dans
 [docs/report/](docs/report/csv-sample.manifest.md) (rendus de travail
 par exécution dans `data/report/`).
 
+**Addendum — sondage des sources de classe AS (2026-09-14).** Un
+constat par source de classe AS, les 30 (`leadhs probe
+as-source-probe`) : CSV de lignes produit là où il est obtenable, sinon
+nombre d'enregistrements exact ou estimé avec provenance, sinon
+pourquoi-pas + ce qui est disponible à la place. Les deux catalogues
+d'écolabels réutilisent les lignes csv-sample (AS-2 : 100, AS-3 : 14) ;
+Blue Angel (≈70 000) et environdec (≈2 025) n'exposent que des comptes
+en texte de page ; les cinq autres registres (INIES, IBU, NF Env,
+natureplus, EPD Norway) n'ont pas de surface de masse — documents
+produit par produit derrière des interfaces de recherche, raison
+consignée. Les 21 associations professionnelles sont des annuaires de
+membres, pas des registres de produits (18 vivantes, 3 inaccessibles
+au moment de la sonde). Synthèse :
+[as-source-probe.summary.20260914-125322.md](docs/report/as-source-probe.summary.20260914-125322.md) (EN).
+
 ## Unités antérieures
 
 ### v0.2.3 — estimation de pool v2 : vote méta-benchmark (14.09.2026)

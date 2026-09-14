@@ -44,6 +44,44 @@ _RECON_DECLARED = {
 _SITEMAP_GZ = gzip.compress(_urlset([f"/product/g{i}" for i in range(2)]))
 
 
+def _as_xlsx() -> bytes:
+    """v0.2.4 addendum (D37): minimal real XLSX for the AS-probe
+    registry delivery test (2 inline-str cells + 1 numeric header cell
+    is enough — sheet_rows returns the string list)."""
+    import io as _io
+    import zipfile as _zf
+
+    buf = _io.BytesIO()
+    with _zf.ZipFile(buf, "w") as zf:
+        zf.writestr(
+            "xl/workbook.xml",
+            '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+            'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+            '<sheets><sheet name="Products" sheetId="1" r:id="rId1"/></sheets></workbook>',
+        )
+        zf.writestr(
+            "xl/_rels/workbook.xml.rels",
+            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+            '<Relationship Id="rId1" '
+            'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" '
+            'Target="worksheets/sheet1.xml"/></Relationships>',
+        )
+        zf.writestr(
+            "xl/worksheets/sheet1.xml",
+            '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+            "<row r='1'><c r='A1' t='inlineStr'><is><t>Manufacturer</t></is></c>"
+            "<c r='B1' t='inlineStr'><is><t>Product</t></is></c></row>"
+            "<row r='2'><c r='A2' t='inlineStr'><is><t>Acme GmbH</t></is></c>"
+            "<c r='B2' t='inlineStr'><is><t>Paint A</t></is></c></row>"
+            "<row r='3'><c r='A3' t='inlineStr'><is><t>Beier AG</t></is></c>"
+            "<c r='B3' t='inlineStr'><is><t>Paint B</t></is></c></row></worksheet>",
+        )
+    return buf.getvalue()
+
+
+_AS_EXPORT_XLSX = _as_xlsx()
+
+
 class _FixtureSite(http.server.BaseHTTPRequestHandler):
     hits = {}
 
@@ -333,6 +371,22 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/html; charset=iso-8859-1")
             self.end_headers()
             self.wfile.write(b"<html><body>\xff\xfe broken</body></html>")
+        elif p == "/as-export.xlsx":
+            # v0.2.4 addendum (D37): real XLSX export for the AS-probe
+            # registry path (sniff → xlsx → sheet_rows → CSV rendering).
+            self.send_response(200)
+            self.send_header(
+                "Content-Type",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+            self.end_headers()
+            self.wfile.write(_AS_EXPORT_XLSX)
+        elif p == "/as-count.html":
+            # landing page with a visible record count (estimate pass)
+            self._html(b"<html><body>12,400 certified products in this database</body></html>")
+        elif p == "/assoc.html":
+            # association landing with a visible member count
+            self._html(b"<html><body>1,200 member companies across the sector</body></html>")
         elif p == "/spin":
             self._html(b'<html><body><a href="/data.mdb">SPIN database download</a></body></html>')
         elif p == "/data.mdb":

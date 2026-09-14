@@ -173,6 +173,16 @@ Register (secrecy-protected), the Danish Produktregistret
 no-product-rows records — the manifest is itself the data-landscape
 demonstration. Detail: 10_STRATEGY/v0.2.4.md.
 
+**AS-class source probe (v0.2.4 addendum, D37):** `leadhs probe
+as-source-probe` gives all 30 AS-class sources exactly one finding
+each (`GO=1 make as-probe`): product-row CSV where obtainable, else
+exact-or-estimated record count with provenance (method + access
+date), else why-not + what-is-instead; associations 1 liveness GET.
+Executed 2026-09-14 (exit 0): delivered AS-2/AS-3 (reuse), estimated
+AS-4 ≈70k / AS-7 ≈2k, unavailable AS-5/6/8/9/10, 18 associations live
++ 3 unreachable. Summary published in `docs/report/`; detail:
+10_STRATEGY/v0.2.4.md.
+
 ## Probing pass (unit v0.1.1)
 
 Before any collection, every OPEN register row is probed once

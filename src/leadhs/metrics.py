@@ -59,6 +59,10 @@ METRIC_CN8_REACHABLE = "cn8_reachable"
 METRIC_SDS_DOC_URLS = "sds_doc_urls"
 METRIC_CSV_SAMPLE_ROWS = "csv_sample_rows"
 METRIC_CSV_SAMPLE_UNAVAILABLE = "csv_sample_unavailable"
+METRIC_AS_PROBE_ROWS = "as_probe_rows"
+METRIC_AS_PROBE_RECORDS = "as_probe_records"
+METRIC_AS_PROBE_UNAVAILABLE = "as_probe_unavailable"
+METRIC_AS_PROBE_ASSOC = "as_probe_assoc"
 
 
 PROBE_METRIC_SEEDS = (
@@ -110,6 +114,11 @@ PROBE_METRIC_SEEDS = (
     # 0009__csv_sample.sql (v0.2.4, D36)
     Metric(METRIC_CSV_SAMPLE_ROWS, "CSV sample rows drawn", "numeric"),
     Metric(METRIC_CSV_SAMPLE_UNAVAILABLE, "CSV sample unavailable", "text"),
+    # 0010__as_source_probe.sql (v0.2.4 addendum, D37)
+    Metric(METRIC_AS_PROBE_ROWS, "AS probe product rows obtained", "numeric"),
+    Metric(METRIC_AS_PROBE_RECORDS, "AS probe record count", "text"),
+    Metric(METRIC_AS_PROBE_UNAVAILABLE, "AS probe unavailable", "text"),
+    Metric(METRIC_AS_PROBE_ASSOC, "AS probe association finding", "text"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)

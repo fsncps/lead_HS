@@ -6,7 +6,7 @@
 	sources-list setup probe-dry probe-single record report \
 	report-publish probe census recon probe-recon test smoke test-net \
 	probe-capability capability probe-landscape landscape \
-	sample-csv \
+	sample-csv as-probe \
 	clean clobber frame sample acquire ingest parse analyze full
 .DEFAULT_GOAL := help
 
@@ -149,6 +149,12 @@ landscape: guard-landscape setup ## setup → waves → report → audit (GO=1)
 sample-csv: guard-sample-csv ## management CSV samples per registry (GO=1; N=, SEED= optional)
 	@mkdir -p $(REPORT_DIR)
 	$(LEADHS) probe download-csv-sample --out-dir $(REPORT_DIR) $(if $(N),--n $(N)) $(if $(SEED),--seed $(SEED)) || test $$? -eq 2
+
+# v0.2.4 addendum (D37): the AS-class source probe — one finding per AS
+# source, output into data/report/AS-source-probe/ (reuse-dir = the
+# report dir, where the csv-sample artifacts live).
+as-probe: guard-as-probe ## AS-class source probe, one finding per source (GO=1)
+	$(LEADHS) probe as-source-probe || test $$? -eq 2
 
 test: ## offline suite (net/mdbtools markers deselected)
 	$(PYTHON) -m pytest

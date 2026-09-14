@@ -10,7 +10,7 @@ from leadhs import db as dbmod
 
 def test_fresh_apply_all_migrations(conn):
     applied = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
-    assert applied == {1, 2, 3, 4, 5, 6, 7, 8, 9}
+    assert applied == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for table in ("source", "document", "run", "probe_run", "probe_finding", "probe_metric"):
         assert table in tables
@@ -92,7 +92,7 @@ def test_0004_prunes_lg_li_rows_with_evidence(tmp_path):
     conn.commit()
 
     applied, _ = dbmod.migrate(conn)
-    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql", "0008__landscape.sql", "0009__csv_sample.sql"]
+    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql", "0008__landscape.sql", "0009__csv_sample.sql", "0010__as_source_probe.sql"]
 
     ids = {r[0] for r in conn.execute("SELECT id FROM source")}
     assert "LG-9" not in ids and "LI-9" not in ids and "PE-9" in ids
@@ -138,7 +138,8 @@ def test_migration_order_enforced(tmp_path):
         assert applied == ["0002__probe_core.sql", "0003__probe_metrics.sql",
                            "0004__product_census.sql", "0005__priors_metric.sql",
                            "0006__recon_numbers.sql", "0007__capability.sql",
-                           "0008__landscape.sql", "0009__csv_sample.sql"]
+                           "0008__landscape.sql", "0009__csv_sample.sql",
+                           "0010__as_source_probe.sql"]
     finally:
         conn.close()
 
@@ -193,11 +194,11 @@ def test_backup_round_trip(conn, db_path):
     conn.close()
 
     orig = dbmod.migration_files
-    dbmod.migration_files = lambda: orig() + [(10, "0010__fake.sql", "CREATE TABLE fake (x INTEGER);")]
+    dbmod.migration_files = lambda: orig() + [(11, "0011__fake.sql", "CREATE TABLE fake (x INTEGER);")]
     try:
         conn2 = dbmod.connect(db_path)
         applied, _ = dbmod.migrate(conn2, db_path=db_path)
-        assert applied == ["0010__fake.sql"]
+        assert applied == ["0011__fake.sql"]
         conn2.close()
     finally:
         dbmod.migration_files = orig
@@ -385,7 +386,7 @@ def test_0008_sds_doc_urls_seeded(conn):
     ).fetchone()
     assert row[1] == "numeric"
     modes = {r[0] for r in conn.execute("SELECT code FROM probe_mode")}
-    assert modes == {"census", "format_check", "access_check", "recon", "capability", "csv_sample"}
+    assert modes == {"census", "format_check", "access_check", "recon", "capability", "csv_sample", "as_source_probe"}
 
 
 def test_0008_no_view_change(conn):
@@ -422,3 +423,35 @@ def test_0009_no_new_tables(conn):
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     assert "probe_mode" in tables and "probe_metric" in tables
     assert not any("csv" in t for t in tables)
+
+
+# --- v0.2.4 addendum: 0010 as-source probe ----------------------------------
+
+
+def test_0010_as_probe_mode_seeded(conn):
+    """D37: the as_source_probe probe mode is a lookup row only."""
+    row = conn.execute(
+        "SELECT label FROM probe_mode WHERE code = 'as_source_probe'"
+    ).fetchone()
+    assert row is not None and row[0] == "AS-class source probe"
+
+
+def test_0010_as_probe_metrics_seeded(conn):
+    """D37: four probe metrics — rows numeric, the rest text."""
+    types = dict(
+        conn.execute(
+            "SELECT code, value_type FROM probe_metric WHERE code LIKE 'as_probe_%'"
+        ).fetchall()
+    )
+    assert types == {
+        "as_probe_rows": "numeric",
+        "as_probe_records": "text",
+        "as_probe_unavailable": "text",
+        "as_probe_assoc": "text",
+    }
+
+
+def test_0010_no_new_tables(conn):
+    """0010 is lookup-seed only — no as-probe-specific tables."""
+    tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    assert not any("as_probe" in t for t in tables)

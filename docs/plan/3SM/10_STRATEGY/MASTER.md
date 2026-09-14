@@ -595,7 +595,15 @@ lead). Open questions and the phased roadmap follow.
   `?format=csv` discovery found a real 9.8 MB export, 14 distinct
   drawn); ST-* honest no-fetch records; exit 0. Report:
   `docs/report/report-0.2.4.md`; AS-3 reconciliation stays in
-  TODOS.md.
+  TODOS.md. **Addendum D37 (2026-09-14, ENG-review SMALL CHANGE
+  folded):** `leadhs probe as-source-probe` — all 30 AS-class
+  sources, one finding each (product-row CSV where obtainable, else
+  exact-or-estimated count with provenance, else why-not +
+  what-is-instead; associations 1 liveness GET). Real run same day
+  (migration 0010, 385 offline tests): 2 delivered (AS-2/AS-3
+  reuse), 2 estimated (AS-4 ≈70k, AS-7 ≈2k), 5
+  unavailable-with-why-not, 18 associations live + 3 unreachable —
+  published summary in `docs/report/`.
 - **v0.3 (goal noted 2026-09-12, D32; the D32 vanilla-Windows
   distribution goal):** easy install on **vanilla Windows** (no make,
   no preinstalled Python) via a self-contained per-OS artifact; PyPI

@@ -87,4 +87,8 @@ order preserved. Entry kept as a marker; delete at leisure.
   (manual-record this unit, optional registration deferred). Start:
   register, generate the read-only key, add to `.env`, then probe
   the API shape (candidate for the next register-completion pass).
+  The 2026-09-14 AS-class source probe (D37) confirms the finding:
+  no bulk export endpoint exists (≤5 bounded GETs, 404s), count not
+  visible on the landing page — registration stays the only path to
+  a counted INIES universe.
 - **Depends on / blocked by:** User action only; P2 priority.

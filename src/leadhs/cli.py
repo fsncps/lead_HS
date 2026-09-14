@@ -454,6 +454,61 @@ def download_csv_sample(ctx, n, seed, source_ids, out_dir, dry_run):
     ctx.exit(exit_code)
 
 
+@probe.command("as-source-probe")
+@click.option("--out-dir", "out_dir", default="data/report/AS-source-probe", show_default=True,
+              help="CSVs + summary destination (D37)")
+@click.option("--source", "source_ids", multiple=True, help="source ID (default: all AS rows in the register)")
+@click.option("--reuse-dir", "reuse_dir", default="data/report", show_default=True,
+              help="where to look for same-day csv-sample artifacts (AS-2/AS-3 reuse)")
+@click.option("--dry-run", is_flag=True, help="plan requests; zero network, zero files")
+@click.pass_context
+def as_source_probe(ctx, out_dir, source_ids, reuse_dir, dry_run):
+    """One finding per AS source (v0.2.4 addendum, D37): product-row CSV
+where obtainable, else why not + what is available instead, plus
+exact-or-estimated record counts; associations get member-list findings."""
+    from . import db as dbmod, fetch as fetchmod, store as storemod, source as sourcemod
+    from .fetch import FetchConfig
+    from .probe import as_probe
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    conn = dbmod.connect(rt.db_path)
+    try:
+        if source_ids:
+            wanted = list(source_ids)
+        else:
+            wanted = [r[0] for r in conn.execute(
+                "SELECT id FROM source WHERE class_code = 'AS' ORDER BY rowid")]
+            if not wanted:
+                click.echo("error: no AS rows in the register (run `leadhs source load` first)", err=True)
+                ctx.exit(1)
+        source_rows = {}
+        for sid in wanted:
+            source = sourcemod.get_source(conn, sid)
+            if source is None:
+                click.echo(f"error: unknown source {sid!r} (run `leadhs source load` first)", err=True)
+                ctx.exit(1)
+            source_rows[sid] = source
+        if not dry_run:
+            os.makedirs(out_dir, exist_ok=True)
+        exit_code, entries = as_probe.sample(
+            conn, storemod.RawStore(rt.store_root()),
+            fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger),
+            source_rows, out_dir=out_dir, dry_run=dry_run, logger=rt.logger,
+            reuse_dir=reuse_dir,
+        )
+    finally:
+        conn.close()
+    if dry_run:
+        click.echo("dry-run: requests planned; zero network, zero files")
+    else:
+        for e in entries:
+            detail = e["file"] if e["status"] == "delivered" else (e["basis"] or e["reason"] or "")
+            click.echo(f"{e['source']:<6} {e['status']:<12} {e['records'] or '':>24}  {detail}")
+        click.echo(f"summary: {out_dir}/as-source-probe.summary.md")
+    ctx.exit(exit_code)
+
+
 cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)
