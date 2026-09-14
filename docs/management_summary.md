@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-09-12.
+Stand / État: 2026-09-14 (Einheit v0.2.2 / unité v0.2.2).
 
 ---
 
@@ -172,6 +172,38 @@ Produkt-Ident, CN8-Verlinkung, Datentiefe, erreichbare CN8-Codes) und
 den vorläufigen Zähler als separate, klar gekennzeichnete Zeile —
 getrennt von der bestehenden N2-Tierzusammensetzung.
 
+### Drei-Fragen-Trichter (Einheit v0.2.2, Stand 14.09.2026)
+
+Die Einheit v0.2.2 hat die Datenlandschaft **im echten Netz**
+ausgeführt (nur Erkundung: amtliche Exporte/APIs, kein Scraping) und
+die drei Leitfragen als **Trichter** beantwortet — jede Zahl ein
+Abfrageergebnis, veröffentlicht im Sondierungsbericht:
+
+- **F1 — Marktpool (modellierte Schätzung):** **[85'840–343'360]
+  Produkte** — Hersteller-Grenzen 800 (CEPE) bis 3'200 (Eurostat SBS
+  NACE 20.30) × 107,3 Produkte je Hersteller (aus dem gestützten
+  ECAT-Register) × mengengewichte der gestützten EU-Ausseneinfuhr je
+  CN8-Code. Modelliert, nie gezählt.
+- **F2 — definitiv identifizierbar (Untergrenze):** **17'170**
+  unterscheidbare (Hersteller, Produkt-Ident)-Paare — die deduplizierte
+  Vereinigung der gestützten amtlichen Register (bisher ECAT: 17'838
+  Einträge, 160 Lizenznehmer, 16,0 % Identitätsvollständigkeit).
+- **F3 — SDB erreichbar (modelliert):** **3'590** (Obergrenze — Summe
+  der Sitemap-Produktzahlen über Seiten mit sichtbarer
+  SDB-Bibliothek; die Trefferquoten-Annahme steht noch aus).
+- **Verhältnis F2 ÷ F1: 0,05–0,2.** Ein memory-Trigger für die
+  Grössenordnung: rund ein Fünftel (optimistisch) bis ein Zwanzigstel
+  (konservativ) des modellierten Pools ist heute definitiv
+  identifizierbar.
+
+Register-Disposition (101 Quellenzeilen): **36 gezählt, 48 manuell
+dokumentiert, 4 blockiert, 13 inaktiv per Design.** Die
+Comext-Unterlage deckt alle 13 CN8-Codes ab (6'316 Handelszeilen, z.
+B. HS 32091000 ≈1,43 Mrd. kg Einfuhr). Der ECAT ∩ Nordic-Swan-
+Überlappungspilot bleibt ausdrücklich unbestimmbar, bis ein zweites
+Register gestützt ist. JS-gebundene Register (Nordic Swan, IBU,
+environdec u. a.) tragen ehrliche, dokumentierte Zurückstellungen.
+
 Marktbefunde (Stand 31.08.2026, EU, dokumentiert):
 
 - **Bleichromat-Pigmente:** keine rechtmässige EU-Inverkehrbringung mehr seit
@@ -213,12 +245,17 @@ sie werden als klar ausgewiesene Einschränkungen dokumentiert.
 
 ### Nächste Schritte
 
-Datenlandschaft-Karte und Leitgrössen (Einheit v0.2.0); anschliessend
-Piloterhebung (Blei-Verzeichnis einfrieren, SDB-Sammlung an einer ersten
-Stichprobe), dann Erhebung im vollen Umfang, Abgleich und Auswertung;
-Bericht (Diskussionsgrundlage) und Abschluss der Produkt-Datenbank.
-Begleitend: Verifikation der geltenden Rechtstexte (ChemRRV Anhang 2.8,
-VIPaV im konsolidierten Wortlaut) als Hintergrundarbeit.
+Erledigt: Datenlandschaft-Karte und Leitgrössen (v0.2.0),
+Quellenfähigkeit (v0.2.1), Drei-Fragen-Trichter im echten Netz
+(v0.2.2) — das Zahlenfundament für die Akteure um die
+Blei-Ausnahme steht. Als nächstes: zweite Register-Unterlage für den
+Überlappungspilot (z. B. Nordic Swan per Browser-Pass), dann
+Piloterhebung (Blei-Verzeichnis einfrieren, SDB-Sammlung an einer
+ersten Stichprobe), dann Erhebung im vollen Umfang, Abgleich und
+Auswertung; Bericht (Diskussionsgrundlage) und Abschluss der
+Produkt-Datenbank. Begleitend: Verifikation der geltenden Rechtstexte
+(ChemRRV Anhang 2.8, VIPaV im konsolidierten Wortlaut) als
+Hintergrundarbeit.
 
 ---
 
@@ -394,6 +431,40 @@ atteignables) et le numérateur provisoire comme ligne distincte,
 clairement identifiée — séparée de la composition par palier N2
 existante.
 
+### Entonnoir à trois questions (unité v0.2.2, état au 14.09.2026)
+
+L'unité v0.2.2 a exécuté le paysage des données **sur le réseau
+réel** (reconnaissance uniquement : exports/APIs officiels, pas de
+scraping) et répond aux trois questions sous forme d'**entonnoir** —
+chaque chiffre est le résultat d'une requête, publié dans le rapport
+de sondage :
+
+- **Q1 — vivier du marché (estimation modélisée) :** **[85 840–343
+  360] produits** — bornes de producteurs 800 (CEPE) à 3 200 (Eurostat
+  SBS NACE 20.30) × 107,3 produits par producteur (issu du registre
+  ECAT établi) × parts de volume des importations extra-UE établies
+  par code CN8. Modélisé, jamais compté.
+- **Q2 — définitivement identifiable (plancher) :** **17 170** paires
+  distinctes (fabricant, identifiant produit) — l'union dédupliquée
+  des registres officiels établis (à ce stade ECAT : 17 838 entrées,
+  160 titulaires, 16,0 % de complétude d'identité).
+- **Q3 — FDS accessible (modélisé) :** **3 590** (borne supérieure —
+  somme des compteurs de produits sitemap sur les sites à bibliothèque
+  FDS visible ; l'hypothèse de taux de correspondance est en
+  attente).
+- **Rapport Q2 ÷ Q1 : 0,05–0,2** — de un cinquième (optimiste) à un
+  vingtième (prudent) du vivier modélisé est aujourd'hui définitivement
+  identifiable.
+
+Disposition du registre (101 lignes de sources) : **36 comptées, 48
+documentées manuellement, 4 bloquées, 13 inactives par conception.**
+L'établissement Comext couvre les 13 codes CN8 (6 316 lignes
+commerciales, p. ex. HS 32091000 ≈1,43 Md kg d'importations). Le
+pilote de chevauchement ECAT ∩ Cygne Nordique reste explicitement non
+calculable tant qu'un second registre n'est pas établi. Les registres
+à interface JS (Nordic Swan, IBU, environdec etc.) portent des reports
+honnêtes et documentés.
+
 Constats de marché (état au 31.08.2026, UE, documentés) :
 
 - **Pigments au chromate de plomb :** plus de mise sur le marché légale dans
@@ -436,10 +507,14 @@ sont documentés comme restrictions explicitement signalées.
 
 ### Prochaines étapes
 
-Carte du paysage des données et chiffres phares (unité v0.2.0) ; ensuite
-collecte pilote (figer le dictionnaire du plomb, collecte des FDS sur un
-premier échantillon), puis collecte à pleine échelle, recoupement et
-analyse ; rapport (base de discussion) et finalisation de la base de
-données produits. En parallèle : vérification des textes juridiques en
-vigueur (ORRChim annexe 2.8, OPPr au libellé consolidé) comme travail de
-contexte.
+Fait : carte du paysage des données et chiffres phares (v0.2.0),
+capacité des sources (v0.2.1), entonnoir à trois questions sur le
+réseau réel (v0.2.2) — le socle chiffré pour les acteurs de la
+dérogation plomb est posé. Ensuite : deuxième établissement de
+registre pour le pilote de chevauchement (p. ex. Nordic Swan via une
+passe navigateur), puis collecte pilote (figer le dictionnaire du
+plomb, collecte des FDS sur un premier échantillon), puis collecte à
+pleine échelle, recoupement et analyse ; rapport (base de discussion)
+et finalisation de la base de données produits. En parallèle :
+vérification des textes juridiques en vigueur (ORRChim annexe 2.8,
+OPPr au libellé consolidé) comme travail de contexte.

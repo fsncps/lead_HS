@@ -22,6 +22,8 @@ class SourceRef:
     verification_status_code: str = "open"
     active: int = 1
     notes: Optional[str] = None
+    export_url: Optional[str] = None
+    export_format: Optional[str] = None
 
 
 @dataclass
@@ -93,6 +95,40 @@ class ProbeFinding:
 
 
 @dataclass
+class StagedRow:
+    """A parsed product row destined for the staging DB (fu2/e1).
+
+    The adapter supplies *raw* values plus the ident column hint;
+    normalization happens once at ingest (engine, via
+    ``leadhs.normalize``). ``document`` carries the archived fetch the
+    row was parsed from — provenance is mandatory (loud failure
+    without it, c3).
+    """
+
+    manufacturer_raw: Optional[str] = None
+    ident_raw: Optional[str] = None
+    ident_hint: Optional[str] = None
+    name: Optional[str] = None
+    category_raw: Optional[str] = None
+    raw: object = None
+    document: Optional[DocumentDraft] = None
+
+
+@dataclass
+class StagedTradeRow:
+    """A parsed trade row destined for ``stg_trade_cn8`` (W1 batches)."""
+
+    cn8: Optional[str] = None
+    flow: Optional[str] = None
+    declarant: Optional[str] = None
+    partner: Optional[str] = None
+    year: Optional[str] = None
+    kg: Optional[float] = None
+    eur: Optional[float] = None
+    document: Optional[DocumentDraft] = None
+
+
+@dataclass
 class ProbeContext:
     fetcher: object
     store: object
@@ -101,6 +137,7 @@ class ProbeContext:
     sample_n: int = 5
     dry_run: bool = False
     logger: object = None
+    staging: object = None  # staging DB conn (v0.2.2 i19); None = no staging
 
 
 @dataclass
@@ -109,3 +146,5 @@ class ProbeResult:
     findings: list = field(default_factory=list)
     notes: list = field(default_factory=list)
     parameters: dict = field(default_factory=dict)  # merged into run.parameters_json (od9)
+    staged_products: list = field(default_factory=list)  # StagedRow drafts (fu2/e1)
+    staged_trade: list = field(default_factory=list)  # StagedTradeRow drafts

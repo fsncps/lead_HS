@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-13
+updated: 2026-09-14
 ---
 
 # Strategy MASTER — lead_HS
@@ -487,6 +487,17 @@ lead). Open questions and the phased roadmap follow.
   reconnaissance-only, no product DB seeding, no scraping. Strategy
   DRAFT; Design follows on user validation of the source-level
   framing. Grounded by the 2026-09-13 official-source research pass.
+- `v0.2.2.md` — product-identity and granularity sounding-out (D34):
+  the three-question funnel under Product = manufacturer + identnr —
+  Q1 pool per CN8 (modeled), Q2 definitively identifiable (counted
+  floor), Q3 SDS reachable (modeled); CN8 trade table, register
+  identity counts with deduped union, depth-matrix completion, pool
+  model v0, source census, test-data staging DB. Improves on v0.2.1's
+  goals/methodology without pulling v0.3 forward. Grounded by the
+  v0.2.1 review findings (2026-09-14). Design converged 2026-09-14
+  (units/v0.2.2.md, fu1–fu10; CEO review HOLD SCOPE c1–c6; ENG review
+  BIG CHANGE e1–e8); implementation plans drafted
+  (30_IMPLEMENTATION/v0.2.2/, PHASE01–07); build awaits explicit go.
 - **v0.3 (goal noted 2026-09-12, D32; the D32 vanilla-Windows
   distribution goal):** easy install on **vanilla Windows** (no make,
   no preinstalled Python) via a self-contained per-OS artifact; PyPI
@@ -534,3 +545,10 @@ source expansion and the EuPCS↔CN8 and PRODCOM↔CN8 gaps. Design may
 proceed on: recon probe shape for the new AS/ST rows, capability-profile
 fields and migration, Comext/PRODCOM CN8 aggregation, source-capability
 matrix layout, N2 numerator assembly.
+
+For unit v0.2.2: strategy is DRAFT (D34, this document) — the funnel
+framing and the staging-DB / runtime-budget decisions confirmed
+2026-09-14. Design converged the same day (units/v0.2.2.md, fu1–fu10;
+CEO HOLD SCOPE c1–c6; ENG BIG CHANGE e1–e8 folded); implementation
+plans written (30_IMPLEMENTATION/v0.2.2/, PHASE01–07); build awaits
+explicit go. Grounded by the v0.2.1 review findings.

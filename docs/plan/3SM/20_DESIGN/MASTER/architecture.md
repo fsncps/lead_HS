@@ -452,6 +452,37 @@ Test strategy, matrix and key tests: testing.md.
 - a24: capability report — od8 extension: capability matrix + derived
   real-product-source predicate + preliminary N2-numerator line
   (report-time derivations, nu5 precedent; i18; v0.2.1).
+- a25: staging ingest path (v0.2.2, e1/e4) — staged rows flow in
+  `ProbeResult`; engine writes staging first, then evidence, per
+  source; SQLite cannot transaction across the two files, so recovery
+  is the idempotent per-(source_id, run_key) replace on re-run, never
+  silent drift; run-close metric derivation from staging rows for
+  staged sources (metrics == staging by construction); new modules
+  `leadhs/staging.py`, `leadhs/normalize.py`, `leadhs/xlsx.py` (adapters.py
+  absorbs none of them); one shared CSV-shape helper (encoding/BOM +
+  header validation) + one `_sniff` gate (content-type + first bytes)
+  for every export consumer; `_depth_tier` moves to the shared
+  helpers; ident/manufacturer staging columns TEXT with explicit
+  cast (leading zeros survive) (i19).
+- a26: wave harness (v0.2.2, e2/e6) — waves at the CLI/Make layer:
+  (mode, source filter, budget) presets; `run_all` gains a generalized
+  source-selection parameter; `probe run --wave/--budget/--staging-db`
+  options; `make landscape` GO=1; the engine gains no budget concept;
+  Comext per-CN8 × flow batches (~39 payloads, per-query timeout +
+  retry), PRODCOM bulk TSV; disposition invariant test-backed (i20).
+- a27: identity matching (v0.2.2, fu7) — normalization (casefold,
+  diacritic fold, legal-form strip, punctuation) at ingest into
+  normalized staging columns; overlap/union = SQL over staging
+  (no report-time matching layer); exact normalized match only in
+  the ECAT ∩ Nordic Swan pilot (no fuzzy matching), ident_basis
+  fallback flag; containment + Jaccard, calibration-only.
+- a28: landscape report (v0.2.2, fu9/e5) — od8 extension: funnel
+  summary (Q1 range / Q2 floor / Q3 reach, epistemic labels, v0.5
+  ratio formula) + CN8 trade table + identity table + complete depth
+  matrix + SDS-URL counts + pool model v0 + source census; report
+  takes an optional staging path, staging sections render
+  conditionally with an explicit absence note; reconciliation
+  failures render as visible flags on the affected numbers.
 
 ## OPEN ITEMS
 

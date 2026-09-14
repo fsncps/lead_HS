@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import os
 import sys
+import time as _timemod
 from dataclasses import dataclass
 from typing import Optional
 
@@ -190,8 +191,11 @@ def list_(ctx, class_code):
 @click.option("--mode", "mode", type=click.Choice(["census", "format_check", "access_check", "recon", "capability"]), default="census")
 @click.option("--sample", "sample_n", type=int, default=5, help="PE sample-page count")
 @click.option("--dry-run", is_flag=True, help="plan requests; zero network calls")
+@click.option("--wave", "wave", type=click.IntRange(1, 4), default=None, help="v0.2.2 wave preset (1 bulk exports / 2 register completion / 3 PE universe / 4 manual checklist)")
+@click.option("--budget", "budget", type=int, default=None, help="wave budget in seconds (default 3600)")
+@click.option("--staging-db", "staging_db", default=None, help="staging DB path (default: data/testdata.sqlite; i19)")
 @click.pass_context
-def run(ctx, source_id, all_sources, mode, sample_n, dry_run):
+def run(ctx, source_id, all_sources, mode, sample_n, dry_run, wave, budget, staging_db):
     """One probe run per source; exit 2 when any run ended blocked/failed."""
     from . import db as dbmod, fetch as fetchmod, store as storemod
     from . import source as sourcemod
@@ -200,6 +204,9 @@ def run(ctx, source_id, all_sources, mode, sample_n, dry_run):
 
     rt = _runtime(ctx)
     _ensure_initialized(ctx, rt)
+    if wave is not None:
+        _run_wave(ctx, rt, probeengine, wave=wave, budget=budget, staging_db=staging_db, dry_run=dry_run, sample_n=sample_n)
+        return
     if not source_id and not all_sources:
         click.echo("error: give --source ID or --all", err=True)
         ctx.exit(1)
@@ -212,7 +219,12 @@ def run(ctx, source_id, all_sources, mode, sample_n, dry_run):
     fetcher = fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger)
     try:
         if all_sources:
-            summaries, exit_code = probeengine.run_all(conn, store, fetcher, mode=mode, sample_n=sample_n, dry_run=dry_run, logger=rt.logger)
+            # e2: the capability sweep is the classes=["AS"] preset of the
+            # generalized run filter, applied at this layer
+            summaries, exit_code = probeengine.run_all(
+                conn, store, fetcher, mode=mode, sample_n=sample_n, dry_run=dry_run,
+                logger=rt.logger, classes=["AS"] if mode == "capability" else None,
+            )
             if not summaries:
                 click.echo("no sources (register empty or no active adapter-backed sources)")
                 ctx.exit(0)
@@ -236,6 +248,96 @@ def run(ctx, source_id, all_sources, mode, sample_n, dry_run):
         ctx.exit(exit_code)
     finally:
         conn.close()
+
+
+# v0.2.2 wave presets (i20): (mode, source ids / class, label). W1 = bulk
+# official exports; W2 = register completion (manual fallback built in);
+# W3 = PE universe recon; W4 = manual-record checklist (no fetches).
+_WAVE_PRESETS = {
+    1: {"mode": "capability", "ids": ["AS-2", "AS-3", "AS-4", "ST-4", "CS-2"], "label": "bulk official exports"},
+    2: {"mode": "capability", "ids": ["AS-5", "AS-6", "AS-7", "AS-8", "AS-9", "AS-10"], "label": "register completion"},
+    3: {"mode": "recon", "classes": ["PE"], "label": "PE universe recon"},
+    4: {"mode": None, "ids": None, "manual": True, "label": "manual records & LI checklist"},
+}
+
+_now = _timemod.monotonic  # module-level for the virtual-clock tests
+
+
+def _run_wave(ctx, rt, probeengine, wave, budget, staging_db, dry_run, sample_n):
+    from . import db as dbmod, fetch as fetchmod, staging as stagingmod, store as storemod
+    from . import source as sourcemod
+    from .fetch import FetchConfig
+
+    preset = _WAVE_PRESETS[wave]
+    budget = budget if budget is not None else 3600
+    conn = dbmod.connect(rt.db_path)
+    store = storemod.RawStore(rt.store_root())
+    staging_path = staging_db or "data/testdata.sqlite"
+    staging_conn = stagingmod.connect(staging_path)
+    stagingmod.init(staging_conn)
+    stagingmod.seed_dict(staging_conn)
+    fetcher = fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger)
+    try:
+        click.echo(f"wave {wave} — {preset['label']} (budget {budget}s, staging {staging_path})")
+        if preset.get("manual"):
+            # W4: the terminal-disposition checklist over the studied
+            # subset — active rows of any class, plus manual-access rows
+            # even when inactive (associations/LI lists). Inactive
+            # non-manual rows are deliberately retired/capped (i13/D31
+            # notes) and stay outside the invariant. Never fetch.
+            todo = []
+            for s in sourcemod.all_sources(conn, active_only=False):
+                if not s.active and s.access_method_code != "manual":
+                    continue
+                disp = probeengine.disposition_of(conn, s.id, staging=staging_conn)
+                if disp["disposition"] not in ("counted", "manual-recorded", "blocked"):
+                    todo.append((s.id, disp["disposition"]))
+            if not todo:
+                click.echo("checklist: nothing outstanding")
+                ctx.exit(0)
+            for sid, disp in todo:
+                click.echo(f"  record manually: probe record --source {sid} --metric … ({disp})")
+            ctx.exit(2)
+        if preset.get("ids") is not None:
+            wanted = [s for s in sourcemod.all_sources(conn, active_only=False) if s.id in set(preset["ids"])]
+        else:
+            wanted = [s for s in sourcemod.all_sources(conn, active_only=True) if s.class_code in set(preset["classes"])]
+        wanted = [s for s in wanted if probeengine.adaptersmod.get_adapter(s) and s.access_method_code != "manual"]
+        start = _now()
+        incomplete = False
+        exit_code = 0
+        for source in wanted:
+            if not dry_run and _now() - start > budget:
+                click.echo(f"budget exhausted before {source.id} — resumable (re-run the wave)", err=True)
+                incomplete = True
+                break
+            summary = probeengine.run_one(
+                conn, store, fetcher, source, mode=preset["mode"],
+                sample_n=sample_n, dry_run=dry_run, logger=rt.logger, staging=staging_conn,
+            )
+            disp = probeengine.disposition_of(conn, source.id, staging=staging_conn)
+            click.echo(
+                f"  {source.id:<6} {summary['status']:<8} staged={summary.get('staged', 0)}+{summary.get('staged_trade', 0)} "
+                f"disposition={disp['disposition']}"
+            )
+            if summary["status"] in ("blocked", "failed"):
+                exit_code = 2
+        # c1 invariant: after a COMPLETED wave, no row left pending or
+        # format-finding (a budget-exhausted wave is resumable, not failed)
+        if not incomplete:
+            disps = probeengine.dispositions(conn, [s.id for s in wanted], staging=staging_conn)
+            outstanding = {i: d for i, d in disps.items() if d["disposition"] in ("pending", "format-finding")}
+            for i, d in outstanding.items():
+                click.echo(f"invariant: {i} disposition={d['disposition']} ({d['detail']})", err=True)
+            if outstanding:
+                exit_code = 2
+            click.echo(
+                "dispositions: " + ", ".join(f"{i}={d['disposition']}" for i, d in sorted(disps.items()))
+            )
+        ctx.exit(exit_code)
+    finally:
+        conn.close()
+        staging_conn.close()
 
 
 @probe.command()
@@ -276,18 +378,28 @@ def record(ctx, source_id, metric, value, value_text, unit, url, document_file, 
 @click.option("--source", "source_id", default=None, help="restrict to one source")
 @click.option("--format", "fmt", type=click.Choice(["md", "csv", "json"]), default="md")
 @click.option("--out", "out_path", default=None, help="write to file (else stdout)")
+@click.option("--staging-db", "staging_db", default=None,
+              help="staging DB path for the landscape sections (default: data/testdata.sqlite if present; i19)")
 @click.pass_context
-def report(ctx, source_id, fmt, out_path):
+def report(ctx, source_id, fmt, out_path, staging_db):
     """Render the census report from the views (md/csv/json)."""
     from . import db as dbmod, report as reportmod
 
     rt = _runtime(ctx)
     _ensure_initialized(ctx, rt)
+    if staging_db is None and os.path.exists("data/testdata.sqlite"):
+        staging_db = "data/testdata.sqlite"
+    staging_conn = None
+    if staging_db:
+        from . import staging as stagingmod
+        staging_conn = stagingmod.connect(staging_db)
     conn = dbmod.connect(rt.db_path)
     try:
-        output = reportmod.render(conn, format=fmt, source_id=source_id)
+        output = reportmod.render(conn, format=fmt, source_id=source_id, staging_conn=staging_conn)
     finally:
         conn.close()
+        if staging_conn is not None:
+            staging_conn.close()
     if out_path:
         os.makedirs(os.path.dirname(os.path.abspath(out_path)) or ".", exist_ok=True)
         with open(out_path, "w", encoding="utf-8") as fh:

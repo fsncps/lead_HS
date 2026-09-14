@@ -84,81 +84,67 @@ Dokumentstudie und bezieht keine Position zur Regelung selbst. Die
 Schweiz kommt in der Studie nur als dieser regulatorische Rahmen vor —
 untersuchter Markt ist der EU-Markt.
 
-## Aktueller Stand: Datenlandschaft-Karte (v0.2.0) + Quellenfähigkeit (v0.2.1)
+## Aktueller Stand: der Drei-Fragen-Trichter (v0.2.2)
 
-Bevor irgendwelche Produktdaten gesammelt werden, kartiert die Studie
-ihre **Datenlandschaft**: welche Quellen den EU-Farbenmarkt abdecken,
-in welcher Grössenordnung, und mit welchem Zugang zur
-Produktdokumentation. Diese Karte ist gebaut und die drei
-Leitgrössen sind dokumentiert. Jedes Ergebnis, inklusive
-Zugangsverweigerungen, ist mit seiner Ursache protokolliert, und die
-Provenienzprüfung der Datenbank besteht.
+Die Einheit v0.2.2 hat die **Landschaftsläufe im echten Netz**
+ausgeführt (14.09.2026; nur Erkundung — amtliche Exporte/APIs, kein
+Scraping) und den **Drei-Fragen-Trichter** zusammengestellt — jede
+Zahl ein Datenbank-Abfrageergebnis:
 
-Die Sondierungsrunde vom 12. September 2026 erfasste die registrierten
-Quellen (amtliche Statistiken, ein Branchen- und Industrieverband sowie
-25 Farben-/Beschichtungs-/Heimwerker-/Künstlerfarben-Seiten). **N1, N2
-und N3** stehen im
-[Sondierungsbericht](docs/report/probe-report.md) und sind hier
-zusammengefasst:
+- **F1 — wie viele Farben auf dem EU-Markt (modellierte Schätzung):**
+  das Poolmodell `P(cn8) = M × ppp × s(cn8)` liefert **[85'840–343'360]
+  Produkte** — Hersteller-Grenzen 800 (CEPE) bis 3'200 (Eurostat SBS
+  NACE 20.30) × **107,3 Produkte je Hersteller** (ECAT: Paare ÷
+  Lizenznehmer) × mengengewichte der gestützten Ausseneinfuhr je
+  CN8-Code. Eine modellierte Schätzung, nie eine Zählung.
+- **F2 — für wie viele Produkte das Identitäts-Tripel definitiv
+  bekannt ist (Untergrenze):** **17'170** unterscheidbare
+  (Hersteller, Produkt-Ident)-Paare über die gestützten amtlichen
+  Register (ECAT: 17'838 Einträge, 160 Lizenznehmer, 16,0 %
+  Identitätsvollständigkeit).
+- **F3 — für wie viele davon ein SDB-artiges Dokument erreichbar ist
+  (modelliert):** **3'590** (Obergrenze; die Trefferquoten-Annahme
+  steht noch aus). Das v0.5-Verhältnis (F2 ÷ F1) liegt bei
+  **0,05–0,2**.
 
-- **N1 — wie viele Farben sind auf dem EU-Markt:** eine Grössenordnung
-  aus amtlichen Statistiken. Die Handels-Anker 2024 (Eurostat Comext,
-  EU-Ausseneinfuhren, DS-045409) beziffern **HS 3208 auf rund 2,5 Mio. t
-  (rund 12,2 Mrd. €)** und **HS 3209 auf rund 2,1 Mio. t (rund 6,2 Mrd.
-  €)**. Register-Anker für die Anbieterseite: CEPE vertritt rund 800
-  Mitgliedsunternehmen, Eurostat SBS zählt 3.200 Unternehmen in der
-  NACE 20.30 (2020, Farben + Druckfarben + Kitte). Der
-  Grössenordnungsbereich selbst bleibt eine **Schätzung** — der Bericht
-  nennt die Anker und die Methode, nie eine einzelne Zahl als Fakt.
-- **N2 — für wie viele Produkte haben wir Zugang zu Daten in
-  irgendeiner Form:** **204.693** Produkt-URLs beobachtet über **23**
-  gezählte Quellen (über Sitemaps sichtbar; eine Untergrenze, dominiert
-  von wenigen grossen Heimwerker-Katalogen).
-- **N3 — für wie viele davon lassen sich detaillierte Spezifikationen
-  wie ein SDB beschaffen:** **9** Webseiten bieten sichtbar eine
-  SDB-/Dokumentbibliothek (eine Seitenzahl, keine Produktzahl); es
-  wurden noch keine Produktdokumente gesammelt — das wartet auf die
-  Sammel-Freigabe.
+Das 101 Zeilen umfassende Quellenregister ist vollständig
+dispositioniert: **36 gezählt, 48 manuell dokumentiert, 4 blockiert,
+13 inaktiv per Design**; die Comext-Unterlage deckt **alle 13
+CN8-Codes** ab (6'316 Handelszeilen). Der ECAT ∩ Nordic-Swan-
+Überlappungspilot bleibt ausdrücklich unbestimmbar, bis ein zweites
+Register gestützt ist. Einheitsbericht:
+[report-0.2.2.md](docs/report/report-0.2.2.md); maschinenlesbare
+Tabellen (CN8-Handel, Identität, Tiefenmatrix, Kapitel,
+Abstimmungskennzeichen) im
+[Sondierungsbericht](docs/report/probe-report.md).
 
-Methode in dieser Phase: ausschliesslich Erkundung —
-Nutzungs- und Zugangsbedingungen, Verfügbarkeit von APIs oder
-Downloads, Zählung der Produkt-URLs in Sitemaps, manuelle Prüfungen.
-Katalogdurchläufe und jede Sammlung auf Produktebene warten auf eine
-separate Freigabe. Die nordischen Register bleiben offen (SPIN in
-dieser Runde nicht erreichbar).
+## Frühere Einheiten
 
-### Quellenfähigkeit sondiert (v0.2.1, gebaut am 14.09.2026)
+### v0.2.1 — Quellenfähigkeit sondiert (14.09.2026)
 
-Die Datenlandschaft-Karte (v0.2.0) hat die Quellen gezählt; v0.2.1
-geht bei den **amtlichen Registern** eine Ebene tiefer — die
-Ökolabel- und EPD-Registrierungen, die Produktdaten zu Farben
-veröffentlichen — und charakterisiert jede davon gegen das
-Produktmodell der Studie (CN8-Code, Hersteller, Hersteller-
-Produktidentifikation), nach Umfang und Tiefe. Die
-Fähigkeitsprofile stehen im
-[Sondierungsbericht](docs/report/probe-report.md) (Abschnitt
-«Capability profile»).
+Eine Ebene tiefer bei den **amtlichen Registern** (EU Ecolabel, Nordic
+Swan, Blauer Engel, INIES, IBU, environdec), jede charakterisiert
+gegen das Produktmodell (CN8, Hersteller, Produkt-Ident) nach Umfang
+und Tiefe. **ECAT als real-Produktquelle bestätigt** (Hersteller +
+GTIN/EAN, CN8 über Kategorie, Tiefe 2, herunterladbares CSV);
+vorläufiger N2-Zähler **17.838** zertifizierte Farbprodukte — eine
+Untergrenze, nie eine Marktzahl. Die übrigen Register blieben
+Export-zu-verankern / inaktiv / ohne Produkt-Ident; der
+HTML-als-CSV-Defekt dieser Runde wurde in v0.2.2 behoben. Details:
+[report-0.2.1.md](docs/report/report-0.2.1.md).
 
-- Das Register umfasst nun **7 amtliche Register** (AS-1–AS-7): das
-  EU-Ecolabel-Katalog (ECAT), Nordic Swan, Blauer Engel, INIES, IBU
-  und environdec sowie AS-1. Vier sind aktiv; Blauer Engel und INIES
-  sind inaktiv (nur XLSX bzw. zugangsgeschützt).
-- Die Landingpage jedes aktiven Registers ist HTML — die Exporte sind
-  als **Export-URL zu verankern** für den nächsten Durchlauf
-  dokumentiert, ehrlich protokolliert statt als Export fehlgelesen.
-- **Ein Register ist als real-Produktquelle bestätigt:** das
-  **EU-Ecolabel-Katalog (ECAT)** — es weist ein Herstellerfeld, ein
-  Produktidentifikationsfeld (GTIN/EAN), einen CN8-Verweis (Kategorie)
-  und Datentiefe 2 auf; sein CSV-Export ist herunterladbar.
-- **Vorläufiger N2-Zähler (amtliche Register, Untergrenze): 17.838**
-  Farben & Lacke sowie Performance-Beschichtungen aus dem ECAT
-  (16.001 + 1.817 Produkte nach den Kriterien 2014 und 2025, plus 20
-  Performance-Beschichtungen). Das ist eine **zertifizierte/
-  deklarierte Teilmenge** des Marktes — eine Untergrenze, nie eine
-  Marktzahl, und Produktdaten warten weiterhin auf die Sammel-Freigabe.
-- Die übrigen aktiven Register sind noch keine real-Produktquellen:
-  environdec weist einen Hersteller, aber keine Produktidentifikation
-  aus; Nordic Swan und IBU sind Export-zu-verankern.
+### v0.2.0 — Datenlandschaft-Karte (12.09.2026)
+
+Nur-Erkundung-Sondierung der registrierten Quellen (amtliche
+Statistiken, ein Branchen- und Industrieverband sowie 25
+Farben-/Beschichtungs-/Heimwerker-/Künstlerfarben-Seiten). Leitgrössen:
+**N1** Markt-Anker (2024, EU-Ausseneinfuhren: HS 3208 ≈2,5 Mio. t /
+≈12,2 Mrd. €, HS 3209 ≈2,1 Mio. t / ≈6,2 Mrd. €; CEPE ≈800 Mitglieder;
+SBS NACE 20.30 = 3.200 Unternehmen); **N2 = 204.693** per Sitemap
+sichtbare Produkt-URLs über 23 gezählte Quellen; **N3 = 9** Webseiten
+mit sichtbarer SDB-Bibliothek; die nordischen Register blieben offen
+(SPIN nicht erreichbar). Details:
+[report-0.2.0.md](docs/report/report-0.2.0.md).
 
 ## Was frühere Recherchen zeigen
 
@@ -221,7 +207,7 @@ begutachtete technische Design in
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0 und v0.2.1 gebaut) — Phasenverfolgung, Abnahme-Gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0–v0.2.2 gebaut) — Phasenverfolgung, Abnahme-Gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
@@ -250,12 +236,15 @@ begutachtete technische Design in
 
 ## Status
 
-Die Werkzeug-Einheiten v0.1.1–v0.2.1 sind gebaut und getestet (231
+Die Werkzeug-Einheiten v0.1.1–v0.2.2 sind gebaut und getestet (299
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
 Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
 Katalogdurchläufe (wartet auf eine Sammel-Freigabe), die
-Datenlandschaft-Karte mit den drei Leitgrössen sowie die
-Quellenfähigkeits-Sondierung der amtlichen Register. Die Sondierungsrunde
-lief am 12. September 2026; der Bericht ist unter `docs/report/`
-veröffentlicht. Die Methodik bleibt offen für Revision, während
-Ergebnisse eintreffen.
+Datenlandschaft-Karte mit den drei Leitgrössen, die
+Quellenfähigkeits-Sondierung der amtlichen Register sowie der
+Drei-Fragen-Trichter im echten Netz (14.09.2026): Staging-Datenbank,
+Wellen-Ausführung, vollständige Disposition des 101-Zeilen-Registers
+und der Bericht mit Trichter-, CN8-Handels-, Identitäts-, Tiefen- und
+Kapitel-Abschnitten — jede Zahl ein Abfrageergebnis. Der Bericht ist
+unter `docs/report/` veröffentlicht. Die Methodik bleibt offen für
+Revision, während Ergebnisse eintreffen.

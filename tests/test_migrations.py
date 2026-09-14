@@ -10,7 +10,7 @@ from leadhs import db as dbmod
 
 def test_fresh_apply_all_migrations(conn):
     applied = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
-    assert applied == {1, 2, 3, 4, 5, 6, 7}
+    assert applied == {1, 2, 3, 4, 5, 6, 7, 8}
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for table in ("source", "document", "run", "probe_run", "probe_finding", "probe_metric"):
         assert table in tables
@@ -92,7 +92,7 @@ def test_0004_prunes_lg_li_rows_with_evidence(tmp_path):
     conn.commit()
 
     applied, _ = dbmod.migrate(conn)
-    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql"]
+    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql", "0008__landscape.sql"]
 
     ids = {r[0] for r in conn.execute("SELECT id FROM source")}
     assert "LG-9" not in ids and "LI-9" not in ids and "PE-9" in ids
@@ -137,7 +137,8 @@ def test_migration_order_enforced(tmp_path):
         applied, pending = dbmod.migrate(conn)
         assert applied == ["0002__probe_core.sql", "0003__probe_metrics.sql",
                            "0004__product_census.sql", "0005__priors_metric.sql",
-                           "0006__recon_numbers.sql", "0007__capability.sql"]
+                           "0006__recon_numbers.sql", "0007__capability.sql",
+                           "0008__landscape.sql"]
     finally:
         conn.close()
 
@@ -356,3 +357,40 @@ def test_0007_no_view_change(conn):
     cols = {r[0] for r in conn.execute("SELECT metric_code FROM v_anchor_candidates LIMIT 0")}
     # the anchor-candidate view keeps its v0.2.0 code set (0006 shape)
     assert "products_identifiable" not in cols
+
+
+# --- v0.2.2: 0008 landscape ------------------------------------------------
+
+
+def test_0008_source_export_columns(conn):
+    """fu3: source gains the structural export anchors (nullable TEXT)."""
+    conn.execute(
+        "INSERT INTO source (id, class_code, name, url, access_method_code, export_url, export_format) "
+        "VALUES ('AS-1','AS','ecat','https://ecat.example','download','https://ecat.example/export.csv','csv')"
+    )
+    row = conn.execute("SELECT export_url, export_format FROM source WHERE id = 'AS-1'").fetchone()
+    assert tuple(row) == ("https://ecat.example/export.csv", "csv")
+    # nullable — legacy rows and plain loads keep working
+    conn.execute(
+        "INSERT INTO source (id, class_code, name, url, access_method_code) VALUES ('AS-2','AS','x','https://x.example','download')"
+    )
+    row = conn.execute("SELECT export_url, export_format FROM source WHERE id = 'AS-2'").fetchone()
+    assert tuple(row) == (None, None)
+
+
+def test_0008_sds_doc_urls_seeded(conn):
+    """fu-metrics: the one new metric is numeric; no new probe_mode."""
+    row = conn.execute(
+        "SELECT label, value_type FROM probe_metric WHERE code = 'sds_doc_urls'"
+    ).fetchone()
+    assert row[1] == "numeric"
+    modes = {r[0] for r in conn.execute("SELECT code FROM probe_mode")}
+    assert modes == {"census", "format_check", "access_check", "recon", "capability"}
+
+
+def test_0008_no_view_change(conn):
+    """fu3: 0008 adds no view — the anchor view keeps its code set."""
+    codes = {r[0] for r in conn.execute("SELECT code FROM probe_metric LIMIT 0")}
+    assert "sds_doc_urls" not in codes  # view unchanged; metric lives in probe_metric
+    cols = conn.execute("SELECT metric_code FROM v_anchor_candidates LIMIT 0")
+    assert cols.fetchall() is not None

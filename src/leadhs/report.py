@@ -72,7 +72,7 @@ _CENSUS_STATUS_COLUMN = "census_status"
 
 SECTIONS = {
     "access": ("robots", "terms", "rate_limit", "access_blocked", "robots_denied"),
-    "content": ("format", "granularity", "coverage_years", "languages", "category_list", "extraction_path", "census_status"),
+    "content": ("format", "granularity", "coverage_years", "languages", "category_list", "extraction_path", "census_status", "sds_doc_urls"),
     "counts": (
         "catalog_count", "category_count", "export_rows",
         "records_hs3208", "records_hs3209", "records_hs3213",
@@ -164,6 +164,318 @@ N2_NUMERATOR_CAVEAT = (
     "registers are certified/declared subsets of the market, never a "
     "market total — a floor, cited to the run it comes from."
 )
+
+# v0.2.2 PHASE06: the three-question funnel landscape (od8 extension).
+# Staging sections render conditionally (e5); reconciliation failures
+# render as visible flags, never silence (c4).
+STAGING_ABSENT_NOTE = (
+    "Staging DB not provided or empty — the funnel floor, CN8 trade "
+    "table, identity table and per-CN8 pool split render as explicit "
+    "absence notes (e5). Re-run the W1 waves with the staging DB to "
+    "populate them."
+)
+
+FU8_TIER_LABELS = {
+    1: "name only",
+    2: "name + ident/licence + category (registry metadata, no technical data)",
+    3: "adds technical performance data / downloadable tech docs (SDS/TDS links)",
+    4: "standardized full documents (EPD declarations; IATA/CMR MSDS)",
+}
+
+# Pool model v0 constants (design: producer count bounds; the share s
+# comes from the staged Comext kg per CN8). "Modeled estimate" labels
+# throughout; pure arithmetic at report time.
+POOL_M_LOW = 800
+POOL_M_LOW_SOURCE = "CEPE member count (AS-11 manual record)"
+POOL_M_HIGH = 3200
+POOL_M_HIGH_SOURCE = "Eurostat SBS NACE 20.30 enterprise count (ST-3 prior)"
+POOL_FORMULA = "P(cn8) = M × ppp × s(cn8)"
+
+# The overlap pilot pair (calibration-only label per design c5).
+OVERLAP_PAIR = ("AS-2", "AS-3")
+OVERLAP_LABEL = "ECAT ∩ Nordic Swan (calibration-only)"
+
+# Register sources whose staged categories are criteria classes, not
+# CN8 codes — the per-CN8 observed-products proxy is not pinnable.
+_CN8_PROXY_NOTE = (
+    "per-CN8 observed-products floor not computable from staging: the "
+    "staged register categories are criteria classes, not CN8 codes — "
+    "the category→CN8 proxy mapping is not pinnable in v0.2.2 (caveat "
+    "recorded in PHASE05)."
+)
+
+
+def _q2_union(stg) -> dict:
+    """Q2 floor: distinct (manufacturer_norm, ident_norm) pairs over all
+    staged registers (union; replace semantics keep only latest runs)."""
+    row = stg.execute(
+        "SELECT COUNT(DISTINCT manufacturer_norm || '||' || ident_norm), "
+        "COUNT(DISTINCT manufacturer_norm) FROM stg_register_product"
+    ).fetchone()
+    per_source = [
+        dict(source_id=r[0], pairs=r[1], entries=r[2])
+        for r in stg.execute(
+            "SELECT source_id, COUNT(DISTINCT manufacturer_norm || '||' || ident_norm), "
+            "COUNT(*) FROM stg_register_product GROUP BY 1 ORDER BY 1"
+        ).fetchall()
+    ]
+    return {"distinct_pairs": row[0] or 0, "distinct_manufacturers": row[1] or 0, "per_source": per_source}
+
+
+def _overlap_pilot(stg, ids=OVERLAP_PAIR) -> dict:
+    """ECAT ∩ Nordic containment + Jaccard on normalized pairs — only
+    when both registers are staged; else an explicit zero-state."""
+    sets = {}
+    for sid in ids:
+        rows = stg.execute(
+            "SELECT DISTINCT manufacturer_norm || '||' || ident_norm "
+            "FROM stg_register_product WHERE source_id=?", (sid,)
+        ).fetchall()
+        sets[sid] = {r[0] for r in rows}
+    missing = [sid for sid, s in sets.items() if not s]
+    if missing:
+        return {"computed": False, "note": f"overlap pilot not computable — no staged pairs for {', '.join(missing)}"}
+    a, b = sets[ids[0]], sets[ids[1]]
+    inter = len(a & b)
+    smaller = min(len(a), len(b)) or 1
+    return {
+        "computed": True,
+        "a_id": ids[0], "a_pairs": len(a), "b_id": ids[1], "b_pairs": len(b),
+        "intersection": inter,
+        "containment": round(inter / smaller, 4),
+        "jaccard": round(inter / len(a | b), 4) if a | b else 0.0,
+        "label": OVERLAP_LABEL,
+    }
+
+
+def _cn8_trade(stg) -> dict:
+    """G3/G4: per-CN8 extra-EU import/export sums (kg, EUR) from the
+    staged trade rows; flow-code caveat + proxy note carried."""
+    flows = {r[0] for r in stg.execute("SELECT DISTINCT flow FROM stg_trade_cn8").fetchall()}
+    rows = []
+    for r in stg.execute(
+        "SELECT cn8, flow, SUM(kg), SUM(eur), COUNT(*) FROM stg_trade_cn8 "
+        "GROUP BY 1, 2 ORDER BY 1, 2"
+    ).fetchall():
+        rows.append({"cn8": r[0], "flow": r[1], "kg": r[2], "eur": r[3], "rows": r[4]})
+    verified = stg.execute("SELECT COUNT(*) FROM dict_cn8 WHERE verified=1").fetchone()[0]
+    dict_total = stg.execute("SELECT COUNT(*) FROM dict_cn8").fetchone()[0]
+    return {
+        "rows": rows,
+        "flows_seen": sorted(flows),
+        "dict_verified": verified,
+        "dict_total": dict_total,
+        "flow_caveat": (
+            None if verified == dict_total and dict_total
+            else "intra-EU flow codes not verified — flow labels are provisional"
+        ),
+        "cn8_proxy_note": _CN8_PROXY_NOTE,
+    }
+
+
+def _identity(stg, entries: list) -> dict:
+    """G2/G5: per staged register — entries, distinct manufacturers,
+    distinct pairs, identity completeness, category distribution."""
+    from .staging import count_products, product_aggregates
+    registers = []
+    runs = {
+        r[0]: r[1]
+        for r in stg.execute("SELECT source_id, MAX(run_key) FROM stg_register_product GROUP BY 1").fetchall()
+    }
+    for sid, run_key in sorted(runs.items()):
+        agg = product_aggregates(stg, sid, run_key)
+        registers.append({"source_id": sid, "run_key": run_key, "entries": count_products(stg, sid, run_key), **agg})
+    q2 = _q2_union(stg)
+    return {"registers": registers, "union": q2, "overlap": _overlap_pilot(stg)}
+
+
+def _depth(entries: list) -> dict:
+    """G1 (fu8 refined tiers) + G6 per-PE SDS-URL counts. Tiers derived
+    from what the evidence actually carries; nothing asserted."""
+    counts = {1: 0, 2: 0, 3: 0, 4: 0}
+    members = {1: [], 2: [], 3: [], 4: []}
+    sds_counts = []
+    for e in entries:
+        tier = None
+        cap = e.get("capability", {})
+        if cap.get("cap_depth_tier") not in (None, "\u2014"):
+            try:
+                tier = int(cap["cap_depth_tier"])
+            except (TypeError, ValueError):
+                tier = None
+        if tier is None and e.get("sections", {}).get("priors"):
+            for r in e["sections"]["priors"]:
+                if r["metric_code"] == "sitemap_products" and (r.get("value_numeric") or 0) > 0:
+                    tier = 1
+        if tier in counts:
+            counts[tier] += 1
+            members[tier].append(e["id"])
+        for r in e.get("sections", {}).get("content", []):
+            if r["metric_code"] == "sds_doc_urls" and (r.get("value_numeric") or 0) > 0:
+                sds_counts.append({"source_id": e["id"], "sds_doc_urls": r["value_numeric"], "run_key": r.get("run_key")})
+    return {
+        "tier_labels": {str(k): v for k, v in FU8_TIER_LABELS.items()},
+        "tier_counts": {str(k): v for k, v in counts.items()},
+        "tier_members": {str(k): v for k, v in members.items()},
+        "sds_counts": sorted(sds_counts, key=lambda d: -d["sds_doc_urls"]),
+        "note": "tier 4 is assigned only from recorded capability metrics (standardized-doc sources are manual records — capability not probed); absence of a tier is not a zero claim",
+    }
+
+
+def _census_sections(conn, entries: list) -> dict:
+    """G7: class × channel; enumerated vs probed vs counted."""
+    classes = [
+        dict(class_code=r[0], channel=r[1], n=r[2])
+        for r in conn.execute(
+            "SELECT class_code, access_method_code, COUNT(*) FROM source "
+            "GROUP BY 1, 2 ORDER BY 1, 2"
+        ).fetchall()
+    ]
+    probed = {e["id"] for e in entries if e.get("run")}
+    counted_ids = {e["id"] for e in entries if e.get("counted") is not None}
+    return {
+        "class_channel": classes,
+        "enumerated": conn.execute("SELECT COUNT(*) FROM source").fetchone()[0],
+        "probed": len(probed),
+        "counted": len(counted_ids),
+    }
+
+
+def _reconcile(stg, entries: list) -> list:
+    """c4: metric vs staging count per staged register; every mismatch
+    renders as a visible flag."""
+    flags = []
+    runs = {
+        r[0]: r[1]
+        for r in stg.execute("SELECT source_id, MAX(run_key) FROM stg_register_product GROUP BY 1").fetchall()
+    }
+    for e in entries:
+        sid = e["id"]
+        metric = None
+        for r in e.get("sections", {}).get("priors", []):
+            if r["metric_code"] == "products_registered":
+                metric = r.get("value_numeric")
+        if sid in runs:
+            n = stg.execute(
+                "SELECT COUNT(*) FROM stg_register_product WHERE source_id=? AND run_key=?",
+                (sid, runs[sid]),
+            ).fetchone()[0]
+            if metric is not None and metric != n:
+                flags.append({
+                    "source_id": sid, "kind": "mismatch",
+                    "detail": f"products_registered metric {metric} ≠ staged rows {n} (run {runs[sid]})",
+                })
+            elif metric is None:
+                flags.append({"source_id": sid, "kind": "ok",
+                              "detail": f"staged rows {n} (no products_registered metric — reconciled against the staged count, run {runs[sid]})"})
+            else:
+                flags.append({"source_id": sid, "kind": "ok", "detail": f"staged rows {n} == metric {metric} (run {runs[sid]})"})
+        elif metric is not None:
+            flags.append({"source_id": sid, "kind": "staging-absent", "detail": "metric present but no staged rows"})
+    trade_sources = [r[0] for r in stg.execute("SELECT DISTINCT source_id FROM stg_trade_cn8").fetchall()]
+    for sid in trade_sources:
+        n = stg.execute("SELECT COUNT(*) FROM stg_trade_cn8 WHERE source_id=?", (sid,)).fetchone()[0]
+        flags.append({"source_id": sid, "kind": "ok", "detail": f"{n} staged trade rows"})
+    return flags
+
+
+def _ppp(stg) -> Optional[float]:
+    """Products-per-producer estimate (v0): distinct pairs ÷ distinct
+    licence holders over the largest staged register — DB-cited."""
+    row = stg.execute(
+        "SELECT source_id, COUNT(DISTINCT manufacturer_norm || '||' || ident_norm), "
+        "COUNT(DISTINCT manufacturer_norm) FROM stg_register_product "
+        "GROUP BY 1 ORDER BY 2 DESC LIMIT 1"
+    ).fetchone()
+    if not row or not row[2]:
+        return None
+    return {"source_id": row[0], "pairs": row[1], "manufacturers": row[2],
+            "ppp": round(row[1] / row[2], 1)}
+
+
+def _funnel(stg, entries: list) -> dict:
+    """The three-question funnel (top section). Q1 range per the pool
+    model form with per-CN8 shares from staged trade; Q2 the staged
+    pair-union floor; Q3 modeled SDS reach (components DB-cited)."""
+    q2 = _q2_union(stg)["distinct_pairs"] if stg else None
+    ppp = _ppp(stg) if stg else None
+    shares = []
+    total_kg = stg.execute("SELECT SUM(kg) FROM stg_trade_cn8").fetchone()[0] if stg else None
+    if stg and total_kg:
+        for r in stg.execute(
+            "SELECT cn8, SUM(kg) FROM stg_trade_cn8 GROUP BY 1 ORDER BY 2 DESC"
+        ).fetchall():
+            share = r[1] / total_kg
+            shares.append({
+                "cn8": r[0], "kg": r[1], "share": round(share, 4),
+                "p_low": int(POOL_M_LOW * (ppp["ppp"] if ppp else 1) * share),
+                "p_high": int(POOL_M_HIGH * (ppp["ppp"] if ppp else 1) * share),
+            })
+    sds_reach = 0
+    for e in entries:
+        avail = {r["metric_code"]: r.get("value_numeric") for r in e.get("sections", {}).get("availability", [])}
+        if avail.get("sds_library_visible") != 1:
+            continue
+        for r in e.get("sections", {}).get("priors", []):
+            if r["metric_code"] == "sitemap_products":
+                sds_reach += r.get("value_numeric") or 0
+    if ppp:
+        q1_range = [int(POOL_M_LOW * ppp["ppp"]), int(POOL_M_HIGH * ppp["ppp"])]
+    else:
+        q1_range = None
+    funnel = {
+        "q1": {
+            "formula": POOL_FORMULA,
+            "m_bounds": [POOL_M_LOW, POOL_M_HIGH],
+            "m_low_source": POOL_M_LOW_SOURCE,
+            "m_high_source": POOL_M_HIGH_SOURCE,
+            "ppp": ppp,
+            "range": q1_range,
+            "shares": shares,
+            "label": "modeled estimate — never a DB count",
+            "absent": q1_range is None or not shares,
+        },
+        "q2": {
+            "value": q2,
+            "label": "definitively identifiable: N (floor) — distinct (manufacturer, ident) pairs over staged registers",
+            "absent": q2 is None,
+        },
+        "q3": {
+            "value": int(sds_reach) if sds_reach else None,
+            "label": "modeled SDS reach — Σ sitemap products over sites with a visible SDS library; match-rate assumption pending (upper bound shown)",
+            "absent": not sds_reach,
+        },
+        "ratio": {
+            "formula": "v0.5 ratio = Q2 ÷ Q1",
+            "low": round(q2 / q1_range[1], 4) if q2 and q1_range else None,
+            "high": round(q2 / q1_range[0], 4) if q2 and q1_range else None,
+            "label": "share of the modeled pool that is definitively identifiable (epistemic label: floor ÷ range)",
+            "absent": not q2 or not q1_range,
+        },
+    }
+    return funnel
+
+
+def _landscape(conn, staging_conn, entries: list) -> dict:
+    """PHASE06 extension assembly: funnel + CN8 trade + identity +
+    depth + census + reconciliation flags. Staging-optional (e5)."""
+    stg = staging_conn
+    has_products = bool(
+        stg and stg.execute("SELECT COUNT(*) FROM stg_register_product").fetchone()[0]
+    )
+    has_trade = bool(
+        stg and stg.execute("SELECT COUNT(*) FROM stg_trade_cn8").fetchone()[0]
+    )
+    return {
+        "staging_present": stg is not None,
+        "staging_absent_note": None if (has_products or has_trade) else STAGING_ABSENT_NOTE,
+        "funnel": _funnel(stg if (has_products or has_trade) else None, entries),
+        "cn8_trade": _cn8_trade(stg) if has_trade else {"rows": [], "absent": True},
+        "identity": _identity(stg, entries) if has_products else {"registers": [], "absent": True},
+        "depth": _depth(entries),
+        "census": _census_sections(conn, entries),
+        "reconciliation": _reconcile(stg, entries) if (has_products or has_trade) else [],
+    }
 
 
 def _is_real_product_source(by_metric: dict) -> bool:
@@ -416,7 +728,7 @@ def _fetch_activity(conn) -> list:
     return [dict(r) for r in rows]
 
 
-def build(conn, source_id: Optional[str] = None) -> dict:
+def build(conn, source_id: Optional[str] = None, staging_conn=None) -> dict:
     """The single od8 assembly — all three renderers read this."""
     sources = _fetch_sources(conn, source_id)
     census = _fetch_census(conn, source_id)
@@ -475,6 +787,7 @@ def build(conn, source_id: Optional[str] = None) -> dict:
         "numbers": numbers,
         "anchors": anchors,
         "capability": capability,
+        "landscape": _landscape(conn, staging_conn, entries),
         "sources": entries,
         "anchor_candidates": anchors_raw(conn, source_id),
         "source_activity": activity,
@@ -617,8 +930,8 @@ def _matrix_rows(data: dict) -> list:
     return rows
 
 
-def render(conn, format: str = "md", source_id: Optional[str] = None) -> str:
-    data = build(conn, source_id=source_id)
+def render(conn, format: str = "md", source_id: Optional[str] = None, staging_conn=None) -> str:
+    data = build(conn, source_id=source_id, staging_conn=staging_conn)
     if format == "md":
         env = Environment(loader=PackageLoader("leadhs", "templates"))
         return env.get_template(_TEMPLATE).render(
@@ -626,6 +939,7 @@ def render(conn, format: str = "md", source_id: Optional[str] = None) -> str:
             numbers=data["numbers"],
             anchors=data["anchors"],
             capability=data["capability"],
+            landscape=data["landscape"],
             sources=data["sources"],
             anchor_candidates=data["anchor_candidates"],
             activity=data["source_activity"],
@@ -637,7 +951,52 @@ def render(conn, format: str = "md", source_id: Optional[str] = None) -> str:
         writer = csv.writer(out)
         for row in _matrix_rows(data):
             writer.writerow(row)
+        _landscape_rows(writer, data["landscape"])
         return out.getvalue()
     if format == "json":
         return json.dumps(data, indent=2)
     raise ValueError(f"unknown format {format!r}")
+
+
+def _landscape_rows(writer, landscape: dict) -> None:
+    """PHASE06: the landscape sections append to the csv after the
+    matrix (full structure per the v0.2.2 design; the matrix block is
+    unchanged and first)."""
+    writer.writerow([])
+    writer.writerow(["section", "key", "subkey", "value"])
+    f = landscape.get("funnel", {})
+    for q in ("q1", "q2", "q3", "ratio"):
+        block = f.get(q, {})
+        writer.writerow(["funnel", q, "label", block.get("label", "")])
+        if "range" in block:
+            writer.writerow(["funnel", q, "range", block["range"]])
+        if "value" in block:
+            writer.writerow(["funnel", q, "value", block.get("value")])
+        for lo_hi in ("low", "high"):
+            if block.get(lo_hi) is not None:
+                writer.writerow(["funnel", q, lo_hi, block[lo_hi]])
+    trade = landscape.get("cn8_trade", {})
+    for r in trade.get("rows", []):
+        writer.writerow(["cn8_trade", r["cn8"], f"flow {r['flow']}", f"kg={r['kg']} eur={r['eur']} rows={r['rows']}"])
+    if trade.get("flow_caveat"):
+        writer.writerow(["cn8_trade", "caveat", "flow", trade["flow_caveat"]])
+    ident = landscape.get("identity", {})
+    for reg in ident.get("registers", []):
+        writer.writerow([
+            "identity", reg["source_id"], "run " + str(reg["run_key"]),
+            f"entries={reg['distinct_pairs'] and reg.get('entries', 0)} pairs={reg['distinct_pairs']} "
+            f"mfr={reg['distinct_manufacturers']} completeness={reg['identity_completeness_pct']}%",
+        ])
+    depth = landscape.get("depth", {})
+    for tier, n in depth.get("tier_counts", {}).items():
+        writer.writerow(["depth", f"tier {tier}", depth.get("tier_labels", {}).get(int(tier), ""), n])
+    for s in depth.get("sds_counts", []):
+        writer.writerow(["sds_counts", s["source_id"], "sds_doc_urls", s["sds_doc_urls"]])
+    census = landscape.get("census", {})
+    writer.writerow(["census", "enumerated", "", census.get("enumerated")])
+    writer.writerow(["census", "probed", "", census.get("probed")])
+    writer.writerow(["census", "counted", "", census.get("counted")])
+    for flag in landscape.get("reconciliation", []):
+        writer.writerow(["reconciliation", flag["source_id"], flag["kind"], flag["detail"]])
+    if landscape.get("staging_absent_note"):
+        writer.writerow(["staging", "absent", "", landscape["staging_absent_note"]])

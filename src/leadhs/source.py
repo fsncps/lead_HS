@@ -1,9 +1,10 @@
 """Source register load/list (i2: register of record = repo CSV).
 
-Load validation (i13/pe6): id matches ``^[A-Z]{2}-[0-9]+$``; url
-non-empty http(s) with a host; no duplicate host among active rows
-(netloc lowercased, ``www.`` stripped — one site must not be
-double-counted into a floor). Inactive rows are exempt from the
+Load validation (i13/pe6, refined v0.2.2): id matches
+``^[A-Z]{2}-[0-9]+$``; url non-empty http(s) with a host; no duplicate
+active site (within PE the conflict key is the bare host — one site
+must not be double-counted into a floor; for the other classes it is
+host+path, since one host legitimately carries distinct datasets). Inactive rows are exempt from the
 host check (historical rows may share hosts). A failing row is named,
 exit 1.
 """
@@ -79,7 +80,7 @@ def load(conn, path: str) -> int:
         raise SourceLoadError(f"{path}: empty register")
 
     seen: set = set()
-    active_hosts: dict = {}
+    active_keys: dict = {}
     count = 0
     for lineno, row in enumerate(rows, start=2):  # 1 = header
         _validate_row(row, lineno)
@@ -88,18 +89,30 @@ def load(conn, path: str) -> int:
             raise SourceLoadError(f"line {lineno}: duplicate source id {sid}")
         seen.add(sid)
         if row["active"].strip() == "1":
+            cc = row["class_code"].strip()
             host = _host_of(row["url"])
-            other = active_hosts.get(host)
+            path = (urlparse(row["url"]).path or "").rstrip("/")
+            # i13/pe6, refined v0.2.2: one site must not be double-counted
+            # into a floor. Within PE the conflict key is the bare host; for
+            # the other classes (official statistics/registers) it is
+            # host+path — one host legitimately carries distinct datasets
+            # (e.g. Eurostat Comext CS-2 vs the PRODCOM bulk files ST-4).
+            other = next(
+                (sid for (o_class, o_host, o_path), sid in active_keys.items()
+                 if o_host == host and (o_path == path or (cc == "PE" and o_class == "PE"))),
+                None,
+            )
             if other is not None:
                 raise SourceLoadError(
-                    f"line {lineno}: duplicate active host {host} — {sid} conflicts with {other}"
+                    f"line {lineno}: duplicate active host {host}{path or '/'} — {sid} conflicts with {other}"
                 )
-            active_hosts[host] = sid
+            active_keys[(cc, host, path)] = sid
         conn.execute(
             """
             INSERT INTO source (id, class_code, name, url, access_method_code,
-                                license_note, verification_status_code, active, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                license_note, verification_status_code, active, notes,
+                                export_url, export_format)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT (id) DO UPDATE SET
                 class_code = excluded.class_code,
                 name = excluded.name,
@@ -108,7 +121,9 @@ def load(conn, path: str) -> int:
                 license_note = excluded.license_note,
                 verification_status_code = excluded.verification_status_code,
                 active = excluded.active,
-                notes = excluded.notes
+                notes = excluded.notes,
+                export_url = excluded.export_url,
+                export_format = excluded.export_format
             """,
             (
                 sid,
@@ -120,6 +135,8 @@ def load(conn, path: str) -> int:
                 row["verification_status_code"].strip(),
                 int(row["active"]),
                 row["notes"].strip() or None,
+                (row.get("export_url") or "").strip() or None,
+                (row.get("export_format") or "").strip() or None,
             ),
         )
         count += 1

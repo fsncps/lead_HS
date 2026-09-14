@@ -28,8 +28,9 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
 from ..fetch import Blocked, FetchError, FetchResponse, RobotsDisallowed, SizeLimit
+from ..jsonstat import JsonstatError, decode as jsonstat_decode, one_dim as jsonstat_one_dim, sum_pairs as jsonstat_sum_pairs
 from ..logutil import log_event
-from ..models import DocumentDraft, FindingDraft, ProbeResult, SourceRef
+from ..models import DocumentDraft, FindingDraft, ProbeResult, SourceRef, StagedRow, StagedTradeRow
 
 __all__ = [
     "AdapterError",
@@ -105,6 +106,100 @@ def _log(ctx, event, **fields):
         log_event(ctx.logger, "adapter", event, **fields)
 
 
+def sniff_kind(content_type: str | None, head: bytes) -> str:
+    """Content-type + first-bytes gate, run BEFORE any export parse
+    (v0.2.2 e3 — the AS-7 HTML-as-CSV regression class). Returns
+    ``csv | tsv | json | jsonstat | xlsx | html | other``."""
+    ct = (content_type or "").split(";")[0].strip().lower()
+    head_l = head.lstrip()
+    if head_l[:1] == b"<":
+        return "html"
+    if head_l[:1] in (b"{", b"["):
+        return "jsonstat" if b'"class"' in head_l and b'"dataset"' in head_l else "json"
+    if head_l[:4] == b"PK\x03\x04":
+        return "xlsx"
+    if ct in ("text/csv", "application/csv"):
+        return "csv"
+    if ct in ("text/tab-separated-values",):
+        return "tsv"
+    if "json" in ct:
+        return "json"
+    if "html" in ct or "xml" in ct:
+        return "html" if "html" in ct else "xml"
+    if "spreadsheet" in ct or ct.endswith("sheet"):
+        return "xlsx"
+    return "other"
+
+
+def read_csv_rows(text, *, separator=",", expected=None):
+    """The one CSV-consumer path (e3/Q1): BOM/encoding-tolerant decode,
+    shape validation with column-drift detection. Returns
+    ``(header, data_rows)``; raises UnexpectedFormat on empty payload or
+    header drift (``expected`` names missing from the header)."""
+    try:
+        text = text.decode("utf-8-sig")
+    except AttributeError:
+        pass
+    except UnicodeDecodeError:
+        text = text.decode("latin-1", errors="replace")
+    reader = csv.reader(io.StringIO(text), delimiter=separator)
+    rows = [r for r in reader if any(c.strip() for c in r)]
+    if not rows:
+        raise UnexpectedFormat("empty register export")
+    header = [c.strip().lower() for c in rows[0]]
+    if len(header) < 2:
+        raise UnexpectedFormat(f"register layout missing columns (got {header})")
+    if expected:
+        missing = sorted(set(expected) - set(header))
+        if missing:
+            raise UnexpectedFormat(f"column drift: missing expected columns {missing} (header: {header})")
+    return header, rows[1:]
+
+
+def depth_tier(has_manu, has_ident):
+    """cap_depth_tier, refined wording (fu8): 1 name-only · 2 registry
+    metadata (name + ident/licence + category — NO technical data) ·
+    3 adds technical performance data / downloadable tech docs ·
+    4 standardized full documents. The automated register inspect can
+    only certify name + ident + (nomenclature), so the floor is 2."""
+    if has_manu and has_ident:
+        return 2
+    return 1
+
+
+def _delimiter_of(header_line: bytes) -> str:
+    """Delimiter heuristic for the shared CSV path: the header line's
+    counts decide (`,` vs `;` vs tab). Real layouts are pinned per
+    source at W1; this only unblocks mixed dialects."""
+    try:
+        line = header_line.decode("utf-8-sig", errors="replace")
+    except Exception:
+        return ","
+    if line.count("\t") > line.count(",") and line.count("\t") > line.count(";"):
+        return "\t"
+    if line.count(";") > line.count(","):
+        return ";"
+    return ","
+
+
+# Expected export headers per source — pinned from the v0.2.1 capability
+# record (ECAT: company_name / code_value GTIN+EAN / product_or_service_name /
+# group_name) or desk analysis; a missing column is a column-drift format
+# finding, never a guess (e3). Absent entry = no expectation (generic).
+_EXPORT_EXPECTED = {
+    "AS-2": ("product_or_service_name", "company_name", "group_name"),
+}
+
+
+def _in_scope_group(group: str) -> bool:
+    """The ECAT group-044 (paints & varnishes) row filter — the register
+    total is 88,920 across ALL groups; the study counts the paints group
+    (16,001 + 1,817 + 20 subset, v0.2.1 record). Group naming pinned at
+    W1; until then: the group name mentions paint/varnish/coating."""
+    g = group.casefold()
+    return any(t in g for t in ("paint", "varnish", "coating", "044", "44"))
+
+
 def _doc(url: str, resp: FetchResponse, **kw) -> DocumentDraft:
     return DocumentDraft(
         url=url,
@@ -155,6 +250,10 @@ _CS_AGG_INDICATORS = (
     ("kg", "QUANTITY_IN_100KG"),
     ("eur", "VALUE_IN_EUROS"),
 )
+# v0.2.2 W1 batch: DS-045409 extra-EU flow codes (verified against the
+# live API in v0.2.0: import = 1); intra-EU flow codes remain OPEN (design)
+_CS_BATCH_FLOWS = ("1", "2")
+_CS_BATCH_INDICATORS = _CS_AGG_INDICATORS
 
 
 def _query_url(base: str, params: dict) -> str:
@@ -181,63 +280,6 @@ def _local(tag: str) -> str:
     return tag.rsplit("}", 1)[-1]
 
 
-def _jsonstat_one_dim(data: dict) -> list:
-    """Minimal JSON-stat decoder (e2/decision 2A): `value` is an object
-    keyed by flat row index (row-major over id×size); with exactly one
-    free dimension, map each index back to that dimension's label.
-    Deliberately NOT a general reader (TODOS.md) — PRODCOM/SBS callers
-    generalize it."""
-    try:
-        dim_ids = data["id"]
-        sizes = data["size"]
-        value_obj = data["value"]
-    except (KeyError, TypeError):
-        raise UnexpectedFormat("not a JSON-stat dataset payload (id/size/value missing)")
-    if not isinstance(value_obj, dict):
-        raise UnexpectedFormat("JSON-stat value is not an object keyed by flat index")
-    free = [(i, d) for i, (d, s) in enumerate(zip(dim_ids, sizes)) if s > 1]
-    if len(free) != 1:
-        raise UnexpectedFormat(
-            f"decoder supports exactly one free dimension, got {[d for _, d in free]}"
-        )
-    free_pos, free_dim = free[0]
-    labels = _jsonstat_category_labels(data, free_dim)
-    if len(labels) != sizes[free_pos]:
-        raise UnexpectedFormat(f"dimension {free_dim}: label count != declared size")
-    pairs = []
-    for key, raw in value_obj.items():
-        try:
-            flat = int(key)
-        except (TypeError, ValueError):
-            continue
-        if raw is None:
-            continue
-        rest = flat
-        coords = []
-        for s in reversed(sizes):
-            coords.append(rest % s)
-            rest //= s
-        coords.reverse()
-        label_pos = coords[free_pos]
-        if label_pos < len(labels):
-            pairs.append((labels[label_pos], float(raw)))
-    return pairs
-
-
-def _jsonstat_category_labels(data: dict, dim: str) -> list:
-    cat = data.get("dimension", {}).get(dim, {}).get("category", {})
-    index = cat.get("index", {})
-    if isinstance(index, dict):
-        return [k for k, _ in sorted(index.items(), key=lambda kv: kv[1])]
-    return list(index)
-
-
-def _jsonstat_sum(pairs: list) -> tuple:
-    total = sum(v for _, v in pairs)
-    tops = sorted(pairs, key=lambda kv: kv[1], reverse=True)[:5]
-    return total, tops
-
-
 class CSAdapter:
     key = "CS"
 
@@ -248,6 +290,12 @@ class CSAdapter:
         return source.access_method_code == "api"
 
     def probe(self, source: SourceRef, ctx) -> ProbeResult:
+        if ctx.mode == "capability":
+            # v0.2.2 W1: the per-CN8 batch replaces the census aggregation
+            # in capability mode (the run composes, fu3)
+            if self._is_query_api(source):
+                return self._probe_cn8_batch(source, ctx)
+            return ProbeResult()
         if ctx.dry_run:
             if self._is_query_api(source):
                 for hs in _HS_CODES:
@@ -283,7 +331,7 @@ class CSAdapter:
         """od9: one parameterized JSON query per HS heading; each response
         archived; empty result set is an honest 0. v0.2.0 (nu2): plus the
         full-year import aggregation for HS 3208/3209 — trade_kg/eur sums
-        via the minimal one-dimension JSON-stat decoder (e2/2A)."""
+        via the JSON-stat decoder (e2/2A)."""
         docs, findings, notes = [], [], []
         query_params = {}
         for hs in _HS_CODES:
@@ -324,6 +372,77 @@ class CSAdapter:
         findings += self._aggregate(source, ctx, docs, query_params, notes)
         return ProbeResult(documents=docs, findings=findings, notes=notes, parameters={"query": query_params})
 
+    def _probe_cn8_batch(self, source: SourceRef, ctx) -> ProbeResult:
+        """v0.2.2 W1 (e6/fu10): per in-scope CN8 code × flow × indicator,
+        one parameterized DS-045409 query; payloads decoded via the
+        jsonstat module (multi-dimension: declarant × period) →
+        StagedTradeRow drafts. Per-query fetch timeout/retry ride the
+        standard fetcher. Batch shape pinned here: 13 codes × 2 extra-EU
+        flows × 2 indicators (52 payloads); intra-EU flow codes remain
+        OPEN (design) and join the batch once verified. Trade rows stage
+        with source_id + run_key + doc hash provenance (fu2)."""
+        from ..staging import CN8_DICT
+
+        docs, notes = [], []
+        query_params = {}
+        staged = []
+        base_year = _CS_QUERY_DEFAULTS["time"]
+        for cn8, heading, kind, label in CN8_DICT:
+            for flow in _CS_BATCH_FLOWS:
+                for unit_name, indicator in _CS_BATCH_INDICATORS:
+                    params = {**_CS_QUERY_DEFAULTS, "product": cn8, "flow": flow, "indicators": indicator}
+                    key = f"{cn8}_f{flow}_{unit_name}"
+                    query_params[key] = params
+                    url = _query_url(source.url, params)
+                    if ctx.dry_run:
+                        ctx.fetcher.plan(url)
+                        continue
+                    resp = ctx.fetcher.get(url)
+                    _log(ctx, "cs_batch", url=url, status=resp.status_code, cn8=cn8, flow=flow, unit=unit_name)
+                    docs.append(_doc(url, resp, retrieval_method_code="api"))
+                    try:
+                        data = json.loads(resp.text)
+                    except ValueError:
+                        raise UnexpectedFormat(
+                            f"CN8 {cn8} f{flow} {unit_name}: expected JSON-stat but content not parseable",
+                            partial=ProbeResult(documents=docs),
+                            url=url,
+                        )
+                    try:
+                        decoded = jsonstat_decode(data)
+                    except JsonstatError as exc:
+                        raise UnexpectedFormat(str(exc), partial=ProbeResult(documents=docs), url=url)
+                    for labels, value in decoded:
+                        if labels.get("indicators") not in (None, indicator):
+                            continue
+                        staged.append(
+                            StagedTradeRow(
+                                cn8=cn8,
+                                flow=flow,
+                                declarant=labels.get("declarant"),
+                                partner=None,
+                                year=labels.get("time") or base_year,
+                                kg=value * 100.0 if indicator == "QUANTITY_IN_100KG" else None,
+                                eur=value if indicator == "VALUE_IN_EUROS" else None,
+                                document=docs[-1],
+                            )
+                        )
+        notes.append(
+            f"CN8 batch: {len(CN8_DICT)} codes x {len(_CS_BATCH_FLOWS)} flows x "
+            f"{len(_CS_BATCH_INDICATORS)} indicators = {len(query_params)} queries; "
+            f"{len(staged)} staged trade rows"
+        )
+        result = ProbeResult(documents=docs, staged_trade=staged, notes=notes)
+        if not ctx.dry_run:
+            result.parameters = {"query": query_params}
+            if ctx.staging is not None and {r.cn8 for r in staged} >= {c[0] for c in CN8_DICT}:
+                # U6: every in-scope code delivered at least one row — the
+                # seeded dictionary is confirmed against live responses
+                from ..staging import mark_dict_verified
+
+                mark_dict_verified(ctx.staging)
+        return result
+
     def _aggregate(self, source, ctx, docs, query_params, notes) -> list:
         """nu2: per HS × indicator, full-year import sums with a bounded
         year step-back (e7): empty → previous year, max 3 tries; exhausted
@@ -352,13 +471,11 @@ class CSAdapter:
                             url=url,
                         )
                     try:
-                        pairs = _jsonstat_one_dim(data)
-                    except UnexpectedFormat as exc:
-                        exc.partial = ProbeResult(documents=docs, findings=findings)
-                        exc.url = url
-                        raise
+                        pairs = jsonstat_one_dim(data)
+                    except JsonstatError as exc:
+                        raise UnexpectedFormat(str(exc), partial=ProbeResult(documents=docs, findings=findings), url=url)
                     if pairs:
-                        total, tops = _jsonstat_sum(pairs)
+                        total, tops = jsonstat_sum_pairs(pairs)
                         if indicator == "QUANTITY_IN_100KG":
                             # the API's supplementary unit is 100 kg —
                             # convert to the metric's kg and say so
@@ -541,6 +658,26 @@ def _count_product_locs(raw: bytes, pattern: str) -> int:
             if any(h in url for h in _RECON_PRODUCT_FALLBACK):
                 count += 1
         elif pat in url:
+            count += 1
+    return count
+
+
+_SDS_DOC_HINTS = ("sds", "msds", "sicherheitsdatenblatt", "sicherheitsdatenblatt", "safety-data", "tds", "datenblatt", "fiche")
+
+
+def _count_sds_doc_locs(raw: bytes) -> int:
+    """Count <loc> entries whose URL looks like an SDS/TDS document
+    (v0.2.2 fu6, W3) — counts only, no URL harvesting (D31)."""
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError:
+        return 0
+    count = 0
+    for el in root.iter():
+        if _local(el.tag) != "loc" or not el.text:
+            continue
+        url = el.text.strip().lower()
+        if any(h in url for h in _SDS_DOC_HINTS):
             count += 1
     return count
 
@@ -774,6 +911,7 @@ class PEAdapter:
         pattern = _pattern_of(source)
         pattern_note = f"product_pattern={pattern}" if pattern else "generic product-URL fallback (no register token)"
         total = 0
+        sds_docs = 0
         fetches = 0
         children_fetched = 0
         cap_hit = False
@@ -830,6 +968,7 @@ class PEAdapter:
                 queue.extend((urljoin(surl, c), depth + 1) for c in take)
                 continue
             total += _count_product_locs(raw, pattern)
+            sds_docs += _count_sds_doc_locs(raw)
 
         if not docs and not cap_hit:
             notes.append("no sitemap")
@@ -840,6 +979,18 @@ class PEAdapter:
                 value_numeric=total,
                 unit_code="count",
                 notes="; ".join([pattern_note] + ["floor partial (index/size cap)"] if cap_hit else [pattern_note]),
+            )
+        )
+        # v0.2.2 (fu-metrics/fu6, W3): SDS/TDS document URLs visible per
+        # site — counts only (no URL harvesting beyond the existing rule);
+        # the Q3 SDS-reach input.
+        findings.append(
+            FindingDraft(
+                metric_code="sds_doc_urls",
+                method_code="scrape",
+                value_numeric=sds_docs,
+                unit_code="count",
+                notes="sitemap-visible SDS/TDS document URLs (counts only)",
             )
         )
         return ProbeResult(documents=docs, findings=findings, notes=notes)
@@ -895,18 +1046,81 @@ class ASAdapter:
         register export (CSV/API) and inspect its shape against the product
         model. No-ops for non-`capability` modes (C1) so the census/recon
         sweeps are unchanged; manual-access_method sources are
-        characterized by `probe record --mode capability`, never here."""
+        characterized by `probe record --mode capability`, never here.
+
+        v0.2.2 (W1/W2): a register row with a pinned ``export_url`` runs
+        the staged export ingest (fetch → sniff → shared CSV path →
+        StagedRow drafts → engine staging + run-close derivation) instead
+        of the shape inspect.
+        """
         if ctx.mode != "capability":
             return ProbeResult()
         if source.access_method_code not in ("download", "api"):
             return ProbeResult()
         if ctx.dry_run:
-            ctx.fetcher.plan(source.url)
+            ctx.fetcher.plan(source.export_url or source.url)
             return ProbeResult()
+        if source.export_url:
+            resp = ctx.fetcher.get(source.export_url)
+            _log(ctx, "as_export_get", url=source.export_url, status=resp.status_code)
+            docs = [_doc(source.export_url, resp, retrieval_method_code=source.access_method_code)]
+            return self._ingest_export(resp, source, docs)
         resp = ctx.fetcher.get(source.url)
         _log(ctx, "as_get", url=source.url, status=resp.status_code)
         docs = [_doc(source.url, resp, retrieval_method_code=source.access_method_code)]
         return self._inspect_register(resp, source, docs)
+
+    def _ingest_export(self, resp, source: SourceRef, docs) -> ProbeResult:
+        """Staged export ingest (W1): the sniff gate runs BEFORE any parse
+        (e3 — the AS-7 HTML-as-CSV class); the shared CSV path validates
+        shape; rows become StagedRow drafts (engine stages them and
+        derives the run-close metrics, fu1). A legitimate empty in-scope
+        result sets ``staged_zero`` (c2 counted-0), never a format failure."""
+        kind = sniff_kind(resp.headers.get("Content-Type"), resp.content[:512])
+        if kind == "html":
+            findings = [
+                FindingDraft(metric_code="format", method_code=source.access_method_code or "download",
+                             value_text="HTML landing page — not a CSV/JSON export; export mechanics to confirm"),
+            ]
+            return ProbeResult(documents=docs, findings=findings,
+                               notes=["HTML at the pinned export URL — manual fallback (c1)"])
+        if kind not in ("csv", "tsv"):
+            raise UnexpectedFormat(
+                f"pinned export is {kind}, expected CSV/TSV — layout to re-pin",
+                partial=ProbeResult(documents=docs),
+            )
+        sep = "\t" if kind == "tsv" else _delimiter_of(resp.content.split(b"\n", 1)[0])
+        try:
+            header, data_rows = read_csv_rows(resp.content, separator=sep, expected=_EXPORT_EXPECTED.get(source.id))
+        except UnexpectedFormat:
+            raise
+        rows, kept, dropped = [], 0, 0
+        for raw_row in data_rows:
+            record = dict(zip(header, raw_row))
+            group = (record.get("group_name") or record.get("group") or "").strip()
+            if not _in_scope_group(group):
+                dropped += 1
+                continue
+            kept += 1
+            rows.append(
+                StagedRow(
+                    manufacturer_raw=record.get("company_name") or record.get("manufacturer") or None,
+                    ident_raw=record.get("code_value") or record.get("licence_no") or None,
+                    ident_hint="code_value (GTIN/EAN)" if record.get("code_value") else "licence_no",
+                    name=record.get("product_or_service_name") or record.get("product_name") or None,
+                    category_raw=group or None,
+                    raw=record,
+                    document=docs[0],
+                )
+            )
+        notes = [
+            f"export ingest: {kept} in-scope row(s), {dropped} dropped (group filter); "
+            f"header: {', '.join(header)}"
+        ]
+        result = ProbeResult(documents=docs, staged_products=rows, notes=notes)
+        if kept == 0:
+            result.parameters["staged_zero"] = f"no in-scope rows in the export ({dropped} rows outside the group filter)"
+        return result
 
     def _inspect_register(self, resp, source: SourceRef, docs) -> ProbeResult:
         """The reused register shape-inspect (C1): detect the manufacturer /
@@ -963,17 +1177,12 @@ class ASAdapter:
 
     @staticmethod
     def _csv_register(text, method, findings, notes):
-        reader = csv.reader(io.StringIO(text))
-        rows = [r for r in reader if any(c.strip() for c in r)]
-        if not rows:
-            raise UnexpectedFormat("empty register export", partial=ProbeResult(documents=[], findings=findings))
-        header = [c.strip().lower() for c in rows[0]]
-        if len(header) < 2:
-            raise UnexpectedFormat(f"register layout missing columns (got {header})",
-                                   partial=ProbeResult(documents=[], findings=findings))
+        # the shared CSV path (e3): BOM/encoding + shape validation live
+        # in read_csv_rows; this emits the shape format finding only
+        header, data_rows = read_csv_rows(text)
         findings.append(FindingDraft(metric_code="format", method_code=method,
                                      value_text=f"CSV; columns: {', '.join(header)}"))
-        return header, rows[1:]
+        return header, data_rows
 
     @staticmethod
     def _json_register(text, method, findings, notes):
@@ -1029,15 +1238,9 @@ class ASAdapter:
 
     @staticmethod
     def _depth_tier(has_manu, has_ident):
-        """cap_depth_tier: 1 name-only, 2 name/ident + some technical.
-        The automated register inspect can only certify name + ident +
-        (nomenclature) — deeper tiers (3/4) require human/manual review
-        of the actual product docs, so the floor is 2."""
-        if has_manu and has_ident:
-            return 2
-        if has_manu or has_ident:
-            return 1
-        return 1
+        """Module-level :func:`depth_tier` (shared with the report — one
+        definition, e3/fu8)."""
+        return depth_tier(has_manu, has_ident)
 
 
 

@@ -372,6 +372,41 @@ attempted action — full context, never message-only).
   with the certified/declared-subset caveat); md explains the
   predicate in prose; csv/json carry the six columns and the derived
   predicate + N2-numerator components.
+- i19: staging contract (v0.2.2, fu1/fu2/fu4 + e1/e4) — test-data DB
+  `data/testdata.sqlite` (separate file, NOT the evidence DB;
+  schema in `leadhs/staging.py`, outside the migration chain):
+  `stg_source_document` (source_id, run_key, url, doc_hash,
+  retrieval_date, bytes), `stg_register_product` (manufacturer/
+  ident raw + normalized columns, ident_type, ident_basis, name,
+  category, raw JSON — TEXT with explicit cast), `stg_trade_cn8`
+  (cn8, flow, declarant, year, kg, eur), `dict_cn8` (the 13 codes;
+  a metric, not a gate — U6). Fed ONLY from archived documents —
+  ingest fails loudly without a doc hash; idempotent replace per
+  (source_id, run_key); rebuildable from the archive alone. Staged
+  rows ride `ProbeResult`; the engine writes staging first, then
+  evidence, per source; for staged sources `products_identifiable`
+  and friends derive at run close from the staging rows (metrics ==
+  staging by construction); manual sources emit as today. Identity
+  counts (entries / distinct manufacturers / distinct (mfr, ident) /
+  completeness / category distribution) are staging SQL aggregates —
+  never new metrics, never literals.
+- i20: wave/landscape contract (v0.2.2, fu3/fu5/fu6 + e2/e6) — four
+  waves = (mode, source filter, budget) presets over the existing run
+  machinery: W1 bulk official exports (capability, ~20'), W2 register
+  completion (capability, ~10', manual fallback built in), W3 PE
+  universe (recon, ~20', ~75 active sites — MFR≤40/DIY≤10/MARINE≤10/
+  ART≤15; SDS-doc-URL counts via the `sds_doc_urls` metric; full
+  universe enumerated active=0), W4 manual records & LI (~10').
+  CLI: `probe run --wave {1..4}` / `--budget` / `--staging-db`
+  options on the existing command (V9 — no new command);
+  `run_all` gains a generalized source-selection parameter (the
+  capability-mode AS-filter generalizes, no `mode ==` chain growth);
+  `make landscape` guarded GO=1 with WAVES/BUDGET vars. After-run
+  invariant (test-backed): no register row left pending/format-
+  finding — every row dispositioned (counted incl. counted-0 |
+  manual-recorded | blocked). Comext per-CN8 × flow batches (~39
+  payloads) with per-query timeout + retry; PRODCOM bulk TSV
+  sidesteps the API size limit.
 
 ## OPEN ITEMS
 

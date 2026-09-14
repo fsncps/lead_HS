@@ -444,3 +444,86 @@ never a market total). The other registers' CSV/API endpoints remain
 to be anchored at the next pass (documented, not asserted). Nothing
 frozen; the strategy `v0.2.1.md` stays DRAFT. Commits pending at time
 of writing.
+
+## 2026-09-14 — v0.2.2 — Strategy drafted; design converged; implementation plans written (CEO HOLD SCOPE, ENG BIG CHANGE)
+
+Planning pass for unit v0.2.2 (D34, the three-question funnel —
+product-identity and granularity sounding-out). The v0.2.1 review
+(2026-09-14) found the headline number unreproducible from DB state,
+6 of ~10 capability sources unmeasured, and the PHASE04 exit gate
+marked done unmet; v0.2.2 answers with a design built on two
+principles: **completeness is a testable invariant, not operator
+discipline** and **every number is a query result, never a typed
+literal**.
+
+- **Strategy** (`10_STRATEGY/v0.2.2.md`, DRAFT): funnel Q1 pool per
+  CN8 (modeled) / Q2 definitively identifiable (counted floor) / Q3
+  SDS reachable (modeled reach) under Product = manufacturer +
+  identnr; test-data staging DB allowed (U4); 30–60 min runtime
+  budget (U5); CN8 verification a metric, not a gate (U6); source
+  expansion to census shape (U8). User decisions on the four design
+  forks: export-anchor columns, staging-side CN8 dictionary, ~75-site
+  W3 recon, minimal metric extension.
+- **Design** (`20_DESIGN/units/v0.2.2.md`, fu1–fu10): three
+  measurement layers (evidence facts / staging observations /
+  derived analyses) with reconciliation by construction; staging DB
+  `data/testdata.sqlite` fed only from archived documents, idempotent
+  per (source_id, run_key), rebuildable from the archive; four-wave
+  run under a 60-min default budget with a test-backed disposition
+  invariant; migration 0008 (source export anchors + `sds_doc_urls`)
+  + third design-ahead renumber 0009–0015; jsonstat module lift (the
+  TODOS item — retired in build); CEO review HOLD SCOPE (c1–c6) and
+  ENG review BIG CHANGE (e1–e8) folded.
+- **Implementation plans** (`30_IMPLEMENTATION/v0.2.2/`,
+  PHASE01–07): migration+jsonstat → staging/normalize/xlsx + engine
+  ingest path → register census shape → wave harness + adapter
+  extensions → landscape execution (GO=1) → report extension → docs
+  & close-out. New module contracts i19 (staging) / i20
+  (wave/landscape); architecture decisions a25–a28; design decision
+  d41.
+
+Nothing built, nothing frozen; the strategy stays DRAFT. Commit/push
+and any stage advancement await explicit user instruction.
+
+## 2026-09-14 — v0.2.2 built — the three-question funnel (product-identity and granularity sounding-out)
+
+Unit v0.2.2 built and executed end to end (PHASE01–07): staging DB
+(`data/testdata.sqlite`), engine ingest path, register at census shape
+(101 rows), wave harness, the real-network landscape run (GO=1,
+2026-09-14), and the od8 report extension — all numbers now query
+results.
+
+- **Real-network landscape run (PHASE05):** 101 register rows
+  dispositioned — 36 counted / 48 manual-recorded / 4 blocked / 13
+  inactive-by-design; W1 staged **ECAT 17,838 rows** (exact
+  reconciliation with the v0.2.1 manual record: 16,001 + 1,817 + 20)
+  and **Comext 6,316 trade rows** (all 13 CN8 codes, dictionary
+  verified). JS-gated registers (Nordic Swan, IBU, environdec, NF,
+  natureplus, EPD Norway) and the preset-gap sources (Destatis,
+  Coeweb, Datacomex, SPIN) carry honest documented deferrals.
+- **Funnel (PHASE06, report published):** Q1 pool **[85,840–343,360]
+  products** (modeled: M 800–3,200 producers × ppp 107.3 × staged CN8
+  kg shares) · Q2 floor **17,170** distinct (manufacturer, ident)
+  pairs · Q3 SDS reach **3,590** (upper bound, match-rate pending) ·
+  v0.5 ratio **0.05–0.2**. Reconciliation flags visible, zero
+  mismatches; overlap pilot (ECAT ∩ Nordic Swan) explicitly not
+  computable this unit.
+- **Defect note (v0.2.1 HTML-as-CSV incident):** during the v0.2.1
+  probe round the environdec source (AS-7) returned an HTML page that
+  the CSV parser silently accepted, producing **seven bogus
+  findings**; the rows were deleted 2026-09-14 (evidence-DB repair in
+  the v0.2.2 build) and the `_sniff` gate (content-type + first-bytes
+  check before parse) introduced and regression-tested (t12) so the
+  class cannot recur silently. The v0.2.1 environdec capability claim
+  was softened in the v0.2.2 records ("export not obtained").
+- **Engine repairs during execution:** automated failure findings no
+  longer labelled method="manual" (reserved for `probe record`
+  operator entries; 19 existing findings relabelled);
+  staging-aware dispositions; W4 checklist predicate = the real c1
+  invariant; disposition order (all-manual is terminal); U6
+  dictionary verification wired into the CN8 batch.
+- **Tests:** 299 passed, 2 deselected (offline suite); `db audit`
+  clean; wheel `leadhs-0.2.2` builds and installs.
+
+Strategy `10_STRATEGY/v0.2.2.md` remains DRAFT (freeze is an explicit
+user action); nothing committed, nothing advanced without instruction.

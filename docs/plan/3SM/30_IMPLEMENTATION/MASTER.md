@@ -1,5 +1,5 @@
 ---
-unit: v0.2.1
+unit: v0.2.2
 stage: IMPLEMENTATION
 lifecycle: LIVE
 updated: 2026-09-14
@@ -36,6 +36,13 @@ drafted 2026-09-14 (`v0.2.1/PHASE01–06`); **built 2026-09-14** (all
 six phases done; 231 offline tests; capability report published;
 preliminary N2 numerator = 17.838, EU Ecolabel ECAT — a floor).
 
+The active planning unit is now **v0.2.2** (product-identity and
+granularity sounding-out, D34 — the three-question funnel) — design
+converged 2026-09-14 (fu1–fu10 + CEO review HOLD SCOPE c1–c6; ENG
+review BIG CHANGE e1–e8 folded); implementation plans drafted
+2026-09-14 (`v0.2.2/PHASE01–07`); build awaits explicit go, PHASE05
+additionally the real-network go-ahead.
+
 ## Units
 
 | Unit | Stage | Status |
@@ -45,6 +52,7 @@ preliminary N2 numerator = 17.838, EU Ecolabel ECAT — a floor).
 | v0.1.3 (data-landscape map, D29) | IMPLEMENTATION | strategy converged on D30 2026-09-12 (re-reviewed CEO HOLD + ENG SMALL CHANGE; E1/E2 folded); PHASE01 (D28 rework) built 2026-09-12 (165 offline tests, audit clean); baseline census 2026-09-12 (3/1/3, audit clean); PHASE02+ await explicit go, PHASE02/06 additionally the real-network go-ahead |
 | v0.2.0 (market scale & data availability, D31) | IMPLEMENTATION | built 2026-09-12 (PHASE01–07 done; 205 offline tests; probe report published; N1/N2/N3 documented) |
 | v0.2.1 (source-level capability sounding-out, D33) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor) |
+| v0.2.2 (product-identity & granularity sounding-out, D34) | IMPLEMENTATION | design converged 2026-09-14 (fu1–fu10; CEO HOLD SCOPE c1–c6; ENG BIG CHANGE e1–e8); plans drafted (PHASE01–07); build awaits explicit go, PHASE05 additionally GO=1 |
 
 ## Phase tracking (v0.1.1 — summary)
 
@@ -106,6 +114,21 @@ Per-phase status, dependencies and detail: `v0.1.3/MASTER.md` and
 Per-phase status, dependencies and detail: `v0.2.1/MASTER.md` and
 `v0.2.1/PHASE01..06.md`.
 
+## Phase tracking (v0.2.2 — summary)
+
+| Phase | Focus | Status | Exit gate (summary) |
+|---|---|---|---|
+| 01 | Migration 0008 (export columns + sds_doc_urls) + jsonstat module lift + TODOS retirement | planned | 0008 applies; sync 0001–0008 green; CS fixtures on the module |
+| 02 | Staging DB + normalize + xlsx modules; engine ingest path (staging-first, run-close derivation) | planned | staging idempotent/rebuildable; ingest paths green per t12 |
+| 03 | Register expansion to census shape (~150–250 rows, export anchors, PE enumeration) + version 0.2.2 | planned | register loads clean; probe-dry plans every active row |
+| 04 | Wave harness (`--wave`/`--budget`/`--staging-db`, `make landscape`) + W1/W2 adapter extensions + t12 | planned | wave tests green (budget/resume/invariant); GO=1 guard |
+| 05 | Landscape execution (GO=1, wave by wave; W4 manual records) | planned | every register row dispositioned; staging populated; audit exit 0 |
+| 06 | Report extension (funnel, CN8, identity, depth, pool, census) + publish + audit | planned | report per i19/i20 on real data; published; audit exit 0 |
+| 07 | Docs & close-out (README EN/DE/FR, management summary DE/FR, LOG, goldens, wheel) | planned | docs carry the real landscape numbers; wheel 0.2.2 |
+
+Per-phase status, dependencies and detail: `v0.2.2/MASTER.md` and
+`v0.2.2/PHASE01..07.md`.
+
 ## Governing references
 
 - Strategy: `../10_STRATEGY/v0.1.1.md` (unit scope),
@@ -115,7 +138,7 @@ Per-phase status, dependencies and detail: `v0.2.1/MASTER.md` and
   unit v0.1.3: `../10_STRATEGY/v0.1.3.md` (D29 refocus, W1–W8);
   unit v0.2.0: `../10_STRATEGY/v0.2.md` (D31 numbers-first);
   unit v0.2.1: `../10_STRATEGY/v0.2.1.md` (D33 source-level expansion,
-  U1–U6).
+  U1–U6); unit v0.2.2: `../10_STRATEGY/v0.2.2.md` (D34 funnel, U1–U8).
 - Design: `../20_DESIGN/MASTER.md` (consolidated decisions d1–d31)
   and topic docs `MASTER/{data_model,architecture,interfaces,testing}.md`
   (review semantics applied 2026-09-11 per

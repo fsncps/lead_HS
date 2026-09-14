@@ -1,5 +1,5 @@
 ---
-unit: v0.2.1
+unit: v0.2.2
 stage: DESIGN
 lifecycle: LIVE
 updated: 2026-09-14
@@ -70,6 +70,22 @@ topic documents below.
   migration 0007 + design-ahead renumber 0008–0014 (cap7). Rides the
   v0.2.0 machinery; no new CLI commands (V9). Built 2026-09-14
   (PHASE01–06; 231 offline tests; capability report published).
+- Unit **v0.2.2** (product-identity & granularity sounding-out —
+  the D34 three-question funnel) — design converged 2026-09-14
+  (units/v0.2.2.md, fu1–fu10; user decisions on the four forks —
+  export-anchor columns, staging-side CN8 dictionary, ~75-site W3
+  recon, minimal metric extension): three measurement layers
+  (evidence facts / staging observations / derived analyses) with
+  reconciliation by construction; four-wave run (bulk exports /
+  register completion / PE universe ~75 sites / manual+LI) under a
+  60-min default budget; staging DB `data/testdata.sqlite` fed only
+  from archived documents, idempotent per (source_id, run_key);
+  migration 0008 + third design-ahead renumber 0009–0015 (i19/i20,
+  a25–a28). CEO review 2026-09-14 HOLD SCOPE (c1–c6: disposition
+  invariant, counted-0, rebuildability, observability, temporal
+  pins); ENG review 2026-09-14 BIG CHANGE (e1–e8 folded);
+  implementation plans written (30_IMPLEMENTATION/v0.2.2/
+  PHASE01–07); build awaits explicit go.
 - Unit v0.1 (feasibility & study design) — foundational strategy
   pass, LIVE in STRATEGY.
 - Full-pipeline design: **present but not frozen** — freeze awaits
@@ -90,6 +106,8 @@ topic documents below.
 - `units/v0.1.3.md` — design delta for the data-landscape map unit
 - `units/v0.2.0.md` — design delta for the numbers unit
 - `units/v0.2.1.md` — design delta for the source-level capability
+  unit
+- `units/v0.2.2.md` — design delta for the three-question funnel
   unit (active unit)
 
 (The canonical "design" subject is covered by architecture +
@@ -240,6 +258,16 @@ design.md.)
   real-product-source predicate + preliminary N2 numerator as
   report-time derivations; branch under AS; migration 0007 +
   renumber 0008–0014; no new CLI commands (i17/i18, a23/a24).
+- **d41** the three-question funnel (v0.2.2, fu1–fu10) — three
+  measurement layers (evidence facts / staging observations /
+  derived analyses), reconciliation by construction (run-close
+  derivation from staging rows); staging DB `data/testdata.sqlite`
+  fed only from archived documents, idempotent per (source_id,
+  run_key), rebuildable from the archive; four-wave run under a
+  60-min default budget with a test-backed disposition invariant;
+  migration 0008 (export anchors + sds_doc_urls) + renumber
+  0009–0015; identity normalization shared module; jsonstat module
+  lift (TODOS item); report extensions i19/i20 (a25–a28).
 
 ## OPEN ITEMS
 
@@ -298,6 +326,14 @@ design.md.)
   30_IMPLEMENTATION/v0.2.1/PHASE01–06 when explicitly instructed.
   The governing strategy (`10_STRATEGY/v0.2.1.md`) stays DRAFT — its
   freeze is a separate explicit user action.
+- **v0.2.2: ready — implementation plans written.** Design converged
+  2026-09-14 (units/v0.2.2.md, fu1–fu10; user decisions on the four
+  forks; CEO review HOLD SCOPE c1–c6; ENG review BIG CHANGE e1–e8
+  folded). Phase plans: 30_IMPLEMENTATION/v0.2.2/PHASE01–07 (drafted
+  + reviewed 2026-09-14). Build awaits explicit go; PHASE05
+  additionally requires the real-network go-ahead. The governing
+  strategy (`10_STRATEGY/v0.2.2.md`) stays DRAFT — its freeze is a
+  separate explicit user action.
 
 ## Handoff note
 

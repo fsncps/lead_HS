@@ -67,6 +67,13 @@ explicit user instruction.
   (the Strategy docs already do — keep it that way).
 - Frontmatter metadata (`unit`, `stage`, `lifecycle`, `updated`) on all 3SM
   documents; bump `updated` when editing.
+- Per-unit public summaries: every built unit gets a summary section in
+  the READMEs — the current/recent unit in some detail, older units as
+  short summaries — each linking a detailed unit report
+  `docs/report/report-<unit>.md` (e.g. `report-0.2.2.md`, EN-only).
+  The machine-readable probe report (`probe-report.*`) lives alongside;
+  republishes append timestamp-hash snapshots (publish history policy,
+  v0.2.2 PHASE07 addendum).
 - `docs/management_summary.md` — bilingual (DE/FR) management summary for
   decision makers: always keep it current whenever the project's substance
   changes; it is linked early in the README.

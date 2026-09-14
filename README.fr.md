@@ -87,81 +87,69 @@ c'est une étude documentaire qui ne prend pas position sur la
 réglementation elle-même. La Suisse n'intervient dans l'étude que
 comme ce cadre réglementaire — le marché étudié est celui de l'UE.
 
-## Étape actuelle : carte du paysage des données (v0.2.0) + capacité des sources (v0.2.1)
+## Étape actuelle : l'entonnoir à trois questions (v0.2.2)
 
-Avant toute collecte de données produit, l'étude cartographie son
-**paysage des données** : quelles sources couvrent le marché de la
-peinture de l'UE, à quelle échelle, et avec quel accès à la
-documentation produit. Cette carte est établie et les trois
-chiffres phares sont documentés. Chaque résultat, y compris les refus
-d'accès, est consigné avec sa cause, et l'audit de provenance de la
-base passe.
+L'unité v0.2.2 a exécuté les **passes du paysage sur le réseau réel**
+(14.09.2026 ; reconnaissance uniquement — exports/APIs officiels, pas
+de scraping) et a assemblé **l'entonnoir à trois questions** — chaque
+chiffre est le résultat d'une requête de base de données :
 
-La passe de reconnaissance du 12 septembre 2026 a couvert les sources
-enregistrées (statistiques officielles, une association et un registre
-sectoriel, et 25 sites de peintures/revêtements/bricolage/couleurs
-d'artistes). **N1, N2 et N3** figurent dans le
-[rapport de reconnaissance](docs/report/probe-report.md) et sont
-résumés ci-dessous :
+- **Q1 — combien de peintures sur le marché de l'UE (estimation
+  modélisée) :** le modèle `P(cn8) = M × ppp × s(cn8)` donne
+  **[85 840–343 360] produits** — bornes de producteurs 800 (CEPE) à
+  3 200 (Eurostat SBS NACE 20.30) × **107,3 produits par producteur**
+  (ECAT : paires ÷ titulaires de licence) × parts de volume des
+  importations extra-UE par code CN8. Une estimation modélisée, jamais
+  un décompte.
+- **Q2 — pour combien de produits le triplet d'identité est
+  définitivement connu (plancher) :** **17 170** paires distinctes
+  (fabricant, identifiant produit) sur les registres officiels
+  établis (ECAT : 17 838 entrées, 160 titulaires, 16,0 % de
+  complétude d'identité).
+- **Q3 — pour combien d'entre eux un document de type FDS est
+  accessible (modélisé) :** **3 590** (borne supérieure ; l'hypothèse
+  de taux de correspondance est en attente). Le rapport v0.5 (Q2 ÷ Q1)
+  se lit **0,05–0,2**.
 
-- **N1 — combien de peintures sur le marché de l'UE :** un ordre de
-  grandeur assemblé à partir des statistiques officielles. Les ancres
-  douanières 2024 (Eurostat Comext, importations UE hors UE, DS-045409)
-  chiffrent **HS 3208 à ≈2,5 Mt (≈12,2 Mrd €)** et **HS 3209 à ≈2,1 Mt
-  (≈6,2 Mrd €)**. Ancres côté offre : CEPE représente ≈800 entreprises
-  membres ; Eurostat SBS dénombre 3.200 entreprises en NACE 20.30
-  (2020, peintures + encres + mastics). La fourchette d'ordre de
-  grandeur reste une **estimation** — le rapport donne les ancres et la
-  méthode, jamais un chiffre unique présenté comme factuel.
-- **N2 — pour combien de produits nous avons un accès aux données,
-  sous une forme ou une autre :** **204.693** URL produit observées sur
-  **23** sources comptées (visibles via les sitemaps ; un plancher,
-  dominé par quelques grands catalogues de bricolage).
-- **N3 — pour combien d'entre eux des spécifications détaillées, une
-  FDS par exemple, peuvent être obtenues :** **9** sites exposent
-  visiblement une bibliothèque de FDS/documents (un nombre de sites,
-  pas de produits) ; aucune documentation produit n'a encore été
-  collectée — cela attend le feu vert de collecte.
+Le registre de sources de 101 lignes est entièrement dispositionné :
+**36 comptées, 48 documentées manuellement, 4 bloquées, 13 inactives
+par conception** ; l'établissement Comext couvre **les 13 codes CN8**
+(6 316 lignes commerciales). Le pilote de chevauchement ECAT ∩ Cygne
+Nordique reste explicitement non calculable tant qu'un second registre
+n'est pas établi. Rapport d'unité :
+[report-0.2.2.md](docs/report/report-0.2.2.md) ; tableaux
+lisibles par machine (commerce CN8, identité, matrice de profondeur,
+recensement, drapeaux de rapprochement) dans le
+[rapport de sondage](docs/report/probe-report.md).
 
-Méthode à ce stade : reconnaissance uniquement — conditions
-d'utilisation et conditions d'accès, disponibilité d'API ou de
-téléchargements, comptage des URL produit dans les sitemaps,
-vérifications manuelles. Les parcours de catalogues et toute collecte
-au niveau produit attendent un feu vert distinct. Les registres
-nordiques restent ouverts (SPIN injoignable lors de cette passe).
+## Unités antérieures
 
-### Capacité des sources sondée (v0.2.1, construite le 14.09.2026)
+### v0.2.1 — capacité des sources sondée (14.09.2026)
 
-La carte du paysage des données (v0.2.0) a compté les sources ; v0.2.1
-descend d'un niveau pour les **registres officiels** — les
-enregistrements écolabel et EPD qui publient des données produit sur
-les peintures — et caractérise chacun contre le modèle produit de
-l'étude (code CN8, fabricant, identification produit du fabricant),
-selon le volume et la profondeur. Les profils de capacité figurent
-dans le [rapport de reconnaissance](docs/report/probe-report.md)
-(section « Capability profile »).
+Un niveau plus profond pour les **registres officiels** (Écolabel UE,
+Cygne Nordique, Ange Bleu, INIES, IBU, environdec), chacun
+caractérisé contre le modèle produit (CN8, fabricant, identifiant
+produit) selon le volume et la profondeur. **ECAT confirmé comme
+source de produits réels** (fabricant + GTIN/EAN, CN8 via catégorie,
+profondeur 2, CSV téléchargeable) ; numérateur N2 préliminaire
+**17 838** produits de peinture certifiés — un plancher, jamais un
+total de marché. Les autres registres sont restés à ancrer /
+inactifs / sans identifiant produit ; le défaut HTML-as-CSV de cette
+passe a été réparé dans la v0.2.2. Détails :
+[report-0.2.1.md](docs/report/report-0.2.1.md).
 
-- Le registre comporte désormais **7 registres officiels** (AS-1–AS-7) :
-  le catalogue Écolabel UE (ECAT), Nordic Swan, Ange Bleu, INIES, IBU
-  et environdec, plus AS-1. Quatre sont actifs ; Ange Bleu et INIES
-  sont inactifs (export XLSX ou accès protégé).
-- La page d'accueil de chaque registre actif est du HTML — les exports
-  sont documentés comme **URL d'export à ancrer** lors du prochain
-  passage, consignés honnêtement plutôt que lus à tort comme un export.
-- **Un registre est confirmé comme source de produits réels :** le
-  **catalogue Écolabel UE (ECAT)** — il expose un champ fabricant, un
-  champ d'identification produit (GTIN/EAN), un mécanisme de liaison
-  CN8 (catégorie) et une profondeur de données 2 ; son export CSV est
-  téléchargeable.
-- **Numérateur N2 préliminaire (registres officiels, plancher) : 17.838**
-  peintures & vernis et revêtements de performance de l'ECAT (16.001 +
-  1.817 produits selon les critères 2014 et 2025, plus 20 revêtements
-  de performance). Il s'agit d'un **sous-ensemble certifié/déclaré** du
-  marché — un plancher, jamais un total de marché, et les données
-  produit attendent toujours le feu vert de collecte.
-- Les autres registres actifs ne sont pas encore des sources de
-  produits réels : environdec expose un fabricant mais pas
-  d'identification produit ; Nordic Swan et IBU sont à ancrer.
+### v0.2.0 — carte du paysage des données (12.09.2026)
+
+Sondage en mode reconnaissance des sources enregistrées (statistiques
+officielles, une association et un registre sectoriel, et 25 sites de
+peintures/revêtements/bricolage/couleurs d'artistes). Chiffres
+phares : **N1** ancres de marché (2024, importations extra-UE : HS
+3208 ≈2,5 Mt / ≈12,2 Mrd €, HS 3209 ≈2,1 Mt / ≈6,2 Mrd € ; CEPE ≈800
+membres ; SBS NACE 20.30 = 3 200 entreprises) ; **N2 = 204 693** URL
+produit visibles via sitemaps sur 23 sources comptées ; **N3 = 9**
+sites avec une bibliothèque de FDS visible ; les registres nordiques
+sont restés ouverts (SPIN injoignable). Détails :
+[report-0.2.0.md](docs/report/report-0.2.0.md).
 
 ## Ce que les recherches antérieures montrent
 
@@ -224,7 +212,7 @@ conception technique revue dans
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0 et v0.2.1 construites) — suivi des phases, critères de sortie |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0–v0.2.2 construites) — suivi des phases, critères de sortie |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
@@ -253,12 +241,16 @@ conception technique revue dans
 
 ## État
 
-Les unités outil v0.1.1–v0.2.1 sont construites et testées (231 tests
+Les unités outil v0.1.1–v0.2.2 sont construites et testées (299 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente
 d'un feu vert de collecte), carte du paysage des données avec les
-trois chiffres phares, et sondage de capacité des registres officiels.
-La passe de reconnaissance a tourné le 12 septembre 2026 ; le rapport
-est publié sous `docs/report/`. La méthodologie reste ouverte à
-révision à mesure que les résultats arrivent.
+trois chiffres phares, sondage de capacité des registres officiels,
+et l'entonnoir à trois questions exécuté sur le réseau réel
+(14.09.2026) : base d'établissement, exécution par vagues, disposition
+complète du registre de 101 lignes et le rapport avec les sections
+entonnoir, commerce CN8, identité, profondeur et recensement — chaque
+chiffre est un résultat de requête. Le rapport est publié sous
+`docs/report/`. La méthodologie reste ouverte à révision à mesure que
+les résultats arrivent.

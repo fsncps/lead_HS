@@ -2,6 +2,16 @@
 
 This report answers two study questions: (Q1) how many paint/varnish products each registered source exposes — observed listings, a floor, never a market total — and (Q2) for how many of them SDS-type documentation is reachable. The N1 block adds market-size anchors (trade sums, register counts); the N1 range itself is an estimate stated in the method sheet, never a DB count. Trade-statistics rows are volume context: tariff-line flows, never products. These remain source-feasibility metrics only: product and lead prevalence are M2+ deliverables and are never implied here. The tool, the database and the reports carry product data only (Strategy MASTER D27): inactive register rows appear in the matrix without findings.
 
+## Funnel — the three questions (v0.2.2)
+
+_Staging DB not provided or empty — the funnel floor, CN8 trade table, identity table and per-CN8 pool split render as explicit absence notes (e5). Re-run the W1 waves with the staging DB to populate them._
+
+**Q1 — market pool (modeled estimate):** P(cn8) = M × ppp × s(cn8) — _range not computable: M bounds alone (800–Eurostat SBS NACE 20.30 enterprise count (ST-3 prior) producers) need the products-per-producer estimate from staged registers (e5)._
+_Per-CN8 split absent: no staged trade volumes / no ppp estimate (run the W1 waves with staging)._
+**Q2 — definitively identifiable:** _absent — no staged registers (e5)._
+**Q3 — SDS reachable:** _absent — no site combines a visible SDS library with a sitemap product count yet._
+**v0.5 ratio (Q2 ÷ Q1):** _not computable without the Q2 floor._
+
 ## N1 — market-size anchors
 
 Anchor values from the database (every value cites the run it comes from).
@@ -64,6 +74,47 @@ and recon sweeps before reading a total here (never a bare 0).
 
 
 _No trade-context lines yet (CS aggregation pending)._
+
+## CN8 trade table (staged; volume context)
+
+
+_No staged trade rows (e5) — the CN8 table renders only from the staging DB._
+
+## Identity table (staged registers)
+
+
+_No staged registers (e5) — the identity table renders only from the staging DB._
+
+## Depth matrix counts (fu8 refined tiers)
+
+
+| tier | meaning | sources |
+|---|---|---|
+| 1 | name only | — (0) |
+| 2 | name + ident/licence + category (registry metadata, no technical data) | — (0) |
+| 3 | adds technical performance data / downloadable tech docs (SDS/TDS links) | — (0) |
+| 4 | standardized full documents (EPD declarations; IATA/CMR MSDS) | — (0) |
+
+tier 4 is assigned only from recorded capability metrics (standardized-doc sources are manual records — capability not probed); absence of a tier is not a zero claim.
+_No per-site SDS-URL counts recorded (sds_doc_urls metric pending)._
+
+## Source census (enumerated vs probed vs counted)
+
+Enumerated register rows: 16 · probed (≥1 done run): 2 · counted: 0.
+
+| class | channel | rows |
+|---|---|---|
+| AS | download | 1 |
+| CS | api | 2 |
+| CS | download | 2 |
+| PE | scrape | 9 |
+| ST | download | 1 |
+| ST | manual | 1 |
+
+
+## Reconciliation flags (c4 — visible, never silent)
+
+_No staged sources to reconcile (e5)._
 
 ## Priors (registers & associations)
 

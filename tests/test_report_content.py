@@ -7,6 +7,7 @@ structure."""
 import csv
 import io
 import json
+import re
 
 from leadhs import report as reportmod
 from leadhs.probe import engine
@@ -41,8 +42,17 @@ def _db_ids(loaded_conn):
     return [r[0] for r in loaded_conn.execute("SELECT id FROM source ORDER BY id").fetchall()]
 
 
+def _matrix_csv(loaded_conn, **kw):
+    """v0.2.2 PHASE06: the csv is the matrix block FIRST, then the
+    landscape section blocks — the matrix block ends at the blank line."""
+    out = reportmod.render(loaded_conn, format="csv", **kw)
+    parts = re.split(r"\r?\n\r?\n", out, maxsplit=1)
+    return parts[0], out
+
+
 def test_matrix_covers_all_registered_sources_incl_inactive(loaded_conn, store, fixture_register):
-    rows = list(csv.DictReader(io.StringIO(reportmod.render(loaded_conn, format="csv"))))
+    matrix, _full = _matrix_csv(loaded_conn)
+    rows = list(csv.DictReader(io.StringIO(matrix)))
     assert [r["source_id"] for r in rows] == _db_ids(loaded_conn)
     st1 = next(r for r in rows if r["source_id"] == "ST-1")
     assert st1["active"] == "0"
@@ -116,19 +126,23 @@ def test_metric_values_cite_run_key(loaded_conn, store, fetcher):
     assert summary["run_key"] in md  # cited in compact blocks + matrix last-run column
 
 
-def test_csv_is_matrix_only(loaded_conn, store, fetcher):
-    _setup(loaded_conn, store, fetcher)
-    out = reportmod.render(loaded_conn, format="csv")
-    lines = out.splitlines()
+def test_csv_matrix_first_then_landscape_blocks(loaded_conn, store, fetcher):
+    """v0.2.2 PHASE06 (supersedes the D28 matrix-only csv contract):
+    matrix block first, landscape sections appended after a blank line."""
+    matrix, full = _matrix_csv(loaded_conn)
+    lines = matrix.splitlines()
     assert lines[0].split(",") == reportmod._MATRIX_HEADER + list(reportmod.CAPABILITY_METRICS) + ["real_product_source"]
     assert len(lines) == 1 + len(_db_ids(loaded_conn))
-    assert "anchor" not in out.lower()
+    assert "anchor" not in matrix.lower()
+    # the landscape block carries the funnel + reconciliation sections
+    assert "section,key,subkey,value" in full
+    assert "funnel,q1" in full.replace('"', "")
 
 
 def test_json_full_structure(loaded_conn, store, fetcher):
     _setup(loaded_conn, store, fetcher)
     data = json.loads(reportmod.render(loaded_conn, format="json"))
-    assert set(data) == {"report", "numbers", "anchors", "capability", "sources", "anchor_candidates", "source_activity"}
+    assert set(data) == {"report", "numbers", "anchors", "capability", "landscape", "sources", "anchor_candidates", "source_activity"}
     assert data["report"]["title"] == reportmod.TITLE
     # nu5: json carries anchor values, never a computed N1 range
     assert "range" not in json.dumps(data["numbers"])

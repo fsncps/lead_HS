@@ -108,10 +108,11 @@ def test_run_all_empty_register(conn, store, fetcher):
     assert summaries == [] and exit_code == 0
 
 
-def test_run_all_capability_only_as_sources(loaded_conn, store, fetcher):
-    """v0.2.1 cap2/cap5: the capability sweep targets AS sources only —
-    PE/CS/ST sources are never swept in capability mode."""
-    summaries, exit_code = engine.run_all(loaded_conn, store, fetcher, mode="capability")
+def test_run_all_capability_only_as_sources(loaded_conn, store, fetcher, tmp_path):
+    """v0.2.1 cap2/cap5, v0.2.2 e2: the capability sweep targets AS
+    sources via the classes=["AS"] filter — passed at the caller layer
+    (the CLI preset); PE/CS/ST sources are never swept with it."""
+    summaries, exit_code = engine.run_all(loaded_conn, store, fetcher, mode="capability", classes=["AS"])
     swept = {s["source"] for s in summaries}
     assert swept == {"AX-1"}
     assert exit_code == 0

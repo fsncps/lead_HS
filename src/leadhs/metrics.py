@@ -56,6 +56,7 @@ METRIC_CAP_PRODUCT_IDENT = "cap_product_ident"
 METRIC_CAP_CN8_LINKAGE = "cap_cn8_linkage"
 METRIC_CAP_DEPTH_TIER = "cap_depth_tier"
 METRIC_CN8_REACHABLE = "cn8_reachable"
+METRIC_SDS_DOC_URLS = "sds_doc_urls"
 
 
 PROBE_METRIC_SEEDS = (
@@ -102,6 +103,8 @@ PROBE_METRIC_SEEDS = (
     Metric(METRIC_CAP_CN8_LINKAGE, "Capability: CN8 linkage", "text"),
     Metric(METRIC_CAP_DEPTH_TIER, "Capability: depth tier", "numeric"),
     Metric(METRIC_CN8_REACHABLE, "CN8 codes reachable", "numeric"),
+    # 0008__landscape.sql (v0.2.2, fu3)
+    Metric(METRIC_SDS_DOC_URLS, "SDS document URLs visible", "numeric"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)

@@ -329,6 +329,111 @@
       "caveat": "Preliminary N2 numerator (official registers, floor): sum of products_identifiable over the real-product sources below. Official registers are certified/declared subsets of the market, never a market total \u2014 a floor, cited to the run it comes from."
     }
   },
+  "landscape": {
+    "staging_present": false,
+    "staging_absent_note": "Staging DB not provided or empty \u2014 the funnel floor, CN8 trade table, identity table and per-CN8 pool split render as explicit absence notes (e5). Re-run the W1 waves with the staging DB to populate them.",
+    "funnel": {
+      "q1": {
+        "formula": "P(cn8) = M \u00d7 ppp \u00d7 s(cn8)",
+        "m_bounds": [
+          800,
+          3200
+        ],
+        "m_low_source": "CEPE member count (AS-11 manual record)",
+        "m_high_source": "Eurostat SBS NACE 20.30 enterprise count (ST-3 prior)",
+        "ppp": null,
+        "range": null,
+        "shares": [],
+        "label": "modeled estimate \u2014 never a DB count",
+        "absent": true
+      },
+      "q2": {
+        "value": null,
+        "label": "definitively identifiable: N (floor) \u2014 distinct (manufacturer, ident) pairs over staged registers",
+        "absent": true
+      },
+      "q3": {
+        "value": null,
+        "label": "modeled SDS reach \u2014 \u03a3 sitemap products over sites with a visible SDS library; match-rate assumption pending (upper bound shown)",
+        "absent": true
+      },
+      "ratio": {
+        "formula": "v0.5 ratio = Q2 \u00f7 Q1",
+        "low": null,
+        "high": null,
+        "label": "share of the modeled pool that is definitively identifiable (epistemic label: floor \u00f7 range)",
+        "absent": true
+      }
+    },
+    "cn8_trade": {
+      "rows": [],
+      "absent": true
+    },
+    "identity": {
+      "registers": [],
+      "absent": true
+    },
+    "depth": {
+      "tier_labels": {
+        "1": "name only",
+        "2": "name + ident/licence + category (registry metadata, no technical data)",
+        "3": "adds technical performance data / downloadable tech docs (SDS/TDS links)",
+        "4": "standardized full documents (EPD declarations; IATA/CMR MSDS)"
+      },
+      "tier_counts": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "tier_members": {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": []
+      },
+      "sds_counts": [],
+      "note": "tier 4 is assigned only from recorded capability metrics (standardized-doc sources are manual records \u2014 capability not probed); absence of a tier is not a zero claim"
+    },
+    "census": {
+      "class_channel": [
+        {
+          "class_code": "AS",
+          "channel": "download",
+          "n": 1
+        },
+        {
+          "class_code": "CS",
+          "channel": "api",
+          "n": 2
+        },
+        {
+          "class_code": "CS",
+          "channel": "download",
+          "n": 2
+        },
+        {
+          "class_code": "PE",
+          "channel": "scrape",
+          "n": 9
+        },
+        {
+          "class_code": "ST",
+          "channel": "download",
+          "n": 1
+        },
+        {
+          "class_code": "ST",
+          "channel": "manual",
+          "n": 1
+        }
+      ],
+      "enumerated": 16,
+      "probed": 2,
+      "counted": 0
+    },
+    "reconciliation": []
+  },
   "sources": [
     {
       "id": "AX-1",

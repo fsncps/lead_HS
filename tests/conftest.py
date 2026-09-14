@@ -177,7 +177,18 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             # od9: parameterized CS query — empty result set for HS 3213.
             # v0.2.0 nu2: indicators queries get the JSON-stat aggregation
             # shape (partner as the one free dimension).
-            if "indicators=" in query:
+            # v0.2.2 W1: 8-digit product codes = the per-CN8 batch —
+            # declarant × period shape (multi-dim decode).
+            product = None
+            for part in query.split("&"):
+                if part.startswith("product="):
+                    product = part.split("=", 1)[1]
+            if "indicators=" in query and product and len(product) == 8:
+                indicator = next(
+                    (p.split("=", 1)[1] for p in query.split("&") if p.startswith("indicators=")), ""
+                )
+                data = _jsonstat_batch(indicator)
+            elif "indicators=" in query:
                 data = _jsonstat({"DE": 100.0, "FR": 250.0, "BE": 50.0})
             else:
                 rows = [] if "product=3213" in query else [{"x": 1}, {"x": 2}, {"x": 3}]
@@ -208,6 +219,30 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.end_headers()
             self.wfile.write(b'{"value": "not-a-list"}')
+        elif p == "/ecat.csv":
+            # v0.2.2 W1 fixture: ECAT-shaped export — 2 in-scope paint rows
+            # + 1 furniture row (group filter drops it)
+            body = (
+                b"product_or_service_name,company_name,group_name,code_value\n"
+                b"Paint A,Acme GmbH,Decorative paints,0076000001\n"
+                b"Paint B,Beier AG,Paints & varnishes,\n"
+                b"Office chair,Chairs Ltd,Furniture,42\n"
+            )
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/ecat-furniture.csv":
+            body = (
+                b"product_or_service_name,company_name,group_name,code_value\n"
+                b"Office chair,Chairs Ltd,Furniture,42\n"
+            )
+            self.send_response(200)
+            self.send_header("Content-Type", "text/csv")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/ecat.html":
+            self._html(b"<html><body>landing page</body></html>")
         elif p == "/sitemap.xml":
             ip = (self.headers.get("Host") or "").rsplit(":", 1)[0]
             if ip != "127.0.0.20":  # only the happy-path host serves the fallback
@@ -325,6 +360,25 @@ def _jsonstat(partner_values: dict, labels=None) -> dict:
         "size": [len(keys)],
         "dimension": {"partner": {"category": {"index": index, "label": {}}}},
         "value": {str(i): v for i, v in enumerate(partner_values.values())},
+    }
+
+
+def _jsonstat_batch(indicator: str) -> dict:
+    """v0.2.2 W1 batch shape: declarant × period free; flow/product/
+    indicators pinned at size 1 — the multi-dim decode shape."""
+    return {
+        "version": "2.0",
+        "class": "dataset",
+        "id": ["declarant", "time", "flow", "product", "indicators"],
+        "size": [2, 1, 1, 1, 1],
+        "dimension": {
+            "declarant": {"category": {"index": {"DE": 0, "FR": 1}, "label": {}}},
+            "time": {"category": {"index": {"2024": 0}, "label": {}}},
+            "flow": {"category": {"index": {"1": 0}, "label": {}}},
+            "product": {"category": {"index": {"32081010": 0}, "label": {}}},
+            "indicators": {"category": {"index": {indicator: 0}, "label": {}}},
+        },
+        "value": {"0": 10.0, "1": 20.0},
     }
 
 

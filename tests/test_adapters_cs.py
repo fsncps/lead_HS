@@ -80,6 +80,33 @@ def test_query_api_dry_run_plans_hs_urls(site, conn, store, make_fetcher, monkey
     assert result.documents == [] and result.findings == []
 
 
+# --- v0.2.2 W1: per-CN8 batch + U6 dictionary verification ----------------
+
+
+def test_cn8_batch_verifies_dict_when_complete(site, conn, store, make_fetcher, tmp_path):
+    """U6: a batch that delivers rows for all 13 in-scope codes flips the
+    seeded dictionary to verified=1."""
+    from leadhs import staging
+    from leadhs.staging import CN8_DICT
+
+    stg = staging.connect(str(tmp_path / "stg.sqlite"))
+    staging.init(stg)
+    staging.seed_dict(stg)
+    assert stg.execute("SELECT SUM(verified) FROM dict_cn8").fetchone()[0] == 0
+    ctx = ProbeContext(fetcher=make_fetcher(), store=store, conn=conn, mode="capability", dry_run=False, staging=stg)
+    result = CSAdapter().probe(_api_source(site), ctx)
+    assert {r.cn8 for r in result.staged_trade} >= {c[0] for c in CN8_DICT}
+    assert stg.execute("SELECT SUM(verified) FROM dict_cn8").fetchone()[0] == len(CN8_DICT)
+    stg.close()
+
+
+def test_cn8_batch_keeps_dict_unverified_when_staging_absent(site, conn, store, make_fetcher):
+    """U6 is metric-not-gate: no staging connection → no flip, batch still done."""
+    ctx = ProbeContext(fetcher=make_fetcher(), store=store, conn=conn, mode="capability", dry_run=False)
+    result = CSAdapter().probe(_api_source(site), ctx)
+    assert result.staged_trade
+
+
 def test_dry_run(site, conn, store, make_fetcher, monkeypatch):
     ctx = ProbeContext(fetcher=make_fetcher(), store=store, conn=conn, dry_run=True)
     monkeypatch.setattr(ctx.fetcher._session, "get", lambda *a, **kw: (_ for _ in ()).throw(AssertionError("network")))

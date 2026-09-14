@@ -15,3 +15,20 @@ PX-8,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,
 PX-9,PE,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
 ST-1,ST,0,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
 SX-1,ST,1,d,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,—,0
+
+section,key,subkey,value
+funnel,q1,label,modeled estimate — never a DB count
+funnel,q1,range,
+funnel,q2,label,"definitively identifiable: N (floor) — distinct (manufacturer, ident) pairs over staged registers"
+funnel,q2,value,
+funnel,q3,label,modeled SDS reach — Σ sitemap products over sites with a visible SDS library; match-rate assumption pending (upper bound shown)
+funnel,q3,value,
+funnel,ratio,label,share of the modeled pool that is definitively identifiable (epistemic label: floor ÷ range)
+depth,tier 1,,0
+depth,tier 2,,0
+depth,tier 3,,0
+depth,tier 4,,0
+census,enumerated,,16
+census,probed,,2
+census,counted,,0
+staging,absent,,"Staging DB not provided or empty — the funnel floor, CN8 trade table, identity table and per-CN8 pool split render as explicit absence notes (e5). Re-run the W1 waves with the staging DB to populate them."

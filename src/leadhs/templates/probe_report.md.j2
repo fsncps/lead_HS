@@ -3,6 +3,25 @@
 
 {{ report.framing }}
 
+## Funnel — the three questions (v0.2.2)
+
+{% if landscape.staging_absent_note %}_{{ landscape.staging_absent_note }}_{% endif %}
+{% set q1 = landscape.funnel.q1 %}{% set q2 = landscape.funnel.q2 %}{% set q3 = landscape.funnel.q3 %}{% set ratio = landscape.funnel.ratio %}
+**Q1 — market pool (modeled estimate):** {{ q1.formula }}{% if q1.absent %} — _range not computable: M bounds alone ({{ q1.m_bounds[0] }}–{{ q1.m_high_source }} producers) need the products-per-producer estimate from staged registers (e5)._{% else %} → range **[{{ q1.range[0] }}, {{ q1.range[1] }}]** products
+(M bounds: {{ q1.m_low_source }} / {{ q1.m_high_source }}; ppp = {{ q1.ppp.ppp }} = {{ q1.ppp.pairs }} distinct pairs ÷ {{ q1.ppp.manufacturers }} licence holders over the largest staged register {{ q1.ppp.source_id }}). {{ q1.label }}.{% endif %}
+{% if q1.absent %}_Per-CN8 split absent: no staged trade volumes / no ppp estimate (run the W1 waves with staging)._{% else %}
+Per-CN8 modeled split (s = staged extra-EU kg share):
+| CN8 | kg | share s | P low | P high |
+|---|---|---|---|---|
+{% for sh in q1.shares[:13] %}| {{ sh.cn8 }} | {{ sh.kg|int }} | {{ sh.share }} | {{ sh.p_low }} | {{ sh.p_high }} |
+{% endfor %}{% endif %}
+{% if q2.absent %}**Q2 — definitively identifiable:** _absent — no staged registers (e5)._{% else %}
+**Q2 — definitively identifiable: {{ q2.value }} (floor)** — {{ q2.label }}.{% endif %}
+{% if q3.absent %}**Q3 — SDS reachable:** _absent — no site combines a visible SDS library with a sitemap product count yet._{% else %}
+**Q3 — SDS reachable (modeled): {{ q3.value }}** — {{ q3.label }}.{% endif %}
+{% if ratio.absent %}**v0.5 ratio (Q2 ÷ Q1):** _not computable without the Q2 floor._{% else %}
+**v0.5 ratio (Q2 ÷ Q1): {{ ratio.low }} – {{ ratio.high }}** — {{ ratio.label }}.{% endif %}
+
 ## N1 — market-size anchors
 
 Anchor values from the database (every value cites the run it comes from).
@@ -57,6 +76,56 @@ the sums): {{ numbers.excluded_counted|join(', ') }}.
 {% for s in trade_sources %}{% for line in s.trade_lines %}- **{{ s.id }}** {{ line }}
 {% endfor %}{% endfor %}
 {% else %}_No trade-context lines yet (CS aggregation pending)._{% endif %}
+
+## CN8 trade table (staged; volume context)
+
+{% set ct = landscape.cn8_trade %}
+{% if ct.rows %}
+| CN8 | flow | Σ kg | Σ EUR | staged rows |
+|---|---|---|---|---|
+{% for r in ct.rows %}| {{ r.cn8 }} | {{ r.flow }} | {{ r.kg|int if r.kg else '—' }} | {{ r.eur|int if r.eur else '—' }} | {{ r.rows }} |
+{% endfor %}
+{% if ct.flow_caveat %}⚠ **flag:** {{ ct.flow_caveat }}.{% endif %}
+{{ ct.cn8_proxy_note }}
+{% else %}_No staged trade rows (e5) — the CN8 table renders only from the staging DB._{% endif %}
+
+## Identity table (staged registers)
+
+{% set idt = landscape.identity %}
+{% if idt.registers %}
+| register | run | entries | distinct mfr | distinct (mfr, ident) pairs | identity completeness | top categories |
+|---|---|---|---|---|---|---|
+{% for reg in idt.registers %}| {{ reg.source_id }} | {{ reg.run_key }} | {{ reg.entries }} | {{ reg.distinct_manufacturers }} | {{ reg.distinct_pairs }} | {{ reg.identity_completeness_pct }}% | {{ reg.categories[:3]|map('join', ': ')|join('; ') }} |
+{% endfor %}
+**Deduped union (Q2 floor): {{ idt.union.distinct_pairs }} pairs over {{ idt.union.distinct_manufacturers }} manufacturers.**
+{% if idt.overlap.computed %}**Overlap pilot {{ idt.overlap.label }}:** |A∩B| = {{ idt.overlap.intersection }}, containment {{ idt.overlap.containment }}, Jaccard {{ idt.overlap.jaccard }} — calibration-only.{% else %}_{{ idt.overlap.note }}._{% endif %}
+{% else %}_No staged registers (e5) — the identity table renders only from the staging DB._{% endif %}
+
+## Depth matrix counts (fu8 refined tiers)
+
+{% set dep = landscape.depth %}
+| tier | meaning | sources |
+|---|---|---|
+{% for t in ('1','2','3','4') %}| {{ t }} | {{ dep.tier_labels[t] if dep.tier_labels[t] else '' }} | {{ dep.tier_members[t]|join(', ') or '—' }} ({{ dep.tier_counts[t] }}) |
+{% endfor %}
+{{ dep.note }}.
+{% if dep.sds_counts %}Per-site SDS-URL counts (G6): {% for s in dep.sds_counts %}{{ s.source_id }} = {{ s.sds_doc_urls }}{{ '; ' if not loop.last }}{% endfor %}.{% else %}_No per-site SDS-URL counts recorded (sds_doc_urls metric pending)._{% endif %}
+
+## Source census (enumerated vs probed vs counted)
+
+Enumerated register rows: {{ landscape.census.enumerated }} · probed (≥1 done run): {{ landscape.census.probed }} · counted: {{ landscape.census.counted }}.
+
+| class | channel | rows |
+|---|---|---|
+{% for c in landscape.census.class_channel %}| {{ c.class_code }} | {{ c.channel }} | {{ c.n }} |
+{% endfor %}
+
+## Reconciliation flags (c4 — visible, never silent)
+
+{% if landscape.reconciliation %}
+{% for fl in landscape.reconciliation %}- {{ fl.kind == 'ok' and '✓' or '⚠' }} **{{ fl.source_id }}** ({{ fl.kind }}): {{ fl.detail }}
+{% endfor %}
+{% else %}_No staged sources to reconcile (e5)._{% endif %}
 
 ## Priors (registers & associations)
 

@@ -78,6 +78,18 @@ def test_duplicate_active_host_rejected(conn, tmp_path, site):
     assert "PX-1" in str(exc.value) and "PZ-1" in str(exc.value)
 
 
+def test_same_host_different_datasets_loads(conn, tmp_path, site):
+    """v0.2.2: outside PE one host may carry distinct datasets
+    (host+path conflict key — the Eurostat CS-2/ST-4 case)."""
+    path = _write(
+        tmp_path,
+        f"CX-1,CS,Comext,{site}/api/comext,api,,open,1,\n"
+        f"SX-1,ST,Prodcom,{site}/api/prodcom,download,,open,1,\n"
+        f"AX-1,AS,Register,{site}/export.csv,download,,open,1,\n",
+    )
+    assert load(conn, path) == 3
+
+
 def test_duplicate_host_with_inactive_row_loads(conn, tmp_path, site):
     path = _write(tmp_path, f"PX-1,PE,Name,{site}/,scrape,,open,1,\nPZ-9,PE,Retired,{site}/old,scrape,,open,0,\n")
     assert load(conn, path) == 2

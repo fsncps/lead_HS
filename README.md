@@ -72,75 +72,63 @@ documentation study and takes no position on the regulation itself.
 Switzerland enters the study only as this regulatory frame — the
 market under study is the EU's.
 
-## Current stage: data-landscape map (v0.2.0) + source capability (v0.2.1)
+## Current stage: the three-question funnel (v0.2.2)
 
-Before any product data is collected, the study maps its **data
-landscape**: which sources cover the EU paints market, at what scale,
-and with what access to product documentation. That map is built and
-the three headline numbers are documented. Every result, including
-access refusals, is recorded with its cause, and the database's
-provenance audit passes.
+v0.2.2 executes the **real-network landscape run** (2026-09-14,
+reconnaissance-only: official exports/APIs, no scraping) and assembles
+the **three-question funnel** — every number a database query, no
+typed literals:
 
-The probe round on 2026-09-12 covered the registered sources (official
+- **Q1 — how many paints are on the EU market (modeled estimate):**
+  the pool model `P(cn8) = M × ppp × s(cn8)` gives **[85,840–343,360]
+  products** — producer bounds 800 (CEPE) to 3,200 (Eurostat SBS
+  NACE 20.30) × **107.3 products per producer** (ECAT staged pairs ÷
+  licence holders) × per-CN8 volume shares from the staged extra-EU
+  trade (largest: HS 32091000 ≈32%). A modeled estimate, never a count.
+- **Q2 — for how many products the identity triple is definitively
+  known (floor):** **17,170** distinct (manufacturer, product-ident)
+  pairs over the staged official registers (ECAT: 17,838 entries,
+  160 licence holders, 16.0% identity completeness).
+- **Q3 — for how many of them an SDS-type document is reachable
+  (modeled):** **3,590** (upper bound: Σ sitemap product counts over
+  the sites with a visible SDS library; the match-rate assumption is
+  pending). The v0.5 ratio (Q2 ÷ Q1) reads **0.05–0.2**.
+
+The 101-row source register is fully dispositioned: **36 counted,
+48 manual-recorded, 4 blocked, 13 inactive by design**; the Comext
+staging covers **all 13 CN8 codes** (6,316 trade rows); the EU
+Ecolabel ∩ Nordic Swan overlap pilot stays explicitly not computable
+until a second register is staged. Unit report:
+[report-0.2.2.md](docs/report/report-0.2.2.md); machine-readable
+tables (CN8 trade, identity, depth matrix, census, reconciliation
+flags) in the [probe report](docs/report/probe-report.md).
+
+## Previous units
+
+### v0.2.1 — source capability sounding-out (2026-09-14)
+
+One level deeper on the **official registers** (EU Ecolabel, Nordic
+Swan, Blue Angel, INIES, IBU, environdec), each characterised against
+the product model (CN8, manufacturer, product-ident) for volume and
+depth. **ECAT confirmed a real-product source** (manufacturer +
+GTIN/EAN, CN8 via category, depth 2, downloadable CSV); preliminary
+N2 numerator **17,838** certified paint products — a floor, never a
+market total. The other registers stayed export-to-anchor / inactive
+/ without a product-ident; the round's HTML-as-CSV defect was
+repaired in v0.2.2. Details:
+[report-0.2.1.md](docs/report/report-0.2.1.md).
+
+### v0.2.0 — data-landscape map (2026-09-12)
+
+Reconnaissance-only probe of the registered sources (official
 statistics, a trade-association and industry register, and 25
-paint/coatings/DIY/artists'-colour sites). **N1, N2 and N3** are
-reported in the
-[probe report](docs/report/probe-report.md) and summarised below:
-
-- **N1 — how many paints are on the EU market:** an order of magnitude
-  assembled from official statistics. The 2024 trade anchors (Eurostat
-  Comext, extra-EU imports, DS-045409) put **HS 3208 at ≈2.5 Mt
-  (≈€12.2 bn)** and **HS 3209 at ≈2.1 Mt (≈€6.2 bn)**. Register anchors
-  frame the producer side: CEPE represents ≈800 member companies and
-  Eurostat SBS counts 3,200 enterprises in NACE 20.30 (2020, paints +
-  inks + mastics). The market-size range itself stays an *estimate* —
-  the report gives the anchors and the method, never a single number
-  presented as fact.
-- **N2 — for how many products we have access to data in some form:**
-  **204,693** product URLs observed across **23** counted sources
-  (sitemap-visible; a floor, dominated by a few large DIY catalogues).
-- **N3 — for how many of those detailed specifications such as an SDS
-  are obtainable:** **9** sites visibly expose an SDS/document
-  library (a site count, not a product count); no product-level
-  documentation has been collected yet — that awaits the collection
-  go-ahead.
-
-Method at this stage: reconnaissance only — terms of use and access
-conditions, availability of APIs or downloads, product-URL counts from
-sitemaps, manual checks. Catalogue walks and any product-level
-collection await a separate go-ahead. The Norde registers remain
-open (SPIN unreachable this round).
-
-### Source capability probed (v0.2.1, built 2026-09-14)
-
-The data-landscape map (v0.2.0) counted the sources; v0.2.1 goes one
-level deeper on the **official registers** — the ecolabel and EPD
-registries that publish product-level paint data — and characterises
-each against the study's product model (CN8 code, manufacturer,
-manufacturer product-ident), at what volume and depth. The capability
-profiles are in the [probe report](docs/report/probe-report.md)
-(Capability profile section).
-
-- The register now holds **7 official registers** (AS-1–AS-7): the EU
-  Ecolabel catalogue (ECAT), Nordic Swan, Blue Angel, INIES, IBU and
-  environdec, plus AS-1. Four are active; Blue Angel and INIES are
-  inactive (XLSX-only or auth-gated exports).
-- Each active register's landing page is HTML — the exports are
-  documented as **export URL to anchor** at the next pass, recorded
-  honestly rather than mis-read as an export.
-- **One register is confirmed a real-product source:** the **EU
-  Ecolabel catalogue (ECAT)** — it exposes a manufacturer field, a
-  product-ident field (GTIN/EAN), a CN8-linkage mechanism (category)
-  and data depth 2; its CSV export is downloadable.
-- **Preliminary N2 numerator (official registers, floor): 17,838**
-  paints & varnishes + performance coatings from ECAT (16,001 + 1,817
-  products under the 2014 and 2025 criteria, plus 20 performance
-  coatings). This is a **certified/declared subset** of the market — a
-  floor, never a market total, and product data still awaits the
-  collection go-ahead.
-- The other active registers are not yet real-product sources:
-  environdec exposes a manufacturer but no product-ident; Nordic Swan
-  and IBU are export-to-anchor.
+paint/coatings/DIY/artists'-colour sites). Headline numbers: **N1**
+market anchors (2024 extra-EU imports: HS 3208 ≈2.5 Mt / ≈€12.2 bn,
+HS 3209 ≈2.1 Mt / ≈€6.2 bn; CEPE ≈800 members; SBS NACE 20.30 = 3,200
+enterprises); **N2 = 204,693** sitemap-visible product URLs across 23
+counted sources; **N3 = 9** sites with a visible SDS library; the
+Nordic registers stayed open (SPIN unreachable). Details:
+[report-0.2.0.md](docs/report/report-0.2.0.md).
 
 ## What earlier research shows
 
@@ -201,7 +189,7 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 | [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0 and v0.2.1 built) — phase tracking, exit gates |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.2 built) — phase tracking, exit gates |
 | [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
@@ -211,7 +199,7 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
     AGENTS.md                  conventions for AI-assisted work on this repo
     Makefile                   operator entrypoint (make help = index)
     pyproject.toml             Python packaging for the leadhs tool
-    src/leadhs/                source code of the tool (v0.1.1 probing, v0.1.2 operator layer, v0.1.3 walk counters)
+    src/leadhs/                source code of the tool (v0.1.1 probing, v0.1.2 operator layer, v0.1.3 walk counters, v0.2.x staging + waves)
     tests/                     automated offline test suite
     data/                      local working state (gitignored): database, raw store, report intermediates
     docs/report/               published report finals (committed deliberately)
@@ -226,11 +214,14 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
 ## Status
 
-Tool units v0.1.1–v0.2.1 are built and tested (231 automated offline
+Tool units v0.1.1–v0.2.2 are built and tested (299 automated offline
 tests): evidence database, source register, source probing,
 per-source feasibility reports, counting machinery for catalogue walks
 (idle until a collection go-ahead), the data-landscape map with the
-three headline numbers, and the source-level capability sounding-out
-of the official registers. The probe round ran on 2026-09-12; the
-report is published under `docs/report/`. The methodology stays open to
-revision as results come in.
+three headline numbers, the source-level capability sounding-out of
+the official registers, and the three-question funnel executed on the
+real network (2026-09-14): staging database, wave harness, full
+disposition of the 101-row register, and the report with the funnel,
+CN8 trade, identity, depth and census sections — every number a query
+result. The report is published under `docs/report/`. The methodology
+stays open to revision as results come in.

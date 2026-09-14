@@ -8,11 +8,14 @@ from __future__ import annotations
 
 import json
 import re
+import sqlite3
 from datetime import datetime, timezone
 
 from .. import db as dbmod
 from .. import ids
 from .. import metrics as metricmod
+from .. import normalize as normmod
+from .. import staging as stagingmod
 from ..fetch import Blocked, ProbeNetworkError, RateLimited, RobotsDisallowed
 from ..logutil import log_event
 from ..models import FindingDraft, ProbeContext, ProbeResult, SourceRef
@@ -151,7 +154,95 @@ def persist(conn, store, source_id, run_id, result: ProbeResult, retrieval_metho
     return len(result.documents), len(result.findings)
 
 
-def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sample_n: int = 5, dry_run: bool = False, logger=None):
+def _stage_and_derive(staging, store, source, run_key, result: ProbeResult, notes: list) -> dict:
+    """Staging-first ingest (e1/fu2): archive the referenced documents
+    (content-addressed, idempotent), write staged rows to the staging DB
+    (one replace per document), then derive the run-close metrics from
+    the staging rows — metrics == staging by construction (fu1).
+
+    Returns the staged counts for the run summary. Raises EngineError on
+    any missing provenance (loud failure, c3).
+    """
+    stagingmod.init(staging)
+    staged_products = result.staged_products
+    staged_trade = result.staged_trade
+    counted_zero = result.parameters.get("staged_zero")
+
+    def _doc_groups(rows):
+        """Group staged rows by their source document (identity); returns
+        [(document_draft, rows)]."""
+        groups: dict = {}
+        for row in rows:
+            if row.document is None:
+                raise EngineError("staged row without its source document (loud failure, c3)")
+            entry = groups.setdefault(id(row.document), (row.document, []))
+            entry[1].append(row)
+        return [(draft, rws) for draft, rws in groups.values()]
+
+    def _stage_doc(doc) -> dict:
+        digest, _ = store.put(source.id, doc.content, _ext_for(doc.content_type))
+        return {
+            "url": doc.url,
+            "doc_hash": digest,
+            "retrieval_date": _today().isoformat(),
+            "bytes": len(doc.content),
+        }
+
+    n_products, n_trade = 0, 0
+    if staged_products or counted_zero is not None:
+        if counted_zero is not None and not staged_products:
+            # c2 counted-0: the export parsed fine but legitimately holds
+            # zero in-scope rows — stage the (empty) export, count 0.
+            if not result.documents:
+                raise EngineError("staged_zero run without an archived export document")
+            doc = result.documents[0]
+            sdoc = _stage_doc(doc)
+            stagingmod.replace_products(staging, source.id, run_key, sdoc, [])
+            notes.append(f"counted-0: {counted_zero}")
+        for doc, rows in _doc_groups(staged_products):
+            sdoc = _stage_doc(doc)
+            normalized = []
+            for row in rows:
+                ident = normmod.identity(row.manufacturer_raw, row.ident_raw, row.ident_hint, row.name)
+                ident["name"] = normmod.norm_name(row.name) if row.name is not None else None
+                ident["category_raw"] = row.category_raw
+                ident["raw"] = json.dumps(row.raw, sort_keys=True, default=str) if row.raw is not None else None
+                normalized.append(ident)
+            n_products += stagingmod.replace_products(staging, source.id, run_key, sdoc, normalized)
+    for doc, rows in _doc_groups(staged_trade):
+        sdoc = _stage_doc(doc)
+        trade_rows = [
+            {"cn8": r.cn8, "flow": r.flow, "declarant": r.declarant, "partner": r.partner,
+             "year": r.year, "kg": r.kg, "eur": r.eur}
+            for r in rows
+        ]
+        n_trade += stagingmod.replace_trade(staging, source.id, run_key, sdoc, trade_rows)
+
+    derived = {"staged_products": n_products, "staged_trade": n_trade}
+    if staged_products or counted_zero is not None:
+        # run-close derivation (fu1/fu4): the metric IS the staging count
+        count = stagingmod.count_products(staging, source.id, run_key)
+        agg = stagingmod.product_aggregates(staging, source.id, run_key)
+        cats = ", ".join(f"{c}={n}" for c, n in agg["categories"][:5])
+        result.findings.append(
+            FindingDraft(
+                metric_code=metricmod.METRIC_PRODUCTS_IDENTIFIABLE,
+                method_code="download",
+                value_numeric=float(count),
+                unit_code="count",
+                notes=(
+                    f"run-close derivation from staging ({run_key}): "
+                    f"distinct_manufacturers={agg['distinct_manufacturers']} "
+                    f"distinct_pairs={agg['distinct_pairs']} "
+                    f"identity_completeness_pct={agg['identity_completeness_pct']} "
+                    f"categories: {cats or '(none)'}"
+                ),
+            )
+        )
+    return derived
+
+
+def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sample_n: int = 5, dry_run: bool = False, logger=None, staging=None):
     """One per-source probe run. Returns a dict summary; never raises
     for expected failures (they become run statuses)."""
     dbmod.stale_run_reclaim(conn)
@@ -174,7 +265,11 @@ def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sampl
         conn.commit()
         return {"source": source.id, "run_key": run_key, "status": "failed", "documents": 0, "findings": 0, "notes": ["no adapter"]}
 
-    ctx = ProbeContext(fetcher=fetcher, store=store, conn=conn, mode=mode, sample_n=sample_n, dry_run=dry_run, logger=logger)
+    ctx = ProbeContext(fetcher=fetcher, store=store, conn=conn, mode=mode, sample_n=sample_n, dry_run=dry_run, logger=logger, staging=staging)
+
+    # automated findings carry the observation method (download/scrape/api);
+    # "manual" stays reserved for operator records (probe record)
+    method = source.access_method_code or "scrape"
 
     outcome = None
     notes = []
@@ -189,7 +284,7 @@ def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sampl
         collected = bool(result.findings or result.documents)
         metric = "robots_denied" if isinstance(exc, RobotsDisallowed) else "access_blocked"
         result.findings.append(
-            FindingDraft(metric_code=metric, method_code="manual", value_text=exc.detail, notes="manual fallback rule D4")
+            FindingDraft(metric_code=metric, method_code=method, value_text=exc.detail, notes="manual fallback rule D4")
         )
         notes.append(str(exc))
         outcome = "blocked" if not collected else "done"
@@ -203,21 +298,21 @@ def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sampl
         partial = getattr(exc, "partial", None)
         if partial is not None:
             result = partial
-        result.findings.append(FindingDraft(metric_code="format", method_code="manual", value_text=exc.detail, notes="UnexpectedFormat — WARNING, manual review"))
+        result.findings.append(FindingDraft(metric_code="format", method_code=method, value_text=exc.detail, notes="UnexpectedFormat — WARNING, manual review"))
         notes.append(f"UnexpectedFormat: {exc.detail}")
         outcome = "done"
     except (BinaryMissing, ExtractionError) as exc:
         partial = getattr(exc, "partial", None)
         if partial is not None:
             result = partial
-        result.findings.append(FindingDraft(metric_code="extraction_path", method_code="manual", value_text=exc.detail))
+        result.findings.append(FindingDraft(metric_code="extraction_path", method_code=method, value_text=exc.detail))
         notes.append(str(exc))
         outcome = "done"
     except ParseError as exc:
         partial = getattr(exc, "partial", None)
         if partial is not None:
             result = partial
-        result.findings.append(FindingDraft(metric_code="page_sample_ok", method_code="manual", value_numeric=0))
+        result.findings.append(FindingDraft(metric_code="page_sample_ok", method_code=method, value_numeric=0))
         notes.append(str(exc))
         outcome = "done"
     except KeyboardInterrupt:
@@ -227,6 +322,11 @@ def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sampl
             log_event(logger, "engine", "run_aborted", run_key=run_key, source=source.id)
         raise
 
+    staged_counts = None
+    if not dry_run and (result.staged_products or result.staged_trade or result.parameters.get("staged_zero") is not None):
+        if staging is None:
+            raise EngineError("adapter returned staged rows but no staging DB is configured (pass --staging-db)")
+        staged_counts = _stage_and_derive(staging, store, source, run_key, result, notes)
     doc_count, finding_count = persist(conn, store, source.id, run_id, result)
     if result.parameters:
         # od9: adapter-surfaced parameters (e.g. the CS-2 query constants)
@@ -248,22 +348,31 @@ def run_one(conn, store, fetcher, source: SourceRef, mode: str = "census", sampl
         "documents": doc_count,
         "findings": finding_count,
         "notes": notes,
+        "staged": (staged_counts or {}).get("staged_products", 0) if staged_counts else 0,
+        "staged_trade": (staged_counts or {}).get("staged_trade", 0) if staged_counts else 0,
     }
 
 
-def run_all(conn, store, fetcher, mode: str = "census", sample_n: int = 5, dry_run: bool = False, logger=None):
+def run_all(conn, store, fetcher, mode: str = "census", sample_n: int = 5, dry_run: bool = False, logger=None, classes=None, source_ids=None):
     """One run per active, adapter-backed source; a failing source never
-    aborts the loop. Returns (summaries, aggregate_exit_code)."""
+    aborts the loop. Returns (summaries, aggregate_exit_code).
+
+    Source selection (e2): ``classes`` (optional list of class codes) and
+    ``source_ids`` (optional explicit ids) — callers compose filters at
+    their layer; no ``mode ==`` chain growth here. ``classes=None`` keeps
+    the every-class default; the capability sweep passes ``classes=["AS"]``
+    from the CLI layer (the v0.2.1 preset, now explicit).
+    """
     from .. import source as sourcemod
 
     dbmod.stale_run_reclaim(conn)
     summaries = []
     sources = [s for s in sourcemod.all_sources(conn, active_only=True) if adaptersmod.get_adapter(s)]
-    if mode == "capability":
-        # v0.2.1 cap2/cap5: the capability sweep targets the official
-        # register (AS) sources only — PE/CS/ST adapters no-op for
-        # non-recon/census modes and are never swept in capability mode.
-        sources = [s for s in sources if s.class_code == "AS"]
+    if classes is not None:
+        sources = [s for s in sources if s.class_code in set(classes)]
+    if source_ids is not None:
+        wanted = set(source_ids)
+        sources = [s for s in sources if s.id in wanted]
     if not sources:
         return [], 0
     exit_code = 0
@@ -273,6 +382,77 @@ def run_all(conn, store, fetcher, mode: str = "census", sample_n: int = 5, dry_r
         if summary["status"] in ("blocked", "failed"):
             exit_code = 2
     return summaries, exit_code
+
+
+# --- dispositions (v0.2.2 c1): the register-row state machine -------------
+
+_FORMAT_MARKERS = ("UnexpectedFormat", "HTML landing page", "register layout missing")
+_COUNT_METRICS = frozenset(
+    {
+        "products_identifiable", "catalog_count", "products_listed",
+        "sitemap_products", "category_count", "export_rows",
+        "records_hs3208", "records_hs3209", "records_hs3213",
+    }
+)
+
+
+def disposition_of(conn, source_id, staging=None) -> dict:
+    """Terminal disposition of one register row (c1):
+
+    ``pending`` — no runs (or only failed/retryable runs);
+    ``blocked`` — latest run blocked (reason recorded by the engine);
+    ``format-finding`` — latest run ended done with an export-shape
+    format finding and no count — non-terminal until the manual
+    fallback lands a record;
+    ``manual-recorded`` — latest run is a manual record;
+    ``counted`` — latest run counted (automated findings, a run-close
+    staging derivation, or staged trade rows — W1 batches).
+
+    The wave harness asserts the after-run invariant over these.
+    """
+    rows = conn.execute(
+        "SELECT r.id, r.run_key, r.status_code, r.kind_code FROM run r WHERE r.source_id=? ORDER BY r.started_at DESC, r.id DESC LIMIT 1",
+        (source_id,),
+    ).fetchall()
+    if not rows:
+        return {"source": source_id, "disposition": "pending", "detail": "no runs"}
+    run_id, run_key, status_code, kind_code = rows[0]
+    if status_code == "blocked":
+        return {"source": source_id, "disposition": "blocked", "detail": f"run {run_id} blocked"}
+    if status_code in ("failed", "running"):
+        return {"source": source_id, "disposition": "pending", "detail": f"run {run_id} {status_code} (retryable)"}
+    findings = conn.execute(
+        "SELECT pf.metric_code, pf.method_code, pf.notes, pf.value_text FROM probe_finding pf WHERE pf.run_id=?",
+        (run_id,),
+    ).fetchall()
+    has_count = any(f[0] in _COUNT_METRICS and f[1] != "manual" for f in findings)
+    if staging is not None:
+        try:
+            n_trade = staging.execute(
+                "SELECT COUNT(*) FROM stg_trade_cn8 WHERE source_id=? AND run_key=?",
+                (source_id, run_key),
+            ).fetchone()[0]
+        except sqlite3.Error:
+            n_trade = 0
+        if n_trade > 0:
+            return {"source": source_id, "disposition": "counted", "detail": f"run {run_id}: {n_trade} staged trade rows"}
+    has_format = any(f[0] == "format" and any(m in (f[2] or "") + (f[3] or "") for m in _FORMAT_MARKERS) for f in findings)
+    if findings and all(f[1] == "manual" for f in findings):
+        # an operator record is terminal even when its text quotes an
+        # automated marker (e.g. a deferral note citing UnexpectedFormat)
+        return {"source": source_id, "disposition": "manual-recorded", "detail": f"run {run_id}: manual record"}
+    if has_format and not has_count:
+        return {"source": source_id, "disposition": "format-finding", "detail": f"run {run_id}: export shape finding, manual fallback required (c1)"}
+    if has_count:
+        return {"source": source_id, "disposition": "counted", "detail": f"run {run_id}"}
+    return {"source": source_id, "disposition": "pending", "detail": f"run {run_id}: no count findings"}
+
+
+def dispositions(conn, source_ids=None, staging=None) -> dict:
+    ids_list = [r[0] for r in conn.execute("SELECT id FROM source ORDER BY id")]
+    if source_ids is not None:
+        ids_list = [i for i in ids_list if i in set(source_ids)]
+    return {i: disposition_of(conn, i, staging=staging) for i in ids_list}
 
 
 def record_manual(conn, store, source_id, metric, value=None, value_text=None, unit=None, url=None, document_file=None, note=None, logger=None, contact=None, mode: str = "census"):

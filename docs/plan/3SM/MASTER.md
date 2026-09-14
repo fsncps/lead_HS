@@ -1,8 +1,8 @@
 ---
-unit: v0.2.0
+unit: v0.2.2
 stage: IMPLEMENTATION
 lifecycle: LIVE
-updated: 2026-09-13
+updated: 2026-09-14
 ---
 # lead_HS — MASTER
 
@@ -26,29 +26,35 @@ works purely from documents — chiefly safety data sheets (SDS) and
 statistics — with no laboratory and at minimal cost. The outcome is
 documented market numbers for the surrounding decision-making plus a
 reusable database of checked products. This file is the project
-dashboard. Current stage: **v0.2.1 — source-level capability
-sounding-out** (the D33 expansion, `10_STRATEGY/v0.2.1.md`: expand the
-source register to the official ecolabel/EPD registers and characterize
-each source against the product model — CN8, manufacturer,
-manufacturer product-ident — volume and depth; reconnaissance-only;
-strategy DRAFT — freeze untouched). **Built 2026-09-14:** all six
-phases done, offline suite green (231 passed), capability report
-published under `docs/report/probe-report.md`. Headline: the
-preliminary N2 numerator (official registers, floor) = **17.838** —
-EU Ecolabel ECAT paints & varnishes + performance coatings (a
-certified subset, a floor, never a market total); ECAT confirmed a
-real-product source (manufacturer + GTIN/EAN, depth tier 2); the other
-registers (Nordic Swan, Blue Angel, INIES, IBU, environdec) recorded
-as export-to-anchor / not-real-product-source. Prior v0.2.0 headline:
-N1 anchors (2024 EU extra-EU imports — HS 3208 ≈2.5 Mt / ≈€12.2 bn, HS
-3209 ≈2.1 Mt / ≈€6.2 bn; CEPE ≈800 members; SBS NACE 20.30 = 3,200
-enterprises 2020); N2 = 204,693 sitemap-visible product URLs across 23
-counted sources; N3 = 9 sites with a visible SDS library.
-**Next planning unit (v0.3, DRAFT):** official-source product
-identification / product-DB seeding — build on the v0.2.1 capability
-profiles to seed the study's product evidence DB from the real-product
+dashboard. Current stage: **v0.2.2 — the three-question funnel
+(product-identity and granularity sounding-out)** (`10_STRATEGY/
+v0.2.2.md`, D34; strategy DRAFT — freeze untouched). **Built and
+executed 2026-09-14:** all seven phases done, offline suite green
+(299 passed, 2 deselected), `db audit` clean, wheel 0.2.2 verified;
+the real-network landscape run (GO=1, reconnaissance-only)
+dispositioned the 101-row register (36 counted / 48 manual-recorded /
+4 blocked / 13 inactive-by-design), staged ECAT 17,838 rows
+(reconciling exactly with the v0.2.1 record) and Comext 6,316 trade
+rows (all 13 CN8 codes), and the report is published under
+`docs/report/probe-report.{md,csv,json}`. Headline funnel: **Q1 pool
+(modeled estimate) [85,840–343,360] products** (M 800–3,200 × ppp
+107.3 × staged CN8 kg shares) · **Q2 definitively identifiable
+(floor) 17,170** distinct (manufacturer, product-ident) pairs ·
+**Q3 SDS reachable (modeled, upper bound) 3,590** · **v0.5 ratio
+0.05–0.2**; ECAT ∩ Nordic Swan overlap pilot explicitly not computable
+until a second register is staged. Prior v0.2.1 headline: the
+preliminary N2 numerator (official registers, floor) = 17,838 — ECAT
+confirmed a real-product source (manufacturer + GTIN/EAN, depth tier
+2). Prior v0.2.0 headline: N1 anchors (2024 EU extra-EU imports — HS
+3208 ≈2.5 Mt / ≈€12.2 bn, HS 3209 ≈2.1 Mt / ≈€6.2 bn; CEPE ≈800
+members; SBS NACE 20.30 = 3,200 enterprises 2020); N2 = 204,693
+sitemap-visible product URLs across 23 counted sources; N3 = 9 sites
+with a visible SDS library.
+**After v0.2.2 (v0.3, DRAFT):** official-source product identification /
+product-DB seeding — seed the product evidence DB from the real-product
 sources (ECAT first), then PE-catalogue scraping and the full list +
-coverage.
+coverage; the overlap pilot (second register staging) rides ahead of
+or with it.
 Unit v0.1.1 built (probe CLI gate-verified; census feasibility pass
 executed 2026-09-11); unit v0.1.2 — operator layer + census close-out
 (D26) — **built 2026-09-11** (PHASE01–06 done; 155 offline tests

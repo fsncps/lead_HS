@@ -5,7 +5,7 @@
 .PHONY: help install doctor db-init db-status db-audit sources-load \
 	sources-list setup probe-dry probe-single record report \
 	report-publish probe census recon probe-recon test smoke test-net \
-	probe-capability capability \
+	probe-capability capability probe-landscape landscape \
 	clean clobber frame sample acquire ingest parse analyze full
 .DEFAULT_GOAL := help
 
@@ -69,12 +69,24 @@ report: ## render md/csv/json into $(REPORT_DIR)
 	$(LEADHS) probe report --format csv  --out $(REPORT_DIR)/probe-report.csv
 	$(LEADHS) probe report --format json --out $(REPORT_DIR)/probe-report.json
 
-report-publish: ## stage one report into $(PUBLISH_DIR) (WHICH=…; copies, never moves)
+# Publish history policy (v0.2.2 PHASE07 addendum): every publish stages
+# the stable "latest" name AND an immutable timestamp-hash snapshot
+# <stem>.<UTC ts>.<sha256-8>.<ext>, so unit republishes never overwrite
+# a prior snapshot.
+report-publish: ## stage one report into $(PUBLISH_DIR) (WHICH=…; copies, never moves; + timestamp-hash snapshot)
 	@test -n "$(WHICH)" || { echo "report-publish: set WHICH=path/to/report" >&2; exit 1; }
 	@test -f "$(WHICH)" || { echo "report-publish: no such file $(WHICH)" >&2; exit 1; }
 	@mkdir -p $(PUBLISH_DIR)
-	cp "$(WHICH)" "$(PUBLISH_DIR)/$$(basename "$(WHICH)")"
-	@echo "staged $$(basename "$(WHICH)") into $(PUBLISH_DIR)/ — committing is explicit"
+	@src=$$(readlink -f "$(WHICH)"); \
+	dst_stem=$$(basename "$(WHICH)"); \
+	dst=$$(readlink -f "$(PUBLISH_DIR)")/$$dst_stem; \
+	if [ "$$src" != "$$dst" ]; then cp "$(WHICH)" "$(PUBLISH_DIR)/$$dst_stem"; fi; \
+	ts=$$(date -u +%Y%m%d-%H%M%S); \
+	h=$$(sha256sum "$(WHICH)" | cut -c1-8); \
+	base=$${dst_stem%.*}; ext=$${dst_stem##*.}; \
+	if [ "$$base" = "$$ext" ]; then snap="$$dst_stem.$$ts.$$h"; else snap="$$base.$$ts.$$h.$$ext"; fi; \
+	cp "$(WHICH)" "$(PUBLISH_DIR)/$$snap"; \
+	echo "staged $$(basename "$(WHICH)") into $(PUBLISH_DIR)/ (+ snapshot $$snap) — committing is explicit"
 
 guard-%:
 	@test "$(GO)" = "1" || { echo "$*: set GO=1 to confirm (GO=1 make $*)" >&2; exit 1; }
@@ -103,6 +115,20 @@ probe-capability: guard-probe-capability ## capability sweep: official register 
 
 capability: guard-capability setup ## setup → capability → report → audit (GO=1)
 	$(LEADHS) probe run --all --mode capability || test $$? -eq 2
+	$(MAKE) report
+	$(MAKE) db-audit
+
+# v0.2.2 (i20/fu5): the four-wave landscape run. WAVES="1 2 3 4" subset,
+# BUDGET seconds per wave (default 3600), STAGING the staging-DB path.
+WAVES   ?= 1 2 3
+BUDGET  ?= 3600
+STAGING ?= data/testdata.sqlite
+
+probe-landscape: guard-probe-landscape ## landscape waves: probe run --wave W (GO=1)
+	@for w in $(WAVES); do $(LEADHS) probe run --wave $$w --budget $(BUDGET) --staging-db $(STAGING) || test $$? -eq 2; done
+
+landscape: guard-landscape setup ## setup → waves → report → audit (GO=1)
+	@for w in $(WAVES); do $(LEADHS) probe run --wave $$w --budget $(BUDGET) --staging-db $(STAGING) || test $$? -eq 2; done
 	$(MAKE) report
 	$(MAKE) db-audit
 
