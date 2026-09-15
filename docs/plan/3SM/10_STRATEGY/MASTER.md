@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-14
+updated: 2026-09-15
 ---
 
 # Strategy MASTER — lead_HS
@@ -624,7 +624,15 @@ lead). Open questions and the phased roadmap follow.
   `--rebuild-summary`; **data_sources.csv** behind the
   confirmed-bulk gate (DS-1 AS-2, DS-2 AS-3). Consultant
   source-expansion + MSE handover filed as next-unit INPUT
-  (`INPUT-source-expansion-MSE.md`; not adopted).
+  (`INPUT-source-expansion-MSE.md`; not adopted). **Addendum D39
+  (2026-09-15, PHASE08; user-directed):** the full probe suite ran
+  again with the six probe-queue candidates registered (AS-31..36,
+  AS class now 36 rows): census (108 sources, blocked/failed sets
+  unchanged), fresh csv-sample (AS-2/AS-3 pools reproduce exactly),
+  as-source-probe — **no third bulk source** (KemiDigi/BASTA/WINGIS/
+  eBVD/Quick-FDS no export surface; ECHA PT21 robots-blocked);
+  data_sources.csv unchanged; per-source deep pinning stays
+  next-unit work.
 - **v0.3 (goal noted 2026-09-12, D32; the D32 vanilla-Windows
   distribution goal):** easy install on **vanilla Windows** (no make,
   no preinstalled Python) via a self-contained per-OS artifact; PyPI

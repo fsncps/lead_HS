@@ -2,7 +2,7 @@
 unit: v0.2.4
 stage: IMPLEMENTATION
 lifecycle: LIVE
-updated: 2026-09-14
+updated: 2026-09-15
 ---
 
 # Unit v0.2.4 — Implementation plan: management CSV sample (`leadhs probe download-csv-sample`)
@@ -53,6 +53,7 @@ the strategy turn). Product data only (D27); recon-only (D31).
 | 05 | Addendum (D37): migration 0010 + `probe/as_probe.py` + CLI `as-source-probe` + Makefile `as-probe` + tests + split guard | 04 | offline suite green incl. 18 as-probe tests; register split guard holds | **done 2026-09-14** (ENG-review SMALL CHANGE, 1A/2A/3A folded; 385 offline tests) |
 | 06 | Addendum (D37): dry-run + real run + publish + docs close-out | 05 | folder populated; summary published; docs current | **done 2026-09-14** (run 20260914-125322, all 30 AS sources, exit 0; summary published in `docs/report/`) |
 | 07 | Addendum (D38): AS-3 filter/dedupe fix + `--from-store` re-render + evidence archiving + `--rebuild-summary` + data_sources.csv + strategy input | 06 | published AS-3 record corrected; estimates archived; data_sources behind the gate; suite green | **done 2026-09-14** (393 offline tests; audit clean; re-render run 20260914-164304) |
+| 08 | Addendum (D39): full-probe round + source-expansion reconnaissance (six probe-queue candidates) | 07 | all three run families same-day; report rendered + published; audit clean; docs current | **done 2026-09-15** (runs 000222/000230/000255; render 000613 published; six new sources AS-31..36; no third bulk source) |
 
 Statuses: all four phases **done 2026-09-14** (364 offline tests
 green, 2 net-deselected; `db audit` exit 0 on the CLI end-to-end

@@ -275,12 +275,16 @@ reproduzierbar; Manifest nie schweigend über einen Fehlschlag):
   Identifikatoren: Lizenznummer (100%), Unternehmen + USt (86%),
   EAN13/GTIN (17% der Stichprobe). Kreuz-ID: EAN ↔ Handelskataloge
   (der v0.3-Aufbaupfad) steht auf echten Spalten.
-- **Nordischer Schwan: geliefert, Versuchsstufe** — 14
-  unterscheidbare Produkte. Die begrenzte Suche fand einen echten
-  Export (die Such-URL liefert ein CSV unter `?format=csv`, 9,8 MB).
-  Qualitätsvorbehalte vermerkt (fehlende Komma-Zitate, gemischte
-  Ecolabel-Lizenzen); der Überlappungspilot ist über Name +
-  Lizenzhalter verknüpfbar.
+- **Nordischer Schwan: geliefert** — 100 von 2'322 unterscheidbaren
+  Farbpositionen. Die begrenzte Suche fand einen echten Export
+  (die Such-URL liefert ein Semikolon-CSV unter `?format=csv`,
+  9,8 MB; Farbpool 2'424 Zeilen, 53 Lizenzen, 20 Lizenznehmer).
+  (Der erste Lauf mit «Versuchsstufe, 14 unterscheidbare» war ein
+  Werkzeugdefekt — laxer Scope-Filter + ECAT-förmiger
+  Dedupe-Schlüssel — korrigiert und aus dem archivierten Export neu
+  gerendert, D38.) Der Überlappungspilot ist über Name +
+  Lizenzhalter verknüpfbar — der Export trägt sogar
+  EU-Ecolabel-Lizenznummern.
 - **PCN, Eurostat SBS, dänisches AT-Register, schwedisches KemI: keine
   Produktzeilen publiziert** — jeder Datensatz belegt den
   strukturellen Grund mit Quelle und Zugriffsdatum.
@@ -291,7 +295,7 @@ hat Identifikator-Spalten je Artikel.** Jede Stichprobenzeile trägt
 volle Provenienz (Quelle, Lauf, Abrufdatum, Dokument-Hash, seed).
 Einheitsbericht: `docs/report/report-0.2.4.md` (EN).
 
-Ergänzend (14.09.2026): Quellenprobe über alle 30 Quellen der Klasse
+Ergänzend (14.09.2026): Quellenprobe über alle Quellen der Klasse
 «Verbände & Register» — je Quelle ein Befund. Die beiden
 Ökolabel-Kataloge liefern Produktzeilen (AS-2: 100 von 17'013
 distinct; AS-3: 100 von 2'322 distinct); Blue Angel (≈70 000,
@@ -304,6 +308,21 @@ Mitgliederverzeichnisse, keine Produktregister. Eine kuratierte
 Liste `data_sources.csv` führt die Quellen mit bestätigten
 Bulk-Produktdaten samt Identitäts-Tupel — derzeit genau die beiden
 Ökolabel-Kataloge.
+
+Ergänzend (15.09.2026): Komplette Sondierungsrunde mit sechs neuen
+Kandidatenquellen aus der Beraterübergabe (Klasse «Verbände &
+Register» jetzt 36 Quellen; Register gesamt 108): KemiDigi (FI,
+Chemi-Produktregister), WINGIS/GefKomm-Bau (DE, Bau-SDS), BASTA (SE,
+Bauartenkatalog), eBVD (nordische Deklarationen), Quick-FDS (FDS-
+Discovery), ECHA PT21 (Antifouling-Marinefarben). Ergebnis:
+**keine dritte Bulk-Quelle** — keine der sechs bietet unter
+fünf zurückhaltenden Abfragen eine Exportoberfläche (ECHA zusätzlich
+robots-blockiert); die bestätigte Liste bleibt die beiden
+Ökolabel-Kataloge. Der Frisch-Download reproduzierte die korrigierten
+Ökolabel-Stichprobenpools exakt (17'013 / 2'322 distinct) — die
+Zufallsstichprobe ist nachvollziehbar verifiziert. Details: Beratungs-
+Input `docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md` (EN);
+Details im Einheitsbericht.
 
 Projektstand (14.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
@@ -628,11 +647,16 @@ reproductible ; le manifeste ne tait jamais un échec) :
   EAN13/GTIN (17 % de l'échantillon). Recoupement : EAN ↔ catalogues
   de distribution (le chemin d'amorçage v0.3) repose sur de vraies
   colonnes.
-- **Cygne nordique : livré, niveau d'essai** — 14 produits distincts.
-  La découverte bornée a trouvé un vrai export (l'URL de recherche
-  sert un CSV via `?format=csv`, 9,8 Mo). Réserves de qualité
-  consignées (virgules non citées, licences Écolabel mixtes) ; le
-  pilote de recouvrement est joignable par nom + titulaire de licence.
+- **Cygne nordique : livré** — 100 articles sur 2'322 produits de
+  peinture distincts. La découverte bornée a trouvé un vrai export
+  (l'URL de recherche sert un CSV à point-virgule via
+  `?format=csv`, 9,8 Mo ; pool peinture 2'424 lignes, 53 licences,
+  20 titulaires). (Le premier enregistrement « niveau d'essai,
+  14 distincts » était un défaut d'outil — filtre de périmètre
+  laxiste + clé de dédoublonnage ECAT — corrigé et re-rendu depuis
+  l'export archivé, D38.) Le pilote de recouvrement est joignable
+  par nom + titulaire de licence — l'export porte même des numéros
+  de licence Écolabel européen.
 - **PCN, Eurostat SBS, registre AT danois, KemI suédois : aucune
   ligne produit publiée** — chaque enregistrement cite la raison
   structurelle avec source et date d'accès.
@@ -644,8 +668,8 @@ porte une provenance complète (source, exécution, date de
 récupération, hachage du document, seed). Rapport d'unité :
 `docs/report/report-0.2.4.md` (EN).
 
-En complément (14.09.2026) : sondage des sources sur les 30 sources de
-la classe « associations & registres » — un constat par source. Les
+En complément (14.09.2026) : sondage des sources sur les sources de la
+classe « associations & registres » — un constat par source. Les
 deux catalogues d'écolabels livrent des lignes produit (AS-2 : 100 sur
 17'013 distincts ; AS-3 : 100 sur 2'322 distincts) ; Blue Angel
 (≈70 000, revendiqué par le registre, toutes catégories) et
@@ -659,6 +683,22 @@ sont des annuaires de membres, pas des registres de produits. Une
 liste curatée `data_sources.csv` répertorie les sources à données
 produits de masse confirmées avec le tuple d'identité — actuellement
 exactement les deux catalogues d'écolabels.
+
+En complément (15.09.2026) : tour de sondage complète avec six
+nouvelles sources candidates issues de la transmission de consultant
+(classe « associations & registres » : 36 sources ; registre total
+108) : KemiDigi (FI, registre des produits chimiques), WINGIS/
+GefKomm-Bau (DE, FDS de chantier), BASTA (SE, catalogue de
+construction), eBVD (déclarations nordiques), Quick-FDS (découverte
+FDS), ECHA PT21 (antifouling marine). Résultat : **pas de troisième
+source de masse** — aucune des six n'expose de surface d'export en
+cinq requêtes polies (ECHA en plus bloquée par robots) ; la liste
+confirmée reste les deux catalogues d'écolabels. Le téléchargement
+frais a reproduit exactement les pools d'échantillons écolabels
+corrigés (17'013 / 2'322 distincts) — l'échantillonnage aléatoire est
+vérifié comme traçable. Détails : entrée consultant
+`docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md` (EN) ;
+détails dans le rapport d'unité.
 
 État du projet (14.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique

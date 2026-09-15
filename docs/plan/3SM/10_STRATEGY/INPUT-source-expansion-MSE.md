@@ -2,7 +2,7 @@
 unit: next-unit input
 stage: STRATEGY
 lifecycle: INPUT
-updated: 2026-09-14
+updated: 2026-09-15
 type: strategy input digest (consultant handover — not adopted policy)
 ---
 
@@ -64,6 +64,16 @@ filter. The queue below is therefore a PROBE queue, not a data-source
 list.
 
 ## Candidate probe queue (next unit, order per handover §18)
+
+**Status (2026-09-15, D39):** the queue ran at reconnaissance level
+(user-directed full-probe round; sources AS-31..AS-36 in the
+register): KemiDigi / BASTA / WINGIS / eBVD / Quick-FDS expose **no
+bulk export surface** under the ≤5 polite-GET budget (honest
+unknown + what's-instead each); ECHA PT21 is robots-blocked
+(hardened host, like the PE sites). None meets the de5 gate —
+data_sources.csv unchanged. The handover §19 deep-deliverables
+(category explorations, API terms, agreements) stay next-unit work;
+this table's ordering stays the proposal order.
 
 | # | Source | Priority | Probe deliverable (handover §19 schema, slimmed) |
 |---|---|---|---|

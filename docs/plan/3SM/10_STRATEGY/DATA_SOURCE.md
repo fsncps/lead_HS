@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-14
+updated: 2026-09-15
 ---
 
 # Data sources — register, access, provenance
@@ -199,7 +199,14 @@ AS-3 (52,539 rows; 2,424 in-scope / 2,322 distinct). Gated registers
 candidates stay documented here and in the strategy files — they
 never enter data_sources.csv on claims. Next-unit probe queue
 (KemiDigi, BASTA, WINGIS, INIES, eBVD, Quick-FDS, PT21):
-10_STRATEGY/INPUT-source-expansion-MSE.md.
+10_STRATEGY/INPUT-source-expansion-MSE.md. **Status (D39,
+2026-09-15):** the queue ran one reconnaissance pass — the six new
+candidates registered as AS-31..AS-36 and probed with the full
+suite: KemiDigi/WINGIS/BASTA/eBVD/Quick-FDS expose **no bulk
+export** (≤5 polite GETs, honest unknown + what's-instead), ECHA
+PT21 robots-blocked. The de5 gate met by nothing new;
+data_sources.csv unchanged. Deep per-source pinning stays
+next-unit work.
 
 ## Probing pass (unit v0.1.1)
 

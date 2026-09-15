@@ -277,14 +277,15 @@ def test_dry_run_zero_network_zero_files(conn, store, make_fetcher, tmp_path, si
 
 
 def test_split_guard_against_real_register():
-    """Explicit sets vs the register: 30 AS rows, 9 registries, 21
-    associations — a register change fails loudly here."""
+    """Explicit sets vs the register: 36 AS rows, 15 registries, 21
+    associations — a register change fails loudly here (D39: AS-31..36
+    = the consultant probe queue joined)."""
     import csv as _csv
 
     reg = REPO / "src" / "leadhs" / "dict" / "sources.csv"
     rows = list(_csv.DictReader(open(reg, newline="", encoding="utf-8")))
     as_ids = {r["id"] for r in rows if r["class_code"] == "AS"}
-    assert len(as_ids) == 30
+    assert len(as_ids) == 36
     assert set(REGISTRY_IDS) <= as_ids
     as_rows = [r for r in rows if r["class_code"] == "AS"]
     assert all(r["id"] in REGISTRY_IDS or r["access_method_code"] == "manual" for r in as_rows)

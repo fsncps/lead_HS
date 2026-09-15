@@ -147,8 +147,8 @@ d'atterrissage archivée comme preuve ; les cinq autres registres
 masse — documents produit par produit derrière des interfaces de
 recherche, raison consignée. Les 21 associations professionnelles sont
 des annuaires de membres, pas des registres de produits (18 vivantes,
-3 inaccessibles au moment de la sonde). Synthèse (re-publication corrigée D38) :
-[as-source-probe.summary.20260914-165555.md](docs/report/as-source-probe.summary.20260914-165555.md) (EN).
+3 inaccessibles au moment de la sonde). Synthèse (run D39) :
+[as-source-probe.summary.20260915-000255.md](docs/report/as-source-probe.summary.20260915-000255.md) (EN).
 
 **Addendum — data_sources.csv (2026-09-14, D38).** Une liste curatée
 des sources à **données produits de masse confirmées** portant le
@@ -158,6 +158,32 @@ atteignent ce seuil. Elle ne s'allonge que lorsque des sondages
 futures le confirment ; les registres nationaux fermés et les
 candidats non sondés restent documentés dans
 [docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
+
+**Addendum — tour de sondage complète + reconnaissance d'extension de
+sources (2026-09-15, D39).** Toute la suite de sondage a rejoué en un
+seul passage — recensement (108 sources), échantillon CSV frais,
+sonde des sources AS — **avec six sources candidates nouvelles** issues
+d'une transmission de consultant au registre (classe AS : 36 lignes
+désormais) : **AS-31 KemiDigi** (registre finlandais des produits
+chimiques, strate hazard-tail), **AS-32 WINGIS/GefKomm-Bau**
+(écosystème FDS de chantier allemand), **AS-33 BASTA** (catalogue
+suédois de construction, >200'000 articles revendiqués), **AS-34
+eBVD** (déclarations nordiques), **AS-35 Quick-FDS** (découverte
+FDS), **AS-36 ECHA PT21 antifouling (revêtements marins)**.
+Constats : les deux pools d'échantillons écolabels se reproduisent
+de façon déterministe au téléchargement frais (17'013 / 2'322
+distincts) ; la statistique du recensement reste N2 = 331'644 /
+plancher 17'838 ; et la réponse du nouveau pool de données :
+**pas de troisième source de masse** — aucune des six n'expose de
+surface d'export (≤5 GET polis chacun : HTML d'atterrissage mou /
+404, comptage non visible ; ECHA bloquée via robots, la classe
+des hôtes durcis). Confirmer l'une d'elles exige un épinglement
+par source (explorations de catégories, conditions d'API,
+accords) — travail de l'unité suivante selon
+[INPUT-source-expansion-MSE.md](docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md)
+(EN). Instantané du rapport à couverture totale :
+[probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md)
+(EN).
 
 ## Unités antérieures
 

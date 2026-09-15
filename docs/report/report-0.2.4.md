@@ -1,7 +1,7 @@
 ---
 unit: v0.2.4
 built: 2026-09-14
-updated: 2026-09-14
+updated: 2026-09-15
 type: unit report (detailed, human-readable)
 language: en
 ---
@@ -216,3 +216,57 @@ Open item: the per-product EPD-API follow-up (AS-5 INIES
 registration, AS-6/AS-7/AS-10 library APIs) stays in TODOS.md —
  pursued only if the census pass surfaces evidence it is needed
 (D37, evidence-first).
+
+## Addendum — D39 (2026-09-15): full-probe round + source-expansion reconnaissance
+
+On explicit instruction (2026-09-15) the whole probe suite ran again,
+same day, in one pass — census over all 108 registered sources,
+fresh CSV sample, AS-source probe — **with six new candidate
+sources** from the consultant source-expansion handover (strategy
+INPUT, 2026-09-14) joining the register: **AS-31 KemiDigi** (Finnish
+chemical products register, Tukes), **AS-32 WINGIS/GefKomm-Bau** (BG
+BAU/GISBAU), **AS-33 BASTA** (Swedish construction catalogue),
+**AS-34 eBVD** (Nordic declarations), **AS-35 Quick-FDS** (SDS
+discovery), **AS-36 ECHA PT21 antifouling**. All six are probe rows
+(`open`, active, provenance-cited to the handover); the AS class is
+now 36 rows (15 registries + 21 associations).
+
+Runs (all rendered 20260915-000613, published as timestamp-hash
+snapshots; `db audit` clean):
+
+- **Census sweep** (`GO=1 make census`): all 108 sources; the six
+  new rows classify tier (c) — visible, uncounted without scraping —
+  alongside AS-2/AS-3/AS-6/AS-7/CS-2. The blocked/failed site sets
+  are unchanged (PE hosts + ST-2, as documented since v0.2.2).
+  Headline N2 (Σ tier a+b) stays **331,644**; the official-register
+  N2 numerator floor stays **17,838** (ECAT in-scope).
+- **CSV sample** (`GO=1 make sample-csv`, fresh network run
+  `20260915-000230`, n=100, seed=42): AS-2/AS-3 delivered; the
+  corrected D38 pools reproduce exactly — **17,013 / 2,322 distinct**
+  — confirming the deterministic-draw claim on a second live
+  download. ST-1/3/6/7 unavailable, per the same verified reasons.
+- **AS-source probe** (`GO=1 make as-probe`, run `20260915-000255`):
+  5 delivered-unavailable-free rows unchanged (AS-2/AS-3 reuse,
+  AS-4 ≈70k / AS-7 ≈2k estimates, 18 associations live, 3
+  unreachable); **NEW — the six candidates**: AS-31..AS-35
+  **unavailable · unknown** — bounded export discovery (≤5 polite
+  GETs) found no bulk surface (KemiDigi/Quick-FDS `/export` return
+  HTML soft-landings; WINGIS/BASTA/eBVD 404; counts not visible on
+  the landing pages) — each with an honest what's-instead note;
+  AS-36 **failed** (ECHA `robots.txt` 403 — hardened host; the
+  failed-registry exit 2 is the contractual contribution).
+
+**Data-pool finding (D39): no third bulk source today.** The
+confirmed-bulk list (`data_sources.csv`) stays DS-1 (AS-2) + DS-2
+(AS-3) — the gate (confirmed bulk + identity tuple) was met by
+nothing new. The hazard-tail candidates expose their content
+per-product behind search UIs, APIs under agreement (eBVD, BASTA),
+or unproven enumerability (KemiDigi, WINGIS) — pinning those
+per source (category explorations, API terms) is the next unit's
+probe deliverable (INPUT-source-expansion-MSE.md, handover §19), not
+more URL guessing. Published artifacts: summary
+[as-source-probe.summary.20260915-000255.md](as-source-probe.summary.20260915-000255.md)
+/ `.csv`, fresh samples `csv-sample.20260915-000230.AS-2.csv` /
+`.AS-3.csv` + regenerated [manifest](csv-sample.manifest.md),
+full-coverage report snapshot
+[probe-report.20260915-000619.3a5fc07d.md](probe-report.20260915-000619.3a5fc07d.md).

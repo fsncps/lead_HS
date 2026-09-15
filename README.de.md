@@ -152,6 +152,31 @@ bleiben in
 [docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md)
 dokumentiert.
 
+**Addendum — Komplette Sondierungsrunde + Quellen-Erweiterungsfühler
+(2026-09-15, D39).** Die ganze Sondierungssuite lief erneut in einem
+Durchgang — Zensus (108 Quellen), frische CSV-Stichprobe, AS-Quellen-
+probe — **mit sechs neuen Kandidatenquellen** aus einer Beratungs-
+übergabe (Quellen aus AS-Klasse jetzt 36 Zeilen) im Register:
+**AS-31 KemiDigi** (finnisches Chemiproduktregister,
+Gefahren-Stratum), **AS-32 WINGIS/GefKomm-Bau** (deutsches
+Bau-SDS-Ökosystem), **AS-33 BASTA** (schwedischer
+Bauartenkatalog, >200'000 Artikel behauptet), **AS-34 eBVD**
+(nordische Deklarationen), **AS-35 Quick-FDS** (SDS-Discovery),
+**AS-36 ECHA PT21 Antifouling (Marine-Beschichtungen)**. Befunde:
+Die beiden Ökolabel-Stichprobenpools reproduzieren sich
+deterministisch beim frischen Download (17'013 / 2'322 distinct);
+die Zensus-Kennzahl bleibt N2 = 331'644 / Flurboden 17'838; und die
+neue Datenpool-Antwort: **keine dritte Bulk-Quelle** — keine der
+sechs bietet eine Exportoberfläche (je ≤5 freundliche GETs:
+Soft-Landing-HTML / 404er, Zählung nicht sichtbar; ECHA
+robots-blockiert, die gehärtete-Host-Klasse). Eine der Quellen zu
+bestätigen erfordert ein per-Quelle-Abstecken (Kategorie-Erkundungen,
+API-Bedingungen, Vereinbarungen) — Arbeit der nächsten Einheit gemäss
+[INPUT-source-expansion-MSE.md](docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md)
+(EN). Vollabdeckungs-Report-Snapshot:
+[probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md)
+(EN).
+
 ## Frühere Einheiten
 
 ### v0.2.3 — Pool-Schätzung v2: Meta-Benchmark-Abstimmung (14.09.2026)

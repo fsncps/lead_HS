@@ -2,10 +2,10 @@
 source: a product-row CSV where obtainable, otherwise why not and what
 is available instead, plus exact-or-estimated record counts.
 
-`leadhs probe as-source-probe` walks all 30 AS rows ("Associations &
+`leadhs probe as-source-probe` walks all AS rows ("Associations &
 registers"). The class is NOT all product registries — two kinds:
 
-    registries (AS-2..AS-10, 9)
+    registries (explicit REGISTRY_IDS set)
         bounded export discovery (<=5 polite GETs, landing page
         included) → CSV/TSV saved whole + exact row count, or XLSX
         parsed and rendered as CSV; else the landing-page text gives
@@ -61,8 +61,10 @@ from .csv_sample import (
 
 # The registry subset (explicit sets — access_method does not split the
 # class: AS-4 is `manual` with an XLSX export, AS-6..10 are `download`).
-# The split guard test asserts 9 + 21 = 30 against the register.
-REGISTRY_IDS = ("AS-2", "AS-3", "AS-4", "AS-5", "AS-6", "AS-7", "AS-8", "AS-9", "AS-10")
+# D39: the consultant probe queue joined (AS-31..AS-36) — the split
+# guard test asserts 15 + 21 = 36 against the register.
+REGISTRY_IDS = ("AS-2", "AS-3", "AS-4", "AS-5", "AS-6", "AS-7", "AS-8", "AS-9", "AS-10",
+                "AS-31", "AS-32", "AS-33", "AS-34", "AS-35", "AS-36")
 
 # Bounded discovery candidates per registry (PHASE05): the pinned
 # surface first, then the usual export suffixes — <=5 polite GETs, the
@@ -83,6 +85,12 @@ _INSTEAD = {
     "AS-6": "per-product EPD downloads via the library search",
     "AS-7": "per-product EPD downloads via the library search",
     "AS-10": "per-product EPD downloads via the digi portal",
+    "AS-31": "the public register search + per-product record pages (enumerability unproven)",
+    "AS-32": "the online search per manufacturer/GISCODE product group (no documented bulk export)",
+    "AS-33": "an article-level database behind web search (API under agreement)",
+    "AS-34": "a structured-declaration API (free after agreement — no unpaid bulk route)",
+    "AS-35": "a supplier SDS discovery catalogue (crawl/export terms pending)",
+    "AS-36": "the ECHA biocidal-products download page (bulk export to be pinned)",
 }
 
 # Landing-page estimate patterns (best effort): a number directly
@@ -368,9 +376,10 @@ def _render_summary_md(ts, entries) -> str:
     lines = [
         "# AS-class source probe — summary",
         "",
-        f"Run: `{ts}` · all 30 AS rows · one finding per source (D37).",
+        f"Run: `{ts}` · all {len(entries)} AS rows · one finding per source (D37).",
         "",
-        "Registries (AS-2..AS-10): product-row CSV where obtainable,",
+        f"Registries ({len(REGISTRY_IDS)} explicit ids, first {REGISTRY_IDS[0]}, "
+        f"last {REGISTRY_IDS[-1]}): product-row CSV where obtainable,",
         "else exact-or-estimated record count with provenance, else why",
         "not + what is available instead. Associations: no product",
         "register by design — member-list pointer, liveness recorded.",

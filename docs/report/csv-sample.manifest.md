@@ -1,6 +1,6 @@
 # Management CSV sample — manifest
 
-Run: `20260914-164304` · n=100 per registry · seed=42 (seeded reproducible draw, D2)
+Run: `20260915-000230` · n=100 per registry · seed=42 (seeded reproducible draw, D2)
 
 Per registry: what data fields are returned per product item, which
 identifier columns exist, whether cross-identification is possible —
@@ -8,13 +8,13 @@ and the honest reason where no product rows are published (D36).
 
 ## AS-2 — delivered
 
-- rows drawn: **100** (of the in-scope pool) → `csv-sample.20260914-164304.AS-2.csv`
+- rows drawn: **100** (of the in-scope pool) → `csv-sample.20260915-000230.AS-2.csv`
 - fields returned: product_or_service, licence_number, group_name, code_type, code_value, product_or_service_name, decision, expiration_date, company_name, company_country, vat_number, extract_date
 - identifier columns in this sample: code_value; cross-identification candidates: EAN13/GTIN ↔ retail/manufacturer catalogues (the v0.3 seeding path); name + licence holder ↔ other certified-product registers
 
 ## AS-3 — delivered
 
-- rows drawn: **100** (of the in-scope pool) → `csv-sample.20260914-164304.AS-3.csv`
+- rows drawn: **100** (of the in-scope pool) → `csv-sample.20260915-000230.AS-3.csv`
 - fields returned: product, license number, ecolabel, category, product group, criteria generation, brand, licensee, address, city
 - identifier columns in this sample: license number; cross-identification candidates: licence number (100% — one licence, many products); name + licence holder ↔ other certified-product registers; the export mixes EU Ecolabel and Nordic Swan licences (data model, joinable by licence number)
 

@@ -113,7 +113,7 @@ samples are published in
 per run in `data/report/`).
 
 **Addendum — AS-class source probe (2026-09-14).** One finding per
-AS-class source, all 30 of them (`leadhs probe as-source-probe`):
+AS-class source (`leadhs probe as-source-probe`):
 product-row CSV where obtainable, else an exact-or-estimated record
 count with provenance, else why-not + what is available instead. The
 two ecolabel catalogues reuse the csv-sample rows (AS-2: 100 of
@@ -124,8 +124,8 @@ the other five registries (INIES, IBU, NF Env, natureplus, EPD
 Norway) have no bulk surface — per-product documents behind search
 UIs, reason recorded. The 21 trade associations are member
 directories, not product registers (18 live, 3 unreachable at probe
-time). Summary (D38-corrected republish):
-[as-source-probe.summary.20260914-165555.md](docs/report/as-source-probe.summary.20260914-165555.md).
+time). Latest summary (D39 run):
+[as-source-probe.summary.20260915-000255.md](docs/report/as-source-probe.summary.20260915-000255.md).
 
 **Addendum — data_sources.csv (2026-09-14, D38).** A curated list of
 sources with **confirmed bulk product data** carrying the identity
@@ -134,6 +134,28 @@ AS-3, the only two sources on record meeting the gate. It grows only
 as future probes confirm further sources; gated national registers
 and unprobed candidates stay documented in
 [docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
+
+**Addendum — full-probe round + source-expansion reconnaissance
+(2026-09-15, D39).** The whole probe suite ran again in one pass —
+census (108 sources), fresh CSV sample, AS-source probe — **with six
+new candidate sources** from a consultant source-expansion handover
+joining the register (AS class now 36 rows): **AS-31 KemiDigi**
+(Finnish chemical products register, hazard-tail stratum), **AS-32
+WINGIS/GefKomm-Bau** (German construction SDS ecosystem),
+**AS-33 BASTA** (Swedish construction catalogue, >200,000 articles
+claimed), **AS-34 eBVD** (Nordic declarations), **AS-35 Quick-FDS**
+(SDS discovery), **AS-36 ECHA PT21 antifouling**. Findings: the two
+ecolabel sample pools reproduce deterministically on the fresh
+download (17,013 / 2,322 distinct); the census headline stays N2 =
+331,644 / floor 17,838; and the new data-pool answer: **no third
+bulk source** — none of the six exposes an export surface (≤5 polite
+GETs each: soft-landing HTML / 404s, counts not visible; ECHA
+robots-blocked, the hardened-host class). Confirming one of them
+needs per-source pinning (category explorations, API terms,
+agreements) — next-unit work per
+[INPUT-source-expansion-MSE.md](docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md).
+Full-coverage report snapshot:
+[probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md).
 
 ## Previous units
 

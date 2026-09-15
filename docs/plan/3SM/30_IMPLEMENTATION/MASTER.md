@@ -2,7 +2,7 @@
 unit: v0.2.2
 stage: IMPLEMENTATION
 lifecycle: LIVE
-updated: 2026-09-14
+updated: 2026-09-15
 ---
 
 # Implementation MASTER — lead_HS
@@ -56,7 +56,11 @@ corrected by addendum D38 to 100 of 2,322 distinct — the initial
 report `docs/report/report-0.2.4.md`. Addenda D37 + D38 built and
 executed 2026-09-14 (AS-class source probe, all 30 sources; source
 corrections, evidence archiving, data_sources.csv; 393 offline
-tests).
+tests). **Addendum D39 executed 2026-09-15** (PHASE08): full-probe
+round with six new probe-queue sources (AS-31..36, AS class 36
+rows) — census 108 sources, fresh csv-sample (pools reproduce), as-
+probe over 36 rows: no third bulk source; report rendered +
+published; audit clean.
 
 ## Units
 
@@ -68,7 +72,7 @@ tests).
 | v0.2.0 (market scale & data availability, D31) | IMPLEMENTATION | built 2026-09-12 (PHASE01–07 done; 205 offline tests; probe report published; N1/N2/N3 documented) |
 | v0.2.1 (source-level capability sounding-out, D33) | IMPLEMENTATION | built 2026-09-14 (PHASE01–06 done; 231 offline tests; capability report published; preliminary N2 numerator 17.838 — EU Ecolabel ECAT, a floor) |
 | v0.2.2 (product-identity & granularity sounding-out, D34) | IMPLEMENTATION | design converged 2026-09-14 (fu1–fu10; CEO HOLD SCOPE c1–c6; ENG BIG CHANGE e1–e8); plans drafted (PHASE01–07); build awaits explicit go, PHASE05 additionally GO=1 |
-| v0.2.4 (management CSV sample, D36) | IMPLEMENTATION | built + real run 2026-09-14 (PHASE01–04 done; 364 offline tests; AS-2 100/17,013; AS-3 `?format=csv` discovery; report-0.2.4.md); **addenda D37+D38 done 2026-09-14** (PHASE05–07; 393 offline tests; AS-3 record corrected to 100/2,322; data_sources.csv) |
+| v0.2.4 (management CSV sample, D36) | IMPLEMENTATION | built + real run 2026-09-14 (PHASE01–04 done; 364 offline tests; AS-2 100/17,013; AS-3 `?format=csv` discovery; report-0.2.4.md); **addenda D37+D38 done 2026-09-14** (PHASE05–07; 393 offline tests; AS-3 record corrected to 100/2,322; data_sources.csv); **addendum D39 done 2026-09-15** (PHASE08; full-probe round incl. six new probe-queue sources AS-31..36; no third bulk source) |
 
 ## Phase tracking (v0.1.1 — summary)
 
