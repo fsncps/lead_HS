@@ -79,7 +79,7 @@ def test_pin_routes_and_delivers_full_pool(basta_conn, store, make_fetcher, tmp_
     assert "full-pool paginated" in entry["method"]
     rows = _rows(tmp_path / "out" / entry["file"])
     header = rows[0]
-    assert "bastaId" in header and "articleNumber" in header
+    assert "bk04Code" in header and "articleNumber" in header
     assert header[-len(bp.PROVENANCE_COLUMNS):] == list(bp.PROVENANCE_COLUMNS)
 
 
@@ -171,17 +171,24 @@ def test_head_of_pool_when_no_total(basta_conn, store, make_fetcher, tmp_path,
     assert "method=head-of-pool" in f[2]
 
 
-def test_identity_dedupe(conn, store, make_fetcher, tmp_path):
-    from leadhs.probe.basta_probe import _KEY_FIELDS_BASTA, _identity_key
+def test_identity_dedupe():
+    from leadhs.probe.basta_probe import _KEY_FIELDS_BASTA, _value_at
 
-    dup = {"name": "Paint A", "articleNumber": "AR-0001", "company": "Acme AB",
-           "bastaId": "B0001", "gtin": "", "bk04": "211", "category": "paints"}
-    recs = [dup, dict(dup), {"name": "Paint B", "articleNumber": "AR-0001",
-                             "company": "Acme AB", "bastaId": "B0002"}]
+    def _key(rec):
+        return tuple(
+            str(_value_at(rec, names[0]) or _value_at(rec, names[1]) or "").strip().casefold()
+            for names in _KEY_FIELDS_BASTA
+        )
+
+    dup = {"articleName": "Paint A", "articleNumber": "AR-0001",
+           "company": {"name": "Acme AB"}, "id": "B0001", "gtin": "",
+           "bk04Code": {"code": "211"}}
+    recs = [dup, dict(dup), {"articleName": "Paint B", "articleNumber": "AR-0001",
+                             "company": {"name": "Acme AB"}, "id": "B0002"}]
     pool: dict = {}
     for rec in recs:
-        pool.setdefault(_identity_key(rec, _KEY_FIELDS_BASTA), rec)
-    assert len(pool) == 2  # dedupe on the (company, articleNumber, bastaId) tuple
+        pool.setdefault(_key(rec), rec)
+    assert len(pool) == 2  # dedupe on (company.name, articleNumber, id)
 
 
 def test_identity_completeness_reported(basta_conn, store, make_fetcher, tmp_path,
@@ -189,8 +196,8 @@ def test_identity_completeness_reported(basta_conn, store, make_fetcher, tmp_pat
     _code, entry = bp.run_probe(basta_conn, store, make_fetcher(), _src(basta_conn),
                                 out_dir=str(tmp_path / "out"))
     f = _finding(basta_conn, entry["run_key"], "basta_special_rows")
-    assert "identity share" in f[2] and "articleNumber=" in f[2]
-    assert "bastaId=" in f[2] and "gtin=" in f[2]  # empty gtins all visible
+    assert "identity share" in f[2] and "company.name=" in f[2]
+    assert "id=100.0%" in f[2] and "gtin=66.7%" in f[2]  # empty gtins all visible
 
 
 # --- honesty paths ------------------------------------------------------------------

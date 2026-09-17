@@ -499,10 +499,12 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             size = int(params.get("pageSize", "2"))
             all_items = [
                 {
-                    "name": f"Paint {i:02d}", "articleNumber": f"AR-{i:04d}",
-                    "company": ("Acme AB" if i % 2 else "Beier AB"),
-                    "bastaId": f"B{i:04d}", "gtin": (f"73000000000{i:02d}" if i % 3 else ""),
-                    "bk04": "211", "category": ("toner" if i == 6 else "paints"),
+                    "id": f"B{i:04d}", "articleName": f"Paint {i:02d}",
+                    "articleNumber": f"AR-{i:04d}",
+                    "company": {"name": ("Acme AB" if i % 2 else "Beier AB")},
+                    "gtin": (f"73000000000{i:02d}" if i % 3 else ""),
+                    "bk04Code": {"code": "211", "name": "Lacker och fernissor"},
+                    "category": ("toner" if i == 6 else "paints"),
                 }
                 for i in range(1, 7)
             ]

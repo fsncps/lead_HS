@@ -1,7 +1,7 @@
 ---
 language: fr
 translation_of: README.md
-source_updated: 2026-09-14
+source_updated: 2026-09-17
 ---
 
 Sprachen / Languages / Langues : [EN](README.md) · [DE](README.de.md) · **FR**
@@ -184,6 +184,32 @@ accords) — travail de l'unité suivante selon
 (EN). Instantané du rapport à couverture totale :
 [probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md)
 (EN).
+
+**Addendum — sonde spéciale BASTA (2026-09-17, D40).** AS-33 a reçu
+une profondeur ordonnée par l'utilisateur (un proxy de catégorie
+tient lieu de codes HS). Le point clé inverse la réponse D39 :
+**l'« API sous accord » est contournée par le propre client web du
+site** — il appelle un proxy anonyme de même origine,
+`/apiproxy/v3/search/articles` (épinglé verbatim depuis le client
+OpenAPI généré du site). Comptages publics exacts : **195 391
+articles / 1 925 entreprises** (keyfigures ; la recherche non
+filtrée annonce 200 769 — 5 378 de plus que la keyfigure, non
+décomposé). Un échantillon semé de 100 articles
+([CSV](data/report/basta-probe.20260917-183244.AS-33.csv), graine 42)
+a été tiré sur un ensemble aléatoire de pages de 20 000 lignes : 41
+fabricants, 45 groupes BK04, tuple d'identité
+(fabricant + numéro d'article + id interne) 100 % complet, GTIN
+69,8 %. Constat de structure : la pagination de recherche est
+agglutinée par fabricant (une page ≈ une entreprise) — les
+échantillons d'une seule page ne sont pas représentatifs ; le run
+additionne honnêtement des positions aléatoires. La part peinture de
+BASTA est petite : les groupes BK04 de peinture (03402 Fasadfärg
+utomhus / 03404 Vägg- och takfärg inomhus) portent 2 des 100
+articles échantillonnés. Le critère `data_sources.csv` (volumétrie
+confirmée + identité + filtre in-scope) est **non** atteint — pas de
+ troisième ligne tant qu'un filtre de peinture côté serveur n'est
+pas épinglé ; détails dans
+[report-0.2.4.md](docs/report/report-0.2.4.md) (addendum D40, EN).
 
 ## Unités antérieures
 

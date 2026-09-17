@@ -28,7 +28,14 @@ guards); unit v0.1.3 (data-landscape map) is built (walk counters,
 migration 0004, 165 offline tests; baseline probe round 2026-09-12) —
 its walk-based execution superseded by the v0.2.0 strategy turn (D31,
 `v0.2.md`: numbers-first N1/N2/N3, reconnaissance-only, EU-only) —
-on top of the v0.1 foundational strategy pass.
+on top of the v0.1 foundational strategy pass. The v0.2.4 addendum
+D40 (BASTA special probe) is built and executed 2026-09-17: the
+register's exact public counts are pinned (195,391 articles /
+1,925 companies), the anonymous same-origin `/apiproxy/v3` search
+route is pinned (the "auth-gated API" answer reversed), and a seeded
+100-article sample CSV with the identity tuple (100% complete) and
+the BK04/BSAB category proxy is delivered — the paint-subset filter
+stays open (de5 not met, no data_sources.csv row).
 
 **Hard constraints:** no laboratory work, no physical samples, no paid data
 sources — publicly retrievable documents only, minimal cost.

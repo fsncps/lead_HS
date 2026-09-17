@@ -6,7 +6,42 @@ pros/cons, and where to start. Created by the v0.2.0 ENG review
 v0.2.4 ENG review (2026-09-14) and the v0.2.4 addendum D40 ENG review
 (2026-09-17).
 
-## Manual browser pass to pin the /sok search route (user action, conditional)
+## RESOLVED 2026-09-17 — manual browser pass to pin the /sok search route
+
+RESOLUTION: no browser pass was needed — the code pin found the
+answer when extended past the first displacement: the /sok search
+component loads `type='module'` bundles whose API paths are built
+dynamically, and the site calls its OWN same-origin proxy
+`<origin>/apiproxy/v3/...` anonymously (pinned verbatim from the
+generated OpenAPI client `assets/ui/services.gen-onZ4SLnf.js`,
+accessed 2026-09-17; module constant db8). Delivered the 100-article
+sample (run_key probe-20260917-as33bastaprobe, D40 addendum). This
+entry is kept as the record of the resolution, not as pending work.
+
+## bk04Code paint-code enumeration for a server-side paint filter (open)
+
+- **What:** pin the BK04 code values that denote paints/varnishes
+  (the sample surfaced 03402 Fasadfärg utomhus and 03404 Vägg- och
+  takfärg inomhus; a full enumeration of the paint-family codes in
+  the register's BK04 vocabulary still has no pinned list — the
+  /apiproxy search takes one bk04Code per call) so a BASTA
+  paint-subset filter can run server-side. When pinned, the D40
+  draw re-runs with `_PAINT_FILTER_PARAM` set and **de5 (a
+  data_sources.csv row) is met** — the de5 gate still NOT met for
+  BASTA.
+- **Why:** the paint subset of BASTA's ~195k construction articles
+  is the study's AS-33 population; the articleName search is not a
+  filter (färg→106, lack→30, "lack färg"→200,769 — the D40 record).
+- **Pros:** turns a source-survey answer (Q2 floor) into a real
+  bulk surface; the identity tuple is already proven 100% complete.
+- **Cons:** needs the BK04 master (likely behind the same-origin
+  /apiproxy code lists or an SSR category page); possible manual devtools
+  pin (one fetch).
+- **Context:** created by the D40 execution (2026-09-17). Start: on
+  the extend of the basta special probe; see
+  20_DESIGN/units/v0.2.4-basta-addendum.md db5.
+- **Depends on / blocked by:** nothing hard; any future paint-filter
+  probe run.
 
 - **What:** If the `basta-probe` PHASE01 bundle-chain pin ends in an
   honest "no anonymous route found" record, run one manual devtools

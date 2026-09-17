@@ -270,3 +270,67 @@ more URL guessing. Published artifacts: summary
 `.AS-3.csv` + regenerated [manifest](csv-sample.manifest.md),
 full-coverage report snapshot
 [probe-report.20260915-000619.3a5fc07d.md](probe-report.20260915-000619.3a5fc07d.md).
+
+## Addendum — D40 (2026-09-17): the BASTA special probe
+
+User-directed deeper probe of AS-33 BASTA online (the relaxed HS-code
+requirement: a category proxy is acceptable). Recon-only discipline
+(D31/D4) throughout; no accounts, no agreements.
+
+**Route pin (the D39 "API under agreement" answer is NO):** the
+recorded "auth-gated API" is bypassed by the site's own web client —
+it calls a **same-origin anonymous proxy**,
+`https://www.bastaonline.se/apiproxy/v3/...` (verified: 200 JSON,
+anonymous). Pinned verbatim from the site's generated OpenAPI client
+bundle `assets/ui/services.gen-onZ4SLnf.js` (accessed 2026-09-17):
+`/apiproxy/v3/search/articles` (GET; `articleNumber, articleName,
+companyId, orgNo, bk04Code, bsabCode, ebvdId, gtin, rsk, eNumber,
+page, pageSize`), `/apiproxy/v3/articles/minimal`, and the detail
+route `/apiproxy/v3/articles/{articleId}` (which returns the full
+field schema: article number, **GTIN**, RSK, E-number, eBVD ID,
+grade, company, **BK04**, **BSAB**). The api.bastaonline.se direct
+route stays 401 (agreement route documented, never acted on).
+
+**Exact public counts:** `/api/keyfigures/1` = **195,391 articles**
+(195,390 the day before — live register moving), `/api/keyfigures/2`
+with 1,925 companies per the recon pass. Discrepancy finding: the search route's
+unfiltered total advertises **200,769** — 5,378 more than the
+keyfigure; the search hits articles the public keyfigure does not
+(not de-composed here).
+
+**Sample (run_key
+`probe-20260917-as33bastaprobe`, seed 42, n=100):**
+`basta-probe.20260917-183244.AS-33.csv` (and the slightly worse
+earlier runs `.181500./.183244` retained in data/report history).
+Method: random-page draws above the pinned pool threshold (2C) — the
+unfiltered search advertises 100,385 pages at pageSize=250; the
+pool is 80 random pages (20,000 rows, the pinned threshold) → seeded
+draw of 100. First result (`.181500`) exposed the structure finding
+below; the corrected second run pools across positions.
+
+**Sample finding:** 100 rows, 41 manufacturers, 45 distinct BK04
+groups, 95 distinct article names. Identity completeness: company +
+article number + internal id = **100%**, GTIN 69.8%, eBVD ID 41%,
+RSK ~1% (construction index, not retail). Grade: 99 BASTA ALFA,
+1 DEKLARERAD. The paint share of the register is small —
+in-scope BK04 groups are **03402 Fasadfärg utomhus** and
+**03404 Vägg- och takfärg inomhus**: 2 of 100 sampled articles carry
+them (both with full identity incl. GTIN — e.g. Flügger/a paint 07
+Wood Tex Matt, Akzo Nobel ORIGINAL VÄGG HALVMATT 20).
+
+**Structure finding:** the search pagination is **clustered per
+manufacturer block** (a single page is ~one company's article run)
+— seeded single-page samples are not representative; the run pools
+across 80 random page positions instead (run notes record the
+method). The server-side `articleName` search is unreliable for a
+paint-subset filter (färg→106, lack→30, multi-token queries behave
+inconsistently (200,769 for "lack färg")) — **the paint BK04 code
+enumeration (03402/03404) came out of the sample data itself**, and
+a server-side paint-filter plan stays an OPEN item (TODOS.md).
+
+**de5 gate NOT met** for `data_sources.csv`: the draw delivered
+(bulk surface + identity tuple) but the in-scope paint filter is not
+derivable from pinned parameters alone — the 2/100 paint-slice
+came from post-hoc BK04 inspection. BASTA remains out of the
+bulk-list (pending the paintfilter pin), while its article
+enumerability + identity tuple are fact-complete in this record.

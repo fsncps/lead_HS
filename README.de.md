@@ -1,7 +1,7 @@
 ---
 language: de
 translation_of: README.md
-source_updated: 2026-09-14
+source_updated: 2026-09-17
 ---
 
 Sprachen / Languages / Langues: [EN](README.md) · **DE** · [FR](README.fr.md)
@@ -176,6 +176,31 @@ API-Bedingungen, Vereinbarungen) — Arbeit der nächsten Einheit gemäss
 (EN). Vollabdeckungs-Report-Snapshot:
 [probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md)
 (EN).
+
+**Addendum — BASTA-Sonderprobe (2026-09-17, D40).** AS-33 bekam eine
+nutzerbeauftragte Vertiefung (ein Kategorie-Proxy genügt statt
+HS-Codes). Die Kernaussage dreht die D39-Antwort um: **die
+«auth-gated API» ist von eigener Web-Client-Seite überbrückt** — der
+Client ruft einen gleichursprünglichen anonymen Proxy auf,
+`/apiproxy/v3/search/articles` (wörtlich aus dem generierten
+OpenAPI-Client des Webangebots abgesteckt). Exakte öffentliche
+Zählungen: **195'391 Artikel / 1'925 Unternehmen** (Keyfigures; die
+ungefilterte Suche meldet 200'769 — 5'378 mehr als die Keyfigure,
+nicht dekomponiert). Eine gesäte 100-Artikel-Stichprobe
+([CSV](data/report/basta-probe.20260917-183244.AS-33.csv), Seed 42)
+wurde über einen Zufalls-Seiten-Satz von 20'000 Zeilen gezogen: 41
+Hersteller, 45 BK04-Baugruppen, Identitätstupel
+(Hersteller + Artikelnummer + interne ID) 100 % vollständig, GTIN
+69,8 %. Strukturbefund: die suche paginiert herstellerzeitgeklustert
+(eine Seite ≈ ein Unternehmen) — Einzel-Seiten-Stichproben sind
+nicht repräsentativ; der Lauf poolt ehrlich über zufällige
+Positionen. Der Farbananteil von BASTA ist klein: die
+Farb-BK04-Gruppen (03402 Fasadfärg utomhus / 03404 Vägg- och
+takfärg inomhus) tragen 2 von 100 gestichprobeten Artikeln. Das
+`data_sources.csv`-Gate (bestätigt Bulk + Identität +
+In-Scope-Filter) ist **nicht** erfüllt — bis ein serverseitiger
+Farbfilter abgesteckt ist, keine dritte Zeile; Details im
+[report-0.2.4.md](docs/report/report-0.2.4.md) (D40-Addendum, EN).
 
 ## Frühere Einheiten
 

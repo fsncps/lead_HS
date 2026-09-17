@@ -157,6 +157,29 @@ agreements) — next-unit work per
 Full-coverage report snapshot:
 [probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md).
 
+**Addendum — BASTA special probe (2026-09-17, D40).** AS-33 got a
+user-directed deeper probe (a category proxy is acceptable in place
+of HS codes). The headline reverses the D39 answer: **the "auth-gated
+API" is bypassed by the site's own web client** — it calls a
+same-origin anonymous proxy, `/apiproxy/v3/search/articles` (pinned
+verbatim from the site's generated OpenAPI client bundle). Exact
+public counts: **195,391 articles / 1,925 companies** (keyfigures;
+the unfiltered search advertises 200,769 — 5,378 more than the
+keyfigure, not de-composed). A seeded 100-article sample
+([CSV](data/report/basta-probe.20260917-183244.AS-33.csv), seed 42)
+was drawn over a 20,000-row random-page set: 41 manufacturers, 45
+BK04 (construction classification) groups, identity tuple
+(manufacturer + article number + internal id) 100% complete, GTIN
+69.8%. Structure finding: search pagination clusters per
+manufacturer (one page ≈ one company), so single-page samples are
+not representative — the run pools across random positions honestly.
+The paint share of BASTA is small: the in-scope paint BK04 groups
+(03402 Fasadfärg utomhus / 03404 Vägg- och takfärg inomhus) carry
+2 of 100 sampled articles. The `data_sources.csv` gate (confirmed
+bulk + identity + in-scope filter) is **not** met — no third row
+until a server-side paint filter is pinned; details in
+[report-0.2.4.md](docs/report/report-0.2.4.md) (D40 addendum).
+
 ## Previous units
 
 ### v0.2.3 — pool estimate v2: meta-benchmarking vote (2026-09-14)

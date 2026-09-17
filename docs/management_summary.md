@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-09-14 (Einheit v0.2.4 / unité v0.2.4).
+Stand / État: 2026-09-17 (v0.2.4 inkl. BASTA-Sonderprobe / v0.2.4 avec sonde BASTA).
 
 ---
 
@@ -324,10 +324,23 @@ Zufallsstichprobe ist nachvollziehbar verifiziert. Details: Beratungs-
 Input `docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md` (EN);
 Details im Einheitsbericht.
 
-Projektstand (14.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
+Ergänzend (17.09.2026): BASTA-Sonderprobe. Der Befund «VEREINBARE
+API» drehte sich um: die Anmeldungspflichtige API umgeht der eigene
+Web-Client des Catalogs selbst über einen anonymen Proxy auf derselben
+Adresse (`/apiproxy/v3/search/articles`) — exakte öffentliche Zählung:
+**195'391 Artikel** (Bausektor; 200'769 meldet die Suche, Diskrepanz
+vermerkt). Gesäte 100-Artikel-Stichprobe verfolgt: Identität
+(Hersteller + Artikelnummer + interne ID) 100 %, GTIN 69,8 %.
+Farbrelevantes BK04 (03402/03404) traf nur 2 von 100 — die
+Farbunterpopulation bleibt klein gegenüber dem
+Bauartikel-Katalog gesamt; `data_sources.csv` erhält **keine**
+dritte Zeile, den serverseitigen Farbfilter abzustimmen ist ein
+offener Punkt. Details: `docs/report/report-0.2.4.md` (EN).
+
+Projektstand (17.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
 jeden Befund nachvollziehbar hält — ist in neun Ausbaustufen gebaut und
-getestet (393 automatisierte Offline-Tests): Evidenzdatenbank,
+getestet (412 automatisierte Offline-Tests): Evidenzdatenbank,
 Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
 Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe),
 die Datenlandschaft-Karte mit den drei Leitgrössen, die
@@ -700,10 +713,23 @@ vérifié comme traçable. Détails : entrée consultant
 `docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md` (EN) ;
 détails dans le rapport d'unité.
 
-État du projet (14.09.2026) : l'outil de collecte — un petit programme
+En complément (17.09.2026) : sonde spéciale BASTA. La réponse « API
+sous accord » s'inverse : le propre client web du catalogue contourne
+lui-même l'API payante par un proxy anonyme de même origine
+(`/apiproxy/v3/search/articles`) — comptage public exact : **195'391
+articles** (seulement de construction ; la recherche en annonce
+200'769, écart noté). Un échantillon semé de 100 articles confirme
+l'identité (fabricant + numéro d'article + id interne) à 100 %,
+GTIN à 69,8 %. Les groupes BK04 de peinture (03402/03404) n'ont
+touché que 2 des 100 — la sous-population peinture reste petite par
+rapport à l'ensemble ; `data_sources.csv` **ne** reçoit **pas** de
+troisième ligne, l'épinglage d'un filtre peinture côté serveur reste
+un point ouvert. Détails : `docs/report/report-0.2.4.md` (EN).
+
+État du projet (17.09.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
 et rend chaque constat traçable — est construit et testé en neuf étapes
-(393 tests automatisés hors ligne) : base de preuves, registre des
+(412 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
 attente d'un feu vert de collecte), carte du paysage des données avec

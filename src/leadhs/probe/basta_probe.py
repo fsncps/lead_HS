@@ -44,7 +44,6 @@ from . import engine as probeengine
 from .csv_sample import (
     PROVENANCE_COLUMNS,
     _finish,
-    _identity_key,
     _today,
     _utc_ts,
     _write_sample_csv,
@@ -70,23 +69,47 @@ _PAGE_SIZE = 250
 # db5 — the paint-filter mechanism. None at recon time (2026-09-17
 # desk pass did not pin the parameter set) → the default method is
 # all-articles sampling with the category column kept. Pinned value
-# = (query param, value) applied server-side per page.
+# = (query param, value) applied server-side per page. The real-run
+# probe (2026-09-17) tested the server-side search's name matching:
+# unreliable for a paint subset (färg→106, lack→30, unfiltered→200,769
+# with a single-word probe story) — the bk04Code enumeration stays
+# unpinned, the agreed fallback applies.
 _PAINT_FILTER_PARAM = None
+
+# db8 — the pinned same-origin proxy routes, read verbatim from the
+# site's generated OpenAPI client bundle (assets/ui/services.gen-*.js
+# on /sok, accessed 2026-09-17): the web app calls
+# `<origin>/apiproxy/v3/...` anonymously (the auth-gated api.bastaonline.se
+# behind a server-side proxy). The generated client's pinned gét
+# search route carries page/pageSize and the category params.
+_PINNED_PROXY_SEARCH = "/apiproxy/v3/search/articles"
+_PROXY_ROUTE_SOURCE_NOTE = (
+    "pinned from the same-origin OpenAPI client (assets/ui/services.gen-onZ4SLnf.js, "
+    "accessed 2026-09-17) — the /sok search component calls <origin>/apiproxy/v3/..."
+)
 
 # db6 — the article field schema pinned from an SSR article page
 # (accessed 2026-09-17); the pinned route's JSON keys supersede this
 # for the CSV header, and the pinned JSON names feed the key chains.
+# Dotted names resolve nested objects (the OpenAPI search items carry
+# the company as {"id","name","url"} — "company.name" → the holder,
+# "id" doubles as the BASTA article identifier).
 _KEY_FIELDS_BASTA = (
-    ("company", "company_name", "companyName", "manufacturer"),
+    ("company.name", "companyName", "company_name", "manufacturer"),
     ("articleNumber", "article_number", "articleNo", "art_no"),
-    ("bastaId", "basta_id", "id"),
-)
-_IDENTITY_REPORT_CHAINS = (
-    ("articleNumber", "article_number", "articleNo", "gtin"),
-    ("bastaId", "basta_id", "id"),
-    ("gtin", "articleNumber", "article_number"),
+    ("id", "bastaId", "basta_id"),
 )
 
+
+def _value_at(rec, path: str):
+    """Dotted-path value (e.g. 'company.name') with dict fallbacks."""
+    cur = rec
+    for part in path.split("."):
+        if isinstance(cur, dict) and part in cur:
+            cur = cur[part]
+        else:
+            return None
+    return cur
 # db7 — the auth/agreement wording: why-not only, never contacted (D4).
 _AUTH_NOTE = (
     "the documented API v3 (api.bastaonline.se, 24 endpoints per the public "
@@ -196,6 +219,14 @@ def _pin(fetcher, base: str, logger=None) -> tuple:
             detail += f"; HTTP {bresp.status_code} on a bundle"
             continue
         candidates.extend(_candidates(bresp.content.decode("utf-8", "replace")))
+    # db8: the pinned same-origin proxy route (the site's generated
+    # OpenAPI client) is appended as the trusted candidate — the
+    # generated bundles construct the API paths dynamically, so plain
+    # code-grep cannot see them. Provenance: _PROXY_ROUTE_SOURCE_NOTE.
+    pinned = base + _PINNED_PROXY_SEARCH
+    if pinned not in candidates:
+        candidates.insert(0, pinned)
+        detail += f"; +pinned proxy route (services.gen pin)"
     return [_c if _c.startswith("http") else base + _c for _c in candidates], detail, None
 
 
@@ -218,6 +249,9 @@ def _total_of(payload) -> int | None:
         total = payload.get("total")
         if isinstance(total, int):
             return total
+        pagination = payload.get("pagination")  # the OpenAPI search shape
+        if isinstance(pagination, dict) and isinstance(pagination.get("total"), int):
+            return pagination["total"]
     return None
 
 
@@ -231,24 +265,27 @@ def _page_url(route: str, page: int, extra_param=None) -> str:
 
 def _first_payload(fetcher, base: str, candidate: str, extra_param=None) -> tuple:
     """One polite GET of the candidate with a small page size; returns
-    (payload, status_note). payload is None when the candidate is not
-    usable (auth/blocked/non-JSON/empty)."""
+    (payload, status_note, evidence-or-None). payload is None when the
+    candidate is not usable (auth/blocked/non-JSON/unparsable) — the
+    evidence tuple (url, content, content_type) lets the caller archive
+    the page as provenance (D38)."""
     from .adapters._common import sniff_kind as _sniff
+
     url = _page_url(candidate, 1, extra_param)
     try:
         resp = fetcher.get(url)
     except (Blocked, RateLimited) as exc:
-        return None, f"auth route at {url} ({exc.detail}) {db7_auth()}"
+        return None, f"auth route at {url} ({exc.detail}); {db7_auth()}", None
     except FetchError as exc:
-        return None, f"unreachable candidate {url} ({exc.detail})"
+        return None, f"unreachable candidate {url} ({exc.detail})", None
     if resp.status_code != 200:
-        return None, f"HTTP {resp.status_code} at {url} {db7_auth()}"
+        return None, f"HTTP {resp.status_code} at {url}; {db7_auth()}", None
     if _sniff(resp.headers.get("Content-Type"), resp.content[:256]) != "json":
-        return None, f"non-JSON at {url}"
+        return None, f"non-JSON at {url}", None
     try:
-        return json.loads(resp.content.decode("utf-8", "replace")), None
+        return json.loads(resp.content.decode("utf-8", "replace")), None, (url, resp.content, resp.headers.get("Content-Type"))
     except ValueError:
-        return None, f"unparsable JSON at {url}"
+        return None, f"unparsable JSON at {url}", None
 
 
 def db7_auth() -> str:
@@ -317,33 +354,43 @@ def _paginate(fetcher, base: str, route: str, extra_param=None,
 def _random_page_draw(fetcher, base: str, route: str, total: int, n: int,
                       seed: int, extra_param=None) -> tuple:
     """Above-threshold fallback when the route advertises a total:
-    seed-fixed random-page draws (decision 2C). Never silently pads —
-    returns what the visited pages yield."""
+    seed-fixed random-page draws (decision 2C). The real run (2026-09-17,
+    run_probe prove-pass) showed the upstream pagination is clustered
+    per manufacturer block — a single random page is ~one company —
+    so the capsule visits a random PAGE SET sized by the pool cap
+    (threshold/pageSize pages) and pools across positions. Never
+    silently pads — returns what the visited pages yield."""
     rng = random.Random(seed)
     pages = max(1, (total + _PAGE_SIZE - 1) // _PAGE_SIZE)
+    cap_pages = max(_POOL_THRESHOLD // _PAGE_SIZE, 1)
+    visited = rng.sample(range(1, pages + 1), min(pages, cap_pages))
     wanted: list = []
-    for p in rng.sample(range(1, pages + 1), min(pages, max(2 * n // _PAGE_SIZE + 1, 1))):
+    for p in visited:
         try:
             resp = fetcher.get(_page_url(route, p, extra_param))
         except FetchError as exc:
             break
         items = _items_of(json.loads(resp.content.decode("utf-8", "replace"))) or []
-        for item in items:
-            if len(wanted) >= max(n + int(n * 0.5), n):
-                break
-            wanted.append(item)
+        wanted.extend(items)
+        if len(wanted) >= _POOL_THRESHOLD:
+            break
     return wanted
 
 
 def _draw(conn, store, fetcher, source_id, run_id, run_key, base, route,
           n, seed, out_dir, ts, total, pool_rows, method, parameters,
-          logger=None) -> tuple:
+          evidence=None, logger=None) -> tuple:
     """Seeded draw over the canonical distinct pool + CSV + findings
     (reuses the csv_sample draw/write mechanics — D36 machinery)."""
-    keys_fallback = _KEY_FIELDS_BASTA
+    def _basta_key(rec):
+        return tuple(
+            str(_value_at(rec, names[0]) or _value_at(rec, names[1]) or "").strip().casefold()
+            for names in _KEY_FIELDS_BASTA
+        )
+
     pool: dict = {}
     for rec in pool_rows:
-        pool.setdefault(_identity_key(rec, keys_fallback), rec)
+        pool.setdefault(_basta_key(rec), rec)
     pool_size = len(pool)
     ordered = [pool[k] for k in sorted(pool)]
     k = min(n, pool_size)
@@ -351,10 +398,16 @@ def _draw(conn, store, fetcher, source_id, run_id, run_key, base, route,
     shortfall = k < n
     header = _header_from(sampled)
     method_col = f"basta-pool-method: {method}"
-    digest, _rel = store.put(source_id, json.dumps({"route": route, "total": total, "pool": pool_size}).encode(), "json")
-    doc = DocumentDraft(url=_page_url(route, 1, _PAINT_FILTER_PARAM),
-                        content=json.dumps({"route": route, "total": total, "pool": pool_size}).encode(),
-                        content_type="application/json", retrieval_method_code="download")
+    if evidence is not None:
+        digest, _rel = store.put(source_id, evidence[1], "json")
+        doc = DocumentDraft(url=evidence[0], content=evidence[1],
+                            content_type=evidence[2],
+                            retrieval_method_code="download")
+    else:
+        digest, _rel = store.put(source_id, json.dumps({"route": route, "total": total, "pool": pool_size}).encode(), "json")
+        doc = DocumentDraft(url=_page_url(route, 1, _PAINT_FILTER_PARAM),
+                            content=json.dumps({"route": route, "total": total, "pool": pool_size}).encode(),
+                            content_type="application/json", retrieval_method_code="download")
     findings = [FindingDraft(
         metric_code="basta_special_rows", method_code="download",
         value_numeric=float(k), unit_code="count", document=doc,
@@ -395,15 +448,15 @@ def completeness(pool_rows) -> list:
         fieldnames.update(rec or {})
     out = []
     n = max(len(pool_rows), 1)
+    def _carries(rec, names) -> bool:
+        return any(str(_value_at(rec, nm) or "").strip() for nm in names)
+
     for names in _KEY_FIELDS_BASTA:
-        if any(nm in fieldnames for nm in names):
-            share = sum(
-                1 for rec in pool_rows
-                if any(str(rec.get(nm) or "").strip() for nm in names)
-            ) / n
+        if any(_value_at(rec, nm) is not None for rec in pool_rows[:5] for nm in names):
+            share = sum(1 for rec in pool_rows if _carries(rec, names)) / n
             out.append(f"{names[0]}={share:.1%}")
-    if "gtin" in fieldnames:
-        share = sum(1 for rec in pool_rows if str(rec.get("gtin") or "").strip()) / n
+    if any(_value_at(rec, "gtin") is not None for rec in pool_rows[:5]):
+        share = sum(1 for rec in pool_rows if str(_value_at(rec, "gtin") or "").strip()) / n
         out.append(f"gtin={share:.1%}")
     return out
 
@@ -438,12 +491,12 @@ def run_probe(conn, store, fetcher, source, n: int = 100, seed: int = 42,
                                f"the /sok surface not serving anonymously: {detail} {db7_auth()}", logger)
 
     # PHASE02 — verify candidates + exact counts
-    route, route_note = None, None
+    route, route_note, evidence = None, None, None
     for candidate in candidates[:_SHAPE_MAX_GETS]:
-        payload, note = _first_payload(fetcher, base, candidate, _PAINT_FILTER_PARAM)
+        payload, note, ev = _first_payload(fetcher, base, candidate, _PAINT_FILTER_PARAM)
         items = _items_of(payload) if payload is not None else None
         if items:
-            route, route_note = candidate, f"pinned route {candidate} ({note or 'first page OK'})"
+            route, route_note, evidence = candidate, f"pinned route {candidate} ({note or 'first page OK'})", ev
             break
         route_note = note
     articles, companies, counts_failed = _counts(fetcher, base, logger)
@@ -486,7 +539,7 @@ def run_probe(conn, store, fetcher, source, n: int = 100, seed: int = 42,
             method = "head-of-pool paginated prefix (route advertises no total)"
     entry, shortfall = _draw(conn, store, fetcher, source.id, run_id, run_key,
                              base, route, n, seed, out_dir, ts, total, pool_rows,
-                             method, parameters, logger)
+                             method, parameters, evidence=evidence, logger=logger)
     if articles is not None:
         probeengine.persist(conn, store, source.id, run_id, ProbeResult(
             findings=[FindingDraft(

@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-15
+updated: 2026-09-17
 ---
 
 # Strategy MASTER — lead_HS
@@ -484,6 +484,26 @@ lead). Open questions and the phased roadmap follow.
   estimator. Filed as `INPUT-source-expansion-MSE.md`; decision
   deferred to the next strategy turn (unit numbering open — the v0.3
   label is double-booked, see below).
+- INPUT (2026-09-17, not yet adopted): matching method topic
+  `MATCHING.md` — normalization-first algorithmic record linkage for
+  the product-DB build (manufacturer/identifier normalization, exact
+  keys, blocking, Jaro-Winkler/token-set scoring, tiered
+  auto_match/review/no_match verdicts, no LLM matching; rapidfuzz vs
+  stdlib-only open). Proposed decisions MA1–MA9; adoption as MASTER
+  decisions deferred to the next strategy turn / the product-DB unit's
+  Design.
+- INPUT (2026-09-17, not yet adopted): raw-sourcing topic
+  `RAW_SOURCING.md` — bulk download + raw source tables before any
+  consolidation/matching: SQLite re-confirmed over Postgres (D1/D16/D32
+  stand, portable-SQL hedge), per-source manifest-driven table
+  creation, idempotent seed (upsert on natural key + content hash,
+  resume from batch checkpoints), upsert+change-journal history,
+  oversize spill to the raw store (never silent drops), core triple
+  manufacturer/product_ident/group_code (nullable, verbatim),
+  list-endpoint-first politeness gate. Proposed decisions R1–R9 (R1–R3
+  user-confirmed 2026-09-17); R9 and adoption deferred to the next
+  strategy turn / the product-DB unit's Design. Sequencing with
+  MATCHING.md: raw layer first, matching layer consumes it.
 - Phase 0 — close gaps: verify current legal
   texts (ChemRRV Anhang 2.8, consolidated VIPaV); document the CdD
   governance chain for the lead exception from public sources (requester/
@@ -526,6 +546,15 @@ lead). Open questions and the phased roadmap follow.
 - `DATA_MODEL.md` — evidence-database schema (products, SDS findings, runs)
 - `ARCHITECTURE.md` — pipeline, CLI (`leadhs`), reporting, distribution &
   portability
+- `MATCHING.md` — product identity, string matching and cross-source
+  dedup (normalization-first record linkage, exact-key tiers, blocking,
+  scored near-matches, no LLM/embedding matching; proposed decisions
+  MA1–MA9, DRAFT pending adoption)
+- `RAW_SOURCING.md` — bulk source tables, seed CLI, repeatable
+  incremental acquisition (manifest-driven tables, upsert + change
+  journal, oversize spill, list-endpoint-first politeness gate;
+  proposed decisions R1–R9, R1–R3 user-confirmed 2026-09-17, DRAFT
+  pending adoption)
 - `charts/` — rendered diagrams in active use (system components,
   lead decision tree, probe process); index and regeneration:
   `charts/README.md`; superseded charts archived under
