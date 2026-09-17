@@ -2,8 +2,37 @@
 
 Deferred work items with context — each entry states what, why,
 pros/cons, and where to start. Created by the v0.2.0 ENG review
-(2026-09-12); extended by the v0.2.3 ENG review (2026-09-14) and the
-v0.2.4 ENG review (2026-09-14).
+(2026-09-12); extended by the v0.2.3 ENG review (2026-09-14), the
+v0.2.4 ENG review (2026-09-14) and the v0.2.4 addendum D40 ENG review
+(2026-09-17).
+
+## Manual browser pass to pin the /sok search route (user action, conditional)
+
+- **What:** If the `basta-probe` PHASE01 bundle-chain pin ends in an
+  honest "no anonymous route found" record, run one manual devtools
+  session in a normal browser on bastaonline.se/sok (Network tab,
+  one query), record the upstream request (URL, method, params) in
+  the AS-33 strategy/design notes, and re-run the probe with the
+  route added as a pinned constant (db1).
+- **Why:** The D40 design rests on one unproven assumption — that an
+  anonymous JSON route serves the client shell's search. Code pinning
+  greps minified bundles and may come up empty even where the route
+  exists; the manual pass resolves that single fact deterministically.
+- **Pros:** Unlocks the 100-article BASTA sample (a second
+  identity-tuple source beyond ECAT/Nordic Swan — Q2 floor grows);
+  one short session, no tools to build.
+- **Cons:** Requires user time + a browser; adds a hand-copied fact
+  that future probes trust (needs URL + access-date provenance like
+  every pinned surface).
+- **Context:** Created by the v0.2.4 addendum D40 ENG review
+  (2026-09-17, adopted). The auth'ed API (api.bastaonline.se, 401
+  anonymous) and the agreement/Excel-excerpt contacts are NOT
+  fallbacks — D4 forbids accounts; only an anonymous surface counts.
+  Start: only after a delivered `basta_special_unavailable`
+  pin-not-found finding; record the finding's run_key as the
+  precondition.
+- **Depends on / blocked by:** v0.2.4-basta-addendum PHASE01
+  executed with an honest pin-not-found outcome; nothing else.
 
 ## Reconcile the v0.2.4 AS-3 discovery trial with the pilot unit's pinned mechanics
 
