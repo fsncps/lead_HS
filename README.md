@@ -166,7 +166,7 @@ verbatim from the site's generated OpenAPI client bundle). Exact
 public counts: **195,391 articles / 1,925 companies** (keyfigures;
 the unfiltered search advertises 200,769 — 5,378 more than the
 keyfigure, not de-composed). A seeded 100-article sample
-([CSV](data/report/basta-probe.20260917-183244.AS-33.csv), seed 42)
+([CSV](docs/report/basta-probe.20260917-183244.AS-33.csv), seed 42)
 was drawn over a 20,000-row random-page set: 41 manufacturers, 45
 BK04 (construction classification) groups, identity tuple
 (manufacturer + article number + internal id) 100% complete, GTIN

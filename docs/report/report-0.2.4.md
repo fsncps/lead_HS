@@ -300,8 +300,9 @@ keyfigure; the search hits articles the public keyfigure does not
 
 **Sample (run_key
 `probe-20260917-as33bastaprobe`, seed 42, n=100):**
-`basta-probe.20260917-183244.AS-33.csv` (and the slightly worse
-earlier runs `.181500./.183244` retained in data/report history).
+`basta-probe.20260917-183244.AS-33.csv`
+(both runs published: the corrected sample and the single-page first
+run `.181500.` as the structure finding's evidence).
 Method: random-page draws above the pinned pool threshold (2C) — the
 unfiltered search advertises 100,385 pages at pageSize=250; the
 pool is 80 random pages (20,000 rows, the pinned threshold) → seeded

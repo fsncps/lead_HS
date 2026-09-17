@@ -195,7 +195,7 @@ OpenAPI généré du site). Comptages publics exacts : **195 391
 articles / 1 925 entreprises** (keyfigures ; la recherche non
 filtrée annonce 200 769 — 5 378 de plus que la keyfigure, non
 décomposé). Un échantillon semé de 100 articles
-([CSV](data/report/basta-probe.20260917-183244.AS-33.csv), graine 42)
+([CSV](docs/report/basta-probe.20260917-183244.AS-33.csv), graine 42)
 a été tiré sur un ensemble aléatoire de pages de 20 000 lignes : 41
 fabricants, 45 groupes BK04, tuple d'identité
 (fabricant + numéro d'article + id interne) 100 % complet, GTIN

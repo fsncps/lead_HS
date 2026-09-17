@@ -187,7 +187,7 @@ OpenAPI-Client des Webangebots abgesteckt). Exakte öffentliche
 Zählungen: **195'391 Artikel / 1'925 Unternehmen** (Keyfigures; die
 ungefilterte Suche meldet 200'769 — 5'378 mehr als die Keyfigure,
 nicht dekomponiert). Eine gesäte 100-Artikel-Stichprobe
-([CSV](data/report/basta-probe.20260917-183244.AS-33.csv), Seed 42)
+([CSV](docs/report/basta-probe.20260917-183244.AS-33.csv), Seed 42)
 wurde über einen Zufalls-Seiten-Satz von 20'000 Zeilen gezogen: 41
 Hersteller, 45 BK04-Baugruppen, Identitätstupel
 (Hersteller + Artikelnummer + interne ID) 100 % vollständig, GTIN
