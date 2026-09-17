@@ -437,6 +437,91 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
         elif p == "/assoc.html":
             # association landing with a visible member count
             self._html(b"<html><body>1,200 member companies across the sector</body></html>")
+        elif p == "/basta-robots.txt":
+            # D40 decision 4B: a robots file declaring Crawl-delay —
+            # the fetcher must pace at max(min_spacing, crawl_delay).
+            body = b"User-agent: *\nAllow: /\nCrawl-delay: 10\n"
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/sok":
+            # D40: the client-shell SSR nav, no result rows; variant per
+            # loopback host — HAPPY (pin found), NF (bundles 404), AUTH
+            # (shell itself auth-gated).
+            ip = (self.headers.get("Host") or "").rsplit(":", 1)[0]
+            scripts = {
+                "127.0.0.60": ['<script src="/assets/app-a.js"></script>',
+                               '<script src="/assets/app-b.js"></script>'],
+                "127.0.0.61": ['<script src="/assets/missing.js"></script>'],
+                "127.0.0.62": ['<script src="/assets/app-c.js"></script>'],
+            }.get(ip, ['<script src="/assets/app-a.js"></script>',
+                       '<script src="/assets/app-b.js"></script>'])
+            if ip == "127.0.0.63":
+                self.send_response(401)
+                self.end_headers()
+                return
+            self._html(('<html><body><div data-component="Search"></div>' + "".join(scripts)
+                        + "</body></html>").encode())
+        elif p == "/assets/app-a.js":
+            body = (b'var cfg={search:"/api-articles",cdn:"https://cdn.example.com/'
+                    b'search-ui.js"};function go(){fetch(cfg.search)}')
+            self.send_response(200)
+            self.send_header("Content-Type", "application/javascript")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/assets/app-c.js":
+            body = b'var cfg={search:"/api-articles-meta"};function g2(){fetch(cfg.search)}'
+            self.send_response(200)
+            self.send_header("Content-Type", "application/javascript")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/assets/app-b.js":
+            body = b"var cfg={};console.log(cfg)"
+            self.send_response(200)
+            self.send_header("Content-Type", "application/javascript")
+            self.end_headers()
+            self.wfile.write(body)
+        elif p == "/basta.json":
+            data = json.dumps({"total": 25, "items": [
+                {"name": "Paint A", "articleNumber": "AR-0001", "company": "Acme AB",
+                 "bastaId": "B0001", "gtin": "7300000000011", "bk04": "211", "category": "paints"},
+                {"name": "Paint B", "articleNumber": "AR-0002", "company": "Acme AB",
+                 "bastaId": "B0002", "gtin": "", "bk04": "211", "category": "paints"},
+            ]}).encode()
+            self._json(data)
+        elif p.startswith("/api-articles"):
+            # paginated article route: honors page, pageSize, the
+            # category=paint filter, and a `fixed=1` mode that serves the
+            # same overflow-size batch every page (a route whose total is
+            # unknown — the truncated head-of-pool exercise).
+            params = dict(kv.split("=", 1) for kv in query.split("&") if "=" in kv)
+            page = int(params.get("page", "1"))
+            size = int(params.get("pageSize", "2"))
+            all_items = [
+                {
+                    "name": f"Paint {i:02d}", "articleNumber": f"AR-{i:04d}",
+                    "company": ("Acme AB" if i % 2 else "Beier AB"),
+                    "bastaId": f"B{i:04d}", "gtin": (f"73000000000{i:02d}" if i % 3 else ""),
+                    "bk04": "211", "category": ("toner" if i == 6 else "paints"),
+                }
+                for i in range(1, 7)
+            ]
+            if params.get("category") in ("paint", "paints"):
+                all_items = [x for x in all_items if x["category"] == "paints"]
+            if params.get("fixed") == "1":
+                self._json(all_items[: size])
+            elif "meta" in p:
+                self._json({
+                    "total": len(all_items),
+                    "items": all_items[(page - 1) * size: page * size],
+                })
+            else:
+                self._json(all_items[(page - 1) * size: page * size])
+        elif p == "/api-keyfigures":
+            self._json({"text": "195390 articles and 1925 companies"})
+        elif p == "/api-lock":
+            self.send_response(401)
+            self.end_headers()
         elif p == "/spin":
             self._html(b'<html><body><a href="/data.mdb">SPIN database download</a></body></html>')
         elif p == "/data.mdb":

@@ -525,6 +525,54 @@ exact-or-estimated record counts; associations get member-list findings."""
     ctx.exit(exit_code)
 
 
+@probe.command("basta-probe")
+@click.option("--n", "n", type=click.IntRange(min=1), default=100, show_default=True,
+              help="sample size (default: 100 articles)")
+@click.option("--seed", "seed", type=int, default=42, show_default=True,
+              help="seeded reproducible draw (recorded in run + CSV)")
+@click.option("--source", "source_ids", multiple=True, default=("AS-33",),
+              help="source ID (default: AS-33 BASTA online)")
+@click.option("--out-dir", "out_dir", default="data/report", show_default=True,
+              help="sample CSV destination (D22 routing)")
+@click.option("--dry-run", is_flag=True, help="plan requests; zero network, zero files")
+@click.pass_context
+def basta_probe(ctx, n, seed, source_ids, out_dir, dry_run):
+    """BASTA special probe (v0.2.4 addendum, D40): pin the anonymous
+search route behind /sok, characterize data availability, deliver a
+seeded random 100-article sample CSV — one honest state machine."""
+    from . import db as dbmod, fetch as fetchmod, store as storemod, source as sourcemod
+    from .fetch import FetchConfig
+    from .probe import basta_probe as bastaprobe
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    conn = dbmod.connect(rt.db_path)
+    try:
+        wanted = list(source_ids) or [bastaprobe.DEFAULT_SOURCE_ID]
+        source_rows = {}
+        for sid in wanted:
+            source = sourcemod.get_source(conn, sid)
+            if source is None:
+                click.echo(f"error: unknown source {sid!r} (run `leadhs source load` first)", err=True)
+                ctx.exit(1)
+            source_rows[sid] = source
+        if not dry_run:
+            os.makedirs(out_dir, exist_ok=True)
+        exit_code, _entries = bastaprobe.sample(
+            conn, storemod.RawStore(rt.store_root()),
+            fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger),
+            source_rows, n=n, seed=seed, out_dir=out_dir, dry_run=dry_run,
+            logger=rt.logger,
+        )
+    finally:
+        conn.close()
+    if dry_run:
+        click.echo("dry-run: requests planned; zero network, zero files")
+    else:
+        click.echo(f"sample: {out_dir}")
+    ctx.exit(exit_code)
+
+
 cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)

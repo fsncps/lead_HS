@@ -136,13 +136,34 @@ class Fetcher:
     def _domain(self, url: str) -> str:
         return urlparse(url).netloc
 
+    def _crawl_delay_of(self, domain: str) -> Optional[float]:
+        """The domain's robots ``Crawl-delay`` for our agent (v0.2.4
+        addendum D40, decision 4B): the flat min spacing would violate
+        hosts that declare one (e.g. bastaonline.se, Crawl-delay: 10).
+        Returns None when robots is uncached, allow-all or silent."""
+        parser = self._robots_cache.get(domain)
+        if parser is None or getattr(parser, "allow_all", False):
+            return None
+        for token in ("leadhs", "*"):
+            try:
+                delay = parser.crawl_delay(token)
+            except Exception:
+                delay = None
+            if delay is not None:
+                return float(delay)
+        return None
+
     def _wait_for_spacing(self, domain: str) -> None:
+        spacing = self.config.min_spacing
+        delay = self._crawl_delay_of(domain)
+        if delay is not None:
+            spacing = max(spacing, min(delay, self.config.rate_limit_cap))
         now = self.config.clock()
         last = self._last_request.get(domain)
         if last is not None:
             delta = now - last
-            if delta < self.config.min_spacing:
-                self.config.sleeper(self.config.min_spacing - delta)
+            if delta < spacing:
+                self.config.sleeper(spacing - delta)
                 now = self.config.clock()
         self._last_request[domain] = now
 

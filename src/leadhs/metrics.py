@@ -63,6 +63,8 @@ METRIC_AS_PROBE_ROWS = "as_probe_rows"
 METRIC_AS_PROBE_RECORDS = "as_probe_records"
 METRIC_AS_PROBE_UNAVAILABLE = "as_probe_unavailable"
 METRIC_AS_PROBE_ASSOC = "as_probe_assoc"
+METRIC_BASTA_ROWS = "basta_special_rows"
+METRIC_BASTA_UNAVAILABLE = "basta_special_unavailable"
 
 
 PROBE_METRIC_SEEDS = (
@@ -119,6 +121,9 @@ PROBE_METRIC_SEEDS = (
     Metric(METRIC_AS_PROBE_RECORDS, "AS probe record count", "text"),
     Metric(METRIC_AS_PROBE_UNAVAILABLE, "AS probe unavailable", "text"),
     Metric(METRIC_AS_PROBE_ASSOC, "AS probe association finding", "text"),
+    # 0011__basta_probe.sql (v0.2.4 addendum, D40)
+    Metric(METRIC_BASTA_ROWS, "BASTA sample rows drawn", "numeric"),
+    Metric(METRIC_BASTA_UNAVAILABLE, "BASTA special unavailable", "text"),
 )
 
 METRIC_CODES = frozenset(m.code for m in PROBE_METRIC_SEEDS)
