@@ -45,4 +45,4 @@ storage lifecycle) lives outside the plan tree:
 - `docs/study/DATA_MODEL.md` (EN).
 
 The engineering truth (normalized schema, migrations, keys) is
-`20_DESIGN/MASTER/data_model.md` — Design wins on conflict.
+`../DESIGN/data_model.md` — Design wins on conflict.

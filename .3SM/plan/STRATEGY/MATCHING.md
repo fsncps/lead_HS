@@ -262,7 +262,7 @@ strategy turn / unit Design — nothing frozen.)*
   identity fields (article number, GTIN, RSK, E-number, BASTA ID,
   BK04/BSAB).
 - INPUT-source-expansion-MSE.md — linkage-quality tiers, dependency
-  groups (§17), capture-recapture context; `_inputs/
+  groups (§17), capture-recapture context; `inputs/
   consultant-handover-2026-09-14.md` (verbatim, not adopted policy).
 - Algorithms (public record): Jaro-Winkler, Damerau-Levenshtein,
   Double Metaphone, token-set ratio; rapidfuzz (BSD) as the proposed

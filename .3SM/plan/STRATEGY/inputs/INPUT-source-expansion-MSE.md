@@ -108,6 +108,6 @@ enter data_sources.csv on claims (de6).
 ## Provenance
 
 - Consultant handover received 2026-09-14 (verbatim copy in
-  `_inputs/`); project facts cited from this repository's verified
+  `inputs/`); project facts cited from this repository's verified
   record (as-source-probe run 20260914-125322, csv-sample runs
   20260914-111921/164108/164304, DATA_SOURCE.md, v0.2.3 report).
