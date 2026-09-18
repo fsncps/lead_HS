@@ -1,0 +1,426 @@
+---
+unit: global
+stage: DESIGN
+lifecycle: LIVE
+updated: 2026-09-18
+---
+
+# Interfaces & contracts (Design)
+
+## Abstract
+
+This document is the binding contract set for the `leadhs` tool: the
+CLI commands of unit v0.1.1 with their arguments, effects and exit
+codes; the provenance rules every database write must obey; the
+Python contract that probe adapters implement; the authoritative
+census-metric vocabulary; the run lifecycle semantics; the database
+audit rule set; and the design-ahead contracts for the query/export
+surface that lands at M4. Where this document and a module docstring
+disagree, this document wins.
+
+## CLI surface — implemented in v0.1.1
+
+    leadhs db init [--no-backup]
+    leadhs db status
+    leadhs db audit [--unreferenced]
+    leadhs source load [--file CSV]
+    leadhs source list [--class CS|PE|LG|ST|LI]
+     leadhs probe run --source ID | --all
+                      [--mode census|format_check|access_check|recon|capability]
+                     [--sample N] [--dry-run]
+    leadhs probe record --source ID --metric M
+                        [--value X | --value-text T] [--unit U]
+                        [--url URL] [--document FILE] [--note TEXT]
+    leadhs probe report [--source ID] [--format md|csv|json]
+    leadhs doctor [--net]
+
+Design-ahead surface (milestones per docs/study/ARCHITECTURE.md):
+`acquire run`, `ingest sightings`, `parse sds`, `review next|decide`,
+`frame set`, `frame promote`, `sample plan`, `sample draw`,
+`corroborate`, `analyze prevalence`, `report build`, `dict load`,
+`db query`, `db export`.
+
+All groups print help on bare invocation (`no_args_is_help`; exit 0).
+`source list` is registered under exactly one name — the derived
+`list-` artifact is removed (v0.1.2).
+
+## Command contracts
+
+| Command | Effect | Exit codes |
+|---|---|---|
+| `db init` | apply pending migrations (0001–0003 in this unit); backup existing DB first unless `--no-backup` | 0 ok; 1 no/invalid DB path |
+| `db status` | applied/pending migrations, table row counts, file path+size | 0 |
+| `db audit` | run rules R1–R9, print report; `--unreferenced` also lists raw-store orphans | 0 clean; 3 violations |
+| `source load` | upsert register from `src/leadhs/dict/sources.csv` (or `--file`); register of record is the CSV in git; row validation (i13/pe6): id matches `^[A-Z]{2}-[0-9]+$`, url non-empty http(s), no duplicate host among active rows (netloc lowercased, `www.` stripped; inactive rows exempt) — a failing row is named, exit 1 | 0; 1 malformed CSV / bad row |
+| `source list` | table of sources with class, status, active | 0 |
+| `probe run` | one run per source (see run semantics); findings + documents written; per-source summary line | 0 all done; 2 any run failed/blocked (findings still recorded) |
+| `probe record` | create a manual run (kind=probe, method=manual) + one finding; optionally attach a raw file as document | 0; 1 bad metric/value |
+| `probe report` | render the source-feasibility census (od8 content layer): md (framing, summary matrix, per-source sections, run status incl. blocked/failed, anchors, activity), csv (summary matrix, all registered sources), json (full structure); md default | 0 |
+| `doctor` | environment preflight (python, sqlite, binaries as warnings, data dir, contact, optional reachability) | 0 (warnings allowed); 1 errors |
+
+Global flags: `--verbose` (structured logging); `--db PATH`
+(default `data/leadhs.sqlite`) **or** `--data-dir DIR` (base
+directory for `leadhs.sqlite` + `raw/`; installed non-repo use —
+mutually exclusive with `--db`, conflict is a usage error, exit 1);
+`--contact` / `LEADHS_CONTACT` (user-agent contact; doctor warns
+when unset).
+
+Exit-code convention (all commands): **0** success; **1**
+usage/data error — including click usage errors (unknown command,
+missing required option, bad choice), enforced in `main()`;
+**2** an operation ran but ended failed/blocked (findings
+recorded); **3** audit found violations; **130** on interrupt
+(`KeyboardInterrupt` → `Abort` → 130 in `main()`).
+
+## DB initialization contract (v0.1.2)
+
+Every command that reads the schema requires an initialized
+database: `db status`, `db audit`, `source load`, `source list`,
+`probe run`, `probe record`, `probe report`. If the DB file is
+missing/empty or `schema_version` is absent, the command prints a
+guided error and exits 1:
+
+    error: database not initialized — run `make setup` (repo) or
+    `leadhs db init` then `leadhs source load` first
+
+Never a `bug:` label (strategy D21; operability requirement 2).
+`db init` is the only command that initializes. The check lives once
+in `cli.py` (`_ensure_initialized`), shared by all seven commands.
+
+## Provenance contract (binding — every write path)
+
+- **P1** every evidence insert happens inside a run
+  (probe/acquire/import/sampling) and carries run_id.
+- **P2** every document insert carries source_id, url, retrieved_at;
+  status `archived` ⇒ raw_hash set AND the raw file exists in the
+  store.
+- **P3** every probe_finding carries a per-source probe run, a metric
+  from the vocabulary, a value (numeric or text per metric
+  value_type), and a method.
+- **P4** all SQL is parameterized — no string interpolation of values
+  into statements, ever.
+- **P5** raw store: filenames are `<sha256>.<ext>` only; the source
+  directory is the source_id lowercased and must match
+  `^[a-z]{2}-[0-9]+$` (path-traversal guard; enforced in store.py).
+- **P6** append-only evidence (documents, findings, runs, sightings):
+  no value updates, no deletes; corrections are new rows or
+  review-status transitions. Reference data (source, lookups,
+  dictionary, study) is updatable in place, never deleted.
+- **P7** user-facing counts in reports come from the DB only
+  (Strategy D18 restated as an interface rule).
+
+## Adapter contract (Python)
+
+    class ProbeAdapter(Protocol):
+        key: str                       # source class: 'CS' | 'PE' | 'ST'
+        def supports(self, source: SourceRef) -> bool: ...
+        def probe(self, source: SourceRef, ctx: ProbeContext) -> ProbeResult: ...
+
+- `ProbeContext`: fetcher, store, db connection, mode, sample_n,
+  dry_run, clock, logger. In dry_run the fetcher performs **zero**
+  network calls (adapters must use `ctx.fetcher.plan(...)` for
+  would-be requests).
+- `ProbeResult`: `documents` (raw bytes + metadata drafts), `findings`
+  (typed FindingDraft: metric, value/unit, method, document link,
+  note), `blocked`/`failed` notes.
+- Adapters **never** write the DB directly — the engine owns all
+  writes (single write path; audit rules hold by construction).
+- Adapters raise typed errors; the engine maps them:
+
+| Exception (defined in fetch.py / adapters.py) | Trigger | Engine maps to |
+|---|---|---|
+| `RobotsDisallowed` | robots.txt disallows our paths | finding robots_denied (method=manual) + run blocked (exit 2); findings already collected → run done + notes |
+| `Blocked` | HTTP 403 or paywall/login wall | finding access_blocked + run blocked (exit 2); findings already collected → run done + notes |
+| `RateLimited` | HTTP 429 | one capped backoff then retry; persistent 429 → finding access_blocked + run blocked (exit 2) |
+| `ProbeNetworkError` (wraps `requests.RequestException` after 2 retries) | DNS/TLS/timeout/5xx | run failed; exit 2 |
+| `UnexpectedFormat` | export layout not as expected | finding format (value_text) — WARNING, manual review |
+| `BinaryMissing` / `ExtractionError` | mdbtools absent / SPIN extraction fails | finding extraction_path (blocked/failed) |
+| `ParseError` | unparseable/empty HTML | finding page_sample_ok=0 |
+| `KeyboardInterrupt` | user interrupt | run aborted; findings persist; exit 130 |
+
+Anything else propagates as a bug (fail loudly — no blanket excepts;
+no `rescue StandardError` equivalent).
+
+## probe_metric vocabulary (authoritative)
+
+| code | label | value_type | meaning |
+|---|---|---|---|
+| catalog_count | Catalog product count | numeric | total products listed site-wide |
+| category_count | Category product count | numeric | products in one category (category path in the finding notes — R4 stays strict: numeric metrics carry no value_text) |
+| category_list | Categories exposed | text | JSON list of category names/paths |
+| format | Export/download format | text | observed layout of official exports |
+| granularity | Statistics granularity | text | dimensions available (e.g. CN8 × partner × year) |
+| coverage_years | Coverage years | text | year range available (e.g. 2019–2025) |
+| export_rows | Export rows | numeric | rows returned by a test export/query |
+| robots | Robots policy | text | robots.txt summary for our paths |
+| terms | Site terms | text | terms relevant to access/scraping |
+| rate_limit | Rate limit | text | observed or documented limit |
+| languages | Languages | text | languages offered (JSON list) |
+| page_sample_ok | Sample pages retrievable | numeric | n_ok/n_sample |
+| sds_sample_ok | SDS on sample pages | numeric | n_with_sds/n_sample |
+| extraction_path | Extraction path | text | result of an extraction-tooling check (e.g. mdbtools/SPIN) |
+| access_blocked | Access blocked | text | detail when blocked (403/429/paywall/login) |
+| robots_denied | Robots denial | text | detail when robots.txt disallows |
+| free_access | Free access confirmed | numeric | 0/1 — no account/paywall needed |
+| records_hs3208 | Records HS 3208 | numeric | rows for HS 3208 in the parameterized query (absent = not queried; 0 = queried, empty) |
+| records_hs3209 | Records HS 3209 | numeric | same, for HS 3209 |
+| records_hs3213 | Records HS 3213 | numeric | same, for HS 3213 (census annex) |
+| census_status | Census status | text | manual/deferral record on a source's census state (PCN aggregates, deferral notes, manual export mechanics; method=manual) |
+| products_listed | Products listed (walk) | numeric | distinct product detail links from a polite category walk (BFS depth ≤ 3, page budget ≤ 12 incl. homepage); a floor, never a market total (0004, D28) |
+| doc_links_seen | Doc links seen (walk) | numeric | SDS/TDS-type links encountered during the same walk (0004, D28) |
+| walk_budget_exhausted | Walk budget exhausted | numeric | 0/1 — the page budget stopped the walk; the report flags such floors "≥ observed, budget-limited" (0004; ENG review 2A) |
+| products_registered | Products registered (prior) | numeric | coarse register prior: SPIN preparations / PCN formulations / PRODCOM producers, recorded manually per ST source (0005, v0.1.3) |
+| sitemap_products | Sitemap product URLs | numeric | product-URL count from a robots-compliant structured sitemap fetch (recon; bounded index expansion ≤ 5 children, counts only, no URL harvesting; cap flagged in notes) (0006, v0.2.0) |
+| sds_library_visible | SDS library visible | numeric | 0/1 — SDS/TDS library reachable from the site's landing pages (manual-web recon) (0006, v0.2.0) |
+| producers_registered | Producers registered (prior) | numeric | industry-structure counts (association members, SBS enterprises) — N1 anchors; never summed into N2 (0006, v0.2.0) |
+| trade_kg_hs3208 | Trade mass HS 3208 (import) | numeric | full-year import net-weight sum, JSON-stat aggregation, latest year (0006, v0.2.0) |
+| trade_eur_hs3208 | Trade value HS 3208 (import) | numeric | full-year import value sum, EUR (0006, v0.2.0) |
+| trade_kg_hs3209 | Trade mass HS 3209 (import) | numeric | as trade_kg_hs3208 (0006, v0.2.0) |
+| trade_eur_hs3209 | Trade value HS 3209 (import) | numeric | as trade_eur_hs3208 (0006, v0.2.0) |
+| products_identifiable | Products identifiable | numeric | volume the source features, against the product model (0007, v0.2.1) |
+| cap_manufacturer | Capability: manufacturer field | numeric | 0/1 — source exposes a manufacturer/org field (0007, v0.2.1) |
+| cap_product_ident | Capability: product-ident field | numeric | 0/1 — source exposes a product-ident (licence no / UFI / article code / SKU / GTIN) (0007, v0.2.1) |
+| cap_cn8_linkage | Capability: CN8 linkage | text | mechanism to the 13 CN8 codes: category / prodcom / eupcs_proxy / manual / none (0007, v0.2.1) |
+| cap_depth_tier | Capability: depth tier | numeric | 1 name-only · 2 name/ident+technical · 3 deep+internal docs · 4 standardized specs+MSDS (0007, v0.2.1) |
+| cn8_reachable | CN8 codes reachable | numeric | how many of the 13 CN8 codes reachable (0007, v0.2.1) |
+
+Extension rule: new metrics are added by a migration INSERT (code
+never renamed; value_type fixed at insert). `metrics.py` is the
+runtime source of truth; a sync test pins the migration seeds
+(0001 + 0003) to it (migrations are static SQL and cannot call
+Python).
+
+## Run semantics
+
+- **Per-source runs:** `probe run --all` loops active sources, one
+  run each (`run.source_id` NOT NULL for kind='probe' — schema
+  CHECK); a failing source never aborts the loop.
+- **run_key:** `<kind>-<YYYYMMDD>-<slug>`; probe slug = source id
+  lowercased dash-stripped (`CS-1` → `probe-20260910-cs1`);
+  same-day re-runs append `-2`, `-3` (deterministic, unique).
+- **Abort/resume:** interrupt → current run `aborted` (findings
+  persist); re-run creates a new run; the "current" census is
+  v_probe_latest (latest done run per source × metric) — never a
+  mutation of old findings.
+- **Outcome rule:** run status reflects the whole source — reachable
+  with findings collected → `done`; wholly inaccessible (robots deny,
+  403, persistent 429, paywall) → `blocked`; unrecoverable network
+  error → `failed`. `probe run` exits 2 when any run ended blocked or
+  failed; findings collected before a block keep the run `done` with
+  a notes line.
+- **Stale-run reclaim:** a run left `running` by a hard crash
+  (SIGKILL/power loss) is marked `failed` with note
+  `stale run reclaimed` by the next `db init` / `probe run` /
+  `db status` (threshold: started_at older than the current process,
+  or 1 h); the census is unaffected — v_probe_latest reads `done`
+  runs only.
+- **Pacing:** `probe run --all` on the full register is a multi-minute
+  operation (≥ 2 s spacing per domain); progress via `--verbose`;
+  re-runs are incremental (per-source new runs).
+- **parameters_json (probe):**
+  `{"mode": "...", "sample_n": 5, "dry_run": false, "contact_set": true}`
+  — other kinds define their schema at their milestone.
+- **Sampling runs** additionally carry seed + computed n
+  (data_model.md, sampling group).
+
+## db audit rules (authoritative R1–R9)
+
+- **R1** every probe_finding joins a probe_run whose run.source_id is
+  set (per-source rule).
+- **R2** every document has source_id + retrieved_at; status
+  'archived' ⇒ raw_hash present AND file exists in store.
+- **R3** every finding document_id resolves (FK) and the referenced
+  file exists.
+- **R4** value presence matches probe_metric.value_type (numeric →
+  value_numeric; text → value_text).
+- **R5** finished runs have finished_at; failed/blocked/aborted runs
+  carry notes.
+- **R6** run_key present, unique, well-formed.
+- **R7** `PRAGMA foreign_key_check` empty.
+- **R8** (`--unreferenced`) raw-store files without a document row
+  are listed as orphans.
+- **R9** no evidence rows exist outside a run of the right kind.
+
+Exit 3 on any violation; a human-readable report is printed (the
+"git status for the database" surface).
+
+## Query & export surface (design-ahead — M4 contract, fixed now)
+
+- **`leadhs db query --sql "SELECT …" [--param k=v …]`** — read-only
+  connection; statement must be a single SELECT (parse-checked);
+  parameterized values only; output table/CSV.
+- **`leadhs db export --out DIR/`** produces the frozen, hash-
+  verifiable "reusable evidence database" artifact:
+  1. snapshot of the SQLite DB (backup API / VACUUM INTO);
+  2. generated `SCHEMA.md` + `DATA_DICTIONARY.md` (from migrations +
+     lookup contents);
+  3. CSV dump per table (stdlib csv; Parquet only if a consumer
+     requires a dependency — M4 decision);
+  4. `MANIFEST.sha256` over the snapshot and every raw file,
+     cross-checked against document.raw_hash;
+  5. freeze note: run IDs, seeds, row counts, applied migrations.
+- **Per-product evidence dossier** — rendered from v_product_dossier
+  as a report annex (M4).
+
+## Error surfaces
+
+The exception→finding/run/exit mapping table above is the complete
+error surface for v0.1.1; each row has at least one test
+(testing.md). Log lines accompany every rescue (source, URL,
+attempted action — full context, never message-only).
+
+## DECISIONS (design-level; consolidated in MASTER.md)
+
+- i1: exit-code convention 0/1/2/3 as defined above.
+- i2: register of record = repo CSV; `source add` from the Strategy
+  CLI sketch is deferred — new PE sites enter as CSV rows + reload
+  (single source of truth).
+- i3: adapters never write the DB; engine owns the single write path.
+- i4: metric vocabulary fixed now, migration-extended, codes never
+  renamed.
+- i5: audit rules R1–R9 as the binding provenance contract.
+- i6: export/query contracts fixed now, built M4 (CEO review).
+- i7: dry_run performs zero network calls (enforced via
+  ctx.fetcher.plan).
+- i8: `RateLimited` (429) split from `Blocked` (403/paywall): one
+  capped backoff, then blocked (ENG review 2026-09-11).
+- i9: outcome-based run status — done / blocked / failed per source;
+  exit 2 on any blocked or failed run (ENG review 2026-09-11).
+- i10: exit-code enforcement in `main()` — click runs with
+  `standalone_mode=False`; UsageError → 1, other ClickException →
+  its code, Abort/KeyboardInterrupt → 130, Exit → its code; bare
+  groups print help (`no_args_is_help`) (v0.1.2; HOLD-SCOPE review).
+- i11: DB-initialization preflight contract — guided error, exit 1,
+  never `bug:`, for all schema-reading commands (v0.1.2).
+- i12: report content contract (od8) — one DB-only assembly, three
+  renderers from the same data; run status and notes visible incl.
+  blocked/failed; dry-run runs excluded from census sections
+  (malformed parameters_json fails open); matrix covers all
+  registered sources; legend distinguishes "—" (not queried) from
+  0 (queried, empty); framing states source-feasibility ≠
+  product/lead (M2+) (v0.1.2; HOLD-SCOPE review).
+- i13: enumeration register model (v0.1.3, pe1/pe4/pe6) —
+  enumerated sites enter as per-site `source` rows (`PE-10`, …,
+  class PE, scrape); PE-1..4 retire inactive with supersession
+  `census_status` notes (reference rows updatable, never deleted);
+  enumeration provenance rides in the structured notes convention
+  `channel=<…>; listed_by=<…>; listed_url=<…>; listed_date=<…>;
+  inclusion=<…>` — parsed only by humans and the report's
+  channel-facet grouping (stringly until M1, accepted); `source
+  load` validates id pattern, http(s) url and duplicate hosts among
+  active rows; a budget-exhausted walk emits the numeric metric
+  `walk_budget_exhausted` (ENG review 2A — no note substrings).
+- i14: landscape-map contract (v0.1.3, pe3) — aggregate floors
+  (Q1 = Σ products_listed, Q2 = Σ doc_links_seen) sum **active**
+  sources whose latest census run is done (ENG review 1A: retired
+  inactive rows stay in the matrix, never in the sums — footnoted);
+  blocked/failed/not-yet-walked active sources are excluded from
+  the sum AND counted in the aggregate line, citing constituent
+  run_keys; budget-limited sources flagged via
+  walk_budget_exhausted; channel-facet subtotals + the overlap
+  caveat (cross-listing not deduplicated, W4); zero
+  completed walks → explicit "no measured floors yet" line;
+  trade-context lines from records_hs* (D28 grain rule); priors
+  lines from products_registered / census_status; frame-decision
+  bridge (md only, qualitative, evidence-cited) or its deferred
+  line; csv matrix gains products_listed / doc_links_seen /
+   products_registered / walk_note; json carries the full
+   structure.
+- i15: recon contract (v0.2.0, nu1; ENG review e1–e8) — probe_mode
+  recon; PE adapter branch: robots → sitemap (robots-declared, else
+  /sitemap.xml) → counts only, no URL harvesting; bounded index
+  expansion ≤ 5 children (CEO review 1A; nested-index child noted,
+  not recursed); stdlib ElementTree with local-name matching (e5);
+  gzip payloads decompressed via magic-byte sniff (e4); sitemap
+  fetches carry a per-call ~25 MB streaming cap — cap hit = typed
+  SizeLimit → count 0 + "floor partial" note (e3); product_pattern
+  notes token + generic fallback; robots unreachable → policy
+  "unknown" → proceed with note (e6); cap hit flagged "floor
+  partial" in notes; shadow paths: no-sitemap/empty → 0, malformed
+  → format finding, network error → failed, robots deny → blocked;
+  sitemap archives as document; dry-run plans robots + base only,
+  zero network (i7); `probe record --mode` (default census) labels
+  manual runs honestly (e8).
+- i16: numbers-report contract (v0.2.0, nu4/nu5) — od8 layout: N1
+  headline (md method sheet + DB-cited anchors), N2/N3 totals with
+  access tiers (a)–(d), excluded-and-counted line, explicit
+   zero-states, per-source matrix with tier/sitemap/SDS/priors/
+   trade columns + plain census_status (no walk column — walk
+   idle, V4), trade-context + priors lines, access-decision
+  bridge (md); N2 sums products_registered only (never
+  producers_registered); i14 walk-floor sections deferred (spec on
+  file); csv/json carry the full structure.
+- i17: capability contract (v0.2.1, cap1/cap2/cap4) — probe_mode
+  `capability` (0007); six capability probe_metrics
+  (products_identifiable, cap_manufacturer, cap_product_ident,
+  cap_cn8_linkage, cap_depth_tier, cn8_reachable); register-
+  capability adapter branch for access_method IN (download, api)
+  official-register sources — fetch → header/shape inspect → row
+  count → capability findings (D3; no scraping); AS is the class of
+  the official product-level registers (branch exposed under AS —
+  new ASAdapter or AS→download-capable mapping, at implementation);
+  XLSX-only / auth-gated registers and the enumerated PE universe
+  characterized by manual `probe record --mode capability` (pure-
+  Python dependency set kept tight, no openpyxl); the real-product-
+  source predicate (cap_manufacturer=1 ∧ cap_product_ident=1 ∧
+  cap_cn8_linkage!='none' ∧ cap_depth_tier>=2) and the preliminary N2
+  numerator are report-time derivations (nu5 precedent), never stored.
+- i18: capability-report contract (v0.2.1, cap3) — od8 extension:
+  capability matrix section (the six metrics + the derived real-
+  product-source flag per registered source); preliminary N2-numerator
+  line (Σ products_identifiable over real-product sources, a floor,
+  with the certified/declared-subset caveat); md explains the
+  predicate in prose; csv/json carry the six columns and the derived
+  predicate + N2-numerator components.
+- i19: staging contract (v0.2.2, fu1/fu2/fu4 + e1/e4) — test-data DB
+  `data/testdata.sqlite` (separate file, NOT the evidence DB;
+  schema in `leadhs/staging.py`, outside the migration chain):
+  `stg_source_document` (source_id, run_key, url, doc_hash,
+  retrieval_date, bytes), `stg_register_product` (manufacturer/
+  ident raw + normalized columns, ident_type, ident_basis, name,
+  category, raw JSON — TEXT with explicit cast), `stg_trade_cn8`
+  (cn8, flow, declarant, year, kg, eur), `dict_cn8` (the 13 codes;
+  a metric, not a gate — U6). Fed ONLY from archived documents —
+  ingest fails loudly without a doc hash; idempotent replace per
+  (source_id, run_key); rebuildable from the archive alone. Staged
+  rows ride `ProbeResult`; the engine writes staging first, then
+  evidence, per source; for staged sources `products_identifiable`
+  and friends derive at run close from the staging rows (metrics ==
+  staging by construction); manual sources emit as today. Identity
+  counts (entries / distinct manufacturers / distinct (mfr, ident) /
+  completeness / category distribution) are staging SQL aggregates —
+  never new metrics, never literals.
+- i20: wave/landscape contract (v0.2.2, fu3/fu5/fu6 + e2/e6) — four
+  waves = (mode, source filter, budget) presets over the existing run
+  machinery: W1 bulk official exports (capability, ~20'), W2 register
+  completion (capability, ~10', manual fallback built in), W3 PE
+  universe (recon, ~20', ~75 active sites — MFR≤40/DIY≤10/MARINE≤10/
+  ART≤15; SDS-doc-URL counts via the `sds_doc_urls` metric; full
+  universe enumerated active=0), W4 manual records & LI (~10').
+  CLI: `probe run --wave {1..4}` / `--budget` / `--staging-db`
+  options on the existing command (V9 — no new command);
+  `run_all` gains a generalized source-selection parameter (the
+  capability-mode AS-filter generalizes, no `mode ==` chain growth);
+  `make landscape` guarded GO=1 with WAVES/BUDGET vars. After-run
+  invariant (test-backed): no register row left pending/format-
+  finding — every row dispositioned (counted incl. counted-0 |
+  manual-recorded | blocked). Comext per-CN8 × flow batches (~39
+  payloads) with per-query timeout + retry; PRODCOM bulk TSV
+  sidesteps the API size limit.
+
+## OPEN ITEMS
+
+- swiss-impex query/export mechanics (URL parameters, CSV dialect) —
+  CS adapter detail; probe answers.
+- CS-2 exact Comext query parameters (reporter/product/period/flow)
+  — pinned at census execution; the archived response verifies
+  (od9).
+- Sample-page selection: seeded random preferred (reproducible);
+  finalize at implementation.
+- `db query` output formats (table vs csv flag) — trivial, at M4.
+- parameters_json schemas for acquire/import/sampling kinds — at
+  their milestones.
+- `probe record` = one run per finding — revisit batching (one manual
+  run, multiple findings) at M1 if PCN passes produce run churn.
+- `sample_n`/`mode` stored in both `parameters_json` and typed columns
+  (`probe_run.mode_code`) — pick one home at implementation.
