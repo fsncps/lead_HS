@@ -1,6 +1,6 @@
 ---
 unit: global
-stage: MIGRATION
+stage: GLOBAL
 lifecycle: LIVE
 updated: 2026-09-18
 ---
@@ -104,4 +104,4 @@ findings: CRITICAL GAP 0 · WARNING 0 · unresolved 0
 carries: housekeeping may skip structure re-verification until templates
 change; v1-era docs need no lifecycle normalization (exempt legacy tree)
 valid-until: template upgrade or canonical pair change
-commit: (see git log `3SM: init*`)
+commit: ad077af (law) · 4f9c698 (facts) · ef317c0 (skeletons) · 2084177 (AGENTS pointer)

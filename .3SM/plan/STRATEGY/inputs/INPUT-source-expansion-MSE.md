@@ -1,9 +1,9 @@
 ---
-unit: next-unit input
+unit: global
 stage: STRATEGY
-lifecycle: INPUT
+lifecycle: LIVE
 updated: 2026-09-18
-type: strategy input digest (consultant handover — not adopted policy)
+type: strategy input digest (consultant handover — NOT adopted policy)
 ---
 
 # INPUT — source expansion + capture-recapture (consultant handover, 2026-09-14)

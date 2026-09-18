@@ -1,3 +1,10 @@
+---
+unit: global
+stage: GLOBAL
+lifecycle: LIVE
+updated: 2026-09-18
+---
+
 # LOG
 
 Major lifecycle events only (format and policy: `PROCESS.md`; canonical:

@@ -499,4 +499,4 @@ Test strategy, matrix and key tests: `testing.md` (this directory).
   at implementation; seeded random preferred for reproducibility.
 - Wheel release mechanics (tag → wheel → GitHub release asset;
   install smoke on Linux/macOS/Windows) — first external use; v0.1.2
-  verifies the wheel builds only (units/v0.1.2.md).
+  verifies the wheel builds only (legacy units/v0.1.2.md).

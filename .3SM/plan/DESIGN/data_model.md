@@ -568,4 +568,4 @@ exist per applied migrations.
 - docs/study/ARCHITECTURE.md — rollout M0–M4
 - CEO review session 2026-09-10 (mode EXPANSION): document backbone,
   unified runs, study discriminator, export path, dossier — user
-  decisions recorded in 20_DESIGN/MASTER.md.
+  decisions recorded in MASTER.md (this directory).

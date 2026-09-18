@@ -1,5 +1,5 @@
 ---
-unit: v0.2.2
+unit: global
 stage: DESIGN
 lifecycle: LIVE
 updated: 2026-09-18
@@ -232,7 +232,7 @@ by the next unit's own design pass — nothing is pending here.
 
 ## Handoff note
 
-Writing these documents implies no lifecycle transition. Strategy
-freeze for v0.1.1, root-MASTER stage updates, LOG entry, and
-AGENTS/README pointers to 20_DESIGN all await explicit user
-instruction (3SM process rules).
+Writing these documents implies no lifecycle transition (3SM process
+rules). The v1→v2 migration itself was user-ordered (2026-09-18) and
+moved no live lifecycle state; current readiness is per-unit, set by
+each unit's own design pass.
