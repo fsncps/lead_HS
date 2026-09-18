@@ -1,0 +1,341 @@
+---
+updated: 2026-09-18
+---
+
+# Data sources — register, access, provenance
+
+## Abstract
+
+This is the operational register of every data source the study draws on:
+what each source provides, how it is accessed, at what granularity, under
+which terms, and with which verification status. METHODOLOGY.md explains
+why these sources are used; ARCHITECTURE.md covers how they are acquired
+and stored. All sources are publicly retrievable and free — a hard project
+constraint. Every record taken from a source carries its source URL and
+retrieval date; raw documents are archived unchanged. The register is
+written to be readable without a technical background — terms are
+glossed at first use and summarized in the glossary below.
+
+## Terms used (plain-language glossary)
+
+- **Provenance:** the recorded origin of every piece of data — which
+  source it came from, from which URL, retrieved on which date.
+- **robots.txt:** a small file websites publish to tell automated
+  visitors which pages they may or may not fetch; the study's tools
+  obey it.
+- **(Polite) scraping:** reading web pages automatically — here slowly
+  and openly (identified visitor, pauses between requests), never
+  bulk-hammering a site.
+- **Rate limit:** a self-imposed pause between requests — at most one
+  request every two seconds per site.
+- **API:** an official, machine-readable data interface offered by a
+  statistics provider — preferred over reading web pages wherever one
+  exists.
+- **CSV export:** a downloadable table file (comma-separated values).
+- **CN8:** the 8-digit customs tariff code at which trade statistics are
+  reported; "× partner × year" = broken down by trading-partner country
+  and year.
+- **SKU (stock keeping unit):** one shop item; the study collapses SKUs
+  to formulations (one recipe, however many shades or tin sizes).
+- **B2B portal:** a business-to-business web shop for professional
+  customers.
+- **TDS (technical data sheet):** a product's performance data (drying
+  time, coverage) — distinct from the safety data sheet (SDS), which
+  lists hazardous ingredients (Section 3, from 0.1%).
+- **UA string:** the "user agent" identification a program sends with
+  each web request; the study's tools identify themselves and carry a
+  contact address.
+- **sha256 (hash):** a digital fingerprint of a file's content —
+  identical files always share it, any change alters it; used to prove
+  archived documents are unchanged.
+- **PCN / SPIN / PRODCOM / NACE 20.30:** registers and statistics used
+  as population proxies — defined in METHODOLOGY.md's glossary.
+- **Access DB / mdbtools:** SPIN ships as a Microsoft Access database
+  file; mdbtools is the Linux utility that can read it.
+- **JS-gated:** a site that only shows its content after running
+  JavaScript, so a plain download fails (fedlex) — needs a browser or
+  manual copy.
+
+## Source classes
+
+Six classes with stable IDs (the database `source.class` field):
+
+- **CS — customs & trade statistics:** Swiss EZV/swiss-impex (primary:
+  structures the Swiss market by origin); Eurostat Comext (EU context).
+- **PE — product & SDS evidence (web):** manufacturer/brand sites, B2B
+  portals, DIY-chain catalogs, marine chandlers, art-supply shops — the
+  sampling frame and the SDS evidence base. Multilingual DE/FR/IT/EN.
+- **LG — legal & regulatory texts:** THG, VIPaV, ChemRRV, SECO
+  Negativliste, REACH Annexes XIV/XVII, OJ decisions, ECHA registers.
+- **ST — structural & product statistics:** ECHA PCN, Nordic SPIN,
+  Eurostat PRODCOM/SBS — population proxies and scaling anchors.
+- **AS — associations & registers (D31):** CEPE/national association
+  member lists; national product registers with public statistics
+  (e.g. Swedish Products Register/KemI; DK/NO/FI equivalents) —
+  manufacturer and product-count anchors without scraping.
+- **LI — literature & industry:** peer-reviewed studies, IPEN, CEPE.
+
+## PE — concrete source taxonomy and seed sites
+
+The PE class (product & SDS evidence) is where the actual MSDS/TDS corpus
+comes from. There is **no single free EU repository of product safety data
+sheets** — the large aggregators (MSDSonline, Chemwatch, SDS Europe) are
+paid and excluded by the cost constraint. The corpus is therefore built
+from public manufacturer and retailer sites. Four tiers:
+
+| Tier | Sources | What it gives | Lead-relevant streams |
+|---|---|---|---|
+| **A — Manufacturer/brand SDS libraries** (primary) | AkzoNobel (Dulux, International, Sikkens), PPG, Sherwin-Williams, Jotun, Hempel, Sika, Sto, Caparol/DAW, Alpina, Tikkurila, Teknos, Farrow & Ball | free public SDS PDFs on product pages / SDS portals | all |
+| **B — Niche manufacturers** (the lead-relevant ones) | Marine/anticorrosive: Epifanes, Veneziani, Boero, De IJssel, Seajet. Artists' colours: Old Holland, Zecchi, Kremer Pigmente, Michael Harding, Winsor & Newton, Sennelier, Schmincke, Talens, Maimeri, Blockx, Natural Pigments | SDS + TDS for the lead-relevant niches | red lead, artists' colours |
+| **C — Retail/B2B portals** | Marine: SVB (svb.de), toplicht.de. CH DIY: Coop Bau+Hobby, Migros Do-it+Garten, Hornbach, Bauhaus, Jumbo, OBI. EU DIY: B&Q, Leroy Merlin, Castorama, Gamma, Praxis, Toom. B2B trade portals (DE/FR/IT) | listings + SDS links, product spec | frame + SDS |
+| **D — Free SDS aggregators** | GESTIS (IFA) — substance-level only, not product SDS; a few free SDB sites | substance data, context | context |
+
+**Note on tier D:** GESTIS is substance-level (not product SDS); most
+product-level aggregators are paid. Tiers A + C are the practical free
+corpus; tier B covers the lead-relevant niches.
+
+**Seed site list** (enumerated/confirmed by the v0.1.1 probe; the register
+CSV is the register of record):
+
+- Marine: svb.de, toplicht.de
+- Artists': oldholland.com, zecchi.it, kremer-pigmente.com,
+  michaelharding.co.uk, winsornewton.com, sennelier.fr, schmincke.de,
+  talens.com, maimeri.it
+- DIY (CH): coop-bauundhobby.ch, migros-doitgarten.ch, hornbach.ch,
+  bauhaus.ch, jumbo.ch, obi.ch
+- DIY (EU): hornbach.de, obi.de, bauhaus.de, leroymerlin.fr,
+  castorama.fr, gamma.nl, praxis.nl, diy.com (B&Q)
+- Majors: akzonobel.com, ppg.com, sherwin-williams.com, jotun.com,
+  hempel.com, sika.com, sto.com, caparol.de, tikkurila.com, teknos.com
+
+## Source register
+
+| ID | Class | Source | Provides | Access | Granularity | Status |
+|----|-------|--------|----------|--------|-------------|--------|
+| CS-1 | CS | swiss-impex.admin.ch (EZV) | CH imports/exports, 3208/3209 (+3213) | web UI / CSV export (to confirm) | CN8 × partner × year | OUT OF SCOPE (D31 — EU-only; TLS wall documented 2026-09-12) |
+| CS-2 | CS | Eurostat Comext DS-045409 | EU27 extra-EU trade | public API | CN8 × partner × year | verified (2023 extracted) |
+| PE-1 | PE | manufacturer/brand sites | product catalogs, SDS PDFs | polite scraping | product/formulation | RETIRED (v0.2.0 nu6) — superseded by per-site rows PE-10..19 |
+| PE-2 | PE | DIY chains (EU: Hornbach, OBI, Bauhaus, Leroy Merlin, Castorama, Gamma, Praxis, Toom, B&Q) | retail listings | polite scraping | SKU → formulation | RETIRED (v0.2.0 nu6) — superseded by per-site rows PE-20..24; CH seeds dropped (D31) |
+| PE-3 | PE | B2B / trade portals (DE/FR/IT) | professional listings, TDS | polite scraping | product | RETIRED (v0.2.0 nu6) — channel unresolved (no confirmed portal URL; covered-channel line in report) |
+| PE-4 | PE | marine chandlers, art-supply shops | niche streams (red lead, artists' colours) | polite scraping | product | RETIRED (v0.2.0 nu6) — superseded by per-site rows PE-25..34 |
+| LG-1 | LG | fedlex / Lexaris | consolidated THG, VIPaV, ChemRRV | download | article | THG verified; current ChemRRV/VIPaV consolidation OPEN (fedlex JS-gated) |
+| LG-2 | LG | SECO (Negativliste, five-yearly review report, CdD pages) | exception catalogue, review practice | download | entry | verified |
+| LG-3 | LG | EUR-Lex / OJ | REACH consolidated, Annex XIV decisions, 2022 refusal | download | entry | mostly verified; 2022 OJ ref OPEN |
+| LG-4 | LG | ECHA (DUR, EC inventory) | authorisation refusals; CAS/EC verification | web | entry/substance | DUR verified; EC-inventory checks pending for 2 CAS |
+| ST-1 | ST | ECHA PCN statistics | formulation counts (hazardous mixtures) | public stats | aggregate | OPEN — locate formulation-level aggregates |
+| ST-2 | ST | Nordic SPIN (DK/SE/NO/FI) | preparation counts, lead-CAS incidence | free Access-DB download | substance × use × country | available; extraction path OPEN |
+| ST-3 | ST | Eurostat PRODCOM / SBS | production values, producer counts | public API | NACE 20.30 | verified |
+| AS-1 | AS | CEPE + national paint associations | member lists → manufacturer counts | web (member directories) | association | verified (URL live 2026-09-12; producers_registered recorded as ≈800 member companies) |
+| AS-2 | AS | national product registers (SE KemI; DK/NO/FI) | product counts per use category | public statistics | product × country | OPEN — D31 candidate, public statistics to verify |
+| LI-1 | LI | studies / IPEN / CEPE | calibration priors | DOI / web | study-level | verified |
+
+The register grows during Phase 0–2; the database `source` table mirrors
+it (see DATA_MODEL.md).
+
+**Register slim (D28, 2026-09-11):** the tool register
+(`sources.csv`) carries product sources only — CS-1, CS-2, PE-1..4,
+ST-1..3 (nine rows). The legal (LG) and literature (LI) rows
+described under source classes remain study context in this
+document; they are not loaded into the tool, and migration 0004
+removes them from databases created before the change. Legal-text
+and literature workstreams stay documentation-only (D27).
+
+**Register scope (D31, 2026-09-12):** metrics are EU-only — the
+Swiss market is of little concern. CS-1 (swiss-impex) leaves the
+tool scope (TLS wall documented 2026-09-12); PE-2 loses its CH-DIY
+seeds. Source discovery is a first-class v0.2.0 task: expected
+additions form the new AS class (CEPE + national association member
+lists; national product registers with public statistics), alongside
+activation of the count-bearing ST rows (ST-1 PCN, ST-2 SPIN, ST-3
+PRODCOM/SBS). Catalog scraping stays deferred until an explicit go
+(D31): web sources are characterized at reconnaissance level only.
+
+**Register expansion (v0.2.0, 2026-09-12):** the channel rows PE-1..4
+are retired (active=0, supersession notes) and replaced by per-site
+rows PE-10..34 (MFR≤12, EU-DIY≤5, MARINE≤5, ART≤6; each with a
+channel/linkage note and an inclusion cap). AS-1 (CEPE) is verified
+live and its producers_registered recorded; ST-3 (Eurostat SBS NACE
+20.30) recorded 3,200 enterprises (2020). The tool register is
+`sources.csv`, mirrored to the `source` table (34 rows). Recon is a
+floor: sitemap_products counts only product-URL matches and is partial
+where an index/size cap or a non-`product` URL scheme applies.
+
+**Management CSV sample (v0.2.4, D36):** `leadhs probe
+download-csv-sample` draws, per registry, 100 random in-scope product
+rows with all available fields into CSVs + a manifest
+(`data/report/`; GO=1 make target `sample-csv`). Only ECAT publishes
+product rows publicly; PCN (authority-only), the Swedish Products
+Register (secrecy-protected), the Danish Produktregistret
+(aggregates-only) and SBS (enterprise-level) get honest
+no-product-rows records — the manifest is itself the data-landscape
+demonstration. Detail: [10_STRATEGY/v0.2.4.md](../plan/3SM/10_STRATEGY/v0.2.4.md).
+
+**AS-class source probe (v0.2.4 addendum, D37):** `leadhs probe
+as-source-probe` gives all 30 AS-class sources exactly one finding
+each (`GO=1 make as-probe`): product-row CSV where obtainable, else
+exact-or-estimated record count with provenance (method + access
+date), else why-not + what-is-instead; associations 1 liveness GET.
+Executed 2026-09-14 (exit 0): delivered AS-2/AS-3 (reuse), estimated
+AS-4 ≈70k / AS-7 ≈2k, unavailable AS-5/6/8/9/10, 18 associations live
++ 3 unreachable. Summary published in `docs/report/`; detail:
+[10_STRATEGY/v0.2.4.md](../plan/3SM/10_STRATEGY/v0.2.4.md). **D38 (2026-09-14):** estimates carry the
+archived landing page as evidence (`doc_hash` in the finding); the
+AS-3 record corrected — the "trial-grade 14 distinct" was a tool
+defect (scope filter + dedupe keys), true paint pool 2,424 rows /
+2,322 distinct / 53 licences / 20 licensees; `--from-store` /
+`--rebuild-summary` re-render offline from the raw store.
+
+**data_sources.csv (v0.2.4 addendum, D38):** curated list at
+`src/leadhs/dict/data_sources.csv` (review artifact, never loaded by
+`source load`): only sources with **probe-confirmed bulk data**
+carrying the identity tuple (manufacturer + product ident-nr) and
+in-scope membership derivable from the category filter. Initial
+content: AS-2 (88,920 rows; 17,838 in-scope / 17,013 distinct) and
+AS-3 (52,539 rows; 2,424 in-scope / 2,322 distinct). Gated registers
+(KemI, Danish AT, PCN, KemiDigi, Norwegian P-no) and unprobed
+candidates stay documented here and in the strategy files — they
+never enter data_sources.csv on claims. Next-unit probe queue
+(KemiDigi, BASTA, WINGIS, INIES, eBVD, Quick-FDS, PT21):
+[10_STRATEGY/INPUT-source-expansion-MSE.md](../plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md). **Status (D39,
+2026-09-15):** the queue ran one reconnaissance pass — the six new
+candidates registered as AS-31..AS-36 and probed with the full
+suite: KemiDigi/WINGIS/BASTA/eBVD/Quick-FDS expose **no bulk
+export** (≤5 polite GETs, honest unknown + what's-instead), ECHA
+PT21 robots-blocked. The de5 gate met by nothing new;
+data_sources.csv unchanged. Deep per-source pinning stays
+next-unit work.
+
+## Probing pass (unit v0.1.1)
+
+Before any collection, every OPEN register row is probed once
+(`leadhs probe run`, ARCHITECTURE.md M0) — a small, polite test visit
+that records what the source actually delivers — and the Status column
+is updated from the probe results. The flow per source:
+
+![How each source is checked: robots and terms are respected, requests are spaced at least two seconds apart, blocks and surprises are documented as findings, samples are archived untouched](charts/probe-process.png)
+
+Per class:
+
+- **CS:** swiss-impex (CS-1) — confirm free access, CN8 × partner ×
+  year granularity, 2019–2025 coverage, export format; record as probe
+  findings. Comext (CS-2) already verified.
+- **PE:** enumerate candidate sites per stream (DIY chains, B2B,
+  marine/art niches); count catalog products (per category where
+  exposed); record robots/terms/rate-limit/languages and SDS
+  availability on a small page sample (raw-archived); flag blocked
+  sites for the manual fallback rule (D4).
+- **ST:** SPIN (ST-2) — download + extraction-path check (mdbtools on
+  Slackware); PCN (ST-1) — locate formulation-level aggregates
+  (manual-web, recorded like any probe finding).
+- **LG:** not probed — legal-text verification stays a manual document
+  workstream (framing background only). The register rows stay
+  inactive; they are never probed and never reach reports — reports
+  draw from probe views, and LG rows carry no probe runs
+  (MASTER D27).
+
+Probing obeys the access & scraping discipline below — light by design
+(counts and constraints, not bulk collection). Probe outputs are
+provisional frame inputs (MASTER D20).
+
+### Census metadata set (complete source record — v0.1.2)
+
+Per source, the census report must present: identification (id,
+class, name, URL, access method, verification status); access
+(`free_access`, `robots`, `terms`, `rate_limit`, `extraction_path`,
+blocked/denied status + notes); content (`format`, `granularity`,
+`coverage_years`, `languages`); counts (`export_rows` /
+`catalog_count` / `category_count`; per-HS records 3208/3209/3213
+where the source exposes them); availability (`page_sample_ok`,
+`sds_sample_ok`); provenance (run keys, timestamps, archived
+documents). Framing: these are source-feasibility metrics; product
+and lead prevalence are M2+ deliverables and are never implied by
+this report (D25).
+
+#### Product-first census report (D28, 2026-09-11)
+
+The census report leads with the two study numbers: products
+available (observed listings per source — a floor, never a market
+total) and products with reachable SDS-type documentation (sample
+metrics plus doc links seen). One product-first matrix covers all
+registered sources; the `records_hs*` columns of trade sources are
+labelled volume context — trade rows are tariff-line flows, not
+products. PE sources gain `products_listed` (distinct product detail
+links from a depth-≤ 3 walk with a page budget) and `doc_links_seen`
+(SDS/TDS-type links encountered); access metadata (robots/terms/
+rate) appears as one line per source. csv = matrix, json = full
+structure; every value cites its run_key.
+
+**Data-landscape map (D29, 2026-09-12):** unit v0.1.3 extends this
+report into the study's data-landscape map — the aggregate floors
+Σ `products_listed` / Σ `doc_links_seen` over completed walks
+(blocked/failed/not-yet-walked sources excluded from the sum and
+counted; budget-limited walks annotated), coarse SPIN/PCN/PRODCOM
+priors (`products_registered`), latest-year trade context, and a
+frame-decision bridge. Channel enumeration grows the register with
+per-site PE rows (documented growth only — inclusion criteria,
+provenance, caps). Detail: [10_STRATEGY/v0.1.3.md](../plan/3SM/10_STRATEGY/v0.1.3.md).
+
+## Provenance rules (binding)
+
+1. Every scraped record stores `source_id`, `url`, `retrieved_at`.
+2. Raw documents (HTML/PDF) are archived exactly as retrieved under
+   `data/raw/<source-id>/<sha256>.<ext>` — the filename is a digital
+   fingerprint (sha256) of the file's content, so any later change is
+   detectable; the database references that fingerprint, and the raw
+   store serves as the audit trail.
+3. Load-bearing numbers in reports carry source name, year, URL and
+   access date (project convention, AGENTS.md).
+4. Legal texts are cited by SR/CELEX number and consolidation date
+   ("stand"), not by URL alone.
+
+## Access & scraping discipline (binding)
+
+- Publicly retrievable, free sources only — no paid databases, no
+  commercial market reports (hard constraint).
+- Respect robots.txt and site terms; identify the scraper (UA string with
+  contact); rate-limit (default ≤ 1 request / 2 s, per-domain queue); no
+  bulk hammering.
+- Prefer official exports/APIs over HTML scraping wherever offered
+  (swiss-impex CSV, Eurostat API, SPIN download).
+- Only publicly posted SDS — no accounts, no paywalls, no ToS
+  workarounds (EU law obliges free SDS on request, REACH Art. 31(8), but
+  this study uses posted sheets only).
+- If a site blocks scraping: manual retrieval of the needed subset;
+  record the access method per record.
+
+## DECISIONS
+
+- D1: five source classes (CS/PE/LG/ST/LI) with stable IDs; the `source`
+  DB table mirrors this register.
+- D2: provenance is binding at record level (URL + retrieval date + raw
+  hash), not only at document level.
+- D3: official exports/APIs preferred over HTML scraping wherever they
+  exist.
+- D4: no accounts, no paywalls, no ToS workarounds; manual fallback if a
+  site blocks, recorded per record.
+- D5: every OPEN register row is probed once before collection (unit
+  v0.1.1) and its Status updated from probe findings (MASTER D19).
+- (2026-09-11) Product-first census and register slim per MASTER
+  D28: nine product sources in the tool; LG/LI documentation-only.
+- (2026-09-12) D31: EU-only register (CS-1 and CH-DIY seeds out); new
+  AS class; reconnaissance-only access characterization until an
+  explicit scraping go; numbers-first deliverable (v0.2.0).
+
+## OPEN ITEMS
+
+- CLOSED 2026-09-12 (D31): CS-1 swiss-impex — out of scope (EU-only
+  metrics); TLS wall documented in the census baseline.
+- PE site list: tier A/B/C seed sites (see "PE — concrete source taxonomy
+  and seed sites") to enumerate and prioritize in Phase 1–2 (frame
+  construction); confirmation of scrapeability started by the v0.1.1 probe.
+- ST-2 SPIN Access DB: extraction path on Slackware (mdbtools?) — OPEN;
+  checked during v0.1.1 probing.
+- ST-1 PCN: locate formulation-level aggregates (ECHA publishing practice).
+- LG-1 fedlex JS-gating for consolidated VIPaV/ChemRRV (browser extraction
+  needed) — carried from the legal dossier.
+
+## REFERENCES
+
+- URLs for the sources already verified in the 2026-08-31/09-10 research
+  pass: METHODOLOGY.md §REFERENCES. This register adds operational access
+  metadata as it is confirmed.

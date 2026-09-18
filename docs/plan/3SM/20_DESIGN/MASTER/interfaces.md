@@ -34,7 +34,7 @@ disagree, this document wins.
     leadhs probe report [--source ID] [--format md|csv|json]
     leadhs doctor [--net]
 
-Design-ahead surface (milestones per 10_STRATEGY/ARCHITECTURE.md):
+Design-ahead surface (milestones per docs/study/ARCHITECTURE.md):
 `acquire run`, `ingest sightings`, `parse sds`, `review next|decide`,
 `frame set`, `frame promote`, `sample plan`, `sample draw`,
 `corroborate`, `analyze prevalence`, `report build`, `dict load`,

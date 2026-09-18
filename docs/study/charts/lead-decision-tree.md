@@ -1,7 +1,7 @@
 # Lead determination — decision tree
 
-Source of truth: 10_STRATEGY/METHODOLOGY.md (lead determination,
-corroboration) and 10_STRATEGY/LEAD_SDS.md (feasibility, blind spot).
+Source of truth: docs/study/METHODOLOGY.md (lead determination,
+corroboration) and docs/study/LEAD_SDS.md (feasibility, blind spot).
 Rendered with --type decision_tree.
 
 ## Decision Tree

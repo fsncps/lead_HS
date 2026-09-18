@@ -2,7 +2,7 @@
 unit: v0.2.3
 stage: IMPLEMENTATION
 lifecycle: LIVE
-updated: 2026-09-15
+updated: 2026-09-18
 ---
 # lead_HS — MASTER
 
@@ -119,11 +119,10 @@ no paid data sources, minimal cost.
 ## Documents
 
 - `10_STRATEGY/MASTER.md` — decisions, open items, roadmap
-- `10_STRATEGY/METHODOLOGY.md` — population, frame, sampling, corroboration
-- `10_STRATEGY/LEAD_SDS.md` — lead compounds, EU legal status, SDS feasibility
-- `10_STRATEGY/DATA_SOURCE.md` — source register, access & provenance discipline
-- `10_STRATEGY/DATA_MODEL.md` — evidence-database schema
-- `10_STRATEGY/ARCHITECTURE.md` — pipeline, CLI, reporting concept
+- `10_STRATEGY/{METHODOLOGY,LEAD_SDS,DATA_SOURCE,DATA_MODEL,ARCHITECTURE}.md`
+  — slim per-topic strategy summaries (D41 split); full public detail
+  lives outside the plan tree in `docs/study/` (+ translations,
+  `charts/`)
 
 ## Key numbers (2026-08-31 research pass)
 

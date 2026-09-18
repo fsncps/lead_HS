@@ -1,7 +1,7 @@
 ---
 language: fr
 translation_of: README.md
-source_updated: 2026-09-17
+source_updated: 2026-09-18
 ---
 
 Sprachen / Languages / Langues : [EN](README.md) · [DE](README.de.md) · **FR**
@@ -69,7 +69,7 @@ la documentation d'un échantillon significatif, analyser.
   chaque livrable.
 
 Méthode complète, en langage clair avec glossaire :
-[document méthodologie](docs/plan/3SM/10_STRATEGY/METHODOLOGY.fr.md).
+[document méthodologie](docs/study/METHODOLOGY.fr.md).
 
 ## Contexte juridique
 
@@ -157,7 +157,7 @@ exactement AS-2 et AS-3, les deux seules sources du registre qui
 atteignent ce seuil. Elle ne s'allonge que lorsque des sondages
 futures le confirment ; les registres nationaux fermés et les
 candidats non sondés restent documentés dans
-[docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
+[docs/study/DATA_SOURCE.md](docs/study/DATA_SOURCE.md).
 
 **Addendum — tour de sondage complète + reconnaissance d'extension de
 sources (2026-09-15, D39).** Toute la suite de sondage a rejoué en un
@@ -331,7 +331,7 @@ sont restés ouverts (SPIN injoignable). Détails :
 | Couleurs à l'huile au blanc de plomb | documentées (NL, IT) — position tarifaire 3213 |
 
 Détails et sources :
-[LEAD_SDS.md](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN).
+[LEAD_SDS.md](docs/study/LEAD_SDS.md) (EN).
 
 ## L'outil
 
@@ -355,10 +355,59 @@ et à un document précis. L'outil ne stocke que des données produit.
 - Les opérations qui touchent de vrais sites sont gardées derrière un
   `GO=1` explicite.
 
-Détails : [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) et
-[modèle de données](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (EN) ;
+Détails : [architecture](docs/study/ARCHITECTURE.md) et
+[modèle de données](docs/study/DATA_MODEL.md) (EN) ;
 conception technique revue dans
 [20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
+
+## Prévu : du téléchargement de masse à la table produit unique (v0.3)
+
+La prochaine phase de construction transformera les sources de masse
+confirmées en une base produit consolidée, en deux couches :
+
+**1. Téléchargement des sources de masse (couche brute).** Chaque
+source de masse confirmée — Écolabel européen (≈17 013 distincts),
+Cygne Nordique (≈2 322) et BASTA (195 391 articles ; via sa propre
+route anonyme client web) — est copiée dans une **table brute par
+source** : verbatim, sans filtrage, une ligne par enregistrement
+source, avec le nom du fabricant, l'identifiant produit et le code
+de groupe exactement comme écrits par la source. Les
+téléchargements sont répétables (interruption, reprise),
+incrémentaux (une relance ne traite que les enregistrements
+nouveaux/modifiés via un journal des changements) et pilotés par
+manifeste (un manifeste committé par source définit la forme de la
+table avant que les données ne coulent ; les enregistrements trop
+gros débordent dans le stockage brut, rien n'est perdu).
+Politesse : endpoints de liste d'abord, limitation de débit et
+backoff, via la CLI existante sous `GO=1`
+(`leadhs raw init <source>` / `leadhs raw seed <source>`).
+
+**2. Normalisation déterministe et fusion (couche de rapprochement).**
+Pour fusionner le même produit vu dans plusieurs sources, noms et
+identifiants sont normalisés de façon déterministe (pas de LLM ni
+d'apprentissage — chaque lien reste explicable et reproductible) :
+pliage des diacritiques Unicode, casse normalisée, suppression des
+jetons de forme juridique (« Foo-Bar Ltd. » ≙ « Foo Bar Limited » →
+`foo bar`), nettoyage des identifiants (majuscules, zéros, préfixes ;
+« ABC-123/B » ≙ « abc00123b » → `ABC123B`). Les enregistrements
+sont ensuite liés par paliers : d'abord les clés exactes
+(GTIN/EAN ; identifiant normalisé au sein du même fabricant
+normalisé), puis les quasi-correspondances scorées
+(Jaro-Winkler, similarité token-set) — uniquement dans de petits
+blocs de candidats, pour que 200 k+ lignes restent traitables.
+Chaque lien porte un verdict — `auto_match` /
+`review` (file humaine) / `no_match` — avec méthode et scores par
+paire ; la vue produit fusionnée reste entièrement auditable, les
+corrections sont append-only. Résultat : une **table fabricants et
+une table produits** ramenées à l'unité formulation de l'étude,
+chaque produit portant ses observations par source et le niveau de
+preuve de chaque lien.
+
+Détails : les fichiers de stratégie
+[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) et
+[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (règles,
+seuils et choix de bibliothèque y sont verrouillés comme décisions
+d'adoption en attente R1–R9 et MA1–MA9).
 
 ## Feuille de route
 
@@ -375,15 +424,15 @@ conception technique revue dans
 | Document | Contenu |
 |---|---|
 | [`management_summary.md`](docs/management_summary.md) | synthèse bilingue (DE/FR) pour les décideurs |
-| [`METHODOLOGY.fr.md`](docs/plan/3SM/10_STRATEGY/METHODOLOGY.fr.md) | comment le marché est mesuré — langage clair, glossaire inclus |
-| [`DATA_SOURCE.fr.md`](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.fr.md) | chaque source et les règles d'accès — langage clair, glossaire inclus |
-| [`ARCHITECTURE.md`](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) (EN) | l'outil de collecte et le concept de reporting (semi-technique) |
-| [`DATA_MODEL.md`](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (EN) | la base de preuves (technique) |
-| [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
+| [`METHODOLOGY.fr.md`](docs/study/METHODOLOGY.fr.md) | comment le marché est mesuré — langage clair, glossaire inclus |
+| [`DATA_SOURCE.fr.md`](docs/study/DATA_SOURCE.fr.md) | chaque source et les règles d'accès — langage clair, glossaire inclus |
+| [`ARCHITECTURE.md`](docs/study/ARCHITECTURE.md) (EN) | l'outil de collecte et le concept de reporting (semi-technique) |
+| [`DATA_MODEL.md`](docs/study/DATA_MODEL.md) (EN) | la base de preuves (technique) |
+| [`LEAD_SDS.md`](docs/study/LEAD_SDS.md) (EN) | composés du plomb, droit UE, ce que les fiches révèlent — ou non (semi-technique) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | décisions stratégiques, questions ouvertes, feuille de route |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | conception technique de l'outil + de la base |
 | [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | plans des phases de construction des unités (v0.1.1–v0.1.3, v0.2.0–v0.2.4 construites) — suivi des phases, critères de sortie |
-| [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
+| [`charts/`](docs/study/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
 ## Structure du dépôt
@@ -399,13 +448,13 @@ conception technique revue dans
     data/                      état de travail local (gitignored) : base, stockage brut, rapports intermédiaires
     docs/report/               rapports finaux publiés (commités délibérément)
     docs/management_summary.md synthèse de gestion bilingue (DE/FR), toujours à jour
+    docs/study/                documentation de détail de l'étude (méthodologie, sources,
+                               architecture, modèle de données, fond plomb ; traductions, charts/)
     docs/plan/3SM/             notes de planification (système à 3 étages, EN)
     ├── README.md              guide en langage clair (EN)
     ├── MASTER.md, LOG.md      tableau de bord, journal du cycle de vie (EN)
-    ├── 10_STRATEGY/           constats de recherche et décisions (quoi & pourquoi)
-    │   ├── METHODOLOGY.fr.md  méthodologie, français
-    │   ├── DATA_SOURCE.fr.md  sources de données, français
-    │   └── charts/            schémas rendus (référencés depuis les documents de détail, EN)
+    ├── 10_STRATEGY/           constats de recherche et décisions (quoi & pourquoi) —
+    │                          résumés thématiques compacts ; détails dans docs/study/
     ├── 20_DESIGN/             conception technique (comment exactement, EN)
     └── _archive/              matériel remplacé
 

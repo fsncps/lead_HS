@@ -1,11 +1,8 @@
 ---
-unit: v0.1.1
-stage: STRATEGY
-lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-18
 language: fr
 translation_of: DATA_SOURCE.md
-source_updated: 2026-09-11
+source_updated: 2026-09-18
 ---
 
 Sprachen / Langues : [EN](DATA_SOURCE.md) · [DE](DATA_SOURCE.de.md) · **FR**

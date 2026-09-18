@@ -1,11 +1,8 @@
 ---
-unit: v0.1.1
-stage: STRATEGY
-lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-18
 language: de
 translation_of: METHODOLOGY.md
-source_updated: 2026-09-11
+source_updated: 2026-09-18
 ---
 
 Sprachen: [EN](METHODOLOGY.md) · **DE** · [FR](METHODOLOGY.fr.md)

@@ -55,7 +55,7 @@ documentation for a significant sample, analyse.
   every deliverable.
 
 Full method, in plain language with a glossary:
-[methodology document](docs/plan/3SM/10_STRATEGY/METHODOLOGY.md).
+[methodology document](docs/study/METHODOLOGY.md).
 
 ## Legal context
 
@@ -133,7 +133,7 @@ tuple (manufacturer + product ident) — initially exactly AS-2 and
 AS-3, the only two sources on record meeting the gate. It grows only
 as future probes confirm further sources; gated national registers
 and unprobed candidates stay documented in
-[docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md).
+[docs/study/DATA_SOURCE.md](docs/study/DATA_SOURCE.md).
 
 **Addendum — full-probe round + source-expansion reconnaissance
 (2026-09-15, D39).** The whole probe suite ran again in one pass —
@@ -290,7 +290,7 @@ Nordic registers stayed open (SPIN unreachable). Details:
 | Artists' oil colours with lead white | documented (NL, IT) — tariff heading 3213 |
 
 Detail and sources:
-[LEAD_SDS.md](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md).
+[LEAD_SDS.md](docs/study/LEAD_SDS.md).
 
 ## The tool
 
@@ -313,9 +313,53 @@ data only.
 - Operations that touch real sites are gated behind an explicit
   `GO=1`.
 
-Detail: [architecture](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) and
-[data model](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md); the reviewed
+Detail: [architecture](docs/study/ARCHITECTURE.md) and
+[data model](docs/study/DATA_MODEL.md); the reviewed
 technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
+
+## Planned next: from bulk download to one product table (v0.3)
+
+The next build phase turns the confirmed bulk sources into one
+consolidated product database, in two layers:
+
+**1. Bulk source download (raw layer).** Each confirmed bulk source —
+EU Ecolabel (≈17,013 distinct products), Nordic Swan (≈2,322), and
+BASTA (195,391 articles; pinned via its own anonymous web-client
+route) — gets downloaded into a **per-source raw table**: verbatim,
+unfiltered, one row per source record, with the manufacturer name,
+product identifier and product-group code exactly as the source
+writes them. The downloads are repeatable (interrupt, resume), incremental
+(rerun updates only new/changed records via a change journal) and
+manifest-driven (a committed per-source manifest defines the table
+shape before any data flows; oversize records spill to the raw store,
+nothing is dropped). Politeness: list-endpoint-first crawling with
+rate limits and backoff, seeded through the existing `GO=1`-gated CLI
+(`leadhs raw init <source>` / `leadhs raw seed <source>`).
+
+**2. Deterministic normalization and merging (matching layer).** To
+merge the same product seen in several sources, names and identifiers
+are normalized deterministically (no LLM/machine-learning matching —
+every match must stay explainable and reproducible): Unicode
+diacritic folding, case folding, legal-form token stripping
+("Foo-Bar Ltd." ≙ "Foo Bar Limited" → `foo bar`), identifier
+uppercasing/padding/prefix cleanup ("ABC-123/B" ≙ "abc00123b" →
+`ABC123B`). Records are then linked in tiers: exact keys first
+(GTIN/EAN; normalized identifier within the same normalized
+manufacturer), then scored near-matches (Jaro-Winkler, token-set
+similarity) restricted to small candidate blocks so that 200k+ rows
+stay tractable. Each candidate link carries a verdict —
+`auto_match` (high score / exact-key backed) / `review` (human
+queue) / `no_match` — with method and scores stored per pair, so the
+merged product view is fully auditable and corrections are
+append-only. The merged output: **manufacturer table and product
+table** collapsed to the study's formulation unit, every product
+carrying its per-source observations and each match's evidence tier.
+
+Details: the strategy files
+[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) and
+[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (norms,
+thresholds and library choice are pinned there as the pending
+adoption decisions R1–R9 and MA1–MA9).
 
 ## Roadmap
 
@@ -332,15 +376,15 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 | Document | What it covers |
 |---|---|
 | [`management_summary.md`](docs/management_summary.md) | bilingual (DE/FR) summary for decision makers |
-| [`METHODOLOGY.md`](docs/plan/3SM/10_STRATEGY/METHODOLOGY.md) | how the market is measured — plain language, glossary included |
-| [`DATA_SOURCE.md`](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md) | every source and the access rules — plain language, glossary included |
-| [`ARCHITECTURE.md`](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) | the collection tool and the reporting concept (semi-technical) |
-| [`DATA_MODEL.md`](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) | the evidence database (technical) |
-| [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
+| [`METHODOLOGY.md`](docs/study/METHODOLOGY.md) | how the market is measured — plain language, glossary included |
+| [`DATA_SOURCE.md`](docs/study/DATA_SOURCE.md) | every source and the access rules — plain language, glossary included |
+| [`ARCHITECTURE.md`](docs/study/ARCHITECTURE.md) | the collection tool and the reporting concept (semi-technical) |
+| [`DATA_MODEL.md`](docs/study/DATA_MODEL.md) | the evidence database (technical) |
+| [`LEAD_SDS.md`](docs/study/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
 | [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.4 built) — phase tracking, exit gates |
-| [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) | the diagrams, with their sources (referenced from the detail docs) |
+| [`charts/`](docs/study/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
 
 ## Repository layout
@@ -354,11 +398,13 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
     data/                      local working state (gitignored): database, raw store, report intermediates
     docs/report/               published report finals (committed deliberately)
     docs/management_summary.md bilingual management summary (DE/FR), always current
+    docs/study/                study detail documentation (methodology, sources, architecture,
+                               data model, lead background; DE/FR translations, charts/)
     docs/plan/3SM/             planning notes (3-stage system)
     ├── README.md              plain-language guide to the planning tree
     ├── MASTER.md, LOG.md      project dashboard, lifecycle log
-    ├── 10_STRATEGY/           research findings and decisions (what & why)
-    │   └── charts/            rendered diagrams (referenced from the detail docs)
+    ├── 10_STRATEGY/           research findings and decisions (what & why) —
+    │                          slim topic summaries; detail lives in docs/study/
     ├── 20_DESIGN/             technical design (how exactly)
     └── _archive/              superseded material
 

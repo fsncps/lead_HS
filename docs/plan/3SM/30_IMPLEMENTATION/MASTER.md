@@ -164,7 +164,7 @@ Per-phase status, dependencies and detail: `v0.2.4/MASTER.md` and
 ## Governing references
 
 - Strategy: `../10_STRATEGY/v0.1.1.md` (unit scope),
-  `../10_STRATEGY/DATA_SOURCE.md` (register, discipline),
+  `../../../study/DATA_SOURCE.md` (register, discipline),
   `../10_STRATEGY/MASTER.md` (D19/D20 rollout, anchor promotion);
   unit v0.1.2: `../10_STRATEGY/v0.1.2.md` (D21/D22, U1–U7);
   unit v0.1.3: `../10_STRATEGY/v0.1.3.md` (D29 refocus, W1–W8);

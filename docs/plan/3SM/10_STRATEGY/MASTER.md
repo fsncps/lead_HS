@@ -2,7 +2,7 @@
 unit: v0.1.1
 stage: STRATEGY
 lifecycle: LIVE
-updated: 2026-09-17
+updated: 2026-09-18
 ---
 
 # Strategy MASTER — lead_HS
@@ -223,7 +223,7 @@ lead). Open questions and the phased roadmap follow.
     Swiss-relevance fields, no legal-coded signal lookups, no
     legal-text documents in the raw store. Lawful/illegal assessment
     and Swiss-ban relevance are analytical conclusions drawn in the
-    study documentation (10_STRATEGY/LEAD_SDS.md, METHODOLOGY
+    study documentation (docs/study/LEAD_SDS.md, METHODOLOGY
     regulatory frame), never database fields or report sections.
     The LG source rows stay in the register (inactive, as built) and
     never reach reports by construction — reports draw from probe
@@ -404,6 +404,20 @@ lead). Open questions and the phased roadmap follow.
     ECAT ↔ Nordic Swan (the pending second-register pilot) and ECAT
     EAN ↔ retail catalogues (v0.3 seeding).
 
+41. **Documentation-tree split (2026-09-18; user direction):** the
+    public study documentation — methodology, data-source register,
+    lead/SDS background, data model, architecture, plus their DE/FR
+    translations and the active charts — moves **out of the plan
+    tree** to `docs/study/` ("next to, not inside" `docs/plan/3SM/`)
+    as the detail documentation the README links; the strategy topic
+    files of the same names stay in `10_STRATEGY/` as slim strategy
+    summaries (topic decisions/open items pointing into this MASTER,
+    deep reading in `docs/study/`). No lifecycle change; the topic
+    documents' decisions above remain the authority (amends topic
+    self-references only). `charts/` decision c1 is amended accordingly
+    (charts live in `docs/study/charts/` — public side; superseded
+    charts stay in `_archive/10_STRATEGY/charts/`).
+
 ## OPEN ITEMS
 
 - CLOSED 2026-09-12 (scope, D31): EZV/swiss-impex — Swiss market
@@ -540,12 +554,21 @@ lead). Open questions and the phased roadmap follow.
 
 ## Topic index
 
-- `METHODOLOGY.md` — population, frame, stratification, sampling, corroboration
-- `LEAD_SDS.md` — compounds, legal status, SDS feasibility, prior studies
-- `DATA_SOURCE.md` — source register, access, provenance & scraping discipline
-- `DATA_MODEL.md` — evidence-database schema (products, SDS findings, runs)
-- `ARCHITECTURE.md` — pipeline, CLI (`leadhs`), reporting, distribution &
-  portability
+Since the documentation-tree split (D41): strategy topic files in this
+directory are slim strategy summaries (decisions/open items in MASTER
+altitude); their full public detail lives in `docs/study/` — outside
+the plan tree.
+
+- `METHODOLOGY.md` — summary; detail: `docs/study/METHODOLOGY.md`
+  (population, frame, stratification, sampling, corroboration)
+- `LEAD_SDS.md` — summary; detail: `docs/study/LEAD_SDS.md`
+  (compounds, legal status, SDS feasibility, prior studies)
+- `DATA_SOURCE.md` — summary; detail: `docs/study/DATA_SOURCE.md`
+  (source register, access, provenance & scraping discipline)
+- `DATA_MODEL.md` — summary; detail: `docs/study/DATA_MODEL.md`
+  (evidence-database schema)
+- `ARCHITECTURE.md` — summary; detail: `docs/study/ARCHITECTURE.md`
+  (pipeline, CLI, reporting, distribution & portability)
 - `MATCHING.md` — product identity, string matching and cross-source
   dedup (normalization-first record linkage, exact-key tiers, blocking,
   scored near-matches, no LLM/embedding matching; proposed decisions
@@ -555,10 +578,10 @@ lead). Open questions and the phased roadmap follow.
   journal, oversize spill, list-endpoint-first politeness gate;
   proposed decisions R1–R9, R1–R3 user-confirmed 2026-09-17, DRAFT
   pending adoption)
-- `charts/` — rendered diagrams in active use (system components,
-  lead decision tree, probe process); index and regeneration:
-  `charts/README.md`; superseded charts archived under
-  `_archive/10_STRATEGY/charts/`
+- `charts/` → `docs/study/charts/` — rendered diagrams in active use
+  (system components, lead decision tree, probe process); index and
+  regeneration: `docs/study/charts/README.md`; superseded charts
+  archived under `_archive/10_STRATEGY/charts/` (unchanged location)
 
 ## Active unit
 

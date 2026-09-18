@@ -15,7 +15,7 @@ modules exist, what each one is responsible for, how the program runs
 the raw-document store and the database are accessed, and how the
 probe engine is structured so that new source types can be added
 without touching the engine. The stack and the M0–M4 rollout are
-inherited unchanged from 10_STRATEGY/ARCHITECTURE.md; this is the
+inherited unchanged from docs/study/ARCHITECTURE.md; this is the
 detailed HOW on top of it.
 
 ## Stack (inherited)
@@ -23,7 +23,7 @@ detailed HOW on top of it.
 Python ≥ 3.11, stdlib-first; `requests`, `beautifulsoup4`, `click`,
 `jinja2` (reports), `pypdf` (M2, backend decision open); optional
 `matplotlib` (M3), mdbtools route for SPIN. No servers, no services —
-every stage is a CLI step (10_STRATEGY/ARCHITECTURE.md D1/D5).
+every stage is a CLI step (docs/study/ARCHITECTURE.md D1/D5).
 
 ## Runtime model
 
@@ -116,7 +116,7 @@ text: `units/v0.1.2.md`.
       doctor.py          # environment preflight
       dict/
         sources.csv      # source register seed (mirrors
-                         # 10_STRATEGY/DATA_SOURCE.md register)
+                         # docs/study/DATA_SOURCE.md register)
         substances.csv   # M1 dictionary seed (schema designed now)
       migrations/
         0001__probe_base.sql
@@ -230,7 +230,7 @@ count grows. Split on pain, not before (minimal-diff preference).
   reports — MASTER D27).
 
 All classes: blocked/robots_denied → findings with a manual-fallback
-note; never hammering (10_STRATEGY/DATA_SOURCE.md discipline).
+note; never hammering (docs/study/DATA_SOURCE.md discipline).
 
 ## Failure behavior & resumability
 

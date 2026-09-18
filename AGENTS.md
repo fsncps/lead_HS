@@ -52,7 +52,9 @@ In planning work, read first:
 
 then the relevant topic files (`10_STRATEGY/METHODOLOGY.md`,
 `10_STRATEGY/LEAD_SDS.md`, `10_STRATEGY/DATA_SOURCE.md`,
-`10_STRATEGY/DATA_MODEL.md`, `10_STRATEGY/ARCHITECTURE.md`). Treat existing
+`10_STRATEGY/DATA_MODEL.md`, `10_STRATEGY/ARCHITECTURE.md`; these are
+slim strategy summaries since the documentation-tree split, D41 — the
+full public detail lives in `docs/study/`). Treat existing
 Strategy as accumulated knowledge;
 do not re-research settled questions.
 
@@ -65,6 +67,13 @@ never implies freeze/stage advancement/archival; commit and push only on
 explicit user instruction.
 
 ## Documentation conventions
+
+- **Documentation-tree split (D41, 2026-09-18):** public study detail
+  documentation — METHODOLOGY, DATA_SOURCE, ARCHITECTURE, DATA_MODEL,
+  LEAD_SDS, translations and `charts/` — lives in `docs/study/`, next
+  to (not inside) the plan tree `docs/plan/3SM/`; the strategy topic
+  files of the same names in `10_STRATEGY/` stay slim strategy
+  summaries. Do not relocate detail content back into the plan tree.
 
 - README and document abstracts: plain or semi-technical language; define
   specialist terms at first use. Deep-dive documents may be fully technical.

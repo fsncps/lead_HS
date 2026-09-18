@@ -13,7 +13,7 @@ One SQLite database (`data/leadhs.sqlite`) holds everything the study
 collects and produces. This document is the Design-level schema: a
 table-by-table specification precise enough that the SQL migration
 files can be written from it without new decisions. It refines the
-Strategy schema (10_STRATEGY/DATA_MODEL.md) into a fully **normalized**
+Strategy schema (docs/study/DATA_MODEL.md) into a fully **normalized**
 form. Normalization here means: every fact is stored exactly once —
 provenance (source, URL, retrieval date, raw-file hash) lives in one
 `document` backbone instead of being repeated on every evidence row;
@@ -26,7 +26,7 @@ never a stored column. **Product data only (Strategy MASTER D27):** the
 schema carries no legal-category dimension, no compound legal-status or
 Swiss-relevance fields, no legal-coded signal lookups and no legal-text
 documents — lawful/illegal assessment and ban relevance stay
-documentation-layer (10_STRATEGY/LEAD_SDS.md).
+documentation-layer (docs/study/LEAD_SDS.md).
 The schema is written to port to PostgreSQL with two documented
 variances (id generation, one partial index) and to be reusable for
 future substance-in-products studies via a `study` discriminator.
@@ -79,7 +79,7 @@ future substance-in-products studies via a `study` discriminator.
 ## Migration plan
 
 Forward-only, numbered, **milestone-gated** (10_STRATEGY/MASTER.md
-D19/D20; rollout M0–M4 in 10_STRATEGY/ARCHITECTURE.md). The migration
+D19/D20; rollout M0–M4 in docs/study/ARCHITECTURE.md). The migration
 runner (db.py) creates `schema_version` itself and applies pending
 files in order, each in one transaction; a timestamped backup of the
 database file is taken before applying to an existing DB (default on,
@@ -91,7 +91,7 @@ header comment).
 
 Seed channels: (a) migrations seed lookups and the `study` row;
 (b) repo CSVs seed the source register (`source load`) and, at M1, the
-substance dictionary (`dict load` — 10_STRATEGY/DATA_MODEL.md D6);
+substance dictionary (`dict load` — docs/study/DATA_MODEL.md D6);
 (c) evidence arrives only through runs (probe/acquire/import/sampling).
 
 | Migration | Milestone | Tables | Views |
@@ -146,7 +146,7 @@ Common shape: `code TEXT PK, label TEXT NOT NULL, description TEXT`;
 `probe_metric` adds `value_type TEXT NOT NULL CHECK (value_type IN
 ('numeric','text'))`.
 
-- **source_class** — CS, PE, LG, ST, LI (10_STRATEGY/DATA_SOURCE.md D1).
+- **source_class** — CS, PE, LG, ST, LI (docs/study/DATA_SOURCE.md D1).
 - **access_method** — api, scrape, download, manual. Reused as the
   per-fetch retrieval method on `document` and the per-finding method
   on `probe_finding`.
@@ -169,7 +169,7 @@ Common shape: `code TEXT PK, label TEXT NOT NULL, description TEXT`;
 ### Core tables (0002)
 
 **source** — reference data (updatable, never deleted); mirrors the
-register in 10_STRATEGY/DATA_SOURCE.md.
+register in docs/study/DATA_SOURCE.md.
 - id TEXT PK — register ID (`CS-1`), CHECK `^[A-Z]{2}-[0-9]+$`
 - class_code → source_class; name TEXT NOT NULL; url TEXT NOT NULL
 - access_method_code → access_method; license_note TEXT
@@ -256,7 +256,7 @@ study-agnostic, lead-target flagged.
 - sds_visible_floor_ppm REAL; verification_status_code →
   verification_status NOT NULL
 - is_lead_target INTEGER NOT NULL DEFAULT 0; notes TEXT
-- Seeded from `src/leadhs/dict/substances.csv` (10_STRATEGY/LEAD_SDS.md
+- Seeded from `src/leadhs/dict/substances.csv` (docs/study/LEAD_SDS.md
   dictionary v0.1; unverified CAS stay flagged — D6 there).
 
 **compound_synonym** — multilingual synonyms.
@@ -367,7 +367,7 @@ brand_owner, distributor); **origin** (CH, EU, THIRD, unknown — EU =
 marketed in the EU/EEA);
 **confidence** (high, medium, low, manual); **stratum** (S1–S8,
 CENSUS_3213 with cn_prior/lead_prior description fields from
-10_STRATEGY/METHODOLOGY.md); **anchor_kind** (pcn, spin, prodcom,
+docs/study/METHODOLOGY.md); **anchor_kind** (pcn, spin, prodcom,
 comext, sbs, literature, catalog_census); **frame_method**
 (catalog_count, triangulated, spin_proxy); **country** (code = ISO-2
 PK, iso3, name, name_de, name_fr).
@@ -560,12 +560,12 @@ exist per applied migrations.
 
 ## REFERENCES
 
-- 10_STRATEGY/DATA_MODEL.md — the Strategy schema this refines
+- docs/study/DATA_MODEL.md — the Strategy schema this refines
 - 10_STRATEGY/MASTER.md — D2, D7, D15–D20 (principles anchored)
-- 10_STRATEGY/DATA_SOURCE.md — source register, provenance discipline
-- 10_STRATEGY/METHODOLOGY.md — strata table, taxonomies
-- 10_STRATEGY/LEAD_SDS.md — dictionary v0.1, legal statuses
-- 10_STRATEGY/ARCHITECTURE.md — rollout M0–M4
+- docs/study/DATA_SOURCE.md — source register, provenance discipline
+- docs/study/METHODOLOGY.md — strata table, taxonomies
+- docs/study/LEAD_SDS.md — dictionary v0.1, legal statuses
+- docs/study/ARCHITECTURE.md — rollout M0–M4
 - CEO review session 2026-09-10 (mode EXPANSION): document backbone,
   unified runs, study discriminator, export path, dossier — user
   decisions recorded in 20_DESIGN/MASTER.md.

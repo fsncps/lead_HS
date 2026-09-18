@@ -1,7 +1,7 @@
 # System components — leadhs (v0.1.1)
 
 Source of truth: 20_DESIGN/MASTER/architecture.md (module layout) and
-10_STRATEGY/ARCHITECTURE.md (strategy shape). Rendered with --type component.
+docs/study/ARCHITECTURE.md (strategy shape). Rendered with --type component.
 
 ## Components
 

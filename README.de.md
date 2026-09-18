@@ -1,7 +1,7 @@
 ---
 language: de
 translation_of: README.md
-source_updated: 2026-09-17
+source_updated: 2026-09-18
 ---
 
 Sprachen / Languages / Langues: [EN](README.md) · **DE** · [FR](README.fr.md)
@@ -66,7 +66,7 @@ Dokumentation für eine bedeutende Stichprobe beschaffen, auswerten.
   Ergebniswerk ausgewiesen.
 
 Volle Methodik, in einfacher Sprache mit Glossar:
-[Methodik-Dokument](docs/plan/3SM/10_STRATEGY/METHODOLOGY.de.md).
+[Methodik-Dokument](docs/study/METHODOLOGY.de.md).
 
 ## Regulatorischer Kontext
 
@@ -149,7 +149,7 @@ genau AS-2 und AS-3, die einzigen Quellen, die die Schwelle derzeit
 erfüllen. Sie wächst nur, wenn künftige Sondierungen die Schwelle
 bestätigen; gesperrte nationale Register und unsondierte Kandidaten
 bleiben in
-[docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.md)
+[docs/study/DATA_SOURCE.md](docs/study/DATA_SOURCE.md)
 dokumentiert.
 
 **Addendum — Komplette Sondierungsrunde + Quellen-Erweiterungsfühler
@@ -319,7 +319,7 @@ mit sichtbarer SDB-Bibliothek; die nordischen Register blieben offen
 | Künstlerölfarben mit Bleiweiss | dokumentiert (NL, IT) — Zollposition 3213 |
 
 Details und Quellen:
-[LEAD_SDS.md](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN).
+[LEAD_SDS.md](docs/study/LEAD_SDS.md) (EN).
 
 ## Das Werkzeug
 
@@ -343,10 +343,59 @@ zurückführbar. Das Werkzeug erfasst ausschliesslich Produktdaten.
 - Vorgänge, die echte Sites berühren, sind hinter einem expliziten
   `GO=1` abgesichert.
 
-Details: [Architektur](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) und
-[Datenmodell](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (je EN); das
+Details: [Architektur](docs/study/ARCHITECTURE.md) und
+[Datenmodell](docs/study/DATA_MODEL.md) (je EN); das
 begutachtete technische Design in
 [20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
+
+## Geplant: vom Bulk-Download zur einen Produkttabelle (v0.3)
+
+Die nächste Bauphase verwandelt die bestätigten Bulk-Quellen in eine
+konsolidierte Produktdatenbank, in zwei Schichten:
+
+**1. Bulk-Download der Quellen (Raw-Schicht).** Jede bestätigte
+Bulk-Quelle — EU Ecolabel (≈17'013 distinct), Nordischer Schwan
+(≈2'322) und BASTA (195'391 Artikel; über die eigene anonyme
+Web-Client-Route angezapft) — wird in eine **Raw-Tabelle je Quelle**
+übernommen: wortgetreu, ungefiltert, eine Zeile je
+Quellendatensatz, mit Herstellername, Produktkennung und
+Gruppencode genau wie von der Quelle geschrieben. Die Downloads
+sind wiederholbar (Unterbrechung, Fortsetzen), inkrementell
+(Wiederholung prüft nur neue/veränderte Datensätze anhand eines
+Change-Journals) und manifest-getrieben (ein kommittiertes
+Manifest je Quelle definiert die Tabellenform, bevor Daten
+fliessen; übergrosse Datensätze werden in den Raw-Speicher
+ausgelagert, nichts geht verloren). Höflichkeit: List-Endpoint
+zuerst, Ratenbegrenzung und Backoff, über die bestehende
+`GO=1`-gesteuerte CLI (`leadhs raw init <source>` /
+`leadhs raw seed <source>`).
+
+**2. Deterministische Normalisierung und Verschmelzung
+(Matching-Schicht).** Um dasselbe Produkt aus mehreren Quellen
+zusammenzuführen, werden Namen und Identifikatoren deterministisch
+normalisiert (keine LLM/Maschine-Lern-Zuordnung — jede Verknüpfung
+bleibt erklärbar und reproduzierbar): Unicode-Diaekritik-Faltung,
+Case-Folding, Streichen von Rechtsform-Token («Foo-Bar Ltd.» ≙
+«Foo Bar Limited» → `foo bar`), Identifier-Aufräumen (Gross-/Nullen,
+Präfixe; «ABC-123/B» ≙ «abc00123b» → `ABC123B`). Die Datensätze
+werden dann in Stufen verknüpft: zuerst exakte Schlüssel
+(GTIN/EAN; normalisierter Identifikator innerhalb desselben
+normalisierten Herstellers), dann bewertete Nahvergleiche
+(Jaro-Winkler, Token-Set-Ähnlichkeit) — nur innerhalb kleiner
+Kandidatenblöcke, damit 200k+ Zeilen handhabbar bleiben. Jede
+Kandidatenverknüpfung trägt ein Urteil — `auto_match` / `review`
+(humane Warteschlange) / `no_match` — mit Methode und Punktzahl je
+Paar; die zusammengeführte Produkt-Sicht bleibt völlig auditerbar,
+Korrekturen sind nur anhängend (append-only). Ergebnis: eine
+**Hersteller- und eine Produkttabelle** auf der Formulierungseinheit
+der Studie, je Produkt mit allen Quellenbeobachtungen und der
+Belegstufe je Verknüpfung.
+
+Details: die Strategieakten
+[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) und
+[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (die Regeln,
+Schwellen und Bibliothekswahl werden dort als Anhänge-Entscheide
+R1–R9 und MA1–MA9 verankert).
 
 ## Fahrplan
 
@@ -363,15 +412,15 @@ begutachtete technische Design in
 | Dokument | Inhalt |
 |---|---|
 | [`management_summary.md`](docs/management_summary.md) | zweisprachige (DE/FR) Zusammenfassung für Entscheidungsträger |
-| [`METHODOLOGY.de.md`](docs/plan/3SM/10_STRATEGY/METHODOLOGY.de.md) | wie der Markt gemessen wird — einfache Sprache, mit Glossar |
-| [`DATA_SOURCE.de.md`](docs/plan/3SM/10_STRATEGY/DATA_SOURCE.de.md) | jede Quelle und die Zugriffsregeln — einfache Sprache, mit Glossar |
-| [`ARCHITECTURE.md`](docs/plan/3SM/10_STRATEGY/ARCHITECTURE.md) (EN) | das Sammelwerkzeug und das Reporting-Konzept (halbtechnisch) |
-| [`DATA_MODEL.md`](docs/plan/3SM/10_STRATEGY/DATA_MODEL.md) (EN) | die Evidenzdatenbank (technisch) |
-| [`LEAD_SDS.md`](docs/plan/3SM/10_STRATEGY/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
+| [`METHODOLOGY.de.md`](docs/study/METHODOLOGY.de.md) | wie der Markt gemessen wird — einfache Sprache, mit Glossar |
+| [`DATA_SOURCE.de.md`](docs/study/DATA_SOURCE.de.md) | jede Quelle und die Zugriffsregeln — einfache Sprache, mit Glossar |
+| [`ARCHITECTURE.md`](docs/study/ARCHITECTURE.md) (EN) | das Sammelwerkzeug und das Reporting-Konzept (halbtechnisch) |
+| [`DATA_MODEL.md`](docs/study/DATA_MODEL.md) (EN) | die Evidenzdatenbank (technisch) |
+| [`LEAD_SDS.md`](docs/study/LEAD_SDS.md) (EN) | Bleiverbindungen, EU-Recht, was Datenblätter verraten — und was nicht (halbtechnisch) |
 | [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) (EN) | Strategieentscheide, offene Fragen, Fahrplan |
 | [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) (EN) | technisches Design von Werkzeug + Datenbank |
 | [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) (EN) | Bauphasen-Pläne der Baueinheiten (v0.1.1–v0.1.3, v0.2.0–v0.2.4 gebaut) — Phasenverfolgung, Abnahme-Gates |
-| [`charts/`](docs/plan/3SM/10_STRATEGY/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
+| [`charts/`](docs/study/charts/) (EN) | die Diagramme mit ihren Quellen (referenziert aus den Detaildokumenten) |
 | [`3SM-README`](docs/plan/3SM/README.md) (EN) | einfachsprachige Anleitung zum Planungsbaum |
 
 ## Repository-Struktur
@@ -387,13 +436,13 @@ begutachtete technische Design in
     data/                      lokaler Arbeitszustand (gitignored): Datenbank, Raw-Speicher, Berichts-Zwischenstände
     docs/report/               publizierte Berichts-Finalfassungen (bewusst committet)
     docs/management_summary.md zweisprachige Management-Zusammenfassung (DE/FR), stets aktuell
+    docs/study/                Detaildokumentation der Studie (Methodik, Quellen, Architektur,
+                               Datenmodell, Blei-Hintergrund; Übersetzungen, charts/)
     docs/plan/3SM/             Planungsnotizen (3-Stufen-System, EN)
     ├── README.md              einfachsprachige Anleitung zum Planungsbaum (EN)
     ├── MASTER.md, LOG.md      Projekt-Dashboard, Lifecycle-Log (EN)
-    ├── 10_STRATEGY/           Recherchebefunde und Entscheide (was & warum)
-    │   ├── METHODOLOGY.de.md  Methodik, deutsch
-    │   ├── DATA_SOURCE.de.md  Datenquellen, deutsch
-    │   └── charts/            gerenderte Diagramme (referenziert aus den Detaildokumenten, EN)
+    ├── 10_STRATEGY/           Recherchebefunde und Entscheide (was & warum) —
+    │                          schlanke Themen-Zusammenfassungen; Details in docs/study/
     ├── 20_DESIGN/             technisches Design (wie genau, EN)
     └── _archive/              überholtes Material
 

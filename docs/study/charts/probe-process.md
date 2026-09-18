@@ -1,7 +1,7 @@
 # Probe workflow — per source class
 
 Source of truth: 20_DESIGN/MASTER/interfaces.md (adapter contract,
-exception mapping) and 10_STRATEGY/DATA_SOURCE.md (probing pass).
+exception mapping) and docs/study/DATA_SOURCE.md (probing pass).
 Rendered with --type flowchart.
 
 ## Process

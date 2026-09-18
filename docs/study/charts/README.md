@@ -1,8 +1,5 @@
 ---
-unit: v0.1.1
-stage: STRATEGY
-lifecycle: LIVE
-updated: 2026-09-11
+updated: 2026-09-18
 ---
 
 # Strategy charts — rendered diagrams
@@ -23,13 +20,13 @@ decision — superseded); see the archive note below.
 
 | Chart | Type | Shows | Source of truth | Used in |
 |---|---|---|---|---|
-| architecture-components | component | `leadhs` system: CLI, modules, raw store, SQLite | 20_DESIGN/MASTER/architecture.md | project README, 10_STRATEGY/ARCHITECTURE.md |
-| lead-decision-tree | decision_tree | lead determination & blind-spot logic: SDS Sec. 3 → declared ≥0.1% → Swiss ban → corroboration | 10_STRATEGY/METHODOLOGY.md + LEAD_SDS.md | project README, 10_STRATEGY/METHODOLOGY.md |
-| probe-process | flowchart | probe workflow per source class: robots/terms check → polite fetch → blocked/format decisions → sampling → raw archive | 20_DESIGN/MASTER/interfaces.md + 10_STRATEGY/DATA_SOURCE.md | project README, 10_STRATEGY/ARCHITECTURE.md |
+| architecture-components | component | `leadhs` system: CLI, modules, raw store, SQLite | [20_DESIGN/MASTER/architecture.md](../../plan/3SM/20_DESIGN/MASTER/architecture.md) | project README, docs/study/ARCHITECTURE.md |
+| lead-decision-tree | decision_tree | lead determination & blind-spot logic: SDS Sec. 3 → declared ≥0.1% → Swiss ban → corroboration | docs/study/METHODOLOGY.md + LEAD_SDS.md | project README, docs/study/METHODOLOGY.md |
+| probe-process | flowchart | probe workflow per source class: robots/terms check → polite fetch → blocked/format decisions → sampling → raw archive | [20_DESIGN/MASTER/interfaces.md](../../plan/3SM/20_DESIGN/MASTER/interfaces.md) + [docs/study/DATA_SOURCE.md](../DATA_SOURCE.md) | project README, docs/study/ARCHITECTURE.md |
 
 `probe-process` was re-rendered 2026-09-11 to match the reviewed
 design semantics (blocked runs end `run blocked, exit 2`; 429 gets
-one capped backoff) — see 20_DESIGN/FIXPLAN_2026-09-11.md (C-1).
+one capped backoff) — see [20_DESIGN/FIXPLAN_2026-09-11.md](../../plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md) (C-1).
 
 ## Archive note
 
@@ -37,12 +34,12 @@ Three further charts (pipeline-data-flow, run-state-machine,
 data-model-er) were superseded on 2026-09-11 and moved — with their
 sources and renders — to:
 
-    ../../_archive/10_STRATEGY/charts/
+    ../../plan/3SM/_archive/10_STRATEGY/charts/
 
 The written Strategy/Design documents remain authoritative for those
-subjects (pipeline stages and run states: 10_STRATEGY/ARCHITECTURE.md
+subjects (pipeline stages and run states: docs/study/ARCHITECTURE.md
 and 20_DESIGN/MASTER/architecture.md; data model:
-10_STRATEGY/DATA_MODEL.md and 20_DESIGN/MASTER/data_model.md).
+docs/study/DATA_MODEL.md and 20_DESIGN/MASTER/data_model.md).
 
 ## Regeneration
 
@@ -53,11 +50,13 @@ From the skill directory, per chart:
 (Z.ai provider; with a coding-plan key the provider's default
 endpoint 404s — patch `API_BASE` to `https://api.z.ai/api/coding/paas/v4`
 at runtime, as done 2026-09-11; the wrapper source is embedded in
-20_DESIGN/FIXPLAN_2026-09-11.md.)
+[20_DESIGN/FIXPLAN_2026-09-11.md](../../plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md).)
 
 ## DECISIONS
 
-- c1: charts live in `10_STRATEGY/charts/` as Strategy proposals;
+- c1 (amended 2026-09-18, documentation-tree split): active charts live in
+  `docs/study/charts/` beside the public detail documents as Strategy
+  proposals;
   written Strategy/Design documents win on any ambiguity.
 - c2: one chart type per subject; the source markdown files are the
   semantic record and stay beside the renders.
