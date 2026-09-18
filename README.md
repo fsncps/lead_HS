@@ -23,21 +23,36 @@ no physical samples, no paid data sources.**
 plain language for non-specialist readers, each with a glossary;
 specialist terms are also explained at first use.*
 
-## The questions
+## Context
 
-1. **How many** paint products are on the EU market under HS
-   3208/3209? Customs statistics count tonnes and euros, and no product
-   register exists — so the study counts **base formulations** (one
-   recipe, however many colour shades or container sizes are sold from
-   it) and assembles the market size from several independent official
-   sources.
-2. **For how many products can detailed documentation be obtained** —
-   SDS and comparable specifications — and through which sources?
-3. **What does that documentation show about lead** — as colour
-   pigment, rust inhibitor or drying agent — across a significant
-   sample of products?
+The **Cassis-de-Dijon principle** (adopted unilaterally by Switzerland
+in 2010, THG Art. 16a): products lawfully sold in the EU may, as a
+rule, also be sold in Switzerland. Its exceptions are catalogued in the
+**VIPaV** (SR 946.513.8); the first entry concerns **lead-containing
+paints**, keeping the stricter Swiss limit applicable to imports
+(ChemRRV Anhang 2.8: banned from 0.01% total lead). The catalogue is
+reviewed every five years, most recently in 2023, under SECO's lead.
 
-## Method
+The study supplies documented market numbers in this context; it is a
+documentation study and takes no position on the regulation itself.
+Switzerland enters the study only as this regulatory frame — the
+market under study is the EU's.
+
+
+### What earlier research shows
+
+| Lead use | Documented status on the EU market |
+|---|---|
+| Lead chromate pigments | no lawful supply since 17 Mar 2022 (last authorisations refused) |
+| Red-lead (minium) primers | documented niche presence (marine suppliers in DE; SE professionals only) |
+| Lead driers in alkyd paints | unknown — the key open question for the survey |
+| Artists' oil colours with lead white | documented (NL, IT) — tariff heading 3213 |
+
+Detail and sources:
+[LEAD_SDS.md](docs/study/LEAD_SDS.md).
+
+
+## Goals & methodology
 
 The study proceeds in three steps: size the market, obtain
 documentation for a significant sample, analyse.
@@ -54,25 +69,93 @@ documentation for a significant sample, analyse.
   sees *declared* lead, not *total* lead; this blind spot is carried in
   every deliverable.
 
+The study answers three questions:
+
+1. **How many** paint products are on the EU market under HS
+   3208/3209? Customs statistics count tonnes and euros, and no product
+   register exists — so the study counts **base formulations** (one
+   recipe, however many colour shades or container sizes are sold from
+   it) and assembles the market size from several independent official
+   sources.
+2. **For how many products can detailed documentation be obtained** —
+   SDS and comparable specifications — and through which sources?
+3. **What does that documentation show about lead** — as colour
+   pigment, rust inhibitor or drying agent — across a significant
+   sample of products?
+
 Full method, in plain language with a glossary:
 [methodology document](docs/study/METHODOLOGY.md).
 
-## Legal context
 
-The **Cassis-de-Dijon principle** (adopted unilaterally by Switzerland
-in 2010, THG Art. 16a): products lawfully sold in the EU may, as a
-rule, also be sold in Switzerland. Its exceptions are catalogued in the
-**VIPaV** (SR 946.513.8); the first entry concerns **lead-containing
-paints**, keeping the stricter Swiss limit applicable to imports
-(ChemRRV Anhang 2.8: banned from 0.01% total lead). The catalogue is
-reviewed every five years, most recently in 2023, under SECO's lead.
+## Data sources
 
-The study supplies documented market numbers in this context; it is a
-documentation study and takes no position on the regulation itself.
-Switzerland enters the study only as this regulatory frame — the
-market under study is the EU's.
+The collection draws on a register of **108 public sources** —
+official statistics and product registers, ecolabel and EPD
+catalogues, manufacturer and retailer catalogues, trade
+associations — maintained in the tool and characterized by polite
+probing before any collection: robots/terms checks, one
+finding-per-source feasibility records, honest "no data" records
+with the structural reason instead of silent failures. Access
+discipline: publicly retrievable documents only, minimal cost, no
+bulk hammering, crawl-delay respected.
 
-## Where the study stands (current unit: v0.2.4)
+A curated **`data_sources.csv`** tracks the sources meeting the
+confirmed-bulk gate (bulk product data + identity tuple =
+manufacturer + product ident): today **AS-2 EU Ecolabel (≈17,013
+distinct paint products)** and **AS-3 — Nordic Swan (≈2,322)**;
+**AS-33 BASTA** (195,391 construction articles via its own
+anonymous web-client route) joins once a server-side paint filter
+is pinned. Detail:
+[Data sources](docs/study/DATA_SOURCE.md) (plain language, glossary,
+DE/FR translations).
+
+
+## Project status: next steps (v0.3)
+
+The next build phase turns the confirmed bulk sources into one
+consolidated product database, in two layers:
+
+**1. Bulk source download (raw layer).** Each confirmed bulk source —
+EU Ecolabel (≈17,013 distinct products), Nordic Swan (≈2,322), and
+BASTA (195,391 articles; pinned via its own anonymous web-client
+route) — gets downloaded into a **per-source raw table**: verbatim,
+unfiltered, one row per source record, with the manufacturer name,
+product identifier and product-group code exactly as the source
+writes them. The downloads are repeatable (interrupt, resume), incremental
+(rerun updates only new/changed records via a change journal) and
+manifest-driven (a committed per-source manifest defines the table
+shape before any data flows; oversize records spill to the raw store,
+nothing is dropped). Politeness: list-endpoint-first crawling with
+rate limits and backoff, seeded through the existing `GO=1`-gated CLI
+(`leadhs raw init <source>` / `leadhs raw seed <source>`).
+
+**2. Deterministic normalization and merging (matching layer).** To
+merge the same product seen in several sources, names and identifiers
+are normalized deterministically (no LLM/machine-learning matching —
+every match must stay explainable and reproducible): Unicode
+diacritic folding, case folding, legal-form token stripping
+("Foo-Bar Ltd." ≙ "Foo Bar Limited" → `foo bar`), identifier
+uppercasing/padding/prefix cleanup ("ABC-123/B" ≙ "abc00123b" →
+`ABC123B`). Records are then linked in tiers: exact keys first
+(GTIN/EAN; normalized identifier within the same normalized
+manufacturer), then scored near-matches (Jaro-Winkler, token-set
+similarity) restricted to small candidate blocks so that 200k+ rows
+stay tractable. Each candidate link carries a verdict —
+`auto_match` (high score / exact-key backed) / `review` (human
+queue) / `no_match` — with method and scores stored per pair, so the
+merged product view is fully auditable and corrections are
+append-only. The merged output: **manufacturer table and product
+table** collapsed to the study's formulation unit, every product
+carrying its per-source observations and each match's evidence tier.
+
+Details: the strategy files
+[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) and
+[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (norms,
+thresholds and library choice are pinned there as the pending
+adoption decisions R1–R9 and MA1–MA9).
+
+
+## Project status: previous units, results and gaps
 
 The current unit answers the management question per large register:
 **what does a product row look like there** — which fields, which
@@ -107,9 +190,7 @@ Details: [report-0.2.4.md](docs/report/report-0.2.4.md) (D37–D40
 addenda), the [source register](docs/study/DATA_SOURCE.md), and the
 [detailed addenda in this section's history](docs/report/csv-sample.manifest.md).
 
-## Previous units
-
-### v0.2.3 — pool estimate v2: meta-benchmarking vote (2026-09-14)
+#### v0.2.3 — pool estimate v2: meta-benchmarking vote (2026-09-14)
 
 Seven independent benchmark quantities estimate the EU paint pool;
 each votes into one of five contiguous magnitude classes, a pinned
@@ -120,7 +201,7 @@ open items). Details:
 [report-0.2.3.md](docs/report/report-0.2.3.md),
 [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md).
 
-### v0.2.2 — the three-question funnel (2026-09-14)
+#### v0.2.2 — the three-question funnel (2026-09-14)
 
 The real-network landscape run (reconnaissance-only) assembles Q1
 pool model **[85,840–343,360]** (superseded by the v0.2.3 vote; kept
@@ -129,58 +210,21 @@ for the publish history), Q2 identity floor **17,170** distinct
 (modeled). Every number a database query; source register fully
 dispositioned. Details: [report-0.2.2.md](docs/report/report-0.2.2.md).
 
-### v0.2.1 — source capability sounding-out (2026-09-14)
+#### v0.2.1 — source capability sounding-out (2026-09-14)
 
 The official registers characterised against the product model:
 **ECAT confirmed as a real-product source** (manufacturer + GTIN/EAN,
 CSV export), preliminary N2 numerator **17,838** — a floor, never a
 market total. Details: [report-0.2.1.md](docs/report/report-0.2.1.md).
 
-### v0.2.0 — data-landscape map (2026-09-12)
+#### v0.2.0 — data-landscape map (2026-09-12)
 
 Reconnaissance-only probe: **N1** market anchors (2024 extra-EU
 imports ≈ HS 3208 €12.2 bn + 3209 €6.2 bn; ≈3,200 enterprises),
 **N2 = 204,693** sitemap-visible product URLs, **N3 = 9** sites with a
 visible SDS library. Details: [report-0.2.0.md](docs/report/report-0.2.0.md).
 
-## What earlier research shows
-
-| Lead use | Documented status on the EU market |
-|---|---|
-| Lead chromate pigments | no lawful supply since 17 Mar 2022 (last authorisations refused) |
-| Red-lead (minium) primers | documented niche presence (marine suppliers in DE; SE professionals only) |
-| Lead driers in alkyd paints | unknown — the key open question for the survey |
-| Artists' oil colours with lead white | documented (NL, IT) — tariff heading 3213 |
-
-Detail and sources:
-[LEAD_SDS.md](docs/study/LEAD_SDS.md).
-
-## The tool
-
-Data collection and bookkeeping run on **`leadhs`**, a small
-command-line program — no server, one machine, a local SQLite
-database. Every fetched document is archived unchanged, with its
-source, retrieval date and a content hash; every number in a report
-traces back to a specific run and document. The tool stores product
-data only.
-
-- In this repository: `make setup` (install, migrate the database,
-  load the source register, environment preflight) and `make help`
-  (index of all commands).
-- Outside the repository: build the wheel (`uv build`) and install it
-  with a managed interpreter (`uv tool install dist/leadhs-*.whl`),
-  always working with an explicit data directory (`leadhs --data-dir
-  ~/leadhs-data …`). This path is build-verified; published release
-  assets are still pending. An installer for vanilla Windows (no
-  make, no preinstalled Python) is a stated goal for v0.3.
-- Operations that touch real sites are gated behind an explicit
-  `GO=1`.
-
-Detail: [architecture](docs/study/ARCHITECTURE.md) and
-[data model](docs/study/DATA_MODEL.md); the reviewed
-technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
-
-## How the work progressed — a review of v0.1 and v0.2
+### How the work progressed — a review of v0.1 and v0.2
 
 The study was built bottom-up, in small verified units, and that
 process shaped what it can say today.
@@ -230,61 +274,34 @@ the corroboration-instead-of-lab constraint, the declared-vs-total
 lead blind spot stated in every deliverable, and provenance on every
 number.
 
-## Planned next: from bulk download to one product table (v0.3)
 
-The next build phase turns the confirmed bulk sources into one
-consolidated product database, in two layers:
+## The tool: CLI, database, architecture
 
-**1. Bulk source download (raw layer).** Each confirmed bulk source —
-EU Ecolabel (≈17,013 distinct products), Nordic Swan (≈2,322), and
-BASTA (195,391 articles; pinned via its own anonymous web-client
-route) — gets downloaded into a **per-source raw table**: verbatim,
-unfiltered, one row per source record, with the manufacturer name,
-product identifier and product-group code exactly as the source
-writes them. The downloads are repeatable (interrupt, resume), incremental
-(rerun updates only new/changed records via a change journal) and
-manifest-driven (a committed per-source manifest defines the table
-shape before any data flows; oversize records spill to the raw store,
-nothing is dropped). Politeness: list-endpoint-first crawling with
-rate limits and backoff, seeded through the existing `GO=1`-gated CLI
-(`leadhs raw init <source>` / `leadhs raw seed <source>`).
+Data collection and bookkeeping run on **`leadhs`**, a small
+command-line program — no server, one machine, a local SQLite
+database. Every fetched document is archived unchanged, with its
+source, retrieval date and a content hash; every number in a report
+traces back to a specific run and document. The tool stores product
+data only.
 
-**2. Deterministic normalization and merging (matching layer).** To
-merge the same product seen in several sources, names and identifiers
-are normalized deterministically (no LLM/machine-learning matching —
-every match must stay explainable and reproducible): Unicode
-diacritic folding, case folding, legal-form token stripping
-("Foo-Bar Ltd." ≙ "Foo Bar Limited" → `foo bar`), identifier
-uppercasing/padding/prefix cleanup ("ABC-123/B" ≙ "abc00123b" →
-`ABC123B`). Records are then linked in tiers: exact keys first
-(GTIN/EAN; normalized identifier within the same normalized
-manufacturer), then scored near-matches (Jaro-Winkler, token-set
-similarity) restricted to small candidate blocks so that 200k+ rows
-stay tractable. Each candidate link carries a verdict —
-`auto_match` (high score / exact-key backed) / `review` (human
-queue) / `no_match` — with method and scores stored per pair, so the
-merged product view is fully auditable and corrections are
-append-only. The merged output: **manufacturer table and product
-table** collapsed to the study's formulation unit, every product
-carrying its per-source observations and each match's evidence tier.
+- In this repository: `make setup` (install, migrate the database,
+  load the source register, environment preflight) and `make help`
+  (index of all commands).
+- Outside the repository: build the wheel (`uv build`) and install it
+  with a managed interpreter (`uv tool install dist/leadhs-*.whl`),
+  always working with an explicit data directory (`leadhs --data-dir
+  ~/leadhs-data …`). This path is build-verified; published release
+  assets are still pending. An installer for vanilla Windows (no
+  make, no preinstalled Python) is a stated goal for v0.3.
+- Operations that touch real sites are gated behind an explicit
+  `GO=1`.
 
-Details: the strategy files
-[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) and
-[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (norms,
-thresholds and library choice are pinned there as the pending
-adoption decisions R1–R9 and MA1–MA9).
+Detail: [architecture](docs/study/ARCHITECTURE.md) and
+[data model](docs/study/DATA_MODEL.md); the reviewed
+technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 
-## Roadmap
 
-| Phase | Content |
-|---|---|
-| 0 — current | Map the data landscape; the three numbers N1/N2/N3; probe the official registers' capability |
-| 1 | Pilot: freeze the lead dictionary; SDS collection and parsing on a first sample |
-| 2 | Frame and sample build; documentation collection at full scale; artists' colours annex (3213), capacity permitting |
-| 3 | Cross-document corroboration and quality assurance |
-| 4 | Analysis; discussion basis; database freeze |
-
-## Where to read more
+## More detailed documentation (methodology, architecture, database)
 
 | Document | What it covers |
 |---|---|
@@ -299,6 +316,18 @@ adoption decisions R1–R9 and MA1–MA9).
 | [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.4 built) — phase tracking, exit gates |
 | [`charts/`](docs/study/charts/) | the diagrams, with their sources (referenced from the detail docs) |
 | [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
+
+
+## Roadmap
+
+| Phase | Content |
+|---|---|
+| 0 — current | Map the data landscape; the three numbers N1/N2/N3; probe the official registers' capability |
+| 1 | Pilot: freeze the lead dictionary; SDS collection and parsing on a first sample |
+| 2 | Frame and sample build; documentation collection at full scale; artists' colours annex (3213), capacity permitting |
+| 3 | Cross-document corroboration and quality assurance |
+| 4 | Analysis; discussion basis; database freeze |
+
 
 ## Repository layout
 
@@ -320,6 +349,7 @@ adoption decisions R1–R9 and MA1–MA9).
     │                          slim topic summaries; detail lives in docs/study/
     ├── 20_DESIGN/             technical design (how exactly)
     └── _archive/              superseded material
+
 
 ## Status
 

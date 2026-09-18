@@ -32,8 +32,36 @@ rédigés en langage clair pour des lecteurs non spécialistes, chacun
 avec un glossaire ; les termes spécialisés sont également expliqués à
 leur première utilisation.*
 
-## Les questions
+## Contexte
 
+Le **principe Cassis-de-Dijon** (repris unilatéralement par la Suisse
+en 2010, LOTC art. 16a) : les produits légalement vendus dans l'UE
+peuvent en règle générale aussi être vendus en Suisse. Ses exceptions
+sont cataloguées dans l'**OPPr** (RS 946.513.8) ; la première rubrique
+concerne les **peintures contenant du plomb** et maintient la limite
+suisse plus stricte pour les importations (ORRChim, annexe 2.8 :
+interdiction dès 0,01 % de plomb total). Le catalogue est réexaminé
+tous les cinq ans, la dernière fois en 2023, sous la conduite du SECO.
+
+L'étude fournit dans ce contexte des chiffres de marché documentés ;
+c'est une étude documentaire qui ne prend pas position sur la
+réglementation elle-même. La Suisse n'intervient dans l'étude que
+comme ce cadre réglementaire — le marché étudié est celui de l'UE.
+
+### Ce que les recherches antérieures montrent
+
+| Usage du plomb | Situation documentée sur le marché de l'UE |
+|---|---|
+| Pigments au chromate de plomb | aucun approvisionnement légal depuis le 17 mars 2022 (dernières autorisations refusées) |
+| Primaires au minium de plomb | présence documentée dans des niches (fournisseurs marins en DE ; professionnels SE uniquement) |
+| Siccatifs au plomb dans les peintures alkydes | inconnu — la principale question ouverte de l'enquête |
+| Couleurs à l'huile au blanc de plomb | documentées (NL, IT) — position tarifaire 3213 |
+
+Détails et sources :
+[LEAD_SDS.md](docs/study/LEAD_SDS.md) (EN).
+
+
+## Objectifs & méthodologie
 1. **Combien** de produits de peinture le marché de l'UE compte-t-il
    sous HS 3208/3209 ? Les statistiques douanières comptent des tonnes
    et des euros, et aucun registre de produits n'existe — l'étude
@@ -47,8 +75,6 @@ leur première utilisation.*
 3. **Que révèle cette documentation sur le plomb** — comme pigment de
    couleur, inhibiteur de rouille ou siccatif — sur un échantillon
    significatif de produits ?
-
-## Méthode
 
 L'étude procède en trois temps : établir la taille du marché, obtenir
 la documentation d'un échantillon significatif, analyser.
@@ -71,24 +97,79 @@ la documentation d'un échantillon significatif, analyser.
 Méthode complète, en langage clair avec glossaire :
 [document méthodologie](docs/study/METHODOLOGY.fr.md).
 
-## Contexte juridique
 
-Le **principe Cassis-de-Dijon** (repris unilatéralement par la Suisse
-en 2010, LOTC art. 16a) : les produits légalement vendus dans l'UE
-peuvent en règle générale aussi être vendus en Suisse. Ses exceptions
-sont cataloguées dans l'**OPPr** (RS 946.513.8) ; la première rubrique
-concerne les **peintures contenant du plomb** et maintient la limite
-suisse plus stricte pour les importations (ORRChim, annexe 2.8 :
-interdiction dès 0,01 % de plomb total). Le catalogue est réexaminé
-tous les cinq ans, la dernière fois en 2023, sous la conduite du SECO.
+## Sources de données
+La collecte s'appuie sur un registre de **108 sources publiques** —
+statistiques et registres officiels de produits, catalogues
+d'écolabels et EPD, catalogues fabricants et commerçants,
+associations sectorielles — tenu dans l'outil et sondé poliment
+avant toute collecte : vérifications robots/conditions, un constat
+de faisabilité par source, des entrées honnêtes « aucune donnée »
+avec le motif structurel au lieu d'échecs silencieux. Discipline
+d'accès : documents publiquement récupérables uniquement, coût
+minimal, pas de martelage de masse, crawl-delay respecté.
 
-L'étude fournit dans ce contexte des chiffres de marché documentés ;
-c'est une étude documentaire qui ne prend pas position sur la
-réglementation elle-même. La Suisse n'intervient dans l'étude que
-comme ce cadre réglementaire — le marché étudié est celui de l'UE.
+Le **`data_sources.csv`** curaté recense les sources à données
+produit de masse confirmées (masse + tuple d'identité =
+fabricant + ident produit) : aujourd'hui **AS-2 Écolabel
+européen (≈17 013 peintures distinctes)** et **AS-3 Cygne
+Nordique (≈2 322)** ; **AS-33 BASTA** (195 391 articles de
+construction via sa propre route anonyme client web) joint la
+liste dès qu'un filtre de peinture côté serveur est épinglé.
+Détail : [sources de données](docs/study/DATA_SOURCE.fr.md)
+(langage clair, glossaire ; document parent EN).
 
-## Où en est l'étude (unité actuelle : v0.2.4)
 
+## État du projet : prochaines étapes (v0.3)
+La prochaine phase de construction transformera les sources de masse
+confirmées en une base produit consolidée, en deux couches :
+
+**1. Téléchargement des sources de masse (couche brute).** Chaque
+source de masse confirmée — Écolabel européen (≈17 013 distincts),
+Cygne Nordique (≈2 322) et BASTA (195 391 articles ; via sa propre
+route anonyme client web) — est copiée dans une **table brute par
+source** : verbatim, sans filtrage, une ligne par enregistrement
+source, avec le nom du fabricant, l'identifiant produit et le code
+de groupe exactement comme écrits par la source. Les
+téléchargements sont répétables (interruption, reprise),
+incrémentaux (une relance ne traite que les enregistrements
+nouveaux/modifiés via un journal des changements) et pilotés par
+manifeste (un manifeste committé par source définit la forme de la
+table avant que les données ne coulent ; les enregistrements trop
+gros débordent dans le stockage brut, rien n'est perdu).
+Politesse : endpoints de liste d'abord, limitation de débit et
+backoff, via la CLI existante sous `GO=1`
+(`leadhs raw init <source>` / `leadhs raw seed <source>`).
+
+**2. Normalisation déterministe et fusion (couche de rapprochement).**
+Pour fusionner le même produit vu dans plusieurs sources, noms et
+identifiants sont normalisés de façon déterministe (pas de LLM ni
+d'apprentissage — chaque lien reste explicable et reproductible) :
+pliage des diacritiques Unicode, casse normalisée, suppression des
+jetons de forme juridique (« Foo-Bar Ltd. » ≙ « Foo Bar Limited » →
+`foo bar`), nettoyage des identifiants (majuscules, zéros, préfixes ;
+« ABC-123/B » ≙ « abc00123b » → `ABC123B`). Les enregistrements
+sont ensuite liés par paliers : d'abord les clés exactes
+(GTIN/EAN ; identifiant normalisé au sein du même fabricant
+normalisé), puis les quasi-correspondances scorées
+(Jaro-Winkler, similarité token-set) — uniquement dans de petits
+blocs de candidats, pour que 200 k+ lignes restent traitables.
+Chaque lien porte un verdict — `auto_match` /
+`review` (file humaine) / `no_match` — avec méthode et scores par
+paire ; la vue produit fusionnée reste entièrement auditable, les
+corrections sont append-only. Résultat : une **table fabricants et
+une table produits** ramenées à l'unité formulation de l'étude,
+chaque produit portant ses observations par source et le niveau de
+preuve de chaque lien.
+
+Détails : les fichiers de stratégie
+[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) et
+[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (règles,
+seuils et choix de bibliothèque y sont verrouillés comme décisions
+d'adoption en attente R1–R9 et MA1–MA9).
+
+
+## État du projet : unités antérieures, résultats et lacunes
 L'unité v0.2.4 répond à la question de gestion par grand registre :
 **comment se présente une ligne produit là-bas** — quels champs, quelles
 colonnes d'identifiants, le recoupement est-il possible ? — avec des
@@ -124,9 +205,7 @@ troisième ligne `data_sources.csv`. Détails :
 [report-0.2.4.md](docs/report/report-0.2.4.md) (addenda D37–D40, EN)
 et le [registre des sources](docs/study/DATA_SOURCE.md).
 
-## Unités antérieures
-
-### v0.2.3 — estimation de pool v2 : vote méta-benchmark (14.09.2026)
+#### v0.2.3 — estimation de pool v2 : vote méta-benchmark (14.09.2026)
 
 Sept quantités de référence indépendantes estiment le pool de
 peintures UE ; chacune vote dans l'une des cinq classes de grandeur,
@@ -137,7 +216,7 @@ non adjacents notés en points ouverts). Détails :
 [report-0.2.3.md](docs/report/report-0.2.3.md) (EN),
 [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
 
-### v0.2.2 — l'entonnoir à trois questions (14.09.2026)
+#### v0.2.2 — l'entonnoir à trois questions (14.09.2026)
 
 Le parcours du paysage sur le réseau réel (reconnaissance seule) :
 Q1 modèle de pool **[85'840–343'360]** (supplanté par le v0.2.3 ;
@@ -147,7 +226,7 @@ atteignable **≈3'590** (modélisé). Chaque nombre est un résultat de
 requête ; registre des sources entièrement statué. Détails :
 [report-0.2.2.md](docs/report/report-0.2.2.md) (EN).
 
-### v0.2.1 — capacité des sources sondée (14.09.2026)
+#### v0.2.1 — capacité des sources sondée (14.09.2026)
 
 Les registres officiels caractérisés contre le modèle produit :
 **ECAT confirmé source produit réelle** (fabricant + GTIN/EAN, CSV
@@ -155,7 +234,7 @@ téléchargeable), numérateur N2 préliminaire **17'838** — un plancher,
 jamais un total de marché. Détails :
 [report-0.2.1.md](docs/report/report-0.2.1.md) (EN).
 
-### v0.2.0 — carte du paysage des données (12.09.2026)
+#### v0.2.0 — carte du paysage des données (12.09.2026)
 
 Sondage en reconnaissance seule : **N1** ancrés de marché (2024,
 importations extra-UE ≈12,2 + 6,2 milliards € ; ≈3'200 entreprises),
@@ -163,46 +242,7 @@ importations extra-UE ≈12,2 + 6,2 milliards € ; ≈3'200 entreprises),
 avec une bibliothèque FDS visible. Détails :
 [report-0.2.0.md](docs/report/report-0.2.0.md) (EN).
 
-## Ce que les recherches antérieures montrent
-
-| Usage du plomb | Situation documentée sur le marché de l'UE |
-|---|---|
-| Pigments au chromate de plomb | aucun approvisionnement légal depuis le 17 mars 2022 (dernières autorisations refusées) |
-| Primaires au minium de plomb | présence documentée dans des niches (fournisseurs marins en DE ; professionnels SE uniquement) |
-| Siccatifs au plomb dans les peintures alkydes | inconnu — la principale question ouverte de l'enquête |
-| Couleurs à l'huile au blanc de plomb | documentées (NL, IT) — position tarifaire 3213 |
-
-Détails et sources :
-[LEAD_SDS.md](docs/study/LEAD_SDS.md) (EN).
-
-## L'outil
-
-La collecte des données et leur traçabilité reposent sur **`leadhs`**,
-un petit programme en ligne de commande — pas de serveur, une machine,
-une base SQLite locale. Chaque document récupéré est archivé à
-l'identique, avec sa source, sa date de récupération et une empreinte
-de son contenu ; chaque chiffre d'un rapport remonte à une exécution
-et à un document précis. L'outil ne stocke que des données produit.
-
-- Dans ce dépôt : `make setup` (installation, migration de la base,
-  chargement du registre des sources, contrôle préalable de
-  l'environnement) et `make help` (index de toutes les commandes).
-- Hors du dépôt : construire le wheel (`uv build`) et l'installer avec
-  un interpréteur géré (`uv tool install dist/leadhs-*.whl`), en
-  travaillant toujours avec un dossier de données explicite
-  (`leadhs --data-dir ~/leadhs-data …`). Cette voie est vérifiée par
-  construction ; les artefacts de version publiés restent à venir. Un
-  installateur pour Windows brut (sans make, sans Python
-  préinstallé) est un objectif affiché pour v0.3.
-- Les opérations qui touchent de vrais sites sont gardées derrière un
-  `GO=1` explicite.
-
-Détails : [architecture](docs/study/ARCHITECTURE.md) et
-[modèle de données](docs/study/DATA_MODEL.md) (EN) ;
-conception technique revue dans
-[20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
-
-## Comment le travail a avancé — revue de v0.1 et v0.2
+### Comment le travail a avancé — revue de v0.1 et v0.2
 
 L'étude s'est construite par la base, en petites unités vérifiées —
 et ce process façonne ce qu'elle peut affirmer aujourd'hui.
@@ -253,67 +293,35 @@ formulation comme unité de comptage, la corroboration au lieu du
 laboratoire, l'angle mort déclarée-vs-total signalé dans chaque
 livrable, et la provenance de chaque nombre.
 
-## Prévu : du téléchargement de masse à la table produit unique (v0.3)
 
-La prochaine phase de construction transformera les sources de masse
-confirmées en une base produit consolidée, en deux couches :
+## L'outil : CLI, base de données, architecture
+La collecte des données et leur traçabilité reposent sur **`leadhs`**,
+un petit programme en ligne de commande — pas de serveur, une machine,
+une base SQLite locale. Chaque document récupéré est archivé à
+l'identique, avec sa source, sa date de récupération et une empreinte
+de son contenu ; chaque chiffre d'un rapport remonte à une exécution
+et à un document précis. L'outil ne stocke que des données produit.
 
-**1. Téléchargement des sources de masse (couche brute).** Chaque
-source de masse confirmée — Écolabel européen (≈17 013 distincts),
-Cygne Nordique (≈2 322) et BASTA (195 391 articles ; via sa propre
-route anonyme client web) — est copiée dans une **table brute par
-source** : verbatim, sans filtrage, une ligne par enregistrement
-source, avec le nom du fabricant, l'identifiant produit et le code
-de groupe exactement comme écrits par la source. Les
-téléchargements sont répétables (interruption, reprise),
-incrémentaux (une relance ne traite que les enregistrements
-nouveaux/modifiés via un journal des changements) et pilotés par
-manifeste (un manifeste committé par source définit la forme de la
-table avant que les données ne coulent ; les enregistrements trop
-gros débordent dans le stockage brut, rien n'est perdu).
-Politesse : endpoints de liste d'abord, limitation de débit et
-backoff, via la CLI existante sous `GO=1`
-(`leadhs raw init <source>` / `leadhs raw seed <source>`).
+- Dans ce dépôt : `make setup` (installation, migration de la base,
+  chargement du registre des sources, contrôle préalable de
+  l'environnement) et `make help` (index de toutes les commandes).
+- Hors du dépôt : construire le wheel (`uv build`) et l'installer avec
+  un interpréteur géré (`uv tool install dist/leadhs-*.whl`), en
+  travaillant toujours avec un dossier de données explicite
+  (`leadhs --data-dir ~/leadhs-data …`). Cette voie est vérifiée par
+  construction ; les artefacts de version publiés restent à venir. Un
+  installateur pour Windows brut (sans make, sans Python
+  préinstallé) est un objectif affiché pour v0.3.
+- Les opérations qui touchent de vrais sites sont gardées derrière un
+  `GO=1` explicite.
 
-**2. Normalisation déterministe et fusion (couche de rapprochement).**
-Pour fusionner le même produit vu dans plusieurs sources, noms et
-identifiants sont normalisés de façon déterministe (pas de LLM ni
-d'apprentissage — chaque lien reste explicable et reproductible) :
-pliage des diacritiques Unicode, casse normalisée, suppression des
-jetons de forme juridique (« Foo-Bar Ltd. » ≙ « Foo Bar Limited » →
-`foo bar`), nettoyage des identifiants (majuscules, zéros, préfixes ;
-« ABC-123/B » ≙ « abc00123b » → `ABC123B`). Les enregistrements
-sont ensuite liés par paliers : d'abord les clés exactes
-(GTIN/EAN ; identifiant normalisé au sein du même fabricant
-normalisé), puis les quasi-correspondances scorées
-(Jaro-Winkler, similarité token-set) — uniquement dans de petits
-blocs de candidats, pour que 200 k+ lignes restent traitables.
-Chaque lien porte un verdict — `auto_match` /
-`review` (file humaine) / `no_match` — avec méthode et scores par
-paire ; la vue produit fusionnée reste entièrement auditable, les
-corrections sont append-only. Résultat : une **table fabricants et
-une table produits** ramenées à l'unité formulation de l'étude,
-chaque produit portant ses observations par source et le niveau de
-preuve de chaque lien.
+Détails : [architecture](docs/study/ARCHITECTURE.md) et
+[modèle de données](docs/study/DATA_MODEL.md) (EN) ;
+conception technique revue dans
+[20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
 
-Détails : les fichiers de stratégie
-[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) et
-[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (règles,
-seuils et choix de bibliothèque y sont verrouillés comme décisions
-d'adoption en attente R1–R9 et MA1–MA9).
 
-## Feuille de route
-
-| Phase | Contenu |
-|---|---|
-| 0 — en cours | Cartographier le paysage des données ; les trois chiffres N1/N2/N3 ; sonder la capacité des registres officiels |
-| 1 | Pilote : figer le dictionnaire du plomb ; collecte et analyse des FDS sur un premier échantillon |
-| 2 | Base d'échantillonnage et tirage ; collecte de documentation à pleine échelle ; annexe couleurs d'artistes (3213), selon la capacité |
-| 3 | Recoupement inter-documents et assurance qualité |
-| 4 | Analyse ; base de discussion ; gel de la base de données |
-
-## Pour en savoir plus
-
+## Documentation de détail (méthodologie, architecture, base de données)
 | Document | Contenu |
 |---|---|
 | [`management_summary.md`](docs/management_summary.md) | synthèse bilingue (DE/FR) pour les décideurs |
@@ -328,9 +336,19 @@ d'adoption en attente R1–R9 et MA1–MA9).
 | [`charts/`](docs/study/charts/) (EN) | les schémas, avec leurs sources (référencés depuis les documents de détail) |
 | [`README 3SM`](docs/plan/3SM/README.md) (EN) | guide en langage clair de l'arbre de planification |
 
-## Structure du dépôt
 
-    README.md                  ce fichier (EN)
+## Feuille de route
+| Phase | Contenu |
+|---|---|
+| 0 — en cours | Cartographier le paysage des données ; les trois chiffres N1/N2/N3 ; sonder la capacité des registres officiels |
+| 1 | Pilote : figer le dictionnaire du plomb ; collecte et analyse des FDS sur un premier échantillon |
+| 2 | Base d'échantillonnage et tirage ; collecte de documentation à pleine échelle ; annexe couleurs d'artistes (3213), selon la capacité |
+| 3 | Recoupement inter-documents et assurance qualité |
+| 4 | Analyse ; base de discussion ; gel de la base de données |
+
+
+## Structure du dépôt
+README.md                  ce fichier (EN)
     README.de.md               version allemande
     README.fr.md               version française
     AGENTS.md                  conventions pour le travail assisté par IA (EN)
@@ -351,8 +369,8 @@ d'adoption en attente R1–R9 et MA1–MA9).
     ├── 20_DESIGN/             conception technique (comment exactement, EN)
     └── _archive/              matériel remplacé
 
-## État
 
+## État
 Les unités outil v0.1.1–v0.2.4 sont construites et testées (412 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
@@ -369,3 +387,4 @@ l'échantillon CSV de gestion avec la preuve par lignes produit pour
 chaque registre (14.09.2026). Le rapport
 est publié sous `docs/report/`. La méthodologie reste ouverte à
 révision à mesure que les résultats arrivent.
+
