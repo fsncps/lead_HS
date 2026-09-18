@@ -87,239 +87,81 @@ c'est une étude documentaire qui ne prend pas position sur la
 réglementation elle-même. La Suisse n'intervient dans l'étude que
 comme ce cadre réglementaire — le marché étudié est celui de l'UE.
 
-## Étape actuelle : l'échantillon CSV de gestion (v0.2.4)
+## Où en est l'étude (unité actuelle : v0.2.4)
 
-L'unité v0.2.4 pose la question de gestion pour chaque grand
-registre : **à quoi ressemble une ligne produit** — quels champs de
-données reviennent par produit, quelles colonnes d'identifiants
-existent, le recoupement de produits individuels est-il possible ?
-Répondu avec des lignes réellement téléchargées là où un registre en
-publie (`leadhs probe download-csv-sample` ; exécution réelle du
-14.09.2026, n=100 par registre, seed=42 — reproductible) et avec une
-raison honnête et sourcée là où il n'en publie pas. Le manifeste ne
-taire jamais un échec.
+L'unité v0.2.4 répond à la question de gestion par grand registre :
+**comment se présente une ligne produit là-bas** — quels champs, quelles
+colonnes d'identifiants, le recoupement est-il possible ? — avec des
+lignes réellement téléchargées là où un registre en publie (semé,
+reproductible, n=100 par registre) et un motif structurel sourcé là
+où non. Sur les six grands registres, exactement deux publient des
+lignes produit ; seul l'Écolabel européen ECAT possède des colonnes
+d'identifiants par article
+([report-0.2.4.md](docs/report/report-0.2.4.md) (EN)) :
 
-- **AS-2 — Écolabel européen (ECAT) : livré, 100 de 17 013 produits
-  distincts** (17 838 lignes dans le périmètre ; en-tête d'export
-  ré-épinglé exactement comme échafaudé en v0.2.3). 12 champs par
-  article ; identifiants : numéro de licence (100 %), entreprise +
-  TVA (86 %), EAN13/GTIN (17 % de l'échantillon). Recoupement : EAN ↔
-  catalogues de distribution (le chemin d'amorçage v0.3) repose sur
-  de vraies colonnes.
-- **AS-3 — Cygne nordique : livré, 100 articles sur 2'322
-  produits de peinture distincts.** La découverte bornée a trouvé un
-  vrai export — l'URL de recherche sert un CSV à point-virgule via
-  `?format=csv` (9,8 Mo ; pool peinture 2'424 lignes, 53 licences,
-  20 titulaires). (Le premier enregistrement « niveau d'essai,
-  14 distincts » était un défaut d'outil — un filtre de périmètre
-  trop laxiste et une clé de dédoublonnage façonnée ECAT — corrigé et
-  re-rendu depuis l'export archivé le jour même, D38.) Le pilote de
-  recouvrement des écolabels est joignable par nom + titulaire de
-  licence — l'export porte même des numéros de licence Écolabel
-  européen.
-- **ST-1 / ST-3 / ST-6 / ST-7 : aucune ligne produit publiée** —
-  réseau nul, chaque enregistrement cite la raison structurelle (PCN
-  réservé aux autorités ; SBS statistiques d'entreprises ; AT danois
-  agrégats uniquement ; secret des affaires KemI au niveau produit).
-  Des six grands registres, exactement deux publient des lignes
-  produit ; seul ECAT possède des colonnes d'identifiants par
-  article.
+- **AS-2 — Écolabel européen (ECAT) : 100 sur 17'013 produits
+  distincts** — n° de licence 100 %, entreprise + TVA 86 %,
+  EAN13/GTIN 17 % de l'échantillon ; EAN ↔ catalogues commerciaux
+  (le chemin de peuplement v0.3) s'appuie sur de vraies colonnes.
+- **AS-3 — Cygne Nordique : 100 sur 2'322 lignes peinture
+  distinctes** — export réel sous `?format=csv` (2'424 lignes
+  peinture, 53 licences), portant même des numéros de licence
+  Écolabel européen.
+- **ST-1/3/6/7 — aucune ligne produit publiée** (PCN réservé aux
+  autorités ; SBS ; AT danois ; secret KemI) — chaque motif cité.
 
-Chaque ligne échantillonnée porte une provenance complète (source,
-clé d'exécution, date de récupération, hachage du document, seed,
-index de tirage). Rapport d'unité :
-[report-0.2.4.md](docs/report/report-0.2.4.md) (EN) ; le manifeste et
-les échantillons sont publiés dans
-[docs/report/](docs/report/csv-sample.manifest.md) (rendus de travail
-par exécution dans `data/report/`).
-
-**Addendum — sondage des sources de classe AS (2026-09-14).** Un
-constat par source de classe AS, les 30 (`leadhs probe
-as-source-probe`) : CSV de lignes produit là où il est obtenable, sinon
-nombre d'enregistrements exact ou estimé avec provenance, sinon
-pourquoi-pas + ce qui est disponible à la place. Les deux catalogues
-d'écolabels réutilisent les lignes csv-sample (AS-2 : 100 sur 17'013
-distincts ; AS-3 : 100 sur 2'322 distincts) ; Blue Angel (≈70'000,
-revendiqué par le registre, toutes catégories) et environdec (≈2'025)
-n'exposent que des comptes en texte de page — depuis D38 avec la page
-d'atterrissage archivée comme preuve ; les cinq autres registres
-(INIES, IBU, NF Env, natureplus, EPD Norway) n'ont pas de surface de
-masse — documents produit par produit derrière des interfaces de
-recherche, raison consignée. Les 21 associations professionnelles sont
-des annuaires de membres, pas des registres de produits (18 vivantes,
-3 inaccessibles au moment de la sonde). Synthèse (run D39) :
-[as-source-probe.summary.20260915-000255.md](docs/report/as-source-probe.summary.20260915-000255.md) (EN).
-
-**Addendum — data_sources.csv (2026-09-14, D38).** Une liste curatée
-des sources à **données produits de masse confirmées** portant le
-tuple d'identité (fabricant + identifiant produit) — initialement
-exactement AS-2 et AS-3, les deux seules sources du registre qui
-atteignent ce seuil. Elle ne s'allonge que lorsque des sondages
-futures le confirment ; les registres nationaux fermés et les
-candidats non sondés restent documentés dans
-[docs/study/DATA_SOURCE.md](docs/study/DATA_SOURCE.md).
-
-**Addendum — tour de sondage complète + reconnaissance d'extension de
-sources (2026-09-15, D39).** Toute la suite de sondage a rejoué en un
-seul passage — recensement (108 sources), échantillon CSV frais,
-sonde des sources AS — **avec six sources candidates nouvelles** issues
-d'une transmission de consultant au registre (classe AS : 36 lignes
-désormais) : **AS-31 KemiDigi** (registre finlandais des produits
-chimiques, strate hazard-tail), **AS-32 WINGIS/GefKomm-Bau**
-(écosystème FDS de chantier allemand), **AS-33 BASTA** (catalogue
-suédois de construction, >200'000 articles revendiqués), **AS-34
-eBVD** (déclarations nordiques), **AS-35 Quick-FDS** (découverte
-FDS), **AS-36 ECHA PT21 antifouling (revêtements marins)**.
-Constats : les deux pools d'échantillons écolabels se reproduisent
-de façon déterministe au téléchargement frais (17'013 / 2'322
-distincts) ; la statistique du recensement reste N2 = 331'644 /
-plancher 17'838 ; et la réponse du nouveau pool de données :
-**pas de troisième source de masse** — aucune des six n'expose de
-surface d'export (≤5 GET polis chacun : HTML d'atterrissage mou /
-404, comptage non visible ; ECHA bloquée via robots, la classe
-des hôtes durcis). Confirmer l'une d'elles exige un épinglement
-par source (explorations de catégories, conditions d'API,
-accords) — travail de l'unité suivante selon
-[INPUT-source-expansion-MSE.md](docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md)
-(EN). Instantané du rapport à couverture totale :
-[probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md)
-(EN).
-
-**Addendum — sonde spéciale BASTA (2026-09-17, D40).** AS-33 a reçu
-une profondeur ordonnée par l'utilisateur (un proxy de catégorie
-tient lieu de codes HS). Le point clé inverse la réponse D39 :
-**l'« API sous accord » est contournée par le propre client web du
-site** — il appelle un proxy anonyme de même origine,
-`/apiproxy/v3/search/articles` (épinglé verbatim depuis le client
-OpenAPI généré du site). Comptages publics exacts : **195 391
-articles / 1 925 entreprises** (keyfigures ; la recherche non
-filtrée annonce 200 769 — 5 378 de plus que la keyfigure, non
-décomposé). Un échantillon semé de 100 articles
-([CSV](docs/report/basta-probe.20260917-183244.AS-33.csv), graine 42)
-a été tiré sur un ensemble aléatoire de pages de 20 000 lignes : 41
-fabricants, 45 groupes BK04, tuple d'identité
-(fabricant + numéro d'article + id interne) 100 % complet, GTIN
-69,8 %. Constat de structure : la pagination de recherche est
-agglutinée par fabricant (une page ≈ une entreprise) — les
-échantillons d'une seule page ne sont pas représentatifs ; le run
-additionne honnêtement des positions aléatoires. La part peinture de
-BASTA est petite : les groupes BK04 de peinture (03402 Fasadfärg
-utomhus / 03404 Vägg- och takfärg inomhus) portent 2 des 100
-articles échantillonnés. Le critère `data_sources.csv` (volumétrie
-confirmée + identité + filtre in-scope) est **non** atteint — pas de
- troisième ligne tant qu'un filtre de peinture côté serveur n'est
-pas épinglé ; détails dans
-[report-0.2.4.md](docs/report/report-0.2.4.md) (addendum D40, EN).
+Le **`data_sources.csv`** curaté liste les sources à données produit
+de masse confirmées + tuple d'identité : aujourd'hui exactement
+AS-2 et AS-3. Le tour de sondage complet (D39, 15.09.2026) a
+enregistré six candidats-consultants sans trouver de **troisième
+source de masse** ; la **sonde spéciale BASTA (D40, 17.09.2026)** a
+renversé cela pour AS-33 via la propre route anonyme du client web —
+comptages publics exacts **195'391 articles / 1'925 entreprises** et
+un échantillon semé de 100 articles (tuple d'identité 100 %, GTIN
+69,8 % ; 2/100 seulement dans les groupes peinture) — mais le filtre
+de peinture côté serveur reste à épingler, donc pas encore de
+troisième ligne `data_sources.csv`. Détails :
+[report-0.2.4.md](docs/report/report-0.2.4.md) (addenda D37–D40, EN)
+et le [registre des sources](docs/study/DATA_SOURCE.md).
 
 ## Unités antérieures
 
 ### v0.2.3 — estimation de pool v2 : vote méta-benchmark (14.09.2026)
 
-L'unité v0.2.3 remplace le titre à modèle unique de v0.2.2 par un
-**vote méta-benchmark** : sept quantités de référence indépendantes
-estiment le pool de peintures de l'UE ; chacune vote dans l'une des
-cinq classes de magnitude contiguës (a 20k–50k … e >300k), et une
-règle épinglée convertit le vote en un **verdict à deux niveaux** —
-niveau SKU (comptage registre/produit) et niveau formulation
-(collapsé ombre/conditionnement). La confiance n'est revendiquée que
-lorsque ≥3 benchmarks disponibles convergent sans conflit exclusif non
-adjacent ; les égalités rendent une fourchette avec les hypothèses de
-basculement ; le vote reste visible dans tous les cas.
-
-- **Niveau SKU : classe e (>300k produits)** — confiance non
-  revendiquée (trois benchmarks se situent dans des classes non
-  adjacentes ; consignés comme points ouverts).
-- **Niveau formulation : classe c (100k–200k)** — confiance non
-  revendiquée ; la conversion de niveau repose sur une fourchette
-  épinglée d'effondrement d'ombres 1–10, signalée comme hypothèse (la
-  déduplication mesurable des clés ECAT est faible : nom ×1,049,
-  EAN ×1,266).
-- De nouvelles extractions de sources primaires alimentent les
-  benchmarks : déclarations des centres antipoison suédois
-  peintures/vernis 71 231 (2022) ; dossiers PCN 1 444 290 (2021,
-  SWD(2022) 435 annexe 16 — aucune constante de part de peinture
-  n'existe) ; rapport final du JCR sur l'Écolabel européen (2026) :
-  36 960 produits certifiés (03/2025) et la confirmation officielle
-  qu'**aucune donnée de part de marché n'existe** ; Produktregistret
-  danois ≈40 000 produits dangereux (agrégats uniquement — pas
-  d'adaptateur possible) ; vérification Eurostat SBS : 3 300
-  entreprises (NACE C2030, 2020).
-- La section entonnoir du rapport publié porte désormais un bandeau
-  de péremption ; son contenu v0.2.2 est conservé dans l'historique
-  de publication.
-- La passe complète de sondage du 14.09.2026 (vagues 1–3) a
-  reproduit chaque chiffre clé (ECAT 17 838 rapproché exactement ;
-  Comext 6 316 lignes ; ensembles bloqués/en échec identiques) —
-  constats, lacunes et pistes dans le document compagnon
-  [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
-
-Détails : [report-0.2.3.md](docs/report/report-0.2.3.md) (EN) ;
-tableaux lisibles par machine (vote des benchmarks, verdicts, toutes
-les sections antérieures) dans le
-[rapport de sondage](docs/report/probe-report.md).
+Sept quantités de référence indépendantes estiment le pool de
+peintures UE ; chacune vote dans l'une des cinq classes de grandeur,
+règle épinglée → verdict à deux niveaux. Résultat : **niveau SKU
+classe e (>300k), niveau formulation classe c (100k–200k) —
+confiance non revendiquée dans les deux cas** (conflits
+non adjacents notés en points ouverts). Détails :
+[report-0.2.3.md](docs/report/report-0.2.3.md) (EN),
+[benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
 
 ### v0.2.2 — l'entonnoir à trois questions (14.09.2026)
 
-L'unité v0.2.2 a exécuté les **passes du paysage sur le réseau réel**
-(14.09.2026 ; reconnaissance uniquement — exports/APIs officiels, pas
-de scraping) et a assemblé **l'entonnoir à trois questions** — chaque
-chiffre est le résultat d'une requête de base de données :
-
-- **Q1 — combien de peintures sur le marché de l'UE (estimation
-  modélisée) :** le modèle `P(cn8) = M × ppp × s(cn8)` donne
-  **[85 840–343 360] produits** — bornes de producteurs 800 (CEPE) à
-  3 200 (Eurostat SBS NACE 20.30) × **107,3 produits par producteur**
-  (ECAT : paires ÷ titulaires de licence) × parts de volume des
-  importations extra-UE par code CN8. Une estimation modélisée, jamais
-  un décompte. **Supplanté depuis le 14.09.2026 par le vote benchmark
-  v0.2.3 (ci-dessus) ; conservé dans l'historique de publication.**
-- **Q2 — pour combien de produits le triplet d'identité est
-  définitivement connu (plancher) :** **17 170** paires distinctes
-  (fabricant, identifiant produit) sur les registres officiels
-  établis (ECAT : 17 838 entrées, 160 titulaires, 16,0 % de
-  complétude d'identité).
-- **Q3 — pour combien d'entre eux un document de type FDS est
-  accessible (modélisé) :** **3 590** (borne supérieure ; l'hypothèse
-  de taux de correspondance est en attente). Le rapport v0.5 (Q2 ÷ Q1)
-  se lit **0,05–0,2**.
-
-Le registre de sources de 101 lignes est entièrement dispositionné :
-**36 comptées, 48 documentées manuellement, 4 bloquées, 13 inactives
-par conception** ; l'établissement Comext couvre **les 13 codes CN8**
-(6 316 lignes commerciales). Le pilote de chevauchement ECAT ∩ Cygne
-Nordique reste explicitement non calculable tant qu'un second registre
-n'est pas établi. Rapport d'unité :
-[report-0.2.2.md](docs/report/report-0.2.2.md) ; tableaux
-lisibles par machine (commerce CN8, identité, matrice de profondeur,
-recensement, drapeaux de rapprochement) dans le
-[rapport de sondage](docs/report/probe-report.md).
+Le parcours du paysage sur le réseau réel (reconnaissance seule) :
+Q1 modèle de pool **[85'840–343'360]** (supplanté par le v0.2.3 ;
+conservé pour l'historique de publication), Q2 plancher d'identité
+**17'170** paires distinctes (fabricant, ident produit), Q3 FDS
+atteignable **≈3'590** (modélisé). Chaque nombre est un résultat de
+requête ; registre des sources entièrement statué. Détails :
+[report-0.2.2.md](docs/report/report-0.2.2.md) (EN).
 
 ### v0.2.1 — capacité des sources sondée (14.09.2026)
 
-Un niveau plus profond pour les **registres officiels** (Écolabel UE,
-Cygne Nordique, Ange Bleu, INIES, IBU, environdec), chacun
-caractérisé contre le modèle produit (CN8, fabricant, identifiant
-produit) selon le volume et la profondeur. **ECAT confirmé comme
-source de produits réels** (fabricant + GTIN/EAN, CN8 via catégorie,
-profondeur 2, CSV téléchargeable) ; numérateur N2 préliminaire
-**17 838** produits de peinture certifiés — un plancher, jamais un
-total de marché. Les autres registres sont restés à ancrer /
-inactifs / sans identifiant produit ; le défaut HTML-as-CSV de cette
-passe a été réparé dans la v0.2.2. Détails :
-[report-0.2.1.md](docs/report/report-0.2.1.md).
+Les registres officiels caractérisés contre le modèle produit :
+**ECAT confirmé source produit réelle** (fabricant + GTIN/EAN, CSV
+téléchargeable), numérateur N2 préliminaire **17'838** — un plancher,
+jamais un total de marché. Détails :
+[report-0.2.1.md](docs/report/report-0.2.1.md) (EN).
 
 ### v0.2.0 — carte du paysage des données (12.09.2026)
 
-Sondage en mode reconnaissance des sources enregistrées (statistiques
-officielles, une association et un registre sectoriel, et 25 sites de
-peintures/revêtements/bricolage/couleurs d'artistes). Chiffres
-phares : **N1** ancres de marché (2024, importations extra-UE : HS
-3208 ≈2,5 Mt / ≈12,2 Mrd €, HS 3209 ≈2,1 Mt / ≈6,2 Mrd € ; CEPE ≈800
-membres ; SBS NACE 20.30 = 3 200 entreprises) ; **N2 = 204 693** URL
-produit visibles via sitemaps sur 23 sources comptées ; **N3 = 9**
-sites avec une bibliothèque de FDS visible ; les registres nordiques
-sont restés ouverts (SPIN injoignable). Détails :
-[report-0.2.0.md](docs/report/report-0.2.0.md).
+Sondage en reconnaissance seule : **N1** ancrés de marché (2024,
+importations extra-UE ≈12,2 + 6,2 milliards € ; ≈3'200 entreprises),
+**N2 = 204'693** URL produit visibles via sitemap, **N3 = 9** sites
+avec une bibliothèque FDS visible. Détails :
+[report-0.2.0.md](docs/report/report-0.2.0.md) (EN).
 
 ## Ce que les recherches antérieures montrent
 
@@ -359,6 +201,57 @@ Détails : [architecture](docs/study/ARCHITECTURE.md) et
 [modèle de données](docs/study/DATA_MODEL.md) (EN) ;
 conception technique revue dans
 [20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
+
+## Comment le travail a avancé — revue de v0.1 et v0.2
+
+L'étude s'est construite par la base, en petites unités vérifiées —
+et ce process façonne ce qu'elle peut affirmer aujourd'hui.
+
+**v0.1 (unités v0.1.1–v0.1.3) : construire l'instrument.** L'objectif
+n'était jamais d'abord les chiffres, mais un outil de collecte
+fiable. v0.1.1 a livré une trousse CLI élancée (base de preuves,
+registre des sources, commandes de sondage) ; v0.1.2 l'a habillée en
+couche opérateur (point d'entrée make, gardes `GO=1` pour tout ce
+qui touche des sites réels) et a sondé poliment toutes les sources
+enregistrées — robots/conditions, un constat de faisabilité par
+source ; v0.1.3 a cartographié le paysage des données et construit
+la machinerie de comptage des parcours (volontairement à l'arrêt
+jusqu'à un feu vert de collecte). Méthode de bout en bout :
+chaque document archivé à l'identique avec hash et date de
+récupération ; chaque nombre traçable vers un run ; des entrées
+honnêtes « aucune donnée » au lieu d'échecs silencieux ; pas de
+laboratoire, pas de sources payantes, pas de scraping au-delà d'un
+go explicite. Après v0.1, l'étude savait *quelles sources existent
+et ce que chacune fournit* — pas encore la taille du marché.
+
+**v0.2 (unités v0.2.0–v0.2.4) : pointer l'instrument vers les
+chiffres.** Les objectifs sont devenus chiffres d'abord : taille du
+marché (N1), couverture d'accès (N2), documentation atteignable
+(N3). v0.2.0 a produit la carte du paysage sur données réelles.
+v0.2.1 a sondé les registres officiels et trouvé la première
+source produit réelle (Écolabel européen ECAT, avec fabricant +
+GTIN/EAN). v0.2.2 a exécuté l'entonnoir à trois questions — combien
+de produits dans le pool (modélisé), combien d'identités produit
+définivement connues (plancher compté), combien de FDS atteignables
+(modélisé). v0.2.3 a remplacé l'estimation à modèle unique par un
+vote méta-benchmark de quantités indépendantes donnant des verdicts
+par classes de grandeur. v0.2.4 a descendu la question au niveau
+ligne : à quoi ressemble réellement un enregistrement produit dans
+chaque registre — et a établi que seuls les deux catalogues
+d'écolabels publient des lignes produit de masse, BASTA devenant
+ajoutable via sa propre interface web anonyme une fois une question
+structurelle réglée.
+
+**Ce que les revues ont constamment changé.** Le périmètre a suivi
+les preuves : métriques du marché suisse abandonnées tôt (le marché
+étudié est celui de l'UE ; la Suisse n'est que le cadre
+réglementaire), le plan « tout parcourir » remplacé par la
+discipline reconnaissance-d'abord, et le livrable aiguillé d'une
+carte générale vers une réponse chiffres-d'abord pour les acteurs de
+l'exception suisse sur la peinture au plomb. Constantes : la
+formulation comme unité de comptage, la corroboration au lieu du
+laboratoire, l'angle mort déclarée-vs-total signalé dans chaque
+livrable, et la provenance de chaque nombre.
 
 ## Prévu : du téléchargement de masse à la table produit unique (v0.3)
 
@@ -460,7 +353,7 @@ d'adoption en attente R1–R9 et MA1–MA9).
 
 ## État
 
-Les unités outil v0.1.1–v0.2.4 sont construites et testées (364 tests
+Les unités outil v0.1.1–v0.2.4 sont construites et testées (412 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente

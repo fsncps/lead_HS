@@ -72,213 +72,76 @@ documentation study and takes no position on the regulation itself.
 Switzerland enters the study only as this regulatory frame — the
 market under study is the EU's.
 
-## Current stage: the management CSV sample (v0.2.4)
+## Where the study stands (current unit: v0.2.4)
 
-v0.2.4 asks the management question per large register: **what does a
-product row look like there** — which data fields come back per
-product item, which identifier columns exist, is cross-identification
-of individual products possible? Answered with real downloaded rows
-where a register publishes them (`leadhs probe download-csv-sample`,
-real run 2026-09-14, n=100 per registry, seed=42 — reproducible) and
-an honest, cited reason where it does not. The manifest is never
-silent about a failure.
+The current unit answers the management question per large register:
+**what does a product row look like there** — which fields, which
+identifier columns, is cross-identification possible — answered with
+real downloaded rows where a register publishes them (seeded,
+reproducible, n=100 per register) and a cited structural reason where
+it does not. Of the six large registers exactly two publish product
+rows at all, and only EU Ecolabel ECAT has per-item identifier
+columns ([report-0.2.4.md](docs/report/report-0.2.4.md)):
 
-- **AS-2 — EU Ecolabel (ECAT): delivered, 100 of 17,013 distinct
-  products** (17,838 in-scope rows; export header re-pinned exactly as
-  staged in v0.2.3). 12 fields per item; identifiers: licence number
-  (100%), company + VAT (86%), EAN13/GTIN (17% of the sample).
-  Cross-ID: EAN ↔ retail catalogues (the v0.3 seeding path) stands on
+- **AS-2 — EU Ecolabel (ECAT): 100 of 17,013 distinct products** —
+  licence number 100%, company + VAT 86%, EAN13/GTIN 17% of the
+  sample; EAN ↔ retail catalogues (the v0.3 seeding path) stands on
   real columns.
-- **AS-3 — Nordic Swan: delivered, 100 of 2,322 distinct paint
-  items.** The bounded discovery found a real export — the search
-  URL serves a semicolon CSV at `?format=csv` (9.8 MB; paint pool
-  2,424 rows, 53 licences, 20 licensees). (The first run's
-  "trial-grade, 14 distinct" record was a tool defect — a loose
-  scope filter and an ECAT-shaped dedupe key — corrected and
-  re-rendered from the archived export the same day, D38.) The
-  Ecolabel-overlap pilot is joinable by name + licence holder — the
-  export even carries EU Ecolabel licence numbers.
-- **ST-1 / ST-3 / ST-6 / ST-7: no product rows published** — zero
-  network, each record cites the structural reason (PCN
-  authorities-only; SBS enterprise stats; Danish AT aggregates-only;
-  KemI product-level secrecy). Of the six large registers exactly two
-  publish product rows at all; only ECAT has per-item identifier
-  columns.
+- **AS-3 — Nordic Swan: 100 of 2,322 distinct paint items** — a real
+  export at `?format=csv` (2,424 paint rows, 53 licences), even
+  carrying EU Ecolabel licence numbers.
+- **ST-1/3/6/7 — no product rows published** (PCN authorities-only;
+  SBS; Danish AT; KemI secrecy) — every reason cited.
 
-Every sampled row carries full provenance (source, run key, retrieval
-date, document hash, seed, draw index). Unit report:
-[report-0.2.4.md](docs/report/report-0.2.4.md); the manifest and the
-samples are published in
-[docs/report/](docs/report/csv-sample.manifest.md) (working renders
-per run in `data/report/`).
-
-**Addendum — AS-class source probe (2026-09-14).** One finding per
-AS-class source (`leadhs probe as-source-probe`):
-product-row CSV where obtainable, else an exact-or-estimated record
-count with provenance, else why-not + what is available instead. The
-two ecolabel catalogues reuse the csv-sample rows (AS-2: 100 of
-17,013 distinct; AS-3: 100 of 2,322 distinct); Blue Angel (≈70,000
-register-claimed, all categories) and environdec (≈2,025) expose only
-page-text counts — now with the landing page archived as evidence;
-the other five registries (INIES, IBU, NF Env, natureplus, EPD
-Norway) have no bulk surface — per-product documents behind search
-UIs, reason recorded. The 21 trade associations are member
-directories, not product registers (18 live, 3 unreachable at probe
-time). Latest summary (D39 run):
-[as-source-probe.summary.20260915-000255.md](docs/report/as-source-probe.summary.20260915-000255.md).
-
-**Addendum — data_sources.csv (2026-09-14, D38).** A curated list of
-sources with **confirmed bulk product data** carrying the identity
-tuple (manufacturer + product ident) — initially exactly AS-2 and
-AS-3, the only two sources on record meeting the gate. It grows only
-as future probes confirm further sources; gated national registers
-and unprobed candidates stay documented in
-[docs/study/DATA_SOURCE.md](docs/study/DATA_SOURCE.md).
-
-**Addendum — full-probe round + source-expansion reconnaissance
-(2026-09-15, D39).** The whole probe suite ran again in one pass —
-census (108 sources), fresh CSV sample, AS-source probe — **with six
-new candidate sources** from a consultant source-expansion handover
-joining the register (AS class now 36 rows): **AS-31 KemiDigi**
-(Finnish chemical products register, hazard-tail stratum), **AS-32
-WINGIS/GefKomm-Bau** (German construction SDS ecosystem),
-**AS-33 BASTA** (Swedish construction catalogue, >200,000 articles
-claimed), **AS-34 eBVD** (Nordic declarations), **AS-35 Quick-FDS**
-(SDS discovery), **AS-36 ECHA PT21 antifouling**. Findings: the two
-ecolabel sample pools reproduce deterministically on the fresh
-download (17,013 / 2,322 distinct); the census headline stays N2 =
-331,644 / floor 17,838; and the new data-pool answer: **no third
-bulk source** — none of the six exposes an export surface (≤5 polite
-GETs each: soft-landing HTML / 404s, counts not visible; ECHA
-robots-blocked, the hardened-host class). Confirming one of them
-needs per-source pinning (category explorations, API terms,
-agreements) — next-unit work per
-[INPUT-source-expansion-MSE.md](docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md).
-Full-coverage report snapshot:
-[probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md).
-
-**Addendum — BASTA special probe (2026-09-17, D40).** AS-33 got a
-user-directed deeper probe (a category proxy is acceptable in place
-of HS codes). The headline reverses the D39 answer: **the "auth-gated
-API" is bypassed by the site's own web client** — it calls a
-same-origin anonymous proxy, `/apiproxy/v3/search/articles` (pinned
-verbatim from the site's generated OpenAPI client bundle). Exact
-public counts: **195,391 articles / 1,925 companies** (keyfigures;
-the unfiltered search advertises 200,769 — 5,378 more than the
-keyfigure, not de-composed). A seeded 100-article sample
-([CSV](docs/report/basta-probe.20260917-183244.AS-33.csv), seed 42)
-was drawn over a 20,000-row random-page set: 41 manufacturers, 45
-BK04 (construction classification) groups, identity tuple
-(manufacturer + article number + internal id) 100% complete, GTIN
-69.8%. Structure finding: search pagination clusters per
-manufacturer (one page ≈ one company), so single-page samples are
-not representative — the run pools across random positions honestly.
-The paint share of BASTA is small: the in-scope paint BK04 groups
-(03402 Fasadfärg utomhus / 03404 Vägg- och takfärg inomhus) carry
-2 of 100 sampled articles. The `data_sources.csv` gate (confirmed
-bulk + identity + in-scope filter) is **not** met — no third row
-until a server-side paint filter is pinned; details in
-[report-0.2.4.md](docs/report/report-0.2.4.md) (D40 addendum).
+A curated **`data_sources.csv`** lists the sources with confirmed bulk
+product data meeting the gate (confirmed bulk + identity tuple):
+exactly AS-2 and AS-3 today. The full-probe round (D39, 2026-09-15)
+registered six consultant-candidate sources and found **no third bulk
+source**; the **BASTA special probe (D40, 2026-09-17)** then reversed
+that for AS-33 via the site's own anonymous web-client route — exact
+public counts **195,391 articles / 1,925 companies** and a seeded
+100-article sample (identity tuple 100% complete, GTIN 69.8%; only
+2/100 articles in the paint groups) — but the server-side paint
+filter stays unpinned, so no third `data_sources.csv` row yet.
+Details: [report-0.2.4.md](docs/report/report-0.2.4.md) (D37–D40
+addenda), the [source register](docs/study/DATA_SOURCE.md), and the
+[detailed addenda in this section's history](docs/report/csv-sample.manifest.md).
 
 ## Previous units
 
 ### v0.2.3 — pool estimate v2: meta-benchmarking vote (2026-09-14)
 
-v0.2.3 replaced the single-model pool headline of v0.2.2 with a
-**meta-benchmarking vote**: seven independent benchmark quantities
-estimate the EU paint pool; each votes into one of five contiguous
-magnitude classes (a 20k–50k … e >300k), and a pinned rule converts
-the vote into a **dual-level verdict** — SKU level (registry/product
-counting) and formulation level (shade/pack-collapsed). Confidence is
-claimed only when ≥3 available benchmarks converge without an
-exclusive non-adjacent conflict; ties render a span plus flip
-assumptions; the vote is fully visible either way.
-
-- **SKU level: class e (>300k products)** — confidence not claimed
-  (three benchmarks sit in non-adjacent classes; recorded as open
-  items).
-- **Formulation level: class c (100k–200k)** — confidence not
-  claimed; the level conversion rides a pinned 1–10 shade-collapse
-  band, flagged as an assumption (the measurable ECAT key-tier dedup
-  is small: name ×1.049, EAN ×1.266).
-- New primary-source extractions feed the benchmarks: Swedish
-  poison-centre paints/coatings 71,231 (2022); PCN dossiers
-  1,444,290 (2021, SWD(2022) 435 Annex 16 — no paint-share constant
-  exists); JRC final Ecolabel report (2026): 36,960 certified
-  products 03/2025 and the official confirmation that **no
-  market-share data exist**; Danish Produktregistret ≈40,000
-  hazardous products (aggregates-only — no adapter possible);
-  Eurostat SBS verify: 3,300 enterprises (NACE C2030, 2020).
-- The funnel section of the published report now carries a
-  supersession banner; its v0.2.2 content is kept for the publish
-  history.
-- The full probe run of 2026-09-14 (waves 1–3) reproduced every
-  headline number (ECAT 17,838 reconciled exactly; Comext 6,316
-  rows; the blocked/failed site sets identical) — findings, gaps and
-  paths in the companion document
-  [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md).
-
-Details: [report-0.2.3.md](docs/report/report-0.2.3.md);
-machine-readable tables (benchmark vote, verdicts, all prior
-sections) in the [probe report](docs/report/probe-report.md).
+Seven independent benchmark quantities estimate the EU paint pool;
+each votes into one of five contiguous magnitude classes, a pinned
+rule converts the vote into a dual-level verdict. Result: **SKU level
+class e (>300k products), formulation level class c (100k–200k) —
+confidence withheld in both** (non-adjacent conflicts recorded as
+open items). Details:
+[report-0.2.3.md](docs/report/report-0.2.3.md),
+[benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md).
 
 ### v0.2.2 — the three-question funnel (2026-09-14)
 
-v0.2.2 executes the **real-network landscape run** (2026-09-14,
-reconnaissance-only: official exports/APIs, no scraping) and assembles
-the **three-question funnel** — every number a database query, no
-typed literals:
-
-- **Q1 — how many paints are on the EU market (modeled estimate):**
-  the pool model `P(cn8) = M × ppp × s(cn8)` gives **[85,840–343,360]
-  products** — producer bounds 800 (CEPE) to 3,200 (Eurostat SBS
-  NACE 20.30) × **107.3 products per producer** (ECAT staged pairs ÷
-  licence holders) × per-CN8 volume shares from the staged extra-EU
-  trade (largest: HS 32091000 ≈32%). A modeled estimate, never a
-  count. **Superseded 2026-09-14 by the v0.2.3 benchmark vote
-  (above); kept for the publish history.**
-- **Q2 — for how many products the identity triple is definitively
-  known (floor):** **17,170** distinct (manufacturer, product-ident)
-  pairs over the staged official registers (ECAT: 17,838 entries,
-  160 licence holders, 16.0% identity completeness).
-- **Q3 — for how many of them an SDS-type document is reachable
-  (modeled):** **3,590** (upper bound: Σ sitemap product counts over
-  the sites with a visible SDS library; the match-rate assumption is
-  pending). The v0.5 ratio (Q2 ÷ Q1) reads **0.05–0.2**.
-
-The 101-row source register is fully dispositioned: **36 counted,
-48 manual-recorded, 4 blocked, 13 inactive by design**; the Comext
-staging covers **all 13 CN8 codes** (6,316 trade rows); the EU
-Ecolabel ∩ Nordic Swan overlap pilot stays explicitly not computable
-until a second register is staged. Unit report:
-[report-0.2.2.md](docs/report/report-0.2.2.md); machine-readable
-tables (CN8 trade, identity, depth matrix, census, reconciliation
-flags) in the [probe report](docs/report/probe-report.md).
+The real-network landscape run (reconnaissance-only) assembles Q1
+pool model **[85,840–343,360]** (superseded by the v0.2.3 vote; kept
+for the publish history), Q2 identity floor **17,170** distinct
+(manufacturer, product-ident) pairs, Q3 SDS-reachable **≈3,590**
+(modeled). Every number a database query; source register fully
+dispositioned. Details: [report-0.2.2.md](docs/report/report-0.2.2.md).
 
 ### v0.2.1 — source capability sounding-out (2026-09-14)
 
-One level deeper on the **official registers** (EU Ecolabel, Nordic
-Swan, Blue Angel, INIES, IBU, environdec), each characterised against
-the product model (CN8, manufacturer, product-ident) for volume and
-depth. **ECAT confirmed a real-product source** (manufacturer +
-GTIN/EAN, CN8 via category, depth 2, downloadable CSV); preliminary
-N2 numerator **17,838** certified paint products — a floor, never a
-market total. The other registers stayed export-to-anchor / inactive
-/ without a product-ident; the round's HTML-as-CSV defect was
-repaired in v0.2.2. Details:
-[report-0.2.1.md](docs/report/report-0.2.1.md).
+The official registers characterised against the product model:
+**ECAT confirmed as a real-product source** (manufacturer + GTIN/EAN,
+CSV export), preliminary N2 numerator **17,838** — a floor, never a
+market total. Details: [report-0.2.1.md](docs/report/report-0.2.1.md).
 
 ### v0.2.0 — data-landscape map (2026-09-12)
 
-Reconnaissance-only probe of the registered sources (official
-statistics, a trade-association and industry register, and 25
-paint/coatings/DIY/artists'-colour sites). Headline numbers: **N1**
-market anchors (2024 extra-EU imports: HS 3208 ≈2.5 Mt / ≈€12.2 bn,
-HS 3209 ≈2.1 Mt / ≈€6.2 bn; CEPE ≈800 members; SBS NACE 20.30 = 3,200
-enterprises); **N2 = 204,693** sitemap-visible product URLs across 23
-counted sources; **N3 = 9** sites with a visible SDS library; the
-Nordic registers stayed open (SPIN unreachable). Details:
-[report-0.2.0.md](docs/report/report-0.2.0.md).
+Reconnaissance-only probe: **N1** market anchors (2024 extra-EU
+imports ≈ HS 3208 €12.2 bn + 3209 €6.2 bn; ≈3,200 enterprises),
+**N2 = 204,693** sitemap-visible product URLs, **N3 = 9** sites with a
+visible SDS library. Details: [report-0.2.0.md](docs/report/report-0.2.0.md).
 
 ## What earlier research shows
 
@@ -316,6 +179,56 @@ data only.
 Detail: [architecture](docs/study/ARCHITECTURE.md) and
 [data model](docs/study/DATA_MODEL.md); the reviewed
 technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
+
+## How the work progressed — a review of v0.1 and v0.2
+
+The study was built bottom-up, in small verified units, and that
+process shaped what it can say today.
+
+**v0.1 (units v0.1.1–v0.1.3): build the instrument.** The goal was
+never numbers first — it was a trustworthy collection tool. Unit
+v0.1.1 delivered a slim command-line toolkit (evidence database,
+source register, probing commands); v0.1.2 wrapped it into an
+operator layer (a `make` entrypoint, `GO=1` gates for anything that
+touches real sites) and probed all registered sources politely —
+robots/terms checks, one-finding-per-source feasibility records;
+v0.1.3 mapped the data landscape and built the counting machinery for
+catalogue walks (deliberately left idle until a collection go-ahead).
+Method throughout: every fetched document archived unchanged with
+hash and retrieval date; every number traceable to a run; honest
+no-data records instead of silent failures; no laboratory, no paid
+sources, no scraping beyond an explicit go. By the end of v0.1 the
+study knew *which sources exist and what each will yield* — not yet
+how big the market is.
+
+**v0.2 (units v0.2.0–v0.2.4): point the instrument at the numbers.**
+The goals turned numbers-first: market scale (N1), access coverage
+(N2), reachable documentation (N3). v0.2.0 produced the
+landscape map on real data. v0.2.1 sounded out the official
+registers and found the first real product source (EU Ecolabel ECAT,
+with manufacturer + GTIN/EAN identity columns). v0.2.2 executed the
+three-question funnel on the staged data — how big is the pool
+(modeled), how many product identities are definitively known
+(a counted floor), how many SDS are reachable (modeled). v0.2.3
+replaced the single-model pool estimate with a meta-benchmarking
+vote of independent quantities, yielding magnitude-class verdicts
+with confidence discipline. v0.2.4 turned the question down to the
+row level: what does one product record actually look like in each
+register — and discovered that of the large registers only the two
+ecolabel catalogues publish bulk product rows at all, with BASTA
+addable through its own anonymous web interface once a structural
+question clears.
+
+**What the reviews kept changing.** The scope moved with the
+evidence: Swiss-market metrics were dropped early (the market under
+study is the EU's; Switzerland is the regulatory frame only), the
+"walk everything" plan was superseded by reconnaissance-first
+discipline, and the deliverable sharpened from a general data map to
+a numbers-first answer for the actors around the Swiss lead-paint
+exception. What stayed fixed: the formulation as unit of counting,
+the corroboration-instead-of-lab constraint, the declared-vs-total
+lead blind spot stated in every deliverable, and provenance on every
+number.
 
 ## Planned next: from bulk download to one product table (v0.3)
 
@@ -410,7 +323,7 @@ adoption decisions R1–R9 and MA1–MA9).
 
 ## Status
 
-Tool units v0.1.1–v0.2.4 are built and tested (364 automated offline
+Tool units v0.1.1–v0.2.4 are built and tested (412 automated offline
 tests): evidence database, source register, source probing,
 per-source feasibility reports, counting machinery for catalogue walks
 (idle until a collection go-ahead), the data-landscape map with the

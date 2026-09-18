@@ -84,230 +84,80 @@ Dokumentstudie und bezieht keine Position zur Regelung selbst. Die
 Schweiz kommt in der Studie nur als dieser regulatorische Rahmen vor —
 untersuchter Markt ist der EU-Markt.
 
-## Aktueller Stand: die Verwaltungs-CSV-Stichprobe (v0.2.4)
+## Aktueller Stand (Einheit v0.2.4)
 
-Die Einheit v0.2.4 stellt pro grosser Registerdatenbank die
-Verwaltungsfrage: **wie sieht eine Produktzeile dort aus** — welche
-Datenfelder kommen pro Produkt zurück, welche Identifikator-Spalten
-existieren, ist die Kreuzidentifikation einzelner Produkte möglich?
-Beantwortet mit echt geladenen Zeilen, wo ein Register welche
-publiziert (`leadhs probe download-csv-sample`; echter Lauf
-14.09.2026, n=100 pro Register, seed=42 — reproduzierbar) und mit
-einer ehrlichen, belegten Begründung, wo nicht. Das Manifest
-verschweigt einen Fehlschlag nie.
+Die Einheit v0.2.4 beantwortet die Verwaltungsfrage pro grossem
+Register: **wie sieht eine Produktzeile dort aus** — welche Felder,
+welche Identifikator-Spalten, ist Kreuzidentifikation möglich? — mit
+echten geladenen Zeilen, wo ein Register welche publiziert (gesät,
+reproduzierbar, n=100 je Register), und mit belegtem strukturellem
+Grund, wo nicht. Von den sechs grossen Registern publizieren genau
+zwei Produktzeilen überhaupt; nur EU-Ecolabel ECAT hat
+Identifikator-Spalten je Artikel
+([report-0.2.4.md](docs/report/report-0.2.4.md) (EN)):
 
-- **AS-2 — EU Ecolabel (ECAT): geliefert, 100 von 17'013
-  unterscheidbaren Produkten** (17'838 In-Scope-Zeilen;
-  Export-Header exakt wie in v0.2.3 gestuft re-gepinnt). 12 Felder je
-  Artikel; Identifikatoren: Lizenznummer (100%), Unternehmen + USt
-  (86%), EAN13/GTIN (17% der Stichprobe). Kreuz-ID: EAN ↔
-  Handelskataloge (der v0.3-Aufbaupfad) steht auf echten Spalten.
-- **AS-3 — Nordischer Schwan: geliefert, 100 von 2'322
-  unterscheidbaren Farbpositionen.** Die begrenzte Suche fand einen
-  echten Export — die Such-URL liefert ein Semikolon-CSV unter
-  `?format=csv` (9,8 MB; Farbpool 2'424 Zeilen, 53 Lizenzen, 20
-  Lizenznehmer). (Der erste Lauf mit «Versuchsstufe, 14
-  unterscheidbare» war ein Werkzeugdefekt — ein laxer Scope-Filter
-  und ein ECAT-förmiger Dedupe-Schlüssel — korrigiert und aus dem
-  archivierten Export neu gerendert, D38.) Der
-  Ecolabel-Überlappungs-Pilot ist über Name + Lizenzhalter
-  verknüpfbar — der Export trägt sogar EU-Ecolabel-Lizenznummern.
-- **ST-1 / ST-3 / ST-6 / ST-7: keine Produktzeilen publiziert** —
-  null Netz, jeder Datensatz belegt den strukturellen Grund (PCN nur
-  für Behörden; SBS Unternehmensstatistik; dänisches AT nur Aggregate;
-  KemI Produktgeheimhaltung). Von den sechs grossen Registern
-  publizieren genau zwei überhaupt Produktzeilen; nur ECAT hat
-  Identifikator-Spalten je Artikel.
+- **AS-2 — EU Ecolabel (ECAT): 100 von 17'013 unterscheidbaren
+  Produkten** — Lizenznummer 100 %, Unternehmen + USt 86 %,
+  EAN13/GTIN 17 % der Stichprobe; EAN ↔ Handelskataloge (der
+  v0.3-Aufbaupfad) steht auf echten Spalten.
+- **AS-3 — Nordischer Schwan: 100 von 2'322 unterscheidbaren
+  Farbpositionen** — echter Export unter `?format=csv` (2'424
+  Farbzeilen, 53 Lizenzen), mit EU-Ecolabel-Lizenznummern.
+- **ST-1/3/6/7 — keine Produktzeilen publiziert** (PCN nur für
+  Behörden; SBS; dänisches AT; KemI-Geheimhaltung) — jeder Grund
+  belegt.
 
-Jede Stichprobenzeile trägt volle Provenienz (Quelle, Lauf-Schlüssel,
-Abrufdatum, Dokument-Hash, seed, Zieindex). Einheitsbericht:
-[report-0.2.4.md](docs/report/report-0.2.4.md) (EN); Manifest und
-Stichproben sind veröffentlicht unter
-[docs/report/](docs/report/csv-sample.manifest.md) (Arbeitsrenderungen
-je Lauf in `data/report/`).
-
-**Addendum — AS-Klassen-Quellenprobe (2026-09-14).** Ein Befund je
-AS-Klassen-Quelle, alle 30 (`leadhs probe as-source-probe`):
-Produktzeilen-CSV wo erhältlich, sonst exakte oder geschätzte
-Datensatzzahl mit Provenienz, sonst Warumnicht + was stattdessen
-verfügbar ist. Die beiden Ökolabel-Kataloge wiederverwenden die
-csv-sample-Zeilen (AS-2: 100 von 17'013 distinct; AS-3: 100 von
-2'322 distinct); Blue Angel (≈70'000, registerseits behauptet, alle
-Kategorien) und environdec (≈2'025) bieten nur Seitenzählungen —
-seit D38 mit archivierter Landingpage als Beleg; die übrigen fünf
-Register (INIES, IBU, NF Env, natureplus, EPD Norway) haben keine
-Bulk-Oberfläche — Einzeldokumente hinter Such-UIs, Grund vermerkt.
-Die 21 Branchenverbände sind Mitgliederverzeichnisse, keine
-Produktregister (18 live, 3 zur Probezeit nicht erreichbar).
-Zusammenfassung (D38-korrigierter Re-Publish):
-[as-source-probe.summary.20260914-165555.md](docs/report/as-source-probe.summary.20260914-165555.md) (EN).
-
-**Addendum — data_sources.csv (2026-09-14, D38).** Eine kuratierte
-Liste der Quellen mit **bestätigten Bulk-Produktdaten** samt
-Identitäts-Tupel (Hersteller + Produkt-Identifikator) — zunächst
-genau AS-2 und AS-3, die einzigen Quellen, die die Schwelle derzeit
-erfüllen. Sie wächst nur, wenn künftige Sondierungen die Schwelle
-bestätigen; gesperrte nationale Register und unsondierte Kandidaten
-bleiben in
-[docs/study/DATA_SOURCE.md](docs/study/DATA_SOURCE.md)
-dokumentiert.
-
-**Addendum — Komplette Sondierungsrunde + Quellen-Erweiterungsfühler
-(2026-09-15, D39).** Die ganze Sondierungssuite lief erneut in einem
-Durchgang — Zensus (108 Quellen), frische CSV-Stichprobe, AS-Quellen-
-probe — **mit sechs neuen Kandidatenquellen** aus einer Beratungs-
-übergabe (Quellen aus AS-Klasse jetzt 36 Zeilen) im Register:
-**AS-31 KemiDigi** (finnisches Chemiproduktregister,
-Gefahren-Stratum), **AS-32 WINGIS/GefKomm-Bau** (deutsches
-Bau-SDS-Ökosystem), **AS-33 BASTA** (schwedischer
-Bauartenkatalog, >200'000 Artikel behauptet), **AS-34 eBVD**
-(nordische Deklarationen), **AS-35 Quick-FDS** (SDS-Discovery),
-**AS-36 ECHA PT21 Antifouling (Marine-Beschichtungen)**. Befunde:
-Die beiden Ökolabel-Stichprobenpools reproduzieren sich
-deterministisch beim frischen Download (17'013 / 2'322 distinct);
-die Zensus-Kennzahl bleibt N2 = 331'644 / Flurboden 17'838; und die
-neue Datenpool-Antwort: **keine dritte Bulk-Quelle** — keine der
-sechs bietet eine Exportoberfläche (je ≤5 freundliche GETs:
-Soft-Landing-HTML / 404er, Zählung nicht sichtbar; ECHA
-robots-blockiert, die gehärtete-Host-Klasse). Eine der Quellen zu
-bestätigen erfordert ein per-Quelle-Abstecken (Kategorie-Erkundungen,
-API-Bedingungen, Vereinbarungen) — Arbeit der nächsten Einheit gemäss
-[INPUT-source-expansion-MSE.md](docs/plan/3SM/10_STRATEGY/INPUT-source-expansion-MSE.md)
-(EN). Vollabdeckungs-Report-Snapshot:
-[probe-report.20260915-000619.3a5fc07d.md](docs/report/probe-report.20260915-000619.3a5fc07d.md)
-(EN).
-
-**Addendum — BASTA-Sonderprobe (2026-09-17, D40).** AS-33 bekam eine
-nutzerbeauftragte Vertiefung (ein Kategorie-Proxy genügt statt
-HS-Codes). Die Kernaussage dreht die D39-Antwort um: **die
-«auth-gated API» ist von eigener Web-Client-Seite überbrückt** — der
-Client ruft einen gleichursprünglichen anonymen Proxy auf,
-`/apiproxy/v3/search/articles` (wörtlich aus dem generierten
-OpenAPI-Client des Webangebots abgesteckt). Exakte öffentliche
-Zählungen: **195'391 Artikel / 1'925 Unternehmen** (Keyfigures; die
-ungefilterte Suche meldet 200'769 — 5'378 mehr als die Keyfigure,
-nicht dekomponiert). Eine gesäte 100-Artikel-Stichprobe
-([CSV](docs/report/basta-probe.20260917-183244.AS-33.csv), Seed 42)
-wurde über einen Zufalls-Seiten-Satz von 20'000 Zeilen gezogen: 41
-Hersteller, 45 BK04-Baugruppen, Identitätstupel
-(Hersteller + Artikelnummer + interne ID) 100 % vollständig, GTIN
-69,8 %. Strukturbefund: die suche paginiert herstellerzeitgeklustert
-(eine Seite ≈ ein Unternehmen) — Einzel-Seiten-Stichproben sind
-nicht repräsentativ; der Lauf poolt ehrlich über zufällige
-Positionen. Der Farbananteil von BASTA ist klein: die
-Farb-BK04-Gruppen (03402 Fasadfärg utomhus / 03404 Vägg- och
-takfärg inomhus) tragen 2 von 100 gestichprobeten Artikeln. Das
-`data_sources.csv`-Gate (bestätigt Bulk + Identität +
-In-Scope-Filter) ist **nicht** erfüllt — bis ein serverseitiger
-Farbfilter abgesteckt ist, keine dritte Zeile; Details im
-[report-0.2.4.md](docs/report/report-0.2.4.md) (D40-Addendum, EN).
+Die kuratierte **`data_sources.csv`** listet die Quellen mit
+bestätigten Bulk-Produktdaten samt Identitäts-Tupel: heute genau
+AS-2 und AS-3. Die komplette Sondierungsrunde (D39, 15.09.2026)
+registrierte sechs Berater-Kandidaten und fand **keine dritte
+Bulk-Quelle**; die **BASTA-Sonderprobe (D40, 17.09.2026)** drehte das
+für AS-33 über die eigene anonyme Web-Client-Route um — exakte
+öffentliche Zählungen **195'391 Artikel / 1'925 Unternehmen** und
+eine gesäte 100-Artikel-Stichprobe (Identitätstupel 100 %, GTIN
+69,8 %; nur 2/100 in den Farbgruppen) — aber der serverseitige
+Farbfilter bleibt ungesteckt, also noch keine dritte `data_sources
+.csv`-Zeile. Details: [report-0.2.4.md](docs/report/report-0.2.4.md)
+(D37–D40-Addenda, EN) und
+[Datenquellenregister](docs/study/DATA_SOURCE.md).
 
 ## Frühere Einheiten
 
 ### v0.2.3 — Pool-Schätzung v2: Meta-Benchmark-Abstimmung (14.09.2026)
 
-Die Einheit v0.2.3 ersetzt die Ein-Modell-Überschrift von v0.2.2 durch
-eine **Meta-Benchmark-Abstimmung**: sieben unabhängige Benchmark-Grössen
-schätzen den EU-Farben-Pool; jede stimmt in eine von fünf aneinander-
-anschliessenden Grössenklassen (a 20k–50k … e >300k), und eine fest
-gepinnte Regel wandelt die Abstimmung in ein **doppelstufiges Urteil**
-um — SKU-Stufe (Register-/Produktzählung) und Formulierungs-Stufe
-(schatten-/gebindekollabiert). Vertrauen wird nur erklärt, wenn ≥3
-verfügbare Benchmarks ohne ausschliesslich nicht-angrenzenden Konflikt
-konvergieren; Gleichstände liefern eine Spanne samt Kipp-Annahmen; die
-Abstimmung ist in jedem Fall vollständig sichtbar.
-
-- **SKU-Stufe: Klasse e (>300k Produkte)** — Vertrauen nicht erklärt
-  (drei Benchmarks liegen in nicht-angrenzenden Klassen; als offene
-  Punkte vermerkt).
-- **Formulierungs-Stufe: Klasse c (100k–200k)** — Vertrauen nicht
-  erklärt; die Stufen-Umsetzung reitet auf einer gepinnten 1–10
-  Schattenkollaps-Spanne, als Annahme gekennzeichnet (die messbare
-  ECAT-Schlüssel-Deduplizierung ist klein: Name ×1,049, EAN ×1,266).
-- Neue Primärquellen-Extraktionen füttern die Benchmarks:
-  schwedische Giftzentren-Meldungen Farben/Lacke 71'231 (2022);
-  PCN-Dossiers 1'444'290 (2021, SWD(2022) 435 Anhang 16 — keine
-  Farbanteil-Konstante existiert); JRC-Abschlussbericht Ecolabel
-  (2026): 36'960 zertifizierte Produkte (03/2025) und die amtliche
-  Bestätigung, dass **keine Marktanteil-Daten existieren**; dänisches
-  Produktregistret ≈40'000 gefährliche Produkte (nur Aggregate —
-  kein Adapter möglich); Eurostat-SBS-Verifikation: 3'300
-  Unternehmen (NACE C2030, 2020).
-- Der Trichter-Abschnitt des publizierten Berichts trägt jetzt ein
-  Überholt-Banner; sein v0.2.2-Inhalt bleibt in der
-  Veröffentlichungshistorie erhalten.
-- Der volle Sondierungslauf vom 14.09.2026 (Wellen 1–3) reproduzierte
-  jede Kernzahl (ECAT 17'838 exakt abgeglichen; Comext 6'316 Zeilen;
-  identische blockiert/fehlerhaft-Sets) — Befunde, Lücken und Wege im
-  Begleitdokument
-  [benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
-
-Details: [report-0.2.3.md](docs/report/report-0.2.3.md) (EN);
-maschinenlesbare Tabellen (Benchmark-Abstimmung, Urteile, alle
-bisherigen Abschnitte) im
-[Sondierungsbericht](docs/report/probe-report.md).
+Sieben unabhängige Benchmark-Grössen schätzen den EU-Farben-Pool; je
+eine von fünf Grössenklassen, gepinnte Regel → doppelstufiges
+Urteil. Ergebnis: **SKU-Stufe Klasse e (>300k), Formulierungs-Stufe
+Klasse c (100k–200k) — Vertrauen in beiden nicht erklärt** (nicht
+angrenzende Konflikte als offene Punkte vermerkt). Details:
+[report-0.2.3.md](docs/report/report-0.2.3.md) (EN),
+[benchmarking-0.2.3.md](docs/report/benchmarking-0.2.3.md) (EN).
 
 ### v0.2.2 — der Drei-Fragen-Trichter (14.09.2026)
 
-Die Einheit v0.2.2 hat die **Landschaftsläufe im echten Netz**
-ausgeführt (14.09.2026; nur Erkundung — amtliche Exporte/APIs, kein
-Scraping) und den **Drei-Fragen-Trichter** zusammengestellt — jede
-Zahl ein Datenbank-Abfrageergebnis:
-
-- **F1 — wie viele Farben auf dem EU-Markt (modellierte Schätzung):**
-  das Poolmodell `P(cn8) = M × ppp × s(cn8)` liefert **[85'840–343'360]
-  Produkte** — Hersteller-Grenzen 800 (CEPE) bis 3'200 (Eurostat SBS
-  NACE 20.30) × **107,3 Produkte je Hersteller** (ECAT: Paare ÷
-  Lizenznehmer) × mengengewichte der gestützten Ausseneinfuhr je
-  CN8-Code. Eine modellierte Schätzung, nie eine Zählung.
-  **Überholt seit 14.09.2026 durch die v0.2.3-Benchmark-Abstimmung
-  (oben); bleibt in der Veröffentlichungshistorie erhalten.**
-- **F2 — für wie viele Produkte das Identitäts-Tripel definitiv
-  bekannt ist (Untergrenze):** **17'170** unterscheidbare
-  (Hersteller, Produkt-Ident)-Paare über die gestützten amtlichen
-  Register (ECAT: 17'838 Einträge, 160 Lizenznehmer, 16,0 %
-  Identitätsvollständigkeit).
-- **F3 — für wie viele davon ein SDB-artiges Dokument erreichbar ist
-  (modelliert):** **3'590** (Obergrenze; die Trefferquoten-Annahme
-  steht noch aus). Das v0.5-Verhältnis (F2 ÷ F1) liegt bei
-  **0,05–0,2**.
-
-Das 101 Zeilen umfassende Quellenregister ist vollständig
-dispositioniert: **36 gezählt, 48 manuell dokumentiert, 4 blockiert,
-13 inaktiv per Design**; die Comext-Unterlage deckt **alle 13
-CN8-Codes** ab (6'316 Handelszeilen). Der ECAT ∩ Nordic-Swan-
-Überlappungspilot bleibt ausdrücklich unbestimmbar, bis ein zweites
-Register gestützt ist. Einheitsbericht:
-[report-0.2.2.md](docs/report/report-0.2.2.md); maschinenlesbare
-Tabellen (CN8-Handel, Identität, Tiefenmatrix, Kapitel,
-Abstimmungskennzeichen) im
-[Sondierungsbericht](docs/report/probe-report.md).
+Der Landschaftslauf im echten Netz (nur Erkundung): F1 Poolmodell
+**[85'840–343'360]** (überholt durch die v0.2.3-Abstimmung; bleibt
+in der Veröffentlichungshistorie), F2 Identitätsuntergrenze
+**17'170** distinct (Hersteller, Produkt-Ident)-Paare, F3
+SDB-erreichbar **≈3'590** (modelliert). Jede Zahl ein
+Datenbank-Abfrageergebnis; Register vollständig dispositioniert.
+Details: [report-0.2.2.md](docs/report/report-0.2.2.md) (EN).
 
 ### v0.2.1 — Quellenfähigkeit sondiert (14.09.2026)
 
-Eine Ebene tiefer bei den **amtlichen Registern** (EU Ecolabel, Nordic
-Swan, Blauer Engel, INIES, IBU, environdec), jede charakterisiert
-gegen das Produktmodell (CN8, Hersteller, Produkt-Ident) nach Umfang
-und Tiefe. **ECAT als real-Produktquelle bestätigt** (Hersteller +
-GTIN/EAN, CN8 über Kategorie, Tiefe 2, herunterladbares CSV);
-vorläufiger N2-Zähler **17.838** zertifizierte Farbprodukte — eine
-Untergrenze, nie eine Marktzahl. Die übrigen Register blieben
-Export-zu-verankern / inaktiv / ohne Produkt-Ident; der
-HTML-als-CSV-Defekt dieser Runde wurde in v0.2.2 behoben. Details:
-[report-0.2.1.md](docs/report/report-0.2.1.md).
+Die amtlichen Register gegen das Produktmodell charakterisiert:
+**ECAT als real-Produktquelle bestätigt** (Hersteller + GTIN/EAN,
+CSV-Export), vorläufiger N2-Zähler **17'838** — eine Untergrenze,
+nie eine Marktzahl. Details:
+[report-0.2.1.md](docs/report/report-0.2.1.md) (EN).
 
 ### v0.2.0 — Datenlandschaft-Karte (12.09.2026)
 
-Nur-Erkundung-Sondierung der registrierten Quellen (amtliche
-Statistiken, ein Branchen- und Industrieverband sowie 25
-Farben-/Beschichtungs-/Heimwerker-/Künstlerfarben-Seiten). Leitgrössen:
-**N1** Markt-Anker (2024, EU-Ausseneinfuhren: HS 3208 ≈2,5 Mio. t /
-≈12,2 Mrd. €, HS 3209 ≈2,1 Mio. t / ≈6,2 Mrd. €; CEPE ≈800 Mitglieder;
-SBS NACE 20.30 = 3.200 Unternehmen); **N2 = 204.693** per Sitemap
-sichtbare Produkt-URLs über 23 gezählte Quellen; **N3 = 9** Webseiten
-mit sichtbarer SDB-Bibliothek; die nordischen Register blieben offen
-(SPIN nicht erreichbar). Details:
-[report-0.2.0.md](docs/report/report-0.2.0.md).
+Nur-Erkundung-Sondierung: **N1** Markt-Anker (2024,
+EU-Ausseneinfuhren ≈12,2 + 6,2 Mrd. €; ≈3'200 Unternehmen),
+**N2 = 204'693** sitemap-sichtbare Produkt-URLs, **N3 = 9** Webseiten
+mit sichtbarer SDB-Bibliothek. Details:
+[report-0.2.0.md](docs/report/report-0.2.0.md) (EN).
 
 ## Was frühere Recherchen zeigen
 
@@ -347,6 +197,54 @@ Details: [Architektur](docs/study/ARCHITECTURE.md) und
 [Datenmodell](docs/study/DATA_MODEL.md) (je EN); das
 begutachtete technische Design in
 [20_DESIGN/](docs/plan/3SM/20_DESIGN/) (EN).
+
+## Wie die Arbeit vorankam — Rückblick auf v0.1 und v0.2
+
+Die Studie wurde von unten aufgebaut, in kleinen verifizierten
+Einheiten — und dieser Prozess formt, was sie heute sagen kann.
+
+**v0.1 (Einheiten v0.1.1–v0.1.3): das Instrument bauen.** Ziel war
+nie zuerst Zahlen — sondern ein verlässliches Sammelwerkzeug.
+v0.1.1 lieferte ein schlankes Kommandozeilen-Set (Evidenzdatenbank,
+Quellenregister, Sondierbefehle); v0.1.2 ummantelte es zur
+Operatorschicht (make-Einsprung, `GO=1`-Gates für alles, was echte
+Sites berührt) und sondierte alle registrierten Quellen höflich —
+Robots/Bedingungen, je Quelle ein Feasibility-Befund; v0.1.3 kartierte
+die Datenlandschaft und baute die Zähl-Maschinerie für
+Katalogdurchläufe (bewusst stillgelegt bis zur Sammel-Freigabe).
+Methode durchgängig: jedes Dokument unverändert archiviert mit Hash
+und Abrufdatum; jede Zahl auf einen Lauf zurückführbar; ehrliche
+«keine Daten»-Einträge statt stiller Fehlschläge; kein Labor, keine
+Bezugsquellen, kein Scraping über ein explizites Go hinaus. Nach v0.1
+wusste die Studie, *welche Quellen es gibt und was jede hergibt* —
+noch nicht, wie gross der Markt ist.
+
+**v0.2 (Einheiten v0.2.0–v0.2.4): das Instrument auf die Zahlen
+richten.** Die Ziele wurden zahlen-zentriert: Marktgrösse (N1),
+Zugriffsdeckung (N2), erreichbare Dokumentation (N3). v0.2.0
+lieferte die Landschaftskarte auf echten Daten. v0.2.1 sondierte die
+amtlichen Register und fand die erste echte Produktquelle (EU
+Ecolabel ECAT, mit Hersteller + GTIN/EAN). v0.2.2 führte den
+Drei-Fragen-Trichter aus — wie gross der Pool (modelliert), wie
+viele Produktidentitäten definitiv bekannt (gezählter Flurboden),
+wie viele SDB erreichbar (modelliert). v0.2.3 ersetzte die
+Ein-Modell-Schätzung durch eine Meta-Benchmark-Abstimmung unabhängiger
+Grössen mit Grössenklassen-Urteilen. v0.2.4 senkte die Frage auf die
+Zeilenebene: wie sieht ein Produkt-Datensatz in jedem Register
+wirklich aus — und stellte fest, dass nur die beiden Ökolabel-Kataloge
+überhaupt Bulk-Produktzeilen publizieren, wobei BASTA über das eigene
+anonyme Web-Interface ergänzbar wird, sobald eine strukturelle Frage
+geklärt ist.
+
+**Was die Revisionsrunden stetig änderten.** Der Umfang wanderte mit dem
+Befund: Schweizer Marktkennzahlen früh gestrichen (untersuchter Markt
+ist die EU; die Schweiz ist nur regulatorischer Rahmen), der
+«Alles-Durchlaufen»-Plan durch Erst-Erkundungs-Disziplin ersetzt, und
+die Lieferung geschärft von einer allgemeinen Datenkarte zu einer
+zahlen-zentrierten Antwort für die Akteure um die
+Blei-Farb-Ausnahme. Konstant blieben: die Formulierung als Zähleinheit,
+Abgleich statt Labor, die erklärte-vs-gesamt-Lücke als Restriktion in
+jeder Lieferung, und Provenienz für jede Zahl.
 
 ## Geplant: vom Bulk-Download zur einen Produkttabelle (v0.3)
 
@@ -448,7 +346,7 @@ R1–R9 und MA1–MA9 verankert).
 
 ## Status
 
-Die Werkzeug-Einheiten v0.1.1–v0.2.4 sind gebaut und getestet (364
+Die Werkzeug-Einheiten v0.1.1–v0.2.4 sind gebaut und getestet (412
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
 Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
 Katalogdurchläufe (wartet auf eine Sammel-Freigabe), die
