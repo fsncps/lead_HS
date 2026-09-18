@@ -45,18 +45,21 @@ The directory has appeared as `robin_HS` and `lead_HS`; the GitHub remote is
 
 ## Session startup
 
-In planning work, read first:
+Planning follows the 3SM v2 tree. In planning work, read first:
 
-    docs/plan/3SM/MASTER.md
-    docs/plan/3SM/10_STRATEGY/MASTER.md
+    .3SM/PROCESS.md            # + the stage PROCESS file for your role
+    .3SM/PROJECT.md            # project facts: commands, gates, laws
+    .3SM/plan/MASTER.md        # global state: active unit, roadmap
+    .3SM/plan/STRATEGY/MASTER.md
 
-then the relevant topic files (`10_STRATEGY/METHODOLOGY.md`,
-`10_STRATEGY/LEAD_SDS.md`, `10_STRATEGY/DATA_SOURCE.md`,
-`10_STRATEGY/DATA_MODEL.md`, `10_STRATEGY/ARCHITECTURE.md`; these are
-slim strategy summaries since the documentation-tree split, D41 — the
-full public detail lives in `docs/study/`). Treat existing
-Strategy as accumulated knowledge;
-do not re-research settled questions.
+then the relevant topic T-docs under `.3SM/plan/STRATEGY/`
+(METHODOLOGY, LEAD_SDS, DATA_SOURCE, DATA_MODEL, ARCHITECTURE, …) and
+`.3SM/plan/DESIGN/` (architecture, data_model, interfaces, testing) —
+slim summaries; full public detail lives in `docs/study/`. The legacy
+v1 planning tree `docs/plan/3SM/` is a read-only historical reference
+(migration 2026-09-18; unit history distilled in
+`.3SM/plan/STRATEGY/DEV_HISTORY.md`). Treat existing Strategy as
+accumulated knowledge; do not re-research settled questions.
 
 ## 3SM
 
