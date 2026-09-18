@@ -105,3 +105,19 @@ carries: housekeeping may skip structure re-verification until templates
 change; v1-era docs need no lifecycle normalization (exempt legacy tree)
 valid-until: template upgrade or canonical pair change
 commit: ad077af (law) · 4f9c698 (facts) · ef317c0 (skeletons) · 2084177 (AGENTS pointer)
+
+### 3sm-housekeeping REPAIR — 2026-09-18
+scope: full `.3SM/` tree (22 files) post-migration hygiene pass
+checklist:
+- [x] discover — 22 files inventoried, classified (law/facts/M/T-docs/S-rec pending) — OK
+- [x] structure compare — canonical layout, lazy dirs correct, stage nesting correct — OK
+- [x] doc integrity — FIXED 2 frontmatter defects (DESIGN/MASTER `unit: v0.2.2`→global; INPUT digest `unit: next-unit input`/`lifecycle: INPUT`→global/LIVE) + 3 stale refs + plan/MASTER stage GLOBAL + LOG frontmatter — OK
+- [x] skill-record audit — setup record had no SHA → FIXED (4 SHAs appended); no other records — OK
+- [x] bubble & consolidate — STRATEGY top level 9 entries (≤10 incl. pending DEV_HISTORY at 10); DESIGN 5 — OK
+- [x] instruction conflicts — none critical; AGENTS.md full conversion stays OPEN ITEM — OK
+- [x] facts/law separation — holds (PROJECT facts; PROCESS law only) — OK
+- [x] lifecycle coherence — units COMPLETE/ARCHIVED; M-docs LIVE; no anomalies — OK
+findings: CRITICAL GAP 0 · WARNING 0 (all fixed inline; verbatim handover file intentionally frontmatter-free — preserved-verbatim input)
+carries: nothing (housekeeping is cheap); DEV_HISTORY compilation follows this pass
+valid-until: next canonical/template change or tree change
+commit: 7f8ebb8
