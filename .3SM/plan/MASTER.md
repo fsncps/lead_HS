@@ -2,14 +2,14 @@
 unit: global
 stage: GLOBAL
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 # lead_HS — 3SM Plan MASTER
 
 Global state: active unit, per-unit stage, roadmap, skill-record trail.
-Stage detail lives in the stage M-docs (`plan/STRATEGY/MASTER.md`,
+Stage detail lives in the stage M-docs (`plan/CONCEPT/MASTER.md`,
 `plan/DESIGN/MASTER.md`); the distilled development history of all
-pre-migration units is `plan/STRATEGY/DEV_HISTORY.md`.
+pre-migration units is `plan/CONCEPT/DEV_HISTORY.md`.
 
 ## STATE
 
@@ -40,7 +40,7 @@ legacy tree, distilled in DEV_HISTORY:
 
 ## ROADMAP
 
-Pending strategy inputs awaiting adoption at the next strategy turn
+Pending concept inputs awaiting adoption at the next concept turn
 (none adopted; nothing binds):
 
 - **Unit numbering is open**: the label "v0.3" is double-booked
@@ -65,7 +65,7 @@ Pending strategy inputs awaiting adoption at the next strategy turn
 - **M1 (2026-09-18, user-ordered):** migrate the v1 planning tree to
   the v2 `.3SM/` structure. M-docs and T-docs copied (adapted); unit
   records NOT copied wholesale — distilled into
-  `plan/STRATEGY/DEV_HISTORY.md`; the legacy tree stays in place as a
+  `plan/CONCEPT/DEV_HISTORY.md`; the legacy tree stays in place as a
   read-only historical reference (PROCESS.md § Project exceptions).
 - **M2 (2026-09-18):** pre-migration units are recorded COMPLETE —
   they were built, executed, and merged to `main` under v1 practice;
@@ -77,9 +77,9 @@ Pending strategy inputs awaiting adoption at the next strategy turn
 ## OPEN ITEMS
 
 - Next unit id + theme (v0.3 double-booked) — user decision at the
-  next strategy turn.
+  next concept turn.
 - Adoption verdicts for MATCHING / RAW_SOURCING / INPUT-MSE — user
-  decisions at the next strategy turn.
+  decisions at the next concept turn.
 - `docs/plan/3SM/` disposition (keep as reference vs archive later) —
   user decision at housekeeping; until then it stays untouched.
 - AGENTS.md full thin-pointer conversion (content migration into
