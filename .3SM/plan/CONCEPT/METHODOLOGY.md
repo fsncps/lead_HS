@@ -1,11 +1,11 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
-# Topic — Methodology (strategy summary)
+# Topic — Methodology (concept summary)
 
 ## Abstract
 
@@ -45,7 +45,7 @@ methodology document (link below).
   (MASTER OPEN ITEMS).
 - Frame unit (stratification × origin, seeded draw) deferred behind the
   landscape map (`v0.1.3.md` bridge; superseded in execution by the
-  v0.2 strategy turn, D31).
+  v0.2 concept turn, D31).
 - Multilingual SDS parsing and dedup rules — calibrate in the Phase-1
   pilot.
 
@@ -57,5 +57,5 @@ translations) lives **outside the plan tree**:
 - `docs/study/METHODOLOGY.md` (EN; siblings `METHODOLOGY.de.md`,
   `METHODOLOGY.fr.md`).
 
-This topic file holds only the strategy-level state above; the
+This topic file holds only the concept-level state above; the
 authoritative decision list is `MASTER.md` (this directory).

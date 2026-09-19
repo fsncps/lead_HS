@@ -1,15 +1,15 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
-# Strategy MASTER — lead_HS
+# Concept MASTER — lead_HS
 
 ## Abstract
 
-This is the strategy summary, in plain terms. The project researches
+This is the concept summary, in plain terms. The project researches
 the **EU market** for paints (customs headings 3208/3209, plus a
 low-priority annex for artists' colours under 3213): how many products
 are on the market, for how many of them detailed documentation
@@ -489,7 +489,7 @@ lead). Open questions and the phased roadmap follow.
   export. Residual refactor (pin the URL as first candidate) stays
   in TODOS.md.
 
-## ROADMAP (strategy altitude)
+## ROADMAP (concept altitude)
 
 > Migration note (2026-09-18): the Phase-0 narrative and per-unit
 > references below are the historical record — unit docs (`v0.1.1.md`
@@ -561,8 +561,8 @@ lead). Open questions and the phased roadmap follow.
 
 ## Topic index
 
-Since the documentation-tree split (D41): strategy topic files in this
-directory are slim strategy summaries (decisions/open items in MASTER
+Since the documentation-tree split (D41): concept topic files in this
+directory are slim concept summaries (decisions/open items in MASTER
 altitude); their full public detail lives in `docs/study/` — outside
 the plan tree.
 

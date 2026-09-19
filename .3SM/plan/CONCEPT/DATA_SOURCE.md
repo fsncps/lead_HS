@@ -1,11 +1,11 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
-# Topic — Data sources (strategy summary)
+# Topic — Data sources (concept summary)
 
 ## Abstract
 
@@ -60,5 +60,5 @@ outside the plan tree:
 - `docs/study/DATA_SOURCE.md` (EN; siblings `DATA_SOURCE.de.md`,
   `DATA_SOURCE.fr.md`).
 
-Raw cross-unit strategy material: `inputs/INPUT-source-expansion-MSE.md`,
+Raw cross-unit concept material: `inputs/INPUT-source-expansion-MSE.md`,
 `MATCHING.md`, `RAW_SOURCING.md` (this directory).

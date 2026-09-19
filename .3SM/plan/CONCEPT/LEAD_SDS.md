@@ -1,11 +1,11 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
-# Topic — Lead & SDS (strategy summary)
+# Topic — Lead & SDS (concept summary)
 
 ## Abstract
 

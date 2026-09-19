@@ -1,9 +1,9 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
-type: strategy input digest (consultant handover — NOT adopted policy)
+updated: 2026-09-19
+type: concept input digest (consultant handover — NOT adopted policy)
 ---
 
 # INPUT — source expansion + capture-recapture (consultant handover, 2026-09-14)
@@ -11,7 +11,7 @@ type: strategy input digest (consultant handover — NOT adopted policy)
 Full text: [`consultant-handover-2026-09-14.md`](consultant-handover-2026-09-14.md)
 (received 2026-09-14, preserved verbatim). This file records what the
 handover proposes, how it maps onto the project's verified findings,
-and the decision points it defers to the next strategy turn. **It is
+and the decision points it defers to the next concept turn. **It is
 input, not adopted policy** — nothing in v0.2.4 rides on it (D38 de7).
 
 ## What the handover proposes
@@ -91,7 +91,7 @@ EBTI. National gated registers (KemI ST-5, Danish AT ST-6, PCN ST-1,
 Norwegian P-no) remain documented in DATA_SOURCE.md — gated rows never
 enter data_sources.csv on claims (de6).
 
-## Decision points deferred to the next strategy turn
+## Decision points deferred to the next concept turn
 
 - Adopt the source-expansion unit (exit criterion per handover §28:
   ≥3 new sources with complete in-scope export or reproducible

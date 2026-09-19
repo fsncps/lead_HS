@@ -1,11 +1,11 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
-# Topic — Data model (strategy summary)
+# Topic — Data model (concept summary)
 
 ## Abstract
 
@@ -15,7 +15,7 @@ URL + retrieval date + content hash); formulation-level products with
 a sighting dedup layer; the SDS blind spot encoded as a concentration
 taxonomy (`none_listed` ≠ lead-free); seeded, reproducible sampling
 runs; append-only corrections; unverified CAS/EC stay flagged; no
-legal-status fields anywhere (product data only). The strategy-level
+legal-status fields anywhere (product data only). The concept-level
 entity set (probe_run, probe_finding, product, sighting, trade_stat,
 frame/sampling, sds_finding, lead_compound, corroboration) migrates
 milestone-gated; the fully normalized registry schema is Design's.
@@ -39,7 +39,7 @@ milestone-gated; the fully normalized registry schema is Design's.
 
 ## Detail documentation
 
-The public strategy-level schema document (entities, taxonomy,
+The public concept-level schema document (entities, taxonomy,
 storage lifecycle) lives outside the plan tree:
 
 - `docs/study/DATA_MODEL.md` (EN).

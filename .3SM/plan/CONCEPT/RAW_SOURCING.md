@@ -1,8 +1,8 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
 # RAW_SOURCING — bulk source tables, seed CLI and repeatable acquisition
@@ -12,7 +12,7 @@ updated: 2026-09-18
 Before the study can consolidate or match anything (MATCHING.md), the
 bulk sources must be downloaded and copied into **raw source tables** —
 verbatim, unfiltered ("copy whatever we can get"; filtering happens at
-the analysis layer, never at ingest). This topic fixes the strategy
+the analysis layer, never at ingest). This topic fixes the concept
 shape for that layer: SQLite stays the engine; one raw table per
 source, created from a committed **source manifest** (probe output,
 reviewable before data flows); idempotent seed runs with resume and
@@ -20,7 +20,7 @@ change detection; a per-record byte budget whose overflow spills to the
 existing raw store instead of being dropped; list-endpoint-first
 crawling as a politeness gate. Converged with the user 2026-09-17
 (engine, history model, oversize policy confirmed); local decisions
-R1–R9, adoption as MASTER decisions at the next strategy turn / the
+R1–R9, adoption as MASTER decisions at the next concept turn / the
 product-DB unit's Design. Immediate driver: BASTA (AS-33, 195,390
 articles) as the third bulk source next to ECAT (17,013 distinct) and
 Nordic Swan (2,322).
@@ -135,7 +135,7 @@ Make targets wrap these one-call-per-target under the existing `GO=1`
 network guards (v0.1.2 pattern). Existing commands (db init/status/
 audit, source load/list, probe run) continue unchanged.
 
-## Raw-layer storage sketch (strategy altitude)
+## Raw-layer storage sketch (concept altitude)
 
     raw_table_registry — source, table_name, manifest_hash, created_at
     raw_<source>       — natural key, core fields, source-specific
@@ -150,7 +150,7 @@ audit, source load/list, probe run) continue unchanged.
 ## DECISIONS
 
 *(local numbering R1…; promotion to MASTER decisions at the next
-strategy turn / unit Design — nothing frozen.)*
+concept turn / unit Design — nothing frozen.)*
 
 - **R1 (confirmed):** SQLite stays the engine for raw source tables;
   Postgres rejected again (D1/D16/D32 stand); portable-SQL hedge.
@@ -187,7 +187,7 @@ strategy turn / unit Design — nothing frozen.)*
   PHASE01 of the basta-addendum pins it before any seed build.
 - Whether group_code→HS mappings exist at all for BASTA BK04/BSAB
   (likely no direct HS equivalent) — affects how BASTA rows join the
-  paint frame (documented at probe time, decided at next strategy turn).
+  paint frame (documented at probe time, decided at next concept turn).
 - `raw status` coverage checks vs pinned keyfigures anchors — reuse the
   D40 keyfigures snapshot (195,390 / 1,925) as drift detectors.
 - Sampled-subset detail fetches (per-article) — politeness budget and

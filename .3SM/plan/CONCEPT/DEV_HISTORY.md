@@ -1,8 +1,8 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
 # DEV_HISTORY — development history of all units (v0.1 … v0.2.4)

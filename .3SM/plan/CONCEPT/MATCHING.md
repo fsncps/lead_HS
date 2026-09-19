@@ -1,8 +1,8 @@
 ---
 unit: global
-stage: STRATEGY
+stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
 # MATCHING — product identity, string matching and cross-source dedup
@@ -22,9 +22,9 @@ ident"), and the D2 formulation + sighting dedup layer. The immediate
 driver: the v0.3-era product-DB seeding, where ~200k-row sources
 (BASTA 195,390 articles pinned 2026-09-17) must be matched against
 17,013 ECAT and 2,322 Nordic Swan distinct products. Status: method
-proposal converged in the 2026-09-17 strategy session; adoption as
+proposal converged in the 2026-09-17 concept session; adoption as
 numbered MASTER decisions and the dependency call (M8) await the next
-strategy turn / the product-DB unit's Design.
+concept turn / the product-DB unit's Design.
 
 ## Problem statement
 
@@ -168,7 +168,7 @@ evidence). Additions:
   `product` collapse (D2) and the cross-source overlap counts
   (v0.2.2-style Q2 union, future MSE inputs).
 
-Schema sketch (strategy altitude, Design normalizes):
+Schema sketch (concept altitude, Design normalizes):
 
     linkage_candidate — id, source_row_a, source_row_b (refs into
     per-source staging tables), manufacturer_score, ident_score,
@@ -192,7 +192,7 @@ pin at adoption (M8).
 ## DECISIONS
 
 *(local numbering MA1…; promotion to MASTER decisions at the next
-strategy turn / unit Design — nothing frozen.)*
+concept turn / unit Design — nothing frozen.)*
 
 - **MA1 (proposed):** algorithmic record linkage only — no LLM or
   embedding-based matching in the pipeline. Rationale: reproducibility
