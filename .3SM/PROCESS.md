@@ -8,8 +8,8 @@ Canonical stays the source of truth; `3sm-housekeeping` flags drift.
 
 # Reading order (every agent, every session)
 
-1. This file + your role file (`PROCESS_STRATEGY.md`, `PROCESS_DESIGN.md`,
-   or `PROCESS_IMPLEMENTATION.md`).
+1. This file + your role file (`PROCESS_CONCEPT.md`, `PROCESS_DESIGN.md`,
+   or `PROCESS_ENGINEERING.md`).
 2. `.3SM/PROJECT.md` — project facts: commands, gates, laws, defects.
 3. `.3SM/plan/MASTER.md` — what is active.
 4. Startup reconcile (role file): recent git log vs ledgers; drift → propose
@@ -17,8 +17,8 @@ Canonical stays the source of truth; `3sm-housekeeping` flags drift.
 
 # Roles
 
-- **STRATEGY** — `strategy` agent: unit WHAT/WHY, U-doc, strategy T-docs.
-- **PLANNING** — plan mode: design and implementation planning.
+- **CONCEPT** — `concept` agent: unit WHAT/WHY, U-doc, concept T-docs.
+- **PLANNING** — plan mode: design and engineering planning.
 - **EXECUTION** — build mode: executes runs and lifecycle git actions.
 
 The user declares the role per session; if unsaid, ASK before producing
@@ -28,7 +28,7 @@ section, never improvised).
 
 # States
 
-    Unit stage:     STRATEGY | DESIGN | IMPLEMENTATION | COMPLETE
+    Unit stage:     CONCEPT | DESIGN | ENGINEERING | COMPLETE
     Doc lifecycle:  LIVE | FROZEN | ARCHIVED      (independent of stage)
     Run state:      PLANNED | IN PROGRESS | DELIVERED | CLOSED | ABANDONED
 
@@ -38,18 +38,18 @@ section, never improvised).
                                    │
         ╔══════════════════════════ UNIT = branch ══════════════════════════╗
         ║                                                                    ║
-        ║   STRATEGY ── discussions ⇄ 3sm-strategy-unit ── U-doc converges   ║
+        ║   CONCEPT ── discussions ⇄ 3sm-concept-unit ── U-doc converges     ║
         ║                       │                                            ║
         ║                       ├── freeze gate (user: READY verdict)        ║
         ║                       ▼                                            ║
         ║   DESIGN ──── discussions ⇄ 3sm-design-master (persistent docs)    ║
-        ║              discussions ⇄ 3sm-plan-run     (impl ledgers)         ║
+        ║              discussions ⇄ 3sm-eng-run      (impl ledgers)         ║
         ║              discussions ⇄ 3sm-design-unit  (unit docs, RUNS.md)   ║
         ║                       │                                            ║
         ║                       ├── runs-ready gate (user approves RUNS.md)  ║
         ║                       ▼                                            ║
-        ║   IMPLEMENTATION ┐                                                 ║
-        ║                  │  3sm-plan-run → r##/PHASE##.md                  ║
+        ║   ENGINEERING ┐                                                    ║
+        ║                  │  3sm-eng-run → r##/PHASE##.md                   ║
         ║        per run   │  BUILD run (WIP commits allowed)                ║
         ║                  │  run gate: lint+format+typecheck + RUNS.md      ║
         ║                  │  user tests/reviews → DELIVERED ──┐             ║
@@ -57,7 +57,7 @@ section, never improvised).
         ║                          │                           │             ║
         ║          last regular run DELIVERED                  │             ║
         ║                          ▼                           │             ║
-        ║                   3sm-plan-final ────────────────────┤             ║
+        ║                    3sm-eng-final ────────────────────┤             ║
         ║                          │                           │             ║
         ║                          ├── FINAL gate (user) ──────┤             ║
         ║                          ▼                           │             ║
@@ -68,7 +68,7 @@ section, never improvised).
                  3sm-housekeeping FULL: archive → next unit
 
     Back-edges (Regression): design flaw → 3sm-design-unit (affected runs →
-    PLANNED); strategy invalidated → 3sm-strategy-unit (U-doc re-frozen after
+    PLANNED); concept invalidated → 3sm-concept-unit (U-doc re-frozen after
     fix; affected design scope restarts). Governing-doc conflicts are
     surfaced, never silently redesigned.
 
@@ -77,22 +77,22 @@ section, never improvised).
 Stages are territories, not a pipeline. The default motion is discussion;
 skills are consolidation checkpoints invoked mid-discussion:
 
-    strategy discussions → 3sm-strategy-unit → discussions → U-doc updates → …
-    design discussions → 3sm-design-master → 3sm-plan-run (impl docs) →
+    concept discussions → 3sm-concept-unit → discussions → U-doc updates → …
+    design discussions → 3sm-design-master → 3sm-eng-run (impl docs) →
     3sm-design-unit → discussions …
-    3sm-plan-run → engineering discussions → 3sm-plan-run
+    3sm-eng-run → engineering discussions → 3sm-eng-run
     build run → user test & review → design discussions → … (loop freely)
 
-Anti-pattern: running setup → init → strategy → design → plan → build as a
+Anti-pattern: running setup → init → concept → design → eng → build as a
 linear chain without returning to discussion. After every skill, return to
 the conversation; user test/review may loop back at any time.
 
 # Unit lifecycle
 
-    init (user/build branch, 3sm-strategy-unit)
-      → STRATEGY    U-doc converges; freeze gate (user)
+    init (user/build branch, 3sm-concept-unit)
+      → CONCEPT    U-doc converges; freeze gate (user)
       → DESIGN      unit dir: MASTER, T-docs, RUNS.md; runs-ready gate (user)
-      → IMPLEMENTATION   run loop r01..rN; FINAL planned
+      → ENGINEERING   run loop r01..rN; FINAL planned
       → FINAL       final gate (user) → merge → branch delete
       → COMPLETE    archive at next housekeeping
 
@@ -114,7 +114,7 @@ automated tests are authored in a regular run.
 Testing economy (law): a regular run plan is a functional implementation
 plan, verified by the user's manual testing. ALL automated testing —
 authoring and executing: the full test suite, coverage, security scans,
-evals — happens ONLY in the FINAL run (planned by `3sm-plan-final` from
+evals — happens ONLY in the FINAL run (planned by `3sm-eng-final` from
 PROJECT.md § Testing & security guidelines). A regular run executing or
 authoring tests is a violation unless the user explicitly asks. Release
 tags are lean — thorough verification happens once, at FINAL. Regular-run
@@ -132,18 +132,18 @@ T-docs synced; U-doc and R-doc closed; merge clean.
 
     .3SM/
     ├── PROCESS.md                  # this file
-    ├── PROCESS_STRATEGY.md         # role law (strategy agent)
+    ├── PROCESS_CONCEPT.md          # role law (concept agent)
     ├── PROCESS_DESIGN.md           # role law (plan mode: design)
-    ├── PROCESS_IMPLEMENTATION.md   # role law (plan mode: impl; build duties)
+    ├── PROCESS_ENGINEERING.md      # role law (plan mode: eng; build duties)
     ├── PROJECT.md                  # project facts: commands, gates, laws, defects
     ├── sessions/                   # curated session records (committed)
     └── plan/
         ├── MASTER.md               # global state: active unit, stages, roadmap
         ├── LOG.md                  # lifecycle events (lazy)
         ├── _archive/               # completed unit material (lazy)
-        ├── STRATEGY/               # MASTER.md, T-docs (≤10 top entries), U-docs
+        ├── CONCEPT/                # MASTER.md, T-docs (≤10 top entries), U-docs
         ├── DESIGN/                 # MASTER.md, T-docs, <unit>/{MASTER,RUNS.md}
-        └── IMPLEMENTATION/         # MASTER.md (a run-inventory section per unit), <unit>/{MASTER, r##/ (ALL phase plans), FINAL/}
+        └── ENGINEERING/            # MASTER.md (a run-inventory section per unit), <unit>/{MASTER, r##/ (ALL phase plans), FINAL/}
 
 # Naming
 
@@ -179,7 +179,7 @@ T-docs synced; U-doc and R-doc closed; merge clean.
   happens at unit init (user/build), merge and branch-delete at ship
   (build context). Push only on explicit user instruction; local-only repos
   are first-class.
-- Init gates (3sm-strategy-unit): clean tree; unit id is not an existing
+- Init gates (3sm-concept-unit): clean tree; unit id is not an existing
   branch; id not already registered in the impl MASTER (LIVE or ARCHIVED);
   user confirmed id + theme.
 - FINAL procedure (3sm-ship-unit, build context): verify FINAL gate →
@@ -322,11 +322,11 @@ Format (append-only — never rewrite, never prune):
 Location map:
 
     skill               record lives in
-    3sm-strategy-unit   U-doc (plan/STRATEGY/<unit>.md)
+    3sm-concept-unit    U-doc (plan/CONCEPT/<unit>.md)
     3sm-design-master   plan/DESIGN/MASTER.md
     3sm-design-unit     plan/DESIGN/<unit>/MASTER.md
-    3sm-plan-run        RUNS.md (the run's section)
-    3sm-plan-final      RUNS.md (FINAL section)
+    3sm-eng-run         RUNS.md (the run's section)
+    3sm-eng-final       RUNS.md (FINAL section)
     3sm-ship-unit       RUNS.md FINAL section + plan/LOG.md
     3sm-setup           plan/MASTER.md
     3sm-housekeeping    plan/MASTER.md
@@ -378,11 +378,11 @@ Project facts and conventions (commands, ship laws, defects) live in
   layout: `10_STRATEGY/`, `20_DESIGN/`, `30_IMPLEMENTATION/`). It is a
   read-only historical reference — never edited, never the live tree.
   All live planning happens under `.3SM/`. Distilled unit history:
-  `plan/STRATEGY/DEV_HISTORY.md`. Archiving or removing the legacy
+  `plan/CONCEPT/DEV_HISTORY.md`. Archiving or removing the legacy
   tree is a user decision at housekeeping, never an agent default.
 - **Pre-v2 units built under v1 rules:** units v0.1.1 … v0.2.4 were
   built before this law existed (phase plans in `30_IMPLEMENTATION/`
   per unit, offline test suites per build). Their records stay in the
-  legacy tree; their distilled history is `plan/STRATEGY/DEV_HISTORY.md`.
+  legacy tree; their distilled history is `plan/CONCEPT/DEV_HISTORY.md`.
   The v2 run grammar (`r##/PHASE##.md`, FINAL gate, testing economy)
   applies from the first post-migration unit onward.
