@@ -1,12 +1,12 @@
-# lead_HS — 3SM Process — IMPLEMENTATION stage (role law)
+# lead_HS — 3SM Process — ENGINEERING stage (role law)
 
 Read `.3SM/PROCESS.md` + the canonical pair first; this file adds only what
-the implementation role needs: plan mode owns the ledgers, build mode owns
+the engineering role needs: plan mode owns the ledgers, build mode owns
 execution. Both read this file.
 
 # Scope
 
-- Plan mode writes: `.3SM/plan/IMPLEMENTATION/**`, `.3SM/sessions/**`,
+- Plan mode writes: `.3SM/plan/ENGINEERING/**`, `.3SM/sessions/**`,
   `.3SM/PROJECT.md` (facts only).
 - Build mode writes: code on the unit branch (WIP commits allowed),
   execution-state rows in RUNS.md + the impl unit MASTER, sessions.
@@ -22,9 +22,9 @@ execution. Both read this file.
    approves.
 3. Right-branch check: the unit branch must match the active unit id.
 
-# Root MASTER — `plan/IMPLEMENTATION/MASTER.md`
+# Root MASTER — `plan/ENGINEERING/MASTER.md`
 
-    # IMPLEMENTATION — units
+    # ENGINEERING — units
 
     ## STATE
     active unit: <id>       # singular by design
@@ -42,13 +42,13 @@ execution. Both read this file.
     ## ROADMAP
     (sequencing, dependencies, next-unit recommendation)
 
-`3sm-plan-run` owns this file's currency; `3sm-strategy-unit` registers new
+`3sm-eng-run` owns this file's currency; `3sm-concept-unit` registers new
 units; `3sm-ship-unit` flips stage/lifecycle post-merge. The RUN INVENTORY
 section is the stage-level tracking law: every unit's runs and phase span
 are visible here, mirrored in RUNS.md — no implementation plan exists
 outside a run dir.
 
-# Unit MASTER — `plan/IMPLEMENTATION/<unit>/MASTER.md`
+# Unit MASTER — `plan/ENGINEERING/<unit>/MASTER.md`
 
     # <unit> — implementation
 
@@ -61,16 +61,16 @@ outside a run dir.
     ## FINAL CHECKLIST
     (mirrors the FINAL gate; ship walks it)
 
-# Run plans — `plan/IMPLEMENTATION/<unit>/r##/PHASE##.md`
+# Run plans — `plan/ENGINEERING/<unit>/r##/PHASE##.md`
 
 ALL phase plans of a unit live inside its run dir(s) — completed phases
 remain in place as the run's record; a plan outside `r##/` (or a legacy
 flat unit) consolidates into the run grammar before any new planning. The
-stage MASTER (`plan/IMPLEMENTATION/MASTER.md`) carries a run-inventory
+stage MASTER (`plan/ENGINEERING/MASTER.md`) carries a run-inventory
 section per unit; `DESIGN/<unit>/RUNS.md` mirrors it. Testing economy: a
 run plan is functional implementation only — no automated tests are
 authored or run in regular runs; the user test plan is the verification;
-ALL testing is FINAL's (`3sm-plan-final`).
+ALL testing is FINAL's (`3sm-eng-final`).
 
 Executable without reconstructing intent. Per phase:
 
@@ -97,13 +97,13 @@ Executable without reconstructing intent. Per phase:
 
 # Run loop
 
-    3sm-plan-run r## → PHASE##.md → user approves
+    3sm-eng-run r## → PHASE##.md → user approves
     BUILD run        → WIP commits allowed
     run gate         → lint + format + typecheck (changed files) + user review
     build doc duty   → status, SHA, test results → RUNS.md row + unit MASTER
     end-of-run commit→ `r##: <summary>`
     user tests/reviews → DELIVERED
-    next run … or 3sm-plan-final when remaining scope is finalization only
+    next run … or 3sm-eng-final when remaining scope is finalization only
 
 **User test plan**: each run entry in RUNS.md carries a short block — what
 to test and where (pages, interactions, edge cases, critical paths), no
@@ -114,7 +114,7 @@ input; write it so a person who has not read the plan can execute it.
 failure — is it tested? handled? silent? A silent+untested+unhandled row
 is a CRITICAL GAP and blocks the run gate.
 
-**Skill record**: after planning a run, `3sm-plan-run` appends its record
+**Skill record**: after planning a run, `3sm-eng-run` appends its record
 to the run's section in RUNS.md (PROCESS.md § Skill records): checklist,
 findings, carries — later passes skip what it already covered.
 
@@ -125,9 +125,9 @@ to the RUNS.md row and the unit MASTER without user prompting.
 **Quiescence**: RUNS.md breakdown changes wait until the active run is
 DELIVERED / CLOSED / ABANDONED; build execution-state writes are exempt.
 
-# FINAL plans — `plan/IMPLEMENTATION/<unit>/FINAL/PHASE##.md`
+# FINAL plans — `plan/ENGINEERING/<unit>/FINAL/PHASE##.md`
 
-Emitted by `3sm-plan-final` after the last regular run DELIVERED. The FINAL
+Emitted by `3sm-eng-final` after the last regular run DELIVERED. The FINAL
 run materializes two PROJECT.md fact sections:
 
 - **§ Testing & security guidelines** → full-suite test plan (every named
@@ -160,4 +160,4 @@ commits code on the unit branch per run conventions); no push.
 - Plan mode never touches code; build never edits PHASE plans or RUNS.md
   breakdown (execution-state rows only).
 - Regression: a run exposing a design flaw returns to `3sm-design-unit`;
-  strategy breakage returns to `3sm-strategy-unit`; affected runs → PLANNED.
+  concept breakage returns to `3sm-concept-unit`; affected runs → PLANNED.
