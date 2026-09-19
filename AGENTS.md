@@ -18,7 +18,7 @@ the actors around the lead-paint exception (regulation owner, review
 lead; commissioning context stays implicit in public documents) plus a
 reusable product/SDS evidence database. Research study + light
 data-engineering hybrid (document scraping, database). Currently in
-3SM stage IMPLEMENTATION: unit v0.1.1 (source probing — slim CLI) is
+3SM stage ENGINEERING: unit v0.1.1 (source probing — slim CLI) is
 built and gate-verified (PHASE01–07; the PHASE08 census feasibility
 pass ran 2026-09-11, its close-out transferred to v0.1.2 per D26);
 unit v0.1.2 (operator layer + census close-out) is built (PHASE01–06
@@ -50,15 +50,15 @@ Planning follows the 3SM v2 tree. In planning work, read first:
     .3SM/PROCESS.md            # + the stage PROCESS file for your role
     .3SM/PROJECT.md            # project facts: commands, gates, laws
     .3SM/plan/MASTER.md        # global state: active unit, roadmap
-    .3SM/plan/STRATEGY/MASTER.md
+    .3SM/plan/CONCEPT/MASTER.md
 
-then the relevant topic T-docs under `.3SM/plan/STRATEGY/`
+then the relevant topic T-docs under `.3SM/plan/CONCEPT/`
 (METHODOLOGY, LEAD_SDS, DATA_SOURCE, DATA_MODEL, ARCHITECTURE, …) and
 `.3SM/plan/DESIGN/` (architecture, data_model, interfaces, testing) —
 slim summaries; full public detail lives in `docs/study/`. The legacy
 v1 planning tree `docs/plan/3SM/` is a read-only historical reference
 (migration 2026-09-18; unit history distilled in
-`.3SM/plan/STRATEGY/DEV_HISTORY.md`). Treat existing Strategy as
+`.3SM/plan/CONCEPT/DEV_HISTORY.md`). Treat existing Concept as
 accumulated knowledge; do not re-research settled questions.
 
 ## 3SM
@@ -74,8 +74,8 @@ explicit user instruction.
 - **Documentation-tree split (D41, 2026-09-18):** public study detail
   documentation — METHODOLOGY, DATA_SOURCE, ARCHITECTURE, DATA_MODEL,
   LEAD_SDS, translations and `charts/` — lives in `docs/study/`, next
-  to (not inside) the plan tree `docs/plan/3SM/`; the strategy topic
-  files of the same names in `10_STRATEGY/` stay slim strategy
+  to (not inside) the plan tree `docs/plan/3SM/`; the concept topic
+  files of the same names in `.3SM/plan/CONCEPT/` stay slim concept
   summaries. Do not relocate detail content back into the plan tree.
 
 - README and document abstracts: plain or semi-technical language; define
@@ -83,7 +83,7 @@ explicit user instruction.
 - Every load-bearing number carries provenance: source name, year, URL
   (access date for web sources). Keep REFERENCES sections current.
 - Distinguish sourced facts from inference; mark unverified items explicitly
-  (the Strategy docs already do — keep it that way).
+  (the Concept docs already do — keep it that way).
 - Frontmatter metadata (`unit`, `stage`, `lifecycle`, `updated`) on all 3SM
   documents; bump `updated` when editing.
 - Per-unit public summaries: every built unit gets a summary section in
@@ -106,7 +106,7 @@ explicit user instruction.
   a language-switcher line at the top. The binding term map is
   `docs/terminology.md`; official act/institution names are never
   re-translated. Tranche 1 covers README, METHODOLOGY, DATA_SOURCE (DE/FR);
-  planning, design and implementation documents remain EN-only. When the
+  planning, design and engineering documents remain EN-only. When the
   English original changes substantively, update translations in the same
   change set or leave `source_updated` behind as a visible drift marker.
 
@@ -117,14 +117,14 @@ explicit user instruction.
 - Swiss regulatory specifics (ChemO/REACH alignment, current ChemRRV
   Anhang 2.8 wording, consolidated VIPaV text, BBL
   requester/owner role for the lead exception) remain OPEN until verified
-  against primary sources — see 10_STRATEGY open items; do not assert them
+  against primary sources — see the Concept MASTER open items; do not assert them
   as fact.
 - Web-scraped SDS/product data: record source URL and retrieval date per
   record; respect site terms; no bulk hammering.
 - No legal referencing in the tool, database or reports — product data
-  only (Strategy MASTER D27, supersedes D14). Legal context lives in the
-  10_STRATEGY documentation (LEAD_SDS.md, METHODOLOGY regulatory frame)
-  as framing background, never as DB fields or report sections.
+  only (Concept MASTER D27, supersedes D14). Legal context lives in the
+  study documentation (docs/study/LEAD_SDS.md, METHODOLOGY regulatory
+  frame) as framing background, never as DB fields or report sections.
 
 ## Git
 
