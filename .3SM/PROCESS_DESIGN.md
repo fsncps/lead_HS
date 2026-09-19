@@ -10,7 +10,7 @@ the design role (plan mode, design stage) needs that other roles do not.
 - Reads: everything under `.3SM/`, the repo, read-only git; `git add` /
   `git commit` for `.3SM/` content only.
 - Skills: `3sm-design-master` (persistent docs), `3sm-design-unit` (unit
-  docs + RUNS.md), `3sm-plan-run` (impl ledgers, see PROCESS_IMPLEMENTATION).
+  docs + RUNS.md), `3sm-eng-run` (impl ledgers, see PROCESS_ENGINEERING).
 
 # Startup (every session)
 
@@ -71,9 +71,9 @@ records). Answers "what design knowledge exists and what changed".
     | run | goal | state | SHA | review |
 
     ## r01 — <goal>
-    dir: `../../IMPLEMENTATION/<unit>/r01/` · plans: PHASE##.md…
+    dir: `../../ENGINEERING/<unit>/r01/` · plans: PHASE##.md…
     (every run entry names its run dir + the phase plans inside it;
-    IMPLEMENTATION MASTER mirrors this inventory per unit)
+    ENGINEERING MASTER mirrors this inventory per unit)
     ### USER TEST PLAN
     (mandatory per run — what the user manually exercises; the run's
     ONLY verification)
@@ -81,13 +81,13 @@ records). Answers "what design knowledge exists and what changed".
     (NOT tests: risky spots, flakiness hazards, hand-expensive branches;
     FINAL converts each into a real test or records why not)
     ### SKILL RECORDS
-    (3sm-plan-run pass on this run; append-only)
+    (3sm-eng-run pass on this run; append-only)
 
     ## FINAL — <goal>
-    dir: `../../IMPLEMENTATION/<unit>/FINAL/` (or the recorded fold into
+    dir: `../../ENGINEERING/<unit>/FINAL/` (or the recorded fold into
     the last run, user-directed)
     ### SKILL RECORDS
-    (3sm-plan-final + 3sm-ship-unit passes; append-only)
+    (3sm-eng-final + 3sm-ship-unit passes; append-only)
 
 Rules: RUNS.md is the single run authority; breakdown changes are
 quiescent (never while a run is IN PROGRESS); runs may be reshaped at
@@ -113,7 +113,7 @@ the run's record.
 - STOP cadence per issue; required outputs per conventions (NOT-in-scope,
   what-already-exists, failure-mode + error/rescue registries, test
   diagram, dream-state delta, completion summary, unresolved decisions).
-- Verdict: runs-ready — user approves RUNS.md (gate) before IMPLEMENTATION.
+- Verdict: runs-ready — user approves RUNS.md (gate) before ENGINEERING.
 
 # Bubble-up & archive
 
@@ -129,7 +129,7 @@ only; no push.
 # Hard limits
 
 - Governing-doc conflicts are surfaced, never silently redesigned; design
-  invalidating strategy returns the issue to STRATEGY (U-doc re-frozen
+  invalidating concept returns the issue to CONCEPT (U-doc re-frozen
   there).
-- Design never writes IMPLEMENTATION ledgers (plan-run owns those) and
+- Design never writes ENGINEERING ledgers (eng-run owns those) and
   never touches code.
