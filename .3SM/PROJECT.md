@@ -155,7 +155,7 @@ Active: local · public-repo (GitHub `fsncps/lead_HS`)
 - **Documentation-tree split (D41, 2026-09-18)**: public study detail
   lives in `docs/study/` (METHODOLOGY, DATA_SOURCE, LEAD_SDS, DATA_MODEL,
   ARCHITECTURE, translations, charts); plan-tree topic files stay slim
-  strategy summaries.
+  concept summaries.
 - **Unverified lead CAS/EC identifiers stay flagged** until checked
   against the ECHA EC inventory.
 - **Register growth discipline**: new sources enter as documented rows;

@@ -2,7 +2,7 @@
 unit: global
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
 # Design MASTER — lead_HS
@@ -26,7 +26,7 @@ v0.2.4-basta-addendum) — are COMPLETE: built, executed, merged to
 (`units/v0.1.1.md` … `units/v0.2.4-basta-addendum.md`, decision codes
 od/cap/nu/fu/tr/s-series) live in the legacy v1 tree
 `docs/plan/3SM/20_DESIGN/units/` (read-only); the distilled history is
-`../STRATEGY/DEV_HISTORY.md`. The persistent T-docs below carry the
+`../CONCEPT/DEV_HISTORY.md`. The persistent T-docs below carry the
 current engineering truth of the built tool; the design review
 history (CEO HOLD SCOPE, ENG reviews, FIXPLAN_2026-09-11 — DONE) is
 part of the legacy record.
@@ -46,7 +46,7 @@ Persistent T-docs (this directory, engineering-authoritative):
 Legacy (read-only): per-unit design deltas in
 `docs/plan/3SM/20_DESIGN/units/`; the closed work order
 `docs/plan/3SM/20_DESIGN/FIXPLAN_2026-09-11.md` (marked DONE).
-Strategy summaries: `../STRATEGY/`; public study detail: `docs/study/`.
+Concept summaries: `../CONCEPT/`; public study detail: `docs/study/`.
 
 (The canonical "design" subject is covered by architecture +
 interfaces together — consolidation decision, no separate design.md.)
@@ -222,12 +222,12 @@ interfaces together — consolidation decision, no separate design.md.)
 - name_base dedup rules, UFI validation — Phase-1 pilot (inherited).
 - parameters_json schemas per future run kind — at their milestones.
 
-## Readiness for IMPLEMENTATION
+## Readiness for ENGINEERING
 
 Historical: every unit v0.1.1 … v0.2.4 passed its planning gates and
 was built and merged (per-unit detail: legacy readiness prose and
 implementation trails in `docs/plan/3SM/`; distilled:
-`../STRATEGY/DEV_HISTORY.md`). Current readiness is per-unit and set
+`../CONCEPT/DEV_HISTORY.md`). Current readiness is per-unit and set
 by the next unit's own design pass — nothing is pending here.
 
 ## Handoff note
@@ -236,3 +236,9 @@ Writing these documents implies no lifecycle transition (3SM process
 rules). The v1→v2 migration itself was user-ordered (2026-09-18) and
 moved no live lifecycle state; current readiness is per-unit, set by
 each unit's own design pass.
+
+Terminology note (2026-09-19, v2.1 stage rename): the stage formerly
+named STRATEGY is now CONCEPT, and IMPLEMENTATION is ENGINEERING;
+"Strategy …" citations in older prose (e.g. "Strategy D27") point to
+today's CONCEPT decision register, and `10_STRATEGY/` paths denote the
+read-only legacy v1 tree.

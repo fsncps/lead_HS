@@ -2,7 +2,7 @@
 unit: global
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-18
+updated: 2026-09-19
 ---
 
 # Data model — normalized evidence database (Design)
@@ -561,7 +561,7 @@ exist per applied migrations.
 ## REFERENCES
 
 - docs/study/DATA_MODEL.md — the Strategy schema this refines
-- ../STRATEGY/MASTER.md — D2, D7, D15–D20 (principles anchored)
+- ../CONCEPT/MASTER.md — D2, D7, D15–D20 (principles anchored)
 - docs/study/DATA_SOURCE.md — source register, provenance discipline
 - docs/study/METHODOLOGY.md — strata table, taxonomies
 - docs/study/LEAD_SDS.md — dictionary v0.1, legal statuses
