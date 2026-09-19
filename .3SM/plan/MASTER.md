@@ -121,3 +121,27 @@ findings: CRITICAL GAP 0 · WARNING 0 (all fixed inline; verbatim handover file 
 carries: nothing (housekeeping is cheap); DEV_HISTORY compilation follows this pass
 valid-until: next canonical/template change or tree change
 commit: 7f8ebb8
+
+### 3sm-housekeeping REPAIR — 2026-09-19
+scope: full `.3SM/` tree (24 files) + AGENTS.md — v2-legacy stage names →
+v2.1 canonical (STRATEGY→CONCEPT, IMPLEMENTATION→ENGINEERING), user-ordered
+checklist:
+- [x] startup — canonical pair (v2.1) + PROCESS* + PROJECT + plan/MASTER read; mode REPAIR (user-ordered update) — OK
+- [x] discover — 24 files inventoried + AGENTS.md pointer; rename-pattern classification (live vs legacy-tree vs historical) — OK
+- [x] structure compare — FOUND plan/STRATEGY/ + plan/IMPLEMENTATION/ + PROCESS_STRATEGY/IMPLEMENTATION files — FIXED (rename executed)
+- [x] doc integrity — stage tokens ×10 → CONCEPT; live-path refs fixed; `updated` bumped on edited docs — OK
+- [x] skill-record audit — 2 prior records, SHAs present, untouched (append-only); their valid-until ("canonical pair change") fired → this pass is the response — OK
+- [x] bubble & consolidate — CONCEPT 9 top entries (≤10), DESIGN 5 — OK
+- [x] instruction conflicts — law files renamed (roles, states, process map, docs map, records map, exceptions); AGENTS.md pointer repointed — OK
+- [x] facts/law separation — holds (PROJECT.md facts only; D41 prose updated) — OK
+- [x] lifecycle coherence — no active unit, all units COMPLETE/ARCHIVED — OK
+- [x] migration steps — plan/CONCEPT (cdd00c9) · PROCESS_CONCEPT (d29446e) · PROCESS_ENGINEERING (24e97e4) · PROCESS.md (ace3647) · plan/MASTER+LOG (2881122) · DESIGN+PROJECT (69acb6d) · AGENTS.md (b2a7cb7) · PROCESS_DESIGN fix (e05f2dc) — OK
+- [x] sessions — 1 S-rec (2026-09-18 migration), current, kept verbatim (historical record) — OK
+- [x] integrity re-check — automated verify: zero stale live-path/skill tokens; expected remainder = LOG entry, DESIGN terminology note, S-rec, legacy-tree paths — OK
+findings: CRITICAL GAP 0 · WARNING 0 · unresolved 0
+carries: rename-residue verification may be skipped by the next skill passes
+until the canonical pair changes again; legacy-tree paths (`10_STRATEGY/`,
+`30_IMPLEMENTATION/`) intentionally unchanged
+valid-until: next canonical/template change
+commit: cdd00c9 · d29446e · 24e97e4 · ace3647 · 2881122 · 69acb6d · b2a7cb7 ·
+e05f2dc (this record lands in the commit that follows)
