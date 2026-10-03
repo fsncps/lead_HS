@@ -105,8 +105,8 @@
     "request_budget_per_run": 3
   },
   "records": {
-    "count_derivation": "raw scan 2026-10-03: full download, counted",
-    "expected_count": 89867
+    "count_derivation": "raw scan + run 2026-10-03: delivery holds 89,867 rows, 471 byte-identical duplicates collapse under the degraded row-hash identity — 89,396 distinct records is the table-coverage anchor (changed content inserts, so +N drift after a source update is the true signal)",
+    "expected_count": 89396
   },
   "schema_version": 1,
   "source_class": "AS",
