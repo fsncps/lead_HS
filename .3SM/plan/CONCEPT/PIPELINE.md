@@ -1,0 +1,134 @@
+# lead_HS — CONCEPT PIPELINE
+
+The unit queue. Concept plans no units: entries capture intent, mature to
+INIT-READY, and the user's `/init-unit` command does the rest. Law:
+capture-not-placement (no code recon — orientation comes from the DESIGN
+M-docs); ≤12 visible entries, overflow archives to
+`CONCEPT/_archive/PIPELINE/`; entries stay lean (~15 lines).
+
+Sections: **ACTIVE** (unit dir exists), **NEXT-UP** (maturing or
+init-ready), **PARKED** (deliberately shelved). Shipped/abandoned entries
+move to the archive with their end-date.
+
+# ACTIVE
+
+(none)
+
+# NEXT-UP
+
+### v0.3.0 — evidence DB + bulk download of the confirmed sources
+status: INIT-READY
+intent: One SQLite evidence DB gains one raw table per bulk source with
+  the source's own column headers verbatim; every confirmed bulk source
+  (ECAT, Nordic Swan — BASTA when its filter clears) is bulk-downloaded
+  completely: each and every record, stubs/nulls/duplicates included,
+  maximum data depth within the per-record budget.
+decisions:
+  - D42 — product-DB turn = v0.3; Windows installer + deferred
+    preliminaries → v0.4 (CONCEPT MASTER)
+  - D43 — v0.3 sub-roadmap 0.3.0 → 0.3.4 → 0.3.8 → analysis
+  - D44 — completeness mandate; verbatim source headers; 1 KB default
+    budget; deterministic truncation, never drop (amends R3 spill)
+  - R1/R2 — SQLite stays; upsert + change journal (RAW_SOURCING.md)
+constraints: GO=1 network discipline; list-endpoint-first + crawl-delay
+  politeness; product data only (D27); provenance per record (D17)
+non-goals: normalization/matching (v0.3.4), new-source onboarding
+  (v0.3.8), any analysis
+readiness: none — init-ready (manifest field lists, R9 mechanics pin at
+  Design)
+updated: 2026-10-03
+
+### v0.3.4 — deterministic normalization + matching
+status: MATURING
+intent: Collapse cross-source observations onto formulation-level
+  products: normalize manufacturer names and product identifiers, join
+  on exact keys (manufacturer × unique id), score near-matches within
+  blocks, tiered verdicts (auto_match/review/no_match) — no LLM
+  matching.
+decisions:
+  - MA1–MA7/MA9 proposed (MATCHING.md) — pin at this unit's Design
+constraints: MA8 dependency call open (rapidfuzz vs stdlib-only)
+non-goals: raw acquisition (v0.3.0), source expansion (v0.3.8)
+readiness: MA adoption, MA8, score-band calibration plan (OPEN-NOW)
+updated: 2026-10-03
+
+### v0.3.8 — source expansion via generic bulk import
+status: MATURING
+intent: Streamlined scraping/import pipeline so additional sources
+  become raw tables without bespoke code (same-shape sources: manifest
+  + seed CSV + raw init/seed); consultant probe queue (KemiDigi,
+  WINGIS, INIES, eBVD, Quick-FDS, PT21) as candidates; entry gate de5.
+decisions:
+  - R8 proposed (RAW_SOURCING.md) — onboarding without pipeline-code
+    changes for same-shape sources
+constraints: de5 gate (confirmed bulk + identity tuple + in-scope
+  filter); politeness budget per source
+non-goals: MSE/capture-recapture methodology turn (separate decision,
+  INPUT digest)
+readiness: candidate order + gate mechanics at unit start (OPEN-NOW)
+updated: 2026-10-03
+
+# PARKED
+
+### v0.4 — vanilla-Windows installer + deferred preliminaries
+status: PARKED
+parked because: user decision 2026-10-03 (D42) — everything deferred
+  from earlier preliminary planning lands here, after the v0.3 data
+  program; D32 (self-contained Windows artifact, mechanism open) is
+  the anchor decision
+updated: 2026-10-03
+
+# DECISIONS
+
+Authoritative register: `MASTER.md` (this directory). Latest:
+- **D42** — unit numbering resolved: v0.3 = product-DB turn; Windows
+  installer + deferred preliminaries → v0.4; analysis after v0.3.x.
+- **D43** — v0.3 sub-roadmap: v0.3.0 db + bulk download → v0.3.4
+  normalization/matching (manufacturer × unique id) → v0.3.8 generic
+  bulk-import source expansion.
+- **D44** — raw-layer completeness mandate: every record (stubs/nulls/
+  dupes); verbatim source headers; 1 KB default per-record budget;
+  deterministic truncation, never drop (amends R3 spill).
+
+# OPEN ITEMS
+
+- OPEN-NOW (v0.3.4): MA decision pinning; MA8 dependency call;
+  score-band calibration plan.
+- OPEN-NOW (v0.3.8): candidate source order; gate mechanics.
+- NON-BLOCKING: BASTA paint-subset filter (de5; TODOS.md), ECAT
+  17,838-vs-38,233 reconciliation — standing threads, CONCEPT MASTER
+  OPEN ITEMS authoritative.
+- PENDING (not this stage's write scope): `plan/MASTER.md` STATE +
+  ROADMAP still say "next-unit decision OPEN" — sync by a permitted
+  pass (housekeeping/build context) from the text in this pipeline's
+  DECISIONS + CONCEPT MASTER ROADMAP.
+
+# SKILL RECORDS
+
+### 3sm-concept-pipeline CAPTURE+PREPARE — 2026-10-03
+scope: PIPELINE.md created (was absent); v0.3 program adoption captured;
+v0.3.0 matured to INIT-READY
+checklist:
+- [x] startup — PROCESS* + PROJECT + plan/MASTER + CONCEPT MASTER read;
+  PIPELINE absent → created from 3sm-setup template — OK
+- [x] mode — CAPTURE (user decisions) rolling into PREPARE (v0.3.0) — OK
+- [x] capture — D42 (numbering), D43 (sub-roadmap), D44 (completeness +
+  truncation, amends R3) landed in CONCEPT MASTER + RAW_SOURCING.md;
+  MATCHING.md repointed to v0.3.4 (MA8 typo fixed) — OK
+- [x] prepare v0.3.0 — id free (no unit dirs/branches/registry entries);
+  theme user-confirmed; no parallel unit; no OPEN-NOW (manifest field
+  lists + R9 are Design-stage deferrals) → INIT-READY — OK
+- [x] audit — git log vs docs consistent (today's reconciliation
+  commits); no drift beyond the plan/MASTER sync noted above — OK
+findings: CRITICAL GAP 0 · WARNING 0 · unresolved 0
+carries: design may take the v0.3 numbering + D44 truncation rules as
+  decided (no re-derivation); RAW_SOURCING R4–R8 + R9 and MA1–MA9 pin
+  at the consuming units' Design
+valid-until: canonical/template change, or the user revisits the v0.3/v0.4
+split
+commit: <lands in this pass's commits>
+
+# REFERENCES
+
+Archive: `CONCEPT/_archive/PIPELINE/` holds shipped + abandoned entries
+verbatim (empty — no unit has run under the v2 pipeline yet).
