@@ -449,6 +449,34 @@ lead). Open questions and the phased roadmap follow.
     (charts live in `docs/study/charts/` — public side; superseded
     charts stay in `_archive/10_STRATEGY/charts/`).
 
+42. **Unit numbering resolved; v0.3 = the product-DB turn (2026-10-03;
+    user direction):** the "v0.3" double-booking ends — v0.3 is the
+    **product-DB program** (raw sourcing → normalization/matching →
+    source expansion); the vanilla-Windows installer (D32) and all
+    other deferred preliminary planning are re-booked to **v0.4** for
+    later. Data analysis follows after v0.3.x, not inside it.
+43. **v0.3 sub-unit roadmap (2026-10-03; user direction):** v0.3.0 —
+    evidence DB + bulk download of all currently confirmed bulk
+    sources; v0.3.4 — deterministic normalization and matching by
+    manufacturer × unique id; v0.3.8 — source expansion via a generic
+    bulk raw-import pipeline (streamlined scraping & import);
+    intermediate sub-ids are the Design's to structure. RAW_SOURCING.md
+    is the v0.3.0 concept (R1–R3 confirmed; R4–R8 + R9 pin at unit
+    Design); MATCHING.md rides v0.3.4 (MA pinning at its start; MA8
+    open). Live queue: `PIPELINE.md`.
+44. **Raw-layer completeness mandate + oversize policy (2026-10-03;
+    user direction, amends RAW_SOURCING R3):** capture **each and
+    every record** — stubs, nulls and duplicates included; raw tables
+    inherit the **source's own column headers verbatim** (the manifest
+    maps which source columns carry manufacturer / product_ident /
+    group_code for the matching layer; normalization stays
+    downstream); per-record inline budget **default 1 KB** (per-source
+    value via manifest), payload kept to maximum depth within it;
+    overflow → **deterministic truncation** (manifest per-field
+    priority list, reproducible per D4) — **never a dropped record**.
+    The spill-to-raw-store mechanism is superseded (simplicity); the
+    "never silently drop" principle stands.
+
 ## OPEN ITEMS
 
 - CLOSED 2026-09-12 (scope, D31): EZV/swiss-impex — Swiss market
@@ -556,6 +584,17 @@ lead). Open questions and the phased roadmap follow.
   user-confirmed 2026-09-17); R9 and adoption deferred to the next
   strategy turn / the product-DB unit's Design. Sequencing with
   MATCHING.md: raw layer first, matching layer consumes it.
+- ADOPTED (2026-09-17 → 2026-10-03, user): the **v0.3 product-DB
+  turn** (D42/D43). RAW_SOURCING.md is the v0.3.0 concept (R1–R3
+  confirmed; R3 amended by D44 — truncation replaces spill; R4–R8 +
+  R9 pin at unit Design); MATCHING.md rides v0.3.4 (MA pinning at its
+  start; MA8 open). Sub-roadmap: v0.3.0 db + bulk download of all
+  confirmed bulk sources → v0.3.4 deterministic normalization +
+  matching (manufacturer × unique id) → v0.3.8 source expansion via a
+  generic bulk-import pipeline (entry gate de5) → data analysis
+  afterwards. Vanilla-Windows distribution (D32) and other deferred
+  preliminary planning re-booked to v0.4 (D42). Live queue:
+  `PIPELINE.md` (v0.3.0 INIT-READY 2026-10-03).
 - Phase 0 — close gaps: verify current legal
   texts (ChemRRV Anhang 2.8, consolidated VIPaV); document the CdD
   governance chain for the lead exception from public sources (requester/
