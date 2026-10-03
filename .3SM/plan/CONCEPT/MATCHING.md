@@ -2,7 +2,7 @@
 unit: global
 stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-03
 ---
 
 # MATCHING — product identity, string matching and cross-source dedup
@@ -20,7 +20,7 @@ tuple of D33 (CN8 code, manufacturer, manufacturer product-ident), the
 v0.2.2 overlap-matching key ("normalized manufacturer + product
 ident"), and the D2 formulation + sighting dedup layer. The immediate
 driver: the v0.3-era product-DB seeding, where ~200k-row sources
-(BASTA 195,390 articles pinned 2026-09-17) must be matched against
+(BASTA 195,391 articles pinned 2026-09-17) must be matched against
 17,013 ECAT and 2,322 Nordic Swan distinct products. Status: method
 proposal converged in the 2026-09-17 concept session; adoption as
 numbered MASTER decisions and the dependency call (M8) await the next
@@ -258,7 +258,7 @@ concept turn / unit Design — nothing frozen.)*
 - legacy U-docs `docs/plan/3SM/10_STRATEGY/v0.2.2.md` (overlap-matching key
   "normalized manufacturer + product-ident") and `v0.2.4.md` — ECAT EAN
   coverage, BASTA keyfigures
-  (195,390 articles / 1,925 companies, 2026-09-17) and article-page
+  (195,391 articles / 1,925 companies, 2026-09-17) and article-page
   identity fields (article number, GTIN, RSK, E-number, BASTA ID,
   BK04/BSAB).
 - INPUT-source-expansion-MSE.md — linkage-quality tiers, dependency

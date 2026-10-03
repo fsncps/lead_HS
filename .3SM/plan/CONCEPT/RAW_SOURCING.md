@@ -2,7 +2,7 @@
 unit: global
 stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-03
 ---
 
 # RAW_SOURCING — bulk source tables, seed CLI and repeatable acquisition
@@ -21,7 +21,7 @@ existing raw store instead of being dropped; list-endpoint-first
 crawling as a politeness gate. Converged with the user 2026-09-17
 (engine, history model, oversize policy confirmed); local decisions
 R1–R9, adoption as MASTER decisions at the next concept turn / the
-product-DB unit's Design. Immediate driver: BASTA (AS-33, 195,390
+product-DB unit's Design. Immediate driver: BASTA (AS-33, 195,391
 articles) as the third bulk source next to ECAT (17,013 distinct) and
 Nordic Swan (2,322).
 
@@ -112,7 +112,7 @@ flows; no schema decided implicitly by the scraper.
 ## Politeness gate — list-endpoint-first
 
 Data-side math (D40): BASTA robots Crawl-delay is 10 s. Per-article
-fetching of 195,390 articles ≈ 22.6 days of continuous crawling;
+fetching of 195,391 articles ≈ 22.6 days of continuous crawling;
 list pages of ~50–100 articles ≈ 2,000–4,000 requests ≈ 6–11 hours.
 Therefore: **bulk-copy from listing/search routes; per-article detail
 fetches only for sampled subsets** (the 100-row CSV pattern, v0.2.4).
@@ -189,7 +189,7 @@ concept turn / unit Design — nothing frozen.)*
   (likely no direct HS equivalent) — affects how BASTA rows join the
   paint frame (documented at probe time, decided at next concept turn).
 - `raw status` coverage checks vs pinned keyfigures anchors — reuse the
-  D40 keyfigures snapshot (195,390 / 1,925) as drift detectors.
+  D40 keyfigures snapshot (195,391 / 1,925) as drift detectors.
 - Sampled-subset detail fetches (per-article) — politeness budget and
   resume cursor for the detail walk (small scale, but same rules).
 - Adoption order: raw layer before matching layer (MATCHING.md) — the
@@ -205,7 +205,7 @@ concept turn / unit Design — nothing frozen.)*
 - MATCHING.md — consumer of this layer (normalization/joins read raw
   rows); evidence tiers presuppose verbatim raw records.
 - MASTER.md (this directory) — D38 data_sources.csv registry + de5 entry
-  gate, D40 BASTA keyfigures (195,390 articles, 1,925 companies,
+  gate, D40 BASTA keyfigures (195,391 articles, 1,925 companies,
   2026-09-17) and robots Crawl-delay 10 s.
 - INPUT-source-expansion-MSE.md — bulk-source queue context; overreach
   warning: raw layer is sourcing infrastructure only, the MSE turn is a
