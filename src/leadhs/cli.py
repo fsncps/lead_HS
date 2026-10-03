@@ -74,6 +74,18 @@ def probe():
     """Probe runs and reports."""
 
 
+@click.group(name="raw", no_args_is_help=True)
+def raw():
+    """Raw source layer: scan, run, status, explain (v0.3.0)."""
+
+
+def _instruction_path(source_id: str, instructions_dir: str | None) -> str:
+    import os as _os
+
+    directory = instructions_dir or "raw_sources"
+    return _os.path.join(directory, f"{source_id}.instruction.json")
+
+
 @click.command()
 @click.option("--net", is_flag=True, help="check reachability of seeded sources")
 @click.pass_context
@@ -573,9 +585,58 @@ seeded random 100-article sample CSV — one honest state machine."""
     ctx.exit(exit_code)
 
 
+@raw.command()
+@click.argument("source_id")
+@click.option("--instructions-dir", "instructions_dir", default=None,
+              help="instructions directory (default: raw_sources/)")
+@click.pass_context
+def explain(ctx, source_id, instructions_dir):
+    """Render a sourcing instruction readably (file-only; no DB)."""
+    from .raw import instructions as instructionsmod
+
+    path = _instruction_path(source_id, instructions_dir)
+    try:
+        inst, manifest_hash = instructionsmod.load(path)
+    except instructionsmod.InstructionError as exc:
+        raise click.ClickException(str(exc))
+    click.echo(f"instruction:  {path}")
+    click.echo(f"source:       {inst.source_id} — {inst.source_name} ({inst.source_class})")
+    click.echo(f"export_kind:  {inst.export_kind}")
+    click.echo(f"endpoints:")
+    click.echo(f"  list:   {inst.list_url}")
+    if inst.endpoints.get("detail"):
+        click.echo(f"  detail: {inst.endpoints['detail']}")
+    p = inst.pagination
+    click.echo(f"pagination:   kind={p.kind}")
+    if p.kind == "page_param":
+        click.echo(f"  page_param={p.page_param} page_size={p.page_size} max_pages={p.max_pages}")
+    rec = inst.records
+    expected = rec["expected_count"]
+    click.echo(f"records:      expected_count={'unknown' if expected is None else expected:,}")
+    click.echo(f"  derivation: {rec['count_derivation']}")
+    click.echo(f"columns:      {len(inst.columns)}")
+    click.echo(f"  {'source_header':<28} {'column':<24} {'type':<9} {'prio':<5} description")
+    for c in inst.columns:
+        click.echo(
+            f"  {c.source_header:<28} {c.column:<24} {c.type:<9} {c.truncation_priority:<5} {c.description or ''}"
+        )
+    click.echo(f"natural_key:  {', '.join(inst.natural_key)}")
+    click.echo(f"payload_budget_bytes: {inst.payload_budget_bytes}")
+    pol = inst.politeness
+    click.echo(f"politeness:   delay={pol.delay_seconds}s crawl_delay="
+               f"{'robots' if pol.crawl_delay_seconds is None else f'{pol.crawl_delay_seconds}s'} "
+               f"request_budget={pol.request_budget_per_run} records_per_request="
+               f"{pol.records_per_request if pol.records_per_request is not None else '?'}")
+    click.echo(f"  derivation: {pol.derivation}")
+    if inst.notes:
+        click.echo(f"notes:        {inst.notes}")
+    click.echo(f"manifest_hash: {manifest_hash}")
+
+
 cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)
+cli.add_command(raw)
 cli.add_command(doctor)
 
 
