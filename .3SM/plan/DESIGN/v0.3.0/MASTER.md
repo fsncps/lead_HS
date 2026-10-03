@@ -156,3 +156,8 @@ R9 pinned here.)*
   carried from the concept adoption review; the deltas this pass settled
   are rs1–rs10. RUNS.md authored for user approval — runs-ready pending
   that approval.
+
+  UPDATE 2026-10-03: RUNS.md approved — the user ordered ENG planning
+  ("use ENG review to get phase plan docs") the same day. Unit-branch
+  init waived by the user ("no need to init a formal unit"): planning
+  and build proceed on `main`; recorded in the ENGINEERING ledgers.

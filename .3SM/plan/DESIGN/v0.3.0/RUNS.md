@@ -73,7 +73,40 @@ fail-closed validation (unknown version/field, empty natural_key, delay
 
 ### SKILL RECORDS
 
-*(3sm-eng-run pass lands here at run planning; append-only.)*
+### 3sm-eng-run SMALL (plan authored) — 2026-10-03
+scope: r01 only (r02/r03 planning pends their predecessors per ENGINEERING
+ROADMAP; guard-formula pin stays with r02 planning)
+checklist:
+- [x] startup reconcile — OK (git ↔ ledgers clean; `plan/ENGINEERING/`
+      was empty → root MASTER + unit I-doc created; quiescence holds:
+      all runs PLANNED)
+- [x] Step 0 — OK (existing leverage: migration runner, click group
+      pattern, exit-code convention, hashlib; minimum change set = 4 code
+      files + .gitkeep; under sizing thresholds; no OPEN ITEM blocks r01)
+- [x] mode — SMALL (offline, ≤8 files, one increment); batched round
+      pre-answered by user directive "write plan, commit, stop" —
+      findings encoded in PHASE01, listed in the completion summary
+- [x] architecture — 1 finding (1A WARNING): manifest_hash must hash the
+      canonical re-serialization, never raw file bytes — encoded in
+      PHASE01 STEPS 2
+- [x] code quality — 1 finding (2A WARNING): every refusal names its JSON
+      path (stable targets for the FINAL refusal-matrix input) — encoded
+      in STEPS 2
+- [x] test review — functional-only; RUNS.md user test plan + provisional
+      list carried verbatim, none new (escape hatch)
+- [x] performance — OK (offline, file-sized inputs)
+- [x] phase plan authored — r01/PHASE01.md
+- [x] failure modes — 6 codepaths registered, all rescued, no silent rows,
+      0 CRITICAL GAPS
+findings: CRITICAL GAP 0 · WARNING 2 (both encoded) · unresolved 0
+carries: build may take for granted — migration runner untouched (file
+drop-in), `_ensure_initialized` deliberately absent from `raw explain`,
+reserved export kinds render in explain (refusal is scan/run's);
+FINAL covers the refusal matrix + canonical-stability + chain-integrity
+inputs from RUNS.md r01 as written — no deltas from this pass
+valid-until: RUNS.md re-plan, interfaces.md instruction-schema change,
+PROJECT.md gate changes
+commit: (this commit)
 
 ## r02 — scan + guards → committed instructions (AS-2, AS-3)
 
