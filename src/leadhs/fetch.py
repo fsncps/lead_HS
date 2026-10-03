@@ -208,6 +208,12 @@ class Fetcher:
         if self.robots_policy(url) == "disallowed":
             raise RobotsDisallowed(url, "robots.txt disallows our path")
 
+    def crawl_delay(self, url: str) -> Optional[float]:
+        """Public accessor for the domain's robots ``Crawl-delay``
+        (None = uncached robots, allow-all or silent) — the raw scan
+        reads it to derive the instruction's politeness block."""
+        return self._crawl_delay_of(self._domain(url))
+
     # --- the request pipeline -------------------------------------------
 
     def _request(self, url: str, log: bool = True, max_bytes: Optional[int] = None) -> FetchResponse:

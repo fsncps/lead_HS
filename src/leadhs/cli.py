@@ -633,6 +633,229 @@ def explain(ctx, source_id, instructions_dir):
     click.echo(f"manifest_hash: {manifest_hash}")
 
 
+@probe.command("url")
+@click.argument("url")
+@click.option("--source", "source_id", default=None, help="source ID — also record one finding in a probe run")
+@click.option("--cap", "cap", type=int, default=None, help="sample cap in bytes (default 64 KiB)")
+@click.pass_context
+def probe_url(ctx, url, source_id, cap):
+    """Light pre-probe of an unregistered URL: ballpark only (rs5).
+
+    Access, robots (crawl-delay), content-type, rough size, first
+    bytes. No DB writes unless --source ID (then one finding inside a
+    probe run)."""
+    from . import db as dbmod, fetch as fetchmod, store as storemod
+    from .fetch import FetchConfig
+    from .fetch import Blocked, FetchError, ProbeNetworkError, RateLimited, RobotsDisallowed, SizeLimit
+    from .raw import scanner as scannermod
+
+    rt = _runtime(ctx)
+    if source_id:
+        _ensure_initialized(ctx, rt)
+    fetcher = fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger)
+    summary = {}
+    exit_code = 0
+    try:
+        policy = fetcher.robots_policy(url)
+        delay = fetcher.crawl_delay(url)
+        click.echo(f"url:            {url}")
+        click.echo(f"robots:         {policy}" + (f" (crawl-delay {delay}s)" if delay else ""))
+        try:
+            resp = fetcher.get(url, max_bytes=cap or scannermod.PROBE_URL_CAP)
+        except SizeLimit:
+            click.echo("size:           > cap (streamed, aborted at the cap — content intact upstream)")
+            resp = None
+        if resp is not None:
+            ctype = (resp.headers.get("Content-Type") or "").split(";")[0].strip()
+            length = resp.headers.get("Content-Length")
+            click.echo(f"status:         {resp.status_code}")
+            click.echo(f"content-type:   {ctype or '?'}")
+            if length and length.isdigit():
+                click.echo(f"size:           {int(length):,} bytes (content-length)")
+            else:
+                click.echo(f"size:           {len(resp.content):,} bytes received (no content-length)")
+            click.echo(f"encoding:       {resp.encoding}")
+            sample = " ".join(resp.text[:200].split())
+            click.echo(f"first bytes:    {sample[:200]!r}")
+            summary = {
+                "status_code": resp.status_code, "content_type": ctype,
+                "size": int(length) if length and length.isdigit() else len(resp.content),
+                "robots": policy, "encoding": resp.encoding,
+            }
+    except (RobotsDisallowed, Blocked, RateLimited, ProbeNetworkError) as exc:
+        click.echo(f"fetch failed:   {exc}", err=True)
+        summary = {"error": type(exc).__name__, "detail": str(exc)}
+        exit_code = 2
+    if source_id:
+        from . import source as sourcemod
+        from .models import DocumentDraft, FindingDraft, ProbeResult
+        from .probe import engine as probeengine
+
+        conn = dbmod.connect(rt.db_path)
+        store = storemod.RawStore(rt.store_root())
+        try:
+            if sourcemod.get_source(conn, source_id) is None:
+                click.echo(f"error: unknown source {source_id!r} (run `leadhs source load` first)", err=True)
+                ctx.exit(1)
+            parameters = {"url": url, "mode": "probe-url"}
+            run_id, run_key, _ = probeengine._insert_run(conn, "probe", source_id, "probeurl", parameters)
+            probeengine._insert_probe_run(conn, run_id, "census")
+            if summary.get("error"):
+                finding = FindingDraft(
+                    metric_code="access_blocked", method_code="manual",
+                    value_text=f"{summary['error']}: {summary['detail']}",
+                    notes="probe url ballpark",
+                )
+                run_status, notes = ("failed" if summary["error"] in ("ProbeNetworkError", "RateLimited") else "blocked"), None
+            else:
+                finding = FindingDraft(
+                    metric_code="format", method_code="manual",
+                    value_text=(
+                        f"{summary['content_type'] or '?'}; {summary['size']:,} bytes; robots {summary['robots']}"
+                    ),
+                    notes="probe url ballpark (rs5)",
+                )
+                run_status, notes = "done", None
+            probeengine.persist(conn, store, source_id, run_id, ProbeResult(findings=[finding]))
+            probeengine._finish_run(conn, run_id, run_status, dbmod.utcnow(), notes)
+            conn.commit()
+            click.echo(f"recorded: {run_key} metric={'access_blocked' if summary.get('error') else 'format'}")
+            exit_code = exit_code or (2 if run_status != "done" else 0)
+        finally:
+            conn.close()
+    if exit_code:
+        ctx.exit(exit_code)
+
+
+@raw.command()
+@click.argument("source_id")
+@click.option("--url", "url", default=None, help="delivery URL (default: the register's export_url)")
+@click.option("--instructions-dir", "instructions_dir", default=None,
+              help="draft destination (default: raw_sources/)")
+@click.pass_context
+def scan(ctx, source_id, url, instructions_dir):
+    """Profile a live delivery → draft instruction (never writes DB)."""
+    from . import db as dbmod, fetch as fetchmod, source as sourcemod
+    from .fetch import FetchConfig
+    from .raw import scanner as scannermod
+    from .raw.instructions import InstructionError as instructions_error
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    conn = dbmod.connect(rt.db_path)
+    try:
+        source = sourcemod.get_source(conn, source_id)
+        if source is None:
+            click.echo(f"error: unknown source {source_id!r} (run `leadhs source load` first)", err=True)
+            ctx.exit(1)
+        url = url or source.export_url
+        if not url:
+            click.echo(f"error: no URL — pass --url or set export_url for {source_id} in the register CSV", err=True)
+            ctx.exit(1)
+        fetcher = fetchmod.Fetcher(FetchConfig(contact=rt.contact), logger=rt.logger)
+        try:
+            profile = scannermod.scan_delivery(fetcher, source, url)
+        except fetchmod.FetchError as exc:
+            click.echo(f"error: scan failed — {exc}", err=True)
+            ctx.exit(2)
+        except scannermod.ScanError as exc:
+            click.echo(f"error: {exc}", err=True)
+            ctx.exit(2)
+        table_name = scannermod.resolve_table_name(conn, source_id)
+        draft = scannermod.draft_instruction(profile, source, table_name=table_name)
+        click.echo(
+            f"{source_id}: {profile.export_kind} {profile.record_count:,} records, "
+            f"{len(profile.columns)} columns, content-type {profile.content_type or '?'}, "
+            f"size {profile.size_bytes:,} B" if profile.size_bytes else
+            f"{source_id}: {profile.export_kind} {profile.record_count:,} records, {len(profile.columns)} columns"
+        )
+        if profile.record_count == 0:
+            click.echo("warning: delivery counted 0 records", err=True)
+        if profile.robots_policy != "allow-all (404/empty)" or profile.crawl_delay:
+            click.echo(f"robots: {profile.robots_policy}" + (f", crawl-delay {profile.crawl_delay}s" if profile.crawl_delay else ""))
+        click.echo(f"columns: {', '.join(c['column'] + ('*' if c['column'] in profile.natural_key else '') for c in profile.columns)}")
+        if profile.key_note:
+            click.echo(f"key: {profile.key_note}")
+        drift = scannermod.drift_line(conn, source_id, draft["records"]["expected_count"])
+        if drift:
+            click.echo(drift)
+        try:
+            payload = scannermod.draft_bytes(draft)
+        except instructions_error as exc:
+            click.echo(f"error: derived draft invalid — {exc}", err=True)
+            ctx.exit(2)
+        directory = instructions_dir or "raw_sources"
+        path = _instruction_path(source_id, directory)
+        os.makedirs(os.path.dirname(os.path.abspath(path)) or ".", exist_ok=True)
+        with open(path, "wb") as fh:
+            fh.write(payload)
+        import hashlib
+
+        click.echo(f"draft: {path} (manifest_hash {hashlib.sha256(payload).hexdigest()[:16]}…)")
+        click.echo("review the draft before `raw run` — nothing flows before approval")
+    finally:
+        conn.close()
+
+
+@raw.command("status")
+@click.argument("source_id", required=False)
+@click.pass_context
+def status(ctx, source_id):
+    """Raw-layer coverage: rows, runs, journal, checkpoints, drift."""
+    import json as _json
+
+    from . import db as dbmod
+    from .raw import instructions as instructionsmod
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    conn = dbmod.connect(rt.db_path, readonly=True)
+    try:
+        profiles = conn.execute(
+            "SELECT * FROM raw_source_profile WHERE source_id = ? ORDER BY source_id" if source_id
+            else "SELECT * FROM raw_source_profile ORDER BY source_id",
+            (source_id,) if source_id else (),
+        ).fetchall()
+        if not profiles:
+            where = f" for {source_id}" if source_id else ""
+            click.echo(f"(no raw sources{where} — `raw scan` + `raw run` first)")
+            return
+        for prof in profiles:
+            sid, table = prof["source_id"], prof["table_name"]
+            rows = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            truncated = conn.execute(f"SELECT COUNT(*) FROM {table} WHERE _truncated = 1").fetchone()[0]
+            changed = conn.execute("SELECT COUNT(*) FROM raw_change WHERE source_id = ?", (sid,)).fetchone()[0]
+            runs = conn.execute(
+                "SELECT run_key, status_code, started_at, finished_at, parameters_json FROM run "
+                "WHERE source_id = ? AND kind_code = 'acquire' ORDER BY id DESC LIMIT 1",
+                (sid,),
+            ).fetchone()
+            click.echo(f"{sid}  table={table} rows={rows:,} truncated={truncated:,} changed={changed:,}")
+            if runs:
+                params = _json.loads(runs["parameters_json"] or "{}")
+                cursor = params.get("cursor")
+                state = "complete" if params.get("complete") else ("checkpoint: " + _json.dumps(cursor) if cursor else "no checkpoint")
+                click.echo(
+                    f"  last run: {runs['run_key']} {runs['status_code']} started {runs['started_at']}"
+                    + (f" finished {runs['finished_at']}" if runs["finished_at"] else "")
+                    + f" — {state}"
+                )
+            expected = None
+            try:
+                inst, _h = instructionsmod.load(_instruction_path(sid, None))
+                expected = inst.records["expected_count"]
+            except (instructionsmod.InstructionError, OSError):
+                pass
+            if expected is None:
+                click.echo("  coverage: rows=%s vs expected=unknown (no instruction file)" % f"{rows:,}")
+            elif rows == expected:
+                click.echo(f"  coverage: {rows:,} / {expected:,} — exact")
+            else:
+                click.echo(f"  coverage: {rows:,} / {expected:,} — DRIFT {rows - expected:+,}")
+    finally:
+        conn.close()
+
+
 cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)
