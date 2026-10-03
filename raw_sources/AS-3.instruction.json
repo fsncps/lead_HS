@@ -1,0 +1,89 @@
+{
+  "columns": [
+    {
+      "column": "product",
+      "source_header": "Product",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "license_number",
+      "source_header": "License number",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "ecolabel",
+      "source_header": "Ecolabel",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "category",
+      "source_header": "Category",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "product_group",
+      "source_header": "Product group",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "criteria_generation",
+      "source_header": "Criteria generation",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "brand",
+      "source_header": "Brand",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "licensee",
+      "source_header": "Licensee",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "address",
+      "source_header": "Address",
+      "truncation_priority": 3,
+      "type": "text"
+    },
+    {
+      "column": "city",
+      "source_header": "City",
+      "truncation_priority": 3,
+      "type": "text"
+    }
+  ],
+  "delimiter": ",",
+  "endpoints": {
+    "detail": null,
+    "list": "https://www.svanen.se/en/search-for-ecolabelled-products-and-services/"
+  },
+  "export_kind": "html_pages",
+  "natural_key": [],
+  "notes": "raw scan 2026-10-03: the pinned ?format=csv GET route (worked 2026-09-14/15, archived twice, 52,539 rows) returns HTTP 404 — svanen.se redesigned to a server-rendered WP product search (form GET /?s=&post_type=markeds, plugin nordic-swan-ecolabel build/content-search). Reserved html_pages kind recorded here deliberately: raw run refuses it (named) until the walk interpreter lands (v0.3.8); the v0.2.4 archived snapshot remains the newest verified full copy",
+  "pagination": {
+    "kind": "single"
+  },
+  "payload_budget_bytes": 1024,
+  "politeness": {
+    "delay_seconds": 2.0,
+    "derivation": "placeholder budget — the html_pages interpreter (reserved at v0.3.0) derives its own when it lands",
+    "request_budget_per_run": 3
+  },
+  "records": {
+    "count_derivation": "live CSV route dead at scan 2026-10-03 (HTTP 404); archived full export 2026-09-14: 52,539 rows, sha256-verified (raw store, v0.2.4); new delivery shape is the server-rendered WP search (?s=&post_type=markeds) — an html_pages walk, uncounted until the interpreter exists",
+    "expected_count": null
+  },
+  "schema_version": 1,
+  "source_class": "AS",
+  "source_id": "AS-3",
+  "source_name": "Nordic Swan Ecolabel product database"
+}

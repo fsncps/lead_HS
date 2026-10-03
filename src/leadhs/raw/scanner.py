@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import csv
 import io
+import itertools
 import json
 import re
 from dataclasses import dataclass, field
@@ -28,6 +29,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from .. import db as dbmod
+from . import delivery_text
 from .instructions import canonical_json
 
 PROBE_URL_CAP = 65536
@@ -125,11 +127,16 @@ def scan_delivery(fetcher, source, url: str) -> ScanProfile:
     profile.crawl_delay = fetcher.crawl_delay(url)
 
     resp = fetcher.get(url)
+    if resp.status_code >= 400:
+        raise ScanError(
+            f"{source.id}: HTTP {resp.status_code} — no delivery at this URL "
+            f"(route dead or moved; content-type {(resp.headers.get('Content-Type') or '?').split(';')[0]})"
+        )
     profile.content_type = (resp.headers.get("Content-Type") or "").split(";")[0].strip().lower()
     length = resp.headers.get("Content-Length")
     profile.size_bytes = int(length) if length and length.isdigit() else len(resp.content)
 
-    text = resp.text
+    text = delivery_text(resp)
     if "json" in profile.content_type or text.lstrip().startswith(("[", "{")):
         return _scan_json(profile, text)
     return _scan_csv(profile, text)
@@ -242,51 +249,40 @@ def _scan_csv(profile: ScanProfile, text: str) -> ScanProfile:
 
 
 def _find_csv_key(profile: ScanProfile, rows: list) -> None:
-    """Unique singles first, then bounded pairs among fully-populated
-    columns; an unresolvable key emits no key + a loud note (the run
-    refuses an empty natural_key — a human declares one)."""
+    """Lattice search for the smallest unique column combination:
+    singles, then pairs, triples, quads over ALL columns (bounded to
+    ≤ 14 columns; wider deliveries fall back to the fully-populated
+    bound). Stops at the first unique combo — smaller keys win. An
+    unresolvable key emits no key + a loud note (the run refuses an
+    empty natural_key — a human declares one)."""
     n = len(profile.columns)
     if not rows:
         profile.key_note = "no data rows — nothing to derive a key from"
         return
-    full = [i for i in range(n) if profile.columns[i]["empty_pct"] == 0.0]
-    for i in full:
-        seen = {row[i] for row in rows}
-        if len(seen) == len(rows):
-            profile.natural_key = [profile.columns[i]["column"]]
-            profile.key_note = f"unique single column: {profile.columns[i]['source_header']!r}"
-            return
-    bounded = full[:12]
-    for a in range(len(bounded)):
-        for b in range(a + 1, len(bounded)):
-            i, j = bounded[a], bounded[b]
-            seen = {(row[i], row[j]) for row in rows}
+    if n <= 14:
+        candidates = [list(itertools.combinations(range(n), k)) for k in (1, 2, 3, 4)]
+    else:
+        full = [i for i in range(n) if profile.columns[i]["empty_pct"] == 0.0]
+        candidates = [
+            [(i,) for i in full]
+            + list(itertools.combinations(full[:12], 2))
+            + list(itertools.combinations(full[:8], 3))
+            + list(itertools.combinations(full[:10], 4)),
+        ]
+    depths = {1: "single", 2: "pair", 3: "triple", 4: "quad"}
+    for level in candidates:
+        for combo in level:
+            seen = {tuple(row[i] for i in combo) for row in rows}
             if len(seen) == len(rows):
-                profile.natural_key = [profile.columns[i]["column"], profile.columns[j]["column"]]
-                profile.key_note = (
-                    f"unique pair: {profile.columns[i]['source_header']!r} + "
-                    f"{profile.columns[j]['source_header']!r}"
-                )
+                profile.natural_key = [profile.columns[i]["column"] for i in combo]
+                names = " + ".join(repr(profile.columns[i]["source_header"]) for i in combo)
+                profile.key_note = f"unique {depths[len(combo)]}: {names}"
                 return
-    tripled = full[:8]
-    for a in range(len(tripled)):
-        for b in range(a + 1, len(tripled)):
-            for c in range(b + 1, len(tripled)):
-                i, j, k = tripled[a], tripled[b], tripled[c]
-                seen = {(row[i], row[j], row[k]) for row in rows}
-                if len(seen) == len(rows):
-                    profile.natural_key = [
-                        profile.columns[i]["column"], profile.columns[j]["column"],
-                        profile.columns[k]["column"],
-                    ]
-                    profile.key_note = (
-                        f"unique triple: {profile.columns[i]['source_header']!r} + "
-                        f"{profile.columns[j]['source_header']!r} + {profile.columns[k]['source_header']!r}"
-                    )
-                    return
     profile.key_note = (
-        "no unique single/pair among fully-populated columns — declare a natural key "
-        "(or widen the search) before raw run; the run refuses an empty natural_key"
+        "no unique key among singles/pairs/triples/quads of all columns — the export "
+        "carries intra-export duplicates; keep natural_key [] for the degraded "
+        "row-hash identity mode (byte-identical rows collapse, changed content "
+        "inserts), or declare a business key"
     )
 
 
@@ -382,18 +378,22 @@ def draft_bytes(draft: dict) -> bytes:
 
 def resolve_table_name(conn, source_id: str) -> str:
     """The pinned table when migration 0012 (or a later one) already
-    created one for this source; else ``raw_<source_id snake>``."""
-    snake = source_id.lower().replace("-", "_")
+    created one for this source; else ``raw_<source_id no-dash>``. The
+    lookup tries both snake spellings — the register id ``AS-2``
+    sanitizes to ``as2`` (the pinned ``raw_as2_ecat``), a future
+    ``AS-33`` to ``as33`` (``raw_as33_basta``)."""
+    nodash = source_id.lower().replace("-", "")
     tables = [
         r[0] for r in conn.execute(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE ?", (f"raw_{snake}%",)
+            "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE ?",
+            (f"raw_{nodash}%",),
         )
     ]
     if len(tables) == 1:
         return tables[0]
     if len(tables) > 1:
         return min(tables, key=len)  # ambiguous — shortest wins, noted at scan
-    return f"raw_{snake}"
+    return f"raw_{nodash}"
 
 
 def pinned_catalog_count(conn, source_id: str) -> Optional[int]:

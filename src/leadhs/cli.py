@@ -612,7 +612,8 @@ def explain(ctx, source_id, instructions_dir):
         click.echo(f"  page_param={p.page_param} page_size={p.page_size} max_pages={p.max_pages}")
     rec = inst.records
     expected = rec["expected_count"]
-    click.echo(f"records:      expected_count={'unknown' if expected is None else expected:,}")
+    expected_label = "unknown" if expected is None else f"{expected:,}"
+    click.echo(f"records:      expected_count={expected_label}")
     click.echo(f"  derivation: {rec['count_derivation']}")
     click.echo(f"columns:      {len(inst.columns)}")
     click.echo(f"  {'source_header':<28} {'column':<24} {'type':<9} {'prio':<5} description")
@@ -739,6 +740,7 @@ def scan(ctx, source_id, url, instructions_dir):
     from .fetch import FetchConfig
     from .raw import scanner as scannermod
     from .raw.instructions import InstructionError as instructions_error
+    from .raw.instructions import canonical_json
 
     rt = _runtime(ctx)
     _ensure_initialized(ctx, rt)
@@ -781,9 +783,14 @@ def scan(ctx, source_id, url, instructions_dir):
             click.echo(drift)
         try:
             payload = scannermod.draft_bytes(draft)
+            valid = True
         except instructions_error as exc:
-            click.echo(f"error: derived draft invalid — {exc}", err=True)
-            ctx.exit(2)
+            # a draft the human must complete (e.g. no natural key found)
+            # is still written — canonical, loudly flagged; raw run
+            # refuses it until edited (fail-closed stays intact)
+            payload = canonical_json(draft)
+            valid = False
+            click.echo(f"warning: draft is INCOMPLETE ({exc}) — edit it before raw run", err=True)
         directory = instructions_dir or "raw_sources"
         path = _instruction_path(source_id, directory)
         os.makedirs(os.path.dirname(os.path.abspath(path)) or ".", exist_ok=True)
@@ -792,7 +799,10 @@ def scan(ctx, source_id, url, instructions_dir):
         import hashlib
 
         click.echo(f"draft: {path} (manifest_hash {hashlib.sha256(payload).hexdigest()[:16]}…)")
-        click.echo("review the draft before `raw run` — nothing flows before approval")
+        if valid:
+            click.echo("review the draft before `raw run` — nothing flows before approval")
+        else:
+            click.echo("review + complete the draft before `raw run` — the run refuses it as-is", err=True)
     finally:
         conn.close()
 
@@ -911,7 +921,7 @@ def run(ctx, source_id, all_sources, instructions_dir, cap, dry_run, resume, wor
             click.echo(
                 f"{sid}: would fetch {inst.list_url} ({pages}); politeness delay "
                 f"{inst.politeness.delay_seconds}s, budget {inst.politeness.request_budget_per_run} "
-                f"requests; upsert into {inst.table_name or 'raw_' + sid.lower().replace('-', '_')} "
+                f"requests; upsert into {inst.table_name or 'raw_' + sid.lower().replace('-', '')} "
                 f"(manifest {manifest_hash[:16]}…)"
             )
         click.echo("dry-run: planned; zero network, zero DB writes")

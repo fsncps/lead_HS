@@ -9,11 +9,14 @@ pinned 0012 tables carry their slugs; a new source without it derives
 
 Validation is fail-closed BEFORE any network call: unknown schema
 version, unknown fields (typo protection, forward-only evolution like
-migrations), empty/misdirected natural key, ``_``-prefixed columns
+migrations), misdirected natural key, ``_``-prefixed columns
 (reserved bookkeeping namespace), non-positive budgets, delay < 2 s,
-bad URLs — every refusal names its JSON path. Reserved export kinds
-(``web_query``, ``html_pages``) are *valid* instructions: ``raw
-explain`` renders them; the interpreting commands refuse them.
+bad URLs — every refusal names its JSON path. An EMPTY ``natural_key``
+is the documented degraded row-hash identity mode (data_model §
+Conventions: inserts only, byte-identical duplicates collapse, changed
+content inserts). Reserved export kinds (``web_query``,
+``html_pages``) are *valid* instructions: ``raw explain`` renders
+them; the interpreting commands refuse them.
 
 ``manifest_hash`` is the sha256 of the canonical RE-serialization
 (sorted keys, 2-space indent, UTF-8, trailing newline) — never of the
@@ -321,14 +324,17 @@ def from_dict(raw) -> Instruction:
         ))
 
     natural_key = raw["natural_key"]
-    if not isinstance(natural_key, list) or not natural_key:
-        raise InstructionError("natural_key: must be a non-empty array of column names")
+    if not isinstance(natural_key, list):
+        raise InstructionError("natural_key: must be an array of column names")
+    if natural_key and len(set(natural_key)) != len(natural_key):
+        raise InstructionError("natural_key: duplicate column in key")
     known = seen_columns
     for i, key in enumerate(natural_key):
         if key not in known:
             raise InstructionError(f"natural_key[{i}]: {key!r} is not a declared column")
-    if len(set(natural_key)) != len(natural_key):
-        raise InstructionError("natural_key: duplicate column in key")
+    # natural_key: [] is the documented degraded row-hash identity mode
+    # (data_model § Conventions): row hash is the identity — inserts
+    # only, byte-identical duplicates collapse, changed content inserts.
 
     budget = raw.get("payload_budget_bytes", DEFAULT_PAYLOAD_BUDGET_BYTES)
     _require_int("payload_budget_bytes", budget, 1)

@@ -11,6 +11,7 @@ import pytest
 
 from leadhs import db as dbmod
 from leadhs.fetch import FetchConfig, Fetcher
+from leadhs.raw import delivery_text
 from leadhs.raw import interpreter as interp
 from leadhs.raw import instructions as instmod
 from leadhs.raw import scanner as scanmod
@@ -68,10 +69,10 @@ def _mutate(doc, key):
         doc["politeness"]["request_budegt_per_run"] = 5
     elif key == "typo_in_top_field":
         doc["natual_key"] = ["licence_number"]
-    elif key == "empty_natural_key":
-        doc["natural_key"] = []
     elif key == "undeclared_natural_key":
         doc["natural_key"] = ["nope"]
+    elif key == "null_natural_key":
+        doc["natural_key"] = None
     elif key == "empty_columns":
         doc["columns"] = []
     elif key == "duplicate_column":
@@ -116,8 +117,8 @@ _MUTATIONS = {
     "delay_below_floor": "delay_seconds",
     "typo_in_politeness_field": "unknown field",
     "typo_in_top_field": "unknown field",
-    "empty_natural_key": "natural_key",
     "undeclared_natural_key": "not a declared column",
+    "null_natural_key": "must be an array",
     "empty_columns": "non-empty",
     "duplicate_column": "duplicate column",
     "duplicate_source_header": "duplicate",
@@ -300,6 +301,28 @@ def test_upsert_truncation_flag_flips_hash_and_journal(conn):
     assert second["_truncated"] == 1
     assert second["_row_hash"] != first["_row_hash"]  # truncation change flips the hash
     assert conn.execute("SELECT COUNT(*) FROM raw_change").fetchone()[0] == 1
+
+
+def test_degraded_row_hash_identity_mode(conn):
+    """Empty natural_key = data_model degraded mode: row hash is the
+    identity — inserts only, byte-identical duplicates collapse,
+    changed content inserts."""
+    run_id = _load_register_and_run(conn)
+    conn.execute(
+        "CREATE TABLE raw_zx1 (id INTEGER PRIMARY KEY, licence_number TEXT, product_name TEXT, "
+        "_row_hash TEXT NOT NULL, _first_run_id INTEGER, _last_run_id INTEGER, "
+        "_last_changed_run_id INTEGER, _truncated INTEGER NOT NULL DEFAULT 0)"
+    )
+    conn.commit()
+    inst = from_dict(base_instruction(natural_key=[]))
+    stats = SeedStats()
+    v = {"licence_number": "DE-1", "product_name": "Paint A"}
+    upsert_record(conn, inst, "raw_zx1", dict(v), run_id, stats)
+    upsert_record(conn, inst, "raw_zx1", dict(v), run_id, stats)  # byte-identical dup collapses
+    assert stats.inserted == 1 and stats.skipped == 1 and stats.updated == 0
+    upsert_record(conn, inst, "raw_zx1", {"licence_number": "DE-1", "product_name": "Paint A2"}, run_id, stats)
+    assert stats.inserted == 2 and stats.updated == 0  # changed content inserts, never updates
+    assert conn.execute("SELECT COUNT(*) FROM raw_change").fetchone()[0] == 0  # no journal in degraded mode
 
 
 def test_seed_csv_snapshot_end_to_end_verbatim(conn, site, make_fetcher):
@@ -547,3 +570,48 @@ def test_pacer_spaces_request_starts():
     assert clock.t == 1002.5
     pacer.wait()
     assert clock.t == 1005.0
+
+
+def test_scan_refuses_error_page_deliveries(site, make_fetcher):
+    """Live-found bug: a 404 HTML page must never be profiled as a CSV
+    delivery (the route is dead — named refusal, scan exit 2)."""
+    from types import SimpleNamespace
+
+    fetcher = make_fetcher()
+    src = SimpleNamespace(id="ZX-1", class_code="AS", name="X", url=site,
+                          access_method_code="download", export_url=None, export_format=None)
+    with pytest.raises(scanmod.ScanError) as exc:
+        scanmod.scan_delivery(fetcher, src, f"{site}/missing")
+    assert "HTTP 404" in str(exc.value)
+
+
+def test_delivery_text_utf8_first_and_bom_stripped():
+    """Live-found rule (AS-2 2026-10-03): text/csv without charset +
+    UTF-8 content must decode UTF-8 (BOM stripped), never ISO-8859-1."""
+
+    class Resp:
+        content = "product_or_service;søborg".encode("utf-8")
+        encoding = "ISO-8859-1"
+        text = "product_or_service;sÃ¸borg"
+
+    assert delivery_text(Resp()) == "product_or_service;søborg"
+
+    class NonUtf8:
+        content = b"\xff\xfe broken"
+        encoding = "ISO-8859-1"
+        text = "dec-fallback"
+
+    assert delivery_text(NonUtf8()) == "dec-fallback"
+
+    class Utf8Declared:
+        content = "søborg".encode("utf-8")
+        encoding = "utf-8"
+        text = "søborg"
+
+    assert delivery_text(Utf8Declared()) == "søborg"
+
+
+def test_resolve_table_name_finds_pinned_tables(conn):
+    assert scanmod.resolve_table_name(conn, "AS-2") == "raw_as2_ecat"
+    assert scanmod.resolve_table_name(conn, "AS-3") == "raw_as3_nordic_swan"
+    assert scanmod.resolve_table_name(conn, "AS-99") == "raw_as99"

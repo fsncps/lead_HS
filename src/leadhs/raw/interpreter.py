@@ -42,6 +42,7 @@ from typing import Callable, Optional
 from urllib.parse import urlencode, urlparse
 
 from .. import db as dbmod
+from . import delivery_text
 from .instructions import Instruction
 
 BATCH_RECORDS = 500
@@ -119,6 +120,8 @@ def row_hash(values: dict) -> str:
 
 
 def row_key(inst: Instruction, values: dict) -> str:
+    if not inst.natural_key:
+        return row_hash(values)  # degraded mode: row-hash identity
     return json.dumps([values[k] for k in inst.natural_key], ensure_ascii=False)
 
 
@@ -311,6 +314,26 @@ class SeedStats:
 def upsert_record(conn, inst: Instruction, table_name: str, values: dict, run_id: int, stats: SeedStats) -> None:
     values, truncated = apply_budget(values, inst)
     digest = row_hash(values)
+    cols = [c.column for c in inst.columns]
+    if not inst.natural_key:
+        # degraded row-hash identity (data_model): inserts only;
+        # byte-identical rows collapse, changed content inserts
+        existing = conn.execute(
+            f'SELECT id FROM "{table_name}" WHERE "_row_hash" = ?', (digest,)
+        ).fetchone()
+        if existing is not None:
+            stats.skipped += 1
+            return
+        conn.execute(
+            f'INSERT INTO "{table_name}" ({", ".join(chr(34) + c + chr(34) for c in cols)}, '
+            f'"_row_hash", "_first_run_id", "_last_run_id", "_truncated") '
+            f'VALUES ({", ".join("?" * (len(cols) + 4))})',
+            [values[c] for c in cols] + [digest, run_id, run_id, int(truncated)],
+        )
+        stats.inserted += 1
+        if truncated:
+            stats.truncated += 1
+        return
     key = row_key(inst, values)
     where = " AND ".join(f'"{c}" IS ?' for c in inst.natural_key)
     params = [values[k] for k in inst.natural_key]
@@ -394,10 +417,10 @@ def seed(conn, fetcher, inst: Instruction, run_id: int, table_name: str,
 
     def harvest(resp, page: int) -> tuple:
         if inst.export_kind == "csv_snapshot":
-            records, ragged = extract_csv(resp.text, inst)
+            records, ragged = extract_csv(delivery_text(resp), inst)
             stats.ragged += ragged
             return records, True
-        payload = json.loads(resp.text)
+        payload = json.loads(delivery_text(resp))
         records = extract_json(payload, inst)
         return records, page_done(len(records), inst, page)
 

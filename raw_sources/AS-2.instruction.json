@@ -1,0 +1,116 @@
+{
+  "columns": [
+    {
+      "column": "product_or_service",
+      "description": "empty: 0.0%",
+      "source_header": "product_or_service",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "licence_number",
+      "description": "empty: 0.0%",
+      "source_header": "licence_number",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "group_name",
+      "description": "empty: 0.0%",
+      "source_header": "group_name",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "code_type",
+      "description": "empty: 59.9%",
+      "source_header": "code_type",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "code_value",
+      "description": "empty: 59.9%",
+      "source_header": "code_value",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "product_or_service_name",
+      "description": "empty: 0.0%",
+      "source_header": "product_or_service_name",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "decision",
+      "description": "empty: 0.0%",
+      "source_header": "decision",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "expiration_date",
+      "description": "empty: 0.0%",
+      "source_header": "expiration_date",
+      "truncation_priority": 1,
+      "type": "date_iso"
+    },
+    {
+      "column": "company_name",
+      "description": "empty: 0.0%",
+      "source_header": "company_name",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "company_country",
+      "description": "empty: 0.0%",
+      "source_header": "company_country",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "vat_number",
+      "description": "empty: 6.8%",
+      "source_header": "vat_number",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "extract_date",
+      "description": "empty: 0.0%",
+      "source_header": "extract_date",
+      "truncation_priority": 1,
+      "type": "date_iso"
+    }
+  ],
+  "delimiter": ";",
+  "endpoints": {
+    "detail": null,
+    "list": "https://publicstorage.data.env.service.ec.europa.eu/ecolabel/exports/most-recent-export.csv"
+  },
+  "export_kind": "csv_snapshot",
+  "natural_key": [],
+  "notes": "no unique key among singles/pairs/triples/quads of all columns — the export carries intra-export duplicates; keep natural_key [] for the degraded row-hash identity mode (byte-identical rows collapse, changed content inserts), or declare a business key",
+  "pagination": {
+    "kind": "single"
+  },
+  "payload_budget_bytes": 1024,
+  "politeness": {
+    "crawl_delay_seconds": null,
+    "delay_seconds": 2.0,
+    "derivation": "89,867 records/request at scan; delay 2.0s (floor); budget 3 requests/run",
+    "records_per_request": 89867,
+    "request_budget_per_run": 3
+  },
+  "records": {
+    "count_derivation": "raw scan 2026-10-03: full download, counted",
+    "expected_count": 89867
+  },
+  "schema_version": 1,
+  "source_class": "AS",
+  "source_id": "AS-2",
+  "source_name": "EU Ecolabel Product Catalogue (ECAT)",
+  "table_name": "raw_as2_ecat"
+}
