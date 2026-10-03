@@ -32,11 +32,13 @@ current engineering truth of the built tool; the design review
 history (CEO HOLD SCOPE, ENG reviews, FIXPLAN_2026-09-11 — DONE) is
 part of the legacy record.
 
-**In design (2026-10-03): v0.3.0 — raw source tables** (the
-bulk-download layer; concept: `../CONCEPT/RAW_SOURCING.md`, decisions
-D42–D44). The raw-layer schema is specified in `data_model.md`
-§ Raw source tables; the migration plan is corrected and the raw
-delta takes `0012`.
+**In design (2026-10-03): v0.3.0 — instruction-driven raw source
+layer** (the generic acquisition pipeline; concept:
+`../CONCEPT/RAW_SOURCING.md`, decisions D42–D44). Unit package authored
+in `v0.3.0/` (MASTER rs1–rs10, interfaces.md = instruction schema v1 +
+raw CLI contracts, RUNS.md r01–r03 with FINAL folded into r03); the
+raw-layer schema lives in `data_model.md` § Raw source tables; the raw
+delta takes `0012`. Runs-ready pending user approval of RUNS.md.
 
 ## Documents
 
