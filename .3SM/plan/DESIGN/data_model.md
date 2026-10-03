@@ -2,7 +2,7 @@
 unit: global
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-03
 ---
 
 # Data model — normalized evidence database (Design)
@@ -104,13 +104,17 @@ substance dictionary (`dict load` — docs/study/DATA_MODEL.md D6);
 | `0006__recon_numbers.sql` | M0 (v0.2.0) | — (source_class INSERT: AS; probe_mode INSERT: recon; probe_metric INSERTs: sitemap_products, sds_library_visible, producers_registered, trade_kg/eur_hs3208, trade_kg/eur_hs3209; source CS-1 retired inactive + supersession note) | v_anchor_candidates (redefined — gains sitemap_products) |
 | `0007__capability.sql` | M0 (v0.2.1) | — (probe_mode INSERT: capability; probe_metric INSERTs: products_identifiable, cap_manufacturer, cap_product_ident, cap_cn8_linkage, cap_depth_tier, cn8_reachable) | — |
 | `0008__landscape.sql` | M0 (v0.2.2) | — (source columns export_url/export_format; probe_metric INSERT: sds_doc_urls) | — |
-| `0009__dictionary.sql` | M1 | substance, compound_synonym, compound_identifier + 5 lookups | — |
-| `0010__catalog_frame.sql` | M1 | study, org, product, product_org, product_classification, category, product_category, population_anchor, frame_stratum, frame_stratum_anchor, cn_code + 8 lookups | v_anchor_candidates (redefined — promoted-exclusion lands here), v_product_current |
-| `0011__sampling.sql` | M1 | sampling_run, sample_selection + 2 lookups | — |
-| `0012__trade_stats.sql` | M1 | trade_stat + flow lookup | — |
-| `0013__sds.sql` | M2 | sds_document, product_ufi, sds_ingredient, sds_finding, sds_finding_hcode, sds_section15 + 6 lookups | — |
-| `0014__evidence.sql` | M2–M3 | sighting, corroboration + 2 lookups | — |
-| `0015__views.sql` | M4 | — | v_finding_full, v_product_dossier, v_trade_ch, v_census_3213 |
+| `0009__csv_sample.sql` | M0 (v0.2.4, D36) | — (probe_mode `csv_sample` + metrics csv_sample_rows / csv_sample_unavailable) | — |
+| `0010__as_source_probe.sql` | M0 (v0.2.4, D37) | — (probe_mode `as_source_probe` + 4 metrics: rows / records / unavailable / assoc) | — |
+| `0011__basta_probe.sql` | M0 (v0.2.4, D40) | — (probe_mode `basta_special_probe` + 2 metrics; exact counts ride `catalog_count`) | — |
+| `0012__raw_layer.sql` | v0.3.0 | raw_source_profile, raw_change, raw_as2_ecat, raw_as3_nordic_swan + raw_export_kind lookup (see § Raw source tables) | — (raw status reporting queries tables directly; views deferred) |
+| `0013__dictionary.sql` | M1 | substance, compound_synonym, compound_identifier + 5 lookups | — |
+| `0014__catalog_frame.sql` | M1 | study, org, product, product_org, product_classification, category, product_category, population_anchor, frame_stratum, frame_stratum_anchor, cn_code + 8 lookups | v_anchor_candidates (redefined — promoted-exclusion lands here), v_product_current |
+| `0015__sampling.sql` | M1 | sampling_run, sample_selection + 2 lookups | — |
+| `0016__trade_stats.sql` | M1 | trade_stat + flow lookup | — |
+| `0017__sds.sql` | M2 | sds_document, product_ufi, sds_ingredient, sds_finding, sds_finding_hcode, sds_section15 + 6 lookups | — |
+| `0018__evidence.sql` | M2–M3 | sighting, corroboration + 2 lookups | — |
+| `0019__views.sql` | M4 | — | v_finding_full, v_product_dossier, v_trade_ch, v_census_3213 |
 
 Renumbering note (unit v0.1.2, od10): the probe metric extension took
 `0003` — the cheapest moment, before any design-ahead file exists; the
@@ -132,6 +136,12 @@ design-ahead migrations shifted one number (`0003__dictionary` → `0004`
   (`data/testdata.sqlite`) is deliberately NOT in this migration
   chain — its schema lives in `leadhs/staging.py`, outside the
   evidence-DB migrations (fu2/i19).
+  Correction 2026-10-03 (drift found at v0.3.0 design start): the
+  numbers 0009–0011 were in the event taken by the v0.2.4 probe
+  extensions (`csv_sample`, `as_source_probe`, `basta_probe` —
+  lookup seeds only, verified against the applied files); the table
+  above is corrected accordingly, the design-ahead M1–M4 block
+  renumbers to `0013`–`0019`, and v0.3.0's raw layer takes `0012`.
 
 Two corrections vs the session draft of this plan: `trade_stat` moves
 into the M1 set (frame weighting by EZV import shares happens at M1,
@@ -245,9 +255,121 @@ decision (10_STRATEGY/MASTER.md D20).
 - **v_source_activity** — per source: first/last document retrieved_at,
   run count, finding count.
 
-## Full schema (designed now; migrations 0009–0015)
+## Raw source tables (v0.3.0 — in design, 2026-10-03)
 
-### Dictionary group (0009, M1)
+The v0.3.0 unit adds the bulk-download layer (CONCEPT
+`RAW_SOURCING.md`; MASTER D42–D44): one raw table per bulk source, the
+source's own columns verbatim, every record captured, deterministic
+truncation at the per-record budget, upsert + change-journal history
+(R2/R7). First two tables pinned by the user from the delivered
+samples: ECAT (AS-2, 12 columns) and Nordic Swan (AS-3, 10 columns).
+New migrations start at `0012` (0009–0011 turned out to be the v0.2.4
+probe extensions — see the corrected plan above).
+
+### Conventions (raw layer)
+
+- **Identity — no second numbering.** The register's `source.id`
+  (AS-2, AS-3, AS-33 …) is the stable key everywhere: register,
+  probe runs, `data_sources.csv` (DS-1/DS-2), manifests, raw tables.
+  Raw table names sanitize it lowercase snake_case with a short slug:
+  `raw_as2_ecat`, `raw_as3_nordic_swan`, later `raw_as33_basta`.
+  (Supersedes the user's provisional "RAW_SOURCE_ECAT_ID01" sketch —
+  "ID01" would fork a second source numbering; the `raw_` prefix
+  already namespaces the layer.)
+- **Verbatim columns (D44).** Source headers lowercased to snake_case
+  (SQL-safe); the manifest records the original-header → column
+  mapping. Values untouched: "." stays ".", "2096 0050, 2097 0022"
+  stays one multi-licence string, double spaces stay. All
+  parsing/normalization happens downstream (MATCHING.md Stage 1),
+  never at ingest.
+- **Bookkeeping columns are `_`-prefixed** so they can never collide
+  with source headers: `_row_hash`, `_first_run_id`, `_last_run_id`,
+  `_last_changed_run_id`, `_truncated`.
+- **Row identity / upsert key (R7).** The manifest declares the
+  natural-key columns per source; key uniqueness within an export is
+  validated at manifest time against the delivered 100-row samples.
+  `_row_hash` = sha256 over the verbatim tuple (change detection,
+  R7). Same key + same hash → skip; same key + new hash → UPDATE +
+  `raw_change` journal row; new key → INSERT. If a source yields no
+  resolvable key (intra-export collisions), degraded mode = row-hash
+  identity, documented in the manifest (changed content then inserts
+  rather than updates — counted honestly). AS-2 candidate key:
+  (licence_number, product_or_service_name); AS-3 candidate key:
+  (license_number, product) — validated at build.
+- **Truncation visibility.** `_truncated INTEGER NOT NULL DEFAULT 0`:
+  D44 truncation is deterministic (manifest per-field priority list)
+  and flagged per row. ECAT/NS rows sit far below the 1 KB default
+  budget; the budget binds future wide sources (BASTA descriptions).
+- **Run kind:** seed runs reuse `run_kind='acquire'` (fetch + write
+  is acquisition); the probe-era views are unaffected. A dedicated
+  kind is a cheap lookup INSERT later, only if the report layer ever
+  needs the distinction.
+
+### Tables (0012__raw_layer.sql)
+
+Lookup: **raw_export_kind** (csv_snapshot, api_endpoint, web_query,
+html_pages).
+
+**raw_source_profile** — one row per bulk source: manifest contract +
+table registry in one (the raw-layer extension of the user's "data
+sources" ask; the register `source` itself already holds
+name/url/access metadata and 0008's export_url/export_format — no
+second sources table, no forking of the 108-row register).
+- source_id TEXT PK → source
+- table_name TEXT UNIQUE NOT NULL
+- manifest_hash TEXT NOT NULL — sha256 of the committed manifest JSON
+  (the manifest file lives in the repo: reviewable before data flows)
+- export_kind_code → raw_export_kind NOT NULL
+- natural_key_json TEXT — declared business-key columns (NULL only in
+  the documented degraded mode)
+- payload_budget_bytes INTEGER NOT NULL DEFAULT 1024
+- created_at TEXT NOT NULL
+- The de5 gate status stays in `data_sources.csv` (D38; register of
+  record = repo CSV, d19 discipline) — deliberately not mirrored into
+  the DB.
+
+**raw_as2_ecat** — ECAT full export, 12 verbatim columns:
+product_or_service, licence_number, group_name, code_type, code_value,
+product_or_service_name, decision, expiration_date, company_name,
+company_country, vat_number, extract_date — plus `_row_hash`,
+`_first_run_id`, `_last_run_id`, `_last_changed_run_id`, `_truncated`,
+`id INTEGER PRIMARY KEY`.
+Semicolon CSV snapshot. `code_type`/`code_value` are sparse (EAN13 on
+~17% of the sample); `group_name` spans ALL ecolabel groups
+(lubricants, tissue, textiles, furniture …) — unfiltered copy per D44,
+the paint filter is downstream analysis. No per-row URL in the export;
+record-level provenance rides the `document` row of the export
+artifact per run (backbone discipline, dm2/dm15).
+
+**raw_as3_nordic_swan** — Nordic Swan export, 10 verbatim columns:
+product, license_number, ecolabel, category, product_group,
+criteria_generation, brand, licensee, address, city — plus the same
+bookkeeping columns.
+"License number" is multi-valued ("2096 0050, 2097 0022") — kept
+verbatim, split downstream; "Category" uses "." as its null token;
+product_group carries the numeric prefix inline ("096 Paints and
+varnishes"). No GTIN/article number — identity rides (licensee +
+brand + product name) and, cross-source, licence numbers ↔ ECAT
+`licence_number` (the D38-verified overlap path).
+
+**raw_change** — the change journal (R2).
+- id INTEGER PK; source_id → source NOT NULL; row_key TEXT NOT NULL
+  (the upsert key's serialized value); old_hash TEXT NOT NULL;
+  new_hash TEXT NOT NULL; run_id → run NOT NULL; note TEXT
+- Index: (source_id, row_key), (run_id).
+
+### Growth & dissection
+
+Per-source tables, never one wide table; normalized/matched output
+lives in derived tables (MA6 — `linkage_candidate` at v0.3.4);
+group→HS mappings in per-source reference tables
+(`group_map_<source>`, versioned seed CSVs); a source with a second
+export shape gets a second manifest + table (register-row variant or
+sub-id — decided when it happens).
+
+## Full schema (designed ahead; block renumbered 0013–0019 on 2026-10-03)
+
+### Dictionary group (0013, M1)
 
 **substance** — the Strategy `lead_compound` dictionary, generalized:
 study-agnostic, lead-target flagged.
@@ -281,7 +403,7 @@ extensible without migration. No legal-status lookups — EU legal
 status and Swiss relevance stay columns of the LEAD_SDS.md
 documentation table (Strategy MASTER D27).
 
-### Catalog & frame group (0010, M1)
+### Catalog & frame group (0014, M1)
 
 **study** — the reuse discriminator (CEO review decision).
 - id INTEGER PK; code TEXT UNIQUE NOT NULL (`lead_hs`); name TEXT;
@@ -372,7 +494,7 @@ comext, sbs, literature, catalog_census); **frame_method**
 (catalog_count, triangulated, spin_proxy); **country** (code = ISO-2
 PK, iso3, name, name_de, name_fr).
 
-### Sampling group (0011, M1)
+### Sampling group (0015, M1)
 
 **sampling_run** — typed detail of a sampling run; parameters and seed
 live on `run` (single home).
@@ -390,7 +512,7 @@ Lookups: **screen_status** (pending, no_sds, not_a_paint, duplicate,
 screened_ok); **exclusion_reason** (no_sds_found, not_a_paint,
 duplicate_product, delisted, out_of_scope, other).
 
-### Trade statistics group (0012, M1)
+### Trade statistics group (0016, M1)
 
 **trade_stat** — EZV + Comext rows.
 - id INTEGER PK; run_id → run (import provenance); source_id → source
@@ -402,7 +524,7 @@ duplicate_product, delisted, out_of_scope, other).
 
 Lookup: **flow** (import, export).
 
-### SDS group (0013, M2)
+### SDS group (0017, M2)
 
 **sds_document** — an SDS is a typed document (document_id subtype).
 - document_id INTEGER PK → document; product_id → product NOT NULL;
@@ -452,7 +574,7 @@ parsed, failed, manual); **review_status** (auto, confirmed, corrected,
 rejected); **sds_format_vintage** (pre_2020_878, post_2020_878,
 unknown — staleness flag).
 
-### Evidence group (0014, M2–M3)
+### Evidence group (0018, M2–M3)
 
 **sighting** — one product appearance at one place/time; the dedup
 layer (Strategy D2/D17). Restored here after being dropped from the
@@ -473,7 +595,7 @@ Lookups: **document_type** (sds, tds, label, listing, older_sds,
 cross_market, declaration, sample_page, export,
 statistics); **agree_state** (yes, no, partial).
 
-### Views (0010 adds; 0015 completes)
+### Views (0014 adds; 0019 completes)
 
 - **v_product_current** (0010) — latest active classification per
   product.

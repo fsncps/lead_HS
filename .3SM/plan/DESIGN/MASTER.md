@@ -32,6 +32,12 @@ current engineering truth of the built tool; the design review
 history (CEO HOLD SCOPE, ENG reviews, FIXPLAN_2026-09-11 — DONE) is
 part of the legacy record.
 
+**In design (2026-10-03): v0.3.0 — raw source tables** (the
+bulk-download layer; concept: `../CONCEPT/RAW_SOURCING.md`, decisions
+D42–D44). The raw-layer schema is specified in `data_model.md`
+§ Raw source tables; the migration plan is corrected and the raw
+delta takes `0012`.
+
 ## Documents
 
 Persistent T-docs (this directory, engineering-authoritative):
