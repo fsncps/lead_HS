@@ -22,9 +22,10 @@ ident"), and the D2 formulation + sighting dedup layer. The immediate
 driver: the v0.3-era product-DB seeding, where ~200k-row sources
 (BASTA 195,391 articles pinned 2026-09-17) must be matched against
 17,013 ECAT and 2,322 Nordic Swan distinct products. Status: method
-proposal converged in the 2026-09-17 concept session; adoption as
-numbered MASTER decisions and the dependency call (M8) await the next
-concept turn / the product-DB unit's Design.
+proposal converged in the 2026-09-17 concept session; the product-DB
+program is adopted (MASTER D42/D43, 2026-10-03) and this topic rides
+unit **v0.3.4** — MA pinning and the dependency call (MA8) at that
+unit's Design.
 
 ## Problem statement
 

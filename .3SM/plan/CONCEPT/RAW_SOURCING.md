@@ -16,12 +16,14 @@ the analysis layer, never at ingest). This topic fixes the concept
 shape for that layer: SQLite stays the engine; one raw table per
 source, created from a committed **source manifest** (probe output,
 reviewable before data flows); idempotent seed runs with resume and
-change detection; a per-record byte budget whose overflow spills to the
-existing raw store instead of being dropped; list-endpoint-first
+change detection; a per-record byte budget (default 1 KB) whose
+overflow truncates deterministically — never dropping a record (D44);
+list-endpoint-first
 crawling as a politeness gate. Converged with the user 2026-09-17
-(engine, history model, oversize policy confirmed); local decisions
-R1–R9, adoption as MASTER decisions at the next concept turn / the
-product-DB unit's Design. Immediate driver: BASTA (AS-33, 195,391
+(engine, history model, oversize policy confirmed); **adopted-in-
+substance 2026-10-03 as the v0.3.0 concept unit** (MASTER D42–D44);
+local decisions R4–R8 and R9 pin at the unit's Design. Immediate
+driver: BASTA (AS-33, 195,391
 articles) as the third bulk source next to ECAT (17,013 distinct) and
 Nordic Swan (2,322).
 
@@ -46,7 +48,7 @@ tricks) so a later dump-and-reload to Postgres stays possible if any
 source ever outgrows SQLite (~5 GB / latency checkpoint — no trigger
 built, evaluation would be explicit).
 
-## Core fields (per record, always kept, uncapped)
+## Core fields (logical — mapped onto the source's own columns by the manifest; never truncated)
 
 - `manufacturer` — as written by the source (normalization happens
   downstream, MATCHING.md Stage 1);
@@ -66,7 +68,10 @@ Additional fields per source: as available, declared in the manifest.
 Probe produces a committed **source manifest** (JSON per source):
 field list + types, natural key (+ variant discriminator), per-field
 priorities for the payload budget, pagination shape, politeness params
-(delay, per-domain budget), endpoints. `raw init <source>` creates the
+(delay, per-domain budget), endpoints. **Raw tables inherit the
+source's own column headers verbatim (D44)**; the manifest records
+them and maps the source columns carrying the identity triple.
+`raw init <source>` creates the
 table *from the manifest* — idempotent (create-if-not-exists), recorded
 in a `raw_table_registry` (source, manifest hash, created_at) so the
 forward-only migration discipline (ARCHITECTURE failure behavior)
@@ -95,19 +100,23 @@ flows; no schema decided implicitly by the scraper.
    hash-changes, spilled/oversize counts, coverage vs the source's
    pinned total (keyfigures anchors, D40 pattern).
 
-## Oversize policy — spill, not drop (confirmed)
+## Oversize policy — truncate, never drop (D44, 2026-10-03; amends the confirmed spill policy)
 
-- Core fields above: never capped.
-- Payload: per-record byte budget (order 1 KB inline; value set per
-  manifest) with the manifest's **per-field priority list** deciding
-  deterministically what stays inline — same run always truncates the
-  same way (reproducibility, D4).
-- Overflow → **spill to the existing raw store** (`data/raw/`,
-  sha256-named files, content-deduped); the record keeps the hash
-  reference and a `payload_status` flag (`inline` | `spilled` |
-  `unavailable`). Nothing is lost at ingest; spilling is reversible at
-  analysis, dropping is not. Every record still carries url +
-  retrieved_at, so even an `unavailable` remains re-fetchable.
+- **Completeness mandate (D44):** each and every record is captured —
+  stubs, nulls and duplicates included.
+- Core identifying fields (the mapped identity triple): never
+  truncated.
+- Payload: per-record inline budget, **default 1 KB** (per-source
+  value set per manifest) with the manifest's **per-field priority
+  list** deciding deterministically what is kept — the same record
+  always truncates the same way (reproducibility, D4). Within the
+  budget, keep maximum data depth.
+- Overflow → **truncate**. Never drop a record because it exceeds a
+  size limit. Every record still carries url +
+  retrieved_at, so anything remains re-fetchable. (The earlier
+  spill-to-raw-store mechanism — hash refs, `payload_status` spilled
+  state — is superseded by user direction for simplicity; the "never
+  silently drop" principle stands.)
 
 ## Politeness gate — list-endpoint-first
 
@@ -149,18 +158,23 @@ audit, source load/list, probe run) continue unchanged.
 
 ## DECISIONS
 
-*(local numbering R1…; promotion to MASTER decisions at the next
-concept turn / unit Design — nothing frozen.)*
+*(local numbering R1…; R1–R3 confirmed 2026-09-17; the topic is
+adopted-in-substance as the v0.3.0 concept unit — MASTER D42–D44,
+2026-10-03; R4–R8 and R9 pin at the unit's Design.)*
 
 - **R1 (confirmed):** SQLite stays the engine for raw source tables;
   Postgres rejected again (D1/D16/D32 stand); portable-SQL hedge.
 - **R2 (confirmed):** history model = upsert + change journal; never
   append-per-run, never history-free.
-- **R3 (confirmed):** oversize = spill to the raw store with hash ref +
-  status flag; never a silent drop; core fields uncapped.
+- **R3 (confirmed 2026-09-17; amended 2026-10-03 by D44 — user
+  direction):** oversize = deterministic truncation at the per-record
+  budget (default 1 KB), never a dropped record; the spill-to-raw-store
+  mechanism is superseded (simplicity); the "never silently drop"
+  principle stands.
 - **R4 (proposed):** table creation is manifest-driven and idempotent,
   registered against the migration discipline; probe output is the
-  committed contract.
+  committed contract. (Manifests inherit the source's own headers
+  verbatim per D44.)
 - **R5 (proposed):** list-endpoint-first crawling is a de5-style design
   gate; per-article-at-scale sources need an explicit feasibility pass
   in probe before seed is built.
