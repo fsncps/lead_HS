@@ -2,7 +2,7 @@
 unit: global
 stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-03
 ---
 
 # Concept MASTER — lead_HS
@@ -404,6 +404,37 @@ lead). Open questions and the phased roadmap follow.
     ECAT ↔ Nordic Swan (the pending second-register pilot) and ECAT
     EAN ↔ retail catalogues (v0.3 seeding).
 
+37. **As-source-probe addendum (stub entry, 2026-10-03; decision of
+    2026-09-14):** all 30 AS-class sources probed, one finding each —
+    the AS-class discovery answer became evidence-complete (2 reuse,
+    2 estimated, 5 unavailable with why-not, 18 associations live +
+    3 unreachable). Full record: legacy `v0.2.4.md` +
+    `DEV_HISTORY.md` § D37.
+
+38. **Corrections & source policy (stub entry, 2026-10-03; decision
+    of 2026-09-14):** the AS-3 "trial-grade" verdict was a tool
+    defect (true pool 2,424 rows / 2,322 distinct / 53 licences);
+    `data_sources.csv` introduced behind the **de5 gate**
+    (DS-1 AS-2, DS-2 AS-3); de6 — gated registers never enter on
+    claims; de7 — consultant handover filed as next-unit INPUT. Full
+    record: legacy `v0.2.4.md` + `DEV_HISTORY.md` § D38.
+
+39. **Full-probe round (stub entry, 2026-10-03; decision of
+    2026-09-15):** census (108 sources) + fresh csv-sample (pools
+    reproduce exactly) + the six consultant-queue candidates
+    (AS-31..36) — **no third bulk source at URL-guess level**;
+    `data_sources.csv` unchanged. Full record: legacy `v0.2.4.md` +
+    `DEV_HISTORY.md` § D39.
+
+40. **BASTA special probe (stub entry, 2026-10-03; decision of
+    2026-09-17):** the "auth-gated API" answer **reversed** —
+    anonymous same-origin `/apiproxy/v3` route pinned; exact public
+    counts **195,391 articles / 1,925 companies**; seeded 100-article
+    sample delivered (identity tuple 100%); server-side paint filter
+    unpinned → **de5 not met**, no third `data_sources.csv` row
+    (BK04 paint-code enumeration open, TODOS.md). Full record: legacy
+    `v0.2.4.md` + `DEV_HISTORY.md` § D40.
+
 41. **Documentation-tree split (2026-09-18; user direction):** the
     public study documentation — methodology, data-source register,
     lead/SDS background, data model, architecture, plus their DE/FR
@@ -606,7 +637,11 @@ readiness prose that stood here is superseded by that record.
 
 ## DECISIONS index note
 
-The authoritative decision register is the DECISIONS section above
-(D1–D41, with supersession markers in place). Topic T-docs carry
-strategy-level pointers into this register; where a topic file and
-this MASTER disagree, this MASTER wins.
+The authoritative decision register is the DECISIONS section above.
+Coverage (corrected 2026-10-03): **D1–D36 and D41 verbatim here**;
+D34's full text sits in the legacy `docs/plan/3SM/10_STRATEGY/
+v0.2.2.md` (acknowledged inside entry 34); **D37–D40 are stub
+entries** above — their full text lives in the legacy `v0.2.4.md`
+record and is distilled in `DEV_HISTORY.md`. Supersession markers in
+place. Topic T-docs carry strategy-level pointers into this register;
+where a topic file and this MASTER disagree, this MASTER wins.

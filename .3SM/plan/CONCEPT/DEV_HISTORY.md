@@ -2,7 +2,7 @@
 unit: global
 stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-03
 ---
 
 # DEV_HISTORY — development history of all units (v0.1 … v0.2.4)
@@ -23,7 +23,10 @@ the authoritative decision register is `MASTER.md` (this directory).
 - **DH1 (2026-09-18):** unit records are distilled here, not copied;
   the legacy v1 tree remains the verbatim record (read-only).
 - **DH2:** strategy-decision numbers (D1–D41) referenced below point
-  to the DECISIONS register in `MASTER.md` (this directory).
+  to the DECISIONS register in `MASTER.md` (this directory). Register
+  coverage (2026-10-03): D1–D36 + D41 verbatim; D34's full text in
+  legacy `v0.2.2.md`; D37–D40 as stub entries there (full text:
+  legacy `v0.2.4.md`, distilled in the sections below).
 
 ## OPEN ITEMS
 
