@@ -278,11 +278,10 @@ a source and read it into the raw DB without ever touching code. Flow:
 2. **Scan**: `leadhs raw scan <source_id>` — detailed profile of the
    delivery: endpoints, pagination shape, exact record count, column
    list, per-column types/emptiness, records-per-request → emits the
-   **sourcing instruction** draft: `<source_id>.instruction.json`
-   (machine contract: endpoints, pagination interpreter, original→
-   snake_case column map, natural key, per-field truncation
-   priorities, politeness budget) + `<source_id>.instruction.md`
-   (human-readable spec for review).
+   **sourcing instruction** draft (one JSON file — see format
+   below): endpoints, pagination interpreter, original→snake_case
+   column map, natural key, per-field truncation priorities,
+   politeness budget.
 3. **Guards are derived at scan time and written into the
    instruction**: robots crawl-delay, per-run request budget,
    per-request delay — with the flood-guard rule: a source delivering
@@ -307,6 +306,32 @@ Interpreter depth at v0.3.0 = the shapes the two confirmed sources
 need (csv_snapshot, JSON API with pagination). The `html_pages`
 interpreter is reserved in the instruction schema and lands with the
 first real HTML source (v0.3.8) — nothing speculative is built.
+
+### Instruction format (user decision 2026-10-03)
+
+**One JSON file per source** — `<source_id>.instruction.json` in the
+instructions directory (e.g. `raw_sources/AS-2.instruction.json`):
+
+- `schema_version`-tagged; the CLI knows the versions it was built
+  for and **fails closed** on unknown versions and unknown fields
+  (typo protection) — forward-only evolution, mirroring the migration
+  discipline.
+- **Canonical serialization** (sorted keys, 2-space indent) so the
+  `manifest_hash` recorded in `raw_source_profile` is stable and
+  reproducible.
+- Documentation lives as **structured fields** (`notes`,
+  `derivation` — e.g. how the guard budget was computed, per-column
+  `description`), not comments: the honest-note house style becomes
+  queryable and machine-checkable.
+- Fail-closed validation before any network call: missing/zero
+  politeness budget, undeclared natural key, unknown pagination kind
+  → refuse with a named-field error.
+- Rationale (decision record): stdlib-only (D16 — YAML/JSONC need
+  dependencies or custom parsers; TOML lacks a stdlib writer for the
+  scan's drafts; CSV cannot nest); deterministic hashing; the tool
+  already speaks JSON everywhere (R4 sketched the manifest as JSON).
+  Human-friendly rendering is a CLI view (`raw explain <source_id>`),
+  never a second contract file.
 
 ### Conventions (raw layer)
 
