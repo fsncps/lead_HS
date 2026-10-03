@@ -2,7 +2,7 @@
 unit: global
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-03
 ---
 
 # Design MASTER — lead_HS
@@ -14,9 +14,10 @@ HOW for the `leadhs` tool and its evidence database, distilled from
 the Strategy (10_STRATEGY/) and the CEO review session of
 2026-09-10 (mode EXPANSION). It records the consolidated design
 decisions, the open items, and the readiness for implementation.
-The active build unit is v0.1.1 (source probing, slim CLI); the full
-normalized schema and the M1–M4 surfaces are designed ahead in the
-topic documents below.
+Units v0.1.1 … v0.2.4 were designed and built under this stage
+(none is active today — see State below); the full normalized schema
+and the M1–M4 surfaces are designed ahead in the topic documents
+below.
 
 ## State
 
@@ -208,10 +209,9 @@ interfaces together — consolidation decision, no separate design.md.)
 
 ## OPEN ITEMS
 
-- **Frontmatter convention:** persistent cross-unit docs may carry
-  `unit: global` per the 3SM canon; repo practice is the active unit.
-  Currently uniform `unit: v0.1.1` — normalize (or not) by explicit
-  user decision.
+- CLOSED 2026-09-18 (housekeeping repair 7f8ebb8): frontmatter
+  convention — persistent docs uniformly carry `unit: global` per the
+  3SM canon; repo practice is no longer the active unit.
 - swiss-impex export mechanics — answered by the unit's own probe.
 - SPIN structure → import mapping; mdbtools on Slackware.
 - Export dump format: CSV default, Parquet only on consumer demand.
