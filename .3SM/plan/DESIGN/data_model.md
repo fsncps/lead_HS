@@ -261,10 +261,52 @@ The v0.3.0 unit adds the bulk-download layer (CONCEPT
 `RAW_SOURCING.md`; MASTER D42–D44): one raw table per bulk source, the
 source's own columns verbatim, every record captured, deterministic
 truncation at the per-record budget, upsert + change-journal history
-(R2/R7). First two tables pinned by the user from the delivered
-samples: ECAT (AS-2, 12 columns) and Nordic Swan (AS-3, 10 columns).
-New migrations start at `0012` (0009–0011 turned out to be the v0.2.4
+(R2/R7). First two tables pinned with the user from the delivered
+samples: ECAT (AS-2, 12 columns) and Nordic Swan (AS-3, 10 columns) —
+the samples are **validation fixtures only; the feed is the live
+endpoints** through the generic pipeline below. New migrations start
+at `0012` (0009–0011 turned out to be the v0.2.4
 probe extensions — see the corrected plan above).
+
+### The sourcing pipeline (user correction 2026-10-03: instruction-driven, code-free per source)
+
+The unit's product is the **generic acquisition pipeline** — discover
+a source and read it into the raw DB without ever touching code. Flow:
+
+1. **Probe** (existing): `leadhs probe` on a potential source URL →
+   rough ballpark (access, shape, scale).
+2. **Scan**: `leadhs raw scan <source_id>` — detailed profile of the
+   delivery: endpoints, pagination shape, exact record count, column
+   list, per-column types/emptiness, records-per-request → emits the
+   **sourcing instruction** draft: `<source_id>.instruction.json`
+   (machine contract: endpoints, pagination interpreter, original→
+   snake_case column map, natural key, per-field truncation
+   priorities, politeness budget) + `<source_id>.instruction.md`
+   (human-readable spec for review).
+3. **Guards are derived at scan time and written into the
+   instruction**: robots crawl-delay, per-run request budget,
+   per-request delay — with the flood-guard rule: a source delivering
+   only a handful of records per request gets a small request budget
+   and longer delay, so a full pull can never turn into a DoS-shaped
+   request stream. The seed enforces instruction budgets fail-closed
+   (missing/zero budget → refuse), on top of the unconditional
+   politeness floor (≥ 2 s spacing, crawl-delay honored, honest UA —
+   PROJECT security law).
+4. **Instruction lands in the instructions directory** — repo-
+   committed canonical location (reviewable contract, R4); any
+   directory works via option, which is the drop-folder mode: drop an
+   instruction file, the CLI processes it; `raw_source_profile`
+   records the manifest_hash actually applied.
+5. **`leadhs raw run <source_id | --all>`** — per instruction: init
+   (create-if-not-exists table from the instruction + profile row),
+   then seed (generic interpreter: fetch pages, extract records,
+   upsert + journal). No per-source code; a new source = a new
+   instruction file.
+
+Interpreter depth at v0.3.0 = the shapes the two confirmed sources
+need (csv_snapshot, JSON API with pagination). The `html_pages`
+interpreter is reserved in the instruction schema and lands with the
+first real HTML source (v0.3.8) — nothing speculative is built.
 
 ### Conventions (raw layer)
 
