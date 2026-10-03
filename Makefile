@@ -7,6 +7,7 @@
 	report-publish probe census recon probe-recon test smoke test-net \
 	probe-capability capability probe-landscape landscape \
 	sample-csv as-probe basta-probe \
+	raw-scan raw-run raw-status raw-explain \
 	clean clobber frame sample acquire ingest parse analyze full
 .DEFAULT_GOAL := help
 
@@ -161,6 +162,22 @@ as-probe: guard-as-probe ## AS-class source probe, one finding per source (GO=1)
 basta-probe: guard-basta-probe ## BASTA special probe: route pin + seeded sample (GO=1; N=, SEED= optional)
 	@mkdir -p $(REPORT_DIR)
 	$(LEADHS) probe basta-probe --out-dir $(REPORT_DIR) $(if $(N),--n $(N)) $(if $(SEED),--seed $(SEED)) || test $$? -eq 2
+
+# v0.3.0: the raw source layer. Scan profiles a live delivery into the
+# draft instruction (reviewable-contract gate); run init+seeds it
+# (register + table + bulk load). SOURCE=all runs every instruction.
+RAW_ARG = $(if $(SOURCE),$(if $(filter all,$(SOURCE)),--all,$(SOURCE)),)
+raw-scan: guard-raw-scan ## raw scan: live delivery → draft instruction (GO=1; SOURCE=AS-2)
+	@test -n "$(SOURCE)" || { echo "raw-scan: set SOURCE=<id>" >&2; exit 1; }
+	$(LEADHS) raw scan $(SOURCE)
+raw-run: guard-raw-run ## raw run: init + seed (GO=1; SOURCE=AS-2|all [CAP=] [WORKERS=])
+	@test -n "$(SOURCE)" || { echo "raw-run: set SOURCE=<id>|all" >&2; exit 1; }
+	$(LEADHS) raw run $(RAW_ARG) $(if $(CAP),--cap $(CAP)) $(if $(WORKERS),--workers $(WORKERS)) || test $$? -eq 2
+raw-status: ## raw-layer coverage: rows, runs, journal, drift (offline; SOURCE= optional)
+	$(LEADHS) raw status $(SOURCE)
+raw-explain: ## render an instruction readably (offline; SOURCE= required)
+	@test -n "$(SOURCE)" || { echo "raw-explain: set SOURCE=<id>" >&2; exit 1; }
+	$(LEADHS) raw explain $(SOURCE)
 
 test: ## offline suite (net/mdbtools markers deselected)
 	$(PYTHON) -m pytest

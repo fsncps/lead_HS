@@ -10,7 +10,7 @@ from leadhs import db as dbmod
 
 def test_fresh_apply_all_migrations(conn):
     applied = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
-    assert applied == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+    assert applied == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for table in ("source", "document", "run", "probe_run", "probe_finding", "probe_metric"):
         assert table in tables
@@ -92,7 +92,7 @@ def test_0004_prunes_lg_li_rows_with_evidence(tmp_path):
     conn.commit()
 
     applied, _ = dbmod.migrate(conn)
-    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql", "0008__landscape.sql", "0009__csv_sample.sql", "0010__as_source_probe.sql", "0011__basta_probe.sql"]
+    assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql", "0008__landscape.sql", "0009__csv_sample.sql", "0010__as_source_probe.sql", "0011__basta_probe.sql", "0012__raw_layer.sql"]
 
     ids = {r[0] for r in conn.execute("SELECT id FROM source")}
     assert "LG-9" not in ids and "LI-9" not in ids and "PE-9" in ids
@@ -139,7 +139,8 @@ def test_migration_order_enforced(tmp_path):
                            "0004__product_census.sql", "0005__priors_metric.sql",
                            "0006__recon_numbers.sql", "0007__capability.sql",
                            "0008__landscape.sql", "0009__csv_sample.sql",
-                           "0010__as_source_probe.sql", "0011__basta_probe.sql"]
+                           "0010__as_source_probe.sql", "0011__basta_probe.sql",
+                           "0012__raw_layer.sql"]
     finally:
         conn.close()
 
@@ -194,11 +195,11 @@ def test_backup_round_trip(conn, db_path):
     conn.close()
 
     orig = dbmod.migration_files
-    dbmod.migration_files = lambda: orig() + [(12, "0012__fake.sql", "CREATE TABLE fake (x INTEGER);")]
+    dbmod.migration_files = lambda: orig() + [(13, "0013__fake.sql", "CREATE TABLE fake (x INTEGER);")]
     try:
         conn2 = dbmod.connect(db_path)
         applied, _ = dbmod.migrate(conn2, db_path=db_path)
-        assert applied == ["0012__fake.sql"]
+        assert applied == ["0013__fake.sql"]
         conn2.close()
     finally:
         dbmod.migration_files = orig

@@ -856,6 +856,182 @@ def status(ctx, source_id):
         conn.close()
 
 
+@raw.command()
+@click.argument("source_id", required=False)
+@click.option("--all", "all_sources", is_flag=True, help="run every instruction in the instructions dir")
+@click.option("--instructions-dir", "instructions_dir", default=None,
+              help="instructions directory (default: raw_sources/)")
+@click.option("--cap", "cap", type=int, default=None, help="stop after N records (tests)")
+@click.option("--dry-run", "dry_run", is_flag=True, help="plan the run; zero network, zero DB writes")
+@click.option("--resume", "resume", is_flag=True, help="continue from the persisted checkpoint")
+@click.option("--workers", "workers", type=click.IntRange(min=1), default=1, show_default=True,
+              help="concurrent page fetches (starts stay politeness-spaced)")
+@click.option("--batch", "batch", type=click.IntRange(min=1), default=500, show_default=True,
+              help="records per checkpoint commit")
+@click.pass_context
+def run(ctx, source_id, all_sources, instructions_dir, cap, dry_run, resume, workers, batch):
+    """Init + seed per instruction: register the source, create the raw
+    table, bulk-load every record verbatim (upsert + change journal,
+    checkpoints). Exit 2 on partial seed (checkpoint kept)."""
+    from .raw import interpreter as interp
+    from .raw import instructions as instructionsmod
+
+    rt = _runtime(ctx)
+    if bool(source_id) == bool(all_sources):
+        click.echo("error: give SOURCE_ID or --all (not both)", err=True)
+        ctx.exit(1)
+    directory = instructions_dir or "raw_sources"
+    if all_sources:
+        import glob as _glob
+
+        paths = sorted(_glob.glob(os.path.join(directory, "*.instruction.json")))
+        if not paths:
+            click.echo(f"error: no instruction files in {directory}/", err=True)
+            ctx.exit(1)
+        wanted = [os.path.basename(p).split(".")[0] for p in paths]
+    else:
+        wanted = [source_id]
+
+    # dry-run: pure plan, zero DB writes (house dry-run discipline)
+    if dry_run:
+        for sid in wanted:
+            path = _instruction_path(sid, directory)
+            try:
+                inst, manifest_hash = instructionsmod.load(path)
+            except instructionsmod.InstructionError as exc:
+                click.echo(f"error: {exc}", err=True)
+                ctx.exit(1)
+            if inst.export_kind in instructionsmod.RESERVED_EXPORT_KINDS:
+                click.echo(f"error: {sid}: export_kind {inst.export_kind!r} is reserved — not interpreted", err=True)
+                ctx.exit(1)
+            pages = "single request" if inst.pagination.kind == "single" else (
+                f"pages of {inst.pagination.page_size} via {inst.pagination.page_param}"
+                + (f", max {inst.pagination.max_pages}" if inst.pagination.max_pages else "")
+            )
+            click.echo(
+                f"{sid}: would fetch {inst.list_url} ({pages}); politeness delay "
+                f"{inst.politeness.delay_seconds}s, budget {inst.politeness.request_budget_per_run} "
+                f"requests; upsert into {inst.table_name or 'raw_' + sid.lower().replace('-', '_')} "
+                f"(manifest {manifest_hash[:16]}…)"
+            )
+        click.echo("dry-run: planned; zero network, zero DB writes")
+        return
+
+    _ensure_initialized(ctx, rt)
+    from . import db as dbmod, fetch as fetchmod
+    from .fetch import Blocked, FetchConfig, FetchError, ProbeNetworkError, RateLimited, RobotsDisallowed
+
+    conn = dbmod.connect(rt.db_path)
+
+    def finalize(run_id, status_code, notes):
+        probeengine._finish_run(conn, run_id, status_code, dbmod.utcnow(), notes)
+        conn.commit()
+
+    def run_one(sid) -> int:
+        path = _instruction_path(sid, directory)
+        try:
+            inst, manifest_hash = instructionsmod.load(path)
+        except instructionsmod.InstructionError as exc:
+            click.echo(f"error: {exc}", err=True)
+            return 1
+        if inst.export_kind in instructionsmod.RESERVED_EXPORT_KINDS:
+            click.echo(f"error: {sid}: export_kind {inst.export_kind!r} is reserved — not interpreted", err=True)
+            return 1
+        unfinished = interp.find_unfinished_run(conn, sid)
+        if unfinished is not None and not resume:
+            cursor = json.loads(unfinished["parameters_json"] or "{}").get("cursor")
+            click.echo(
+                f"error: {sid}: unfinished checkpoint in {unfinished['run_key']} "
+                f"(cursor {json.dumps(cursor)}) — rerun with --resume to continue it",
+                err=True,
+            )
+            return 1
+
+        warnings = interp.ensure_source_row(conn, inst)
+        table_name = interp.resolve_table(conn, inst)
+        created = interp.ensure_table(conn, inst, table_name)
+        interp.ensure_profile_row(conn, inst, table_name)
+        for line in warnings:
+            click.echo(f"warning: {line}", err=True)
+        if created:
+            click.echo(f"created table {table_name} from the instruction columns")
+        elif not inst.table_name:
+            click.echo(f"note: no table_name in the instruction — derived {table_name}")
+
+        run_workers = workers if inst.pagination.kind in ("page_param", "offset") else 1
+        if unfinished is not None and resume:
+            run_id, run_key = unfinished["id"], unfinished["run_key"]
+            conn.execute(
+                "UPDATE run SET status_code = 'running', finished_at = NULL, "
+                "notes = COALESCE(notes || '; ', '') || 'resumed' WHERE id = ?",
+                (run_id,),
+            )
+            conn.commit()
+        else:
+            from . import ids as idsmod
+
+            parameters = {
+                "instruction_hash": manifest_hash, "table": table_name,
+                "cursor": None, "complete": False,
+                "workers": run_workers, "cap": cap,
+            }
+            run_id, run_key, _started = probeengine._insert_run(
+                conn, "acquire", sid, idsmod.slug_for_source(sid) + "raw", parameters,
+            )
+            conn.commit()
+        click.echo(f"{sid}: {run_key} seeding {table_name} (workers={run_workers}, batch={batch})")
+
+        fetcher = fetchmod.Fetcher(
+            FetchConfig(contact=rt.contact, min_spacing=inst.politeness.delay_seconds),
+            logger=rt.logger,
+        )
+        try:
+            stats = interp.seed(conn, fetcher, inst, run_id, table_name, cap=cap,
+                                workers=run_workers, batch=batch)
+        except KeyboardInterrupt:
+            state = interp._load_cursor(conn, run_id)
+            finalize(run_id, "aborted", f"interrupted at record {state.get('records', 0)}; checkpoint kept")
+            raise
+        except interp.BudgetExhausted as exc:
+            finalize(run_id, "blocked", exc.args[0])
+            click.echo(f"{sid}: {run_key} blocked — {exc}", err=True)
+            return 2
+        except FetchError as exc:
+            status_code = "blocked" if isinstance(exc, (Blocked, RateLimited, RobotsDisallowed)) else "failed"
+            finalize(run_id, status_code, f"{type(exc).__name__}: {exc}; checkpoint kept")
+            click.echo(f"{sid}: {run_key} {status_code} — {exc}", err=True)
+            return 2
+        except (interp.InterpreterError, json.JSONDecodeError) as exc:
+            finalize(run_id, "failed", f"{type(exc).__name__}: {exc}; checkpoint kept")
+            click.echo(f"{sid}: {run_key} failed — {exc}", err=True)
+            return 2
+        summary = (
+            f"inserted={stats.inserted} updated={stats.updated} skipped={stats.skipped} "
+            f"truncated={stats.truncated} fetches={stats.fetches}"
+            + (f" ragged={stats.ragged}" if stats.ragged else "")
+        )
+        finalize(run_id, "done", summary + (f"; notes: {'; '.join(stats.notes)}" if stats.notes else ""))
+        click.echo(f"{sid}: {run_key} done — {summary}")
+        return 0
+
+    try:
+        probeengine = _import_probeengine()
+        exit_code = 0
+        for sid in wanted:
+            code = run_one(sid)
+            exit_code = max(exit_code, code)
+        if exit_code:
+            ctx.exit(exit_code)
+    finally:
+        conn.close()
+
+
+def _import_probeengine():
+    from .probe import engine as probeengine
+
+    return probeengine
+
+
 cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)

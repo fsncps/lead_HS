@@ -482,13 +482,15 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(body)
         elif p == "/basta.json":
-            data = json.dumps({"total": 25, "items": [
+            # v0.3.0: plain JSON object + items array (double-encoding
+            # made this route return an empty 200 — fixed with the raw
+            # layer tests)
+            self._json({"total": 25, "items": [
                 {"name": "Paint A", "articleNumber": "AR-0001", "company": "Acme AB",
                  "bastaId": "B0001", "gtin": "7300000000011", "bk04": "211", "category": "paints"},
                 {"name": "Paint B", "articleNumber": "AR-0002", "company": "Acme AB",
                  "bastaId": "B0002", "gtin": "", "bk04": "211", "category": "paints"},
-            ]}).encode()
-            self._json(data)
+            ]})
         elif p.startswith("/api-articles"):
             # paginated article route: honors page, pageSize, the
             # category=paint filter, and a `fixed=1` mode that serves the
