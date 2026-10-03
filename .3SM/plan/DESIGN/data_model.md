@@ -275,7 +275,7 @@ probe extensions — see the corrected plan above).
   `raw_as2_ecat`, `raw_as3_nordic_swan`, later `raw_as33_basta`.
   (Supersedes the user's provisional "RAW_SOURCE_ECAT_ID01" sketch —
   "ID01" would fork a second source numbering; the `raw_` prefix
-  already namespaces the layer.)
+  already namespaces the layer. **User-confirmed 2026-10-03**.)
 - **Verbatim columns (D44).** Source headers lowercased to snake_case
   (SQL-safe); the manifest records the original-header → column
   mapping. Values untouched: "." stays ".", "2096 0050, 2097 0022"
@@ -314,7 +314,8 @@ html_pages).
 table registry in one (the raw-layer extension of the user's "data
 sources" ask; the register `source` itself already holds
 name/url/access metadata and 0008's export_url/export_format — no
-second sources table, no forking of the 108-row register).
+second sources table, no forking of the 108-row register; side-table
+shape **user-confirmed 2026-10-03** over extending `source` in place).
 - source_id TEXT PK → source
 - table_name TEXT UNIQUE NOT NULL
 - manifest_hash TEXT NOT NULL — sha256 of the committed manifest JSON
