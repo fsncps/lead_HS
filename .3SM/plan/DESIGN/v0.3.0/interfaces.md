@@ -71,6 +71,12 @@ Field rules:
   array order), optional `description`. The column list is the table
   DDL minus bookkeeping.
 - `natural_key` — non-empty subset of `column` values; seed upsert key.
+  **Build amendment (live AS-2, 2026-10-03):** an EMPTY array is the
+  data_model's documented degraded row-hash identity mode — row hash is
+  the identity: inserts only, byte-identical duplicates collapse,
+  changed content inserts rather than updates. AS-2 uses it (471 exact
+  duplicate rows make every column combination non-unique). `null` is
+  still refused.
 - `payload_budget_bytes` — per-record inline budget, default 1024
   (rs8): identity (`natural_key`) fields never truncated; overflow
   truncates by priority; `_truncated` flag set.
@@ -147,3 +153,43 @@ Network targets sit behind `guard-%` GO=1 like all others (d21).
 4. Completeness: every record captured — stubs, nulls, duplicates
    included (D44); truncation per rs8; a record is never dropped for
    size.
+
+## Build record (r01–r03 + live, 2026-10-03)
+
+Deviations and additions discovered while building and running — the
+authoritative deltas over the sketch above:
+
+- `table_name` — optional schema-v1 field (the one addition to the
+  field list). Emitted by scan via the pinned-table lookup (existing
+  `raw_<id>%` table from a migration wins, e.g. `raw_as2_ecat`);
+  otherwise derived `raw_<source_id no-dash>` (`raw_as33…` for a
+  future BASTA). Hand-written instructions may omit it.
+- Scan derivation depth: the natural-key search is a lattice over ALL
+  columns (singles → pairs → triples → quads, ≤ 14 columns; first
+  unique wins). Sparse columns participate — AS-2 proved a fully-
+  populated bound would miss the truth (its keylessness comes from
+  exact duplicate rows, not sparse columns). No key found → draft
+  written anyway with `natural_key: []` + loud incomplete warning;
+  the run refuses nothing in that case (degraded mode is valid).
+- Scan refuses non-2xx deliveries with a named error and exit 2 (a
+  404 error page must never be profiled as a zero-record delivery —
+  live-found on AS-3).
+- Raw-layer delivery decode is UTF-8-first with BOM stripping
+  (`raw.delivery_text`); single-byte fallbacks (ISO-8859-1/ascii) only
+  on genuine non-UTF-8 content (live-found on AS-2: text/csv ships
+  without charset).
+- `raw run` extras: `--workers N` (page fetches may overlap; request
+  STARTS stay ≥ max(delay, 2 s) apart via a pacer — the politeness law
+  holds under any worker count), `--batch N` (checkpoint every N
+  records, default 500). `--all` runs every instruction file in the
+  directory (exit 1 if any is refused). Interrupt → run `aborted`,
+  checkpoint kept, exit 130; budget exhausted → `blocked`, exit 2.
+- `raw run --dry-run` plans with zero network AND zero DB writes
+  (house dry-run discipline); the run-plan init phase (source upsert
+  + register sync warning, profile row, create-if-not-exists) happens
+  only on a real run.
+- `probe url` caps its ballpark fetch at 64 KiB (report says "> cap"
+  when the delivery streams past it); `--cap N` overrides.
+- Reserved kinds (`web_query`, `html_pages`): valid instructions,
+  rendered by `raw explain`, refused by scan/run with a named message
+  — AS-3 uses this deliberately for its dead CSV route (2026-10-03).

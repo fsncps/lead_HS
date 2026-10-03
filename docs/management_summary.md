@@ -277,8 +277,13 @@ reproduzierbar; Manifest nie schweigend über einen Fehlschlag):
   (der v0.3-Aufbaupfad) steht auf echten Spalten.
 - **Nordischer Schwan: geliefert** — 100 von 2'322 unterscheidbaren
   Farbpositionen. Die begrenzte Suche fand einen echten Export
-  (die Such-URL liefert ein Semikolon-CSV unter `?format=csv`,
+  (die Such-URL lieferte ein Semikolon-CSV unter `?format=csv`,
   9,8 MB; Farbpool 2'424 Zeilen, 53 Lizenzen, 20 Lizenznehmer).
+  *(Routen-Drift 03.10.2026: dieser Exportweg liefert nach einem
+  Website-Redesign HTTP 404; der archivierte Schnappschuss vom
+  14.09.2026 bleibt die neueste verifizierte Kopie — die
+  Wiederbeschaffung läuft über einen HTML-Durchlauf und ist als
+  offener Punkt verzeichnet.)*
   (Der erste Lauf mit «Versuchsstufe, 14 unterscheidbare» war ein
   Werkzeugdefekt — laxer Scope-Filter + ECAT-förmiger
   Dedupe-Schlüssel — korrigiert und aus dem archivierten Export neu
@@ -662,9 +667,13 @@ reproductible ; le manifeste ne tait jamais un échec) :
   colonnes.
 - **Cygne nordique : livré** — 100 articles sur 2'322 produits de
   peinture distincts. La découverte bornée a trouvé un vrai export
-  (l'URL de recherche sert un CSV à point-virgule via
+  (l'URL de recherche servait un CSV à point-virgule via
   `?format=csv`, 9,8 Mo ; pool peinture 2'424 lignes, 53 licences,
-  20 titulaires). (Le premier enregistrement « niveau d'essai,
+  20 titulaires). *(Dérive de route 03.10.2026 : cet export renvoie
+  désormais HTTP 404 après une refonte du site ; l'instantané
+  archivé du 14.09.2026 reste la copie vérifiée la plus récente —
+  la ré-acquisition passera par un parcours HTML et est consignée
+  comme point ouvert.)* (Le premier enregistrement « niveau d'essai,
   14 distincts » était un défaut d'outil — filtre de périmètre
   laxiste + clé de dédoublonnage ECAT — corrigé et re-rendu depuis
   l'export archivé, D38.) Le pilote de recouvrement est joignable

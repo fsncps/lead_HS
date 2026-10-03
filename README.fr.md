@@ -120,29 +120,35 @@ Détail : [sources de données](docs/study/DATA_SOURCE.fr.md)
 (langage clair, glossaire ; document parent EN).
 
 
-## État du projet : prochaines étapes (v0.3)
-La prochaine phase de construction transformera les sources de masse
-confirmées en une base produit consolidée, en deux couches :
+## État du projet : v0.3 — couche brute construite, couche de rapprochement ensuite
 
-**1. Téléchargement des sources de masse (couche brute).** Chaque
-source de masse confirmée — Écolabel européen (≈17 013 distincts),
-Cygne Nordique (≈2 322) et BASTA (195 391 articles ; via sa propre
-route anonyme client web) — est copiée dans une **table brute par
-source** : verbatim, sans filtrage, une ligne par enregistrement
-source, avec le nom du fabricant, l'identifiant produit et le code
-de groupe exactement comme écrits par la source. Les
-téléchargements sont répétables (interruption, reprise),
-incrémentaux (une relance ne traite que les enregistrements
-nouveaux/modifiés via un journal des changements) et pilotés par
-manifeste (un manifeste committé par source définit la forme de la
-table avant que les données ne coulent ; les enregistrements trop
-gros débordent dans le stockage brut, rien n'est perdu).
-Politesse : endpoints de liste d'abord, limitation de débit et
-backoff, via la CLI existante sous `GO=1`
-(`leadhs raw init <source>` / `leadhs raw seed <source>`).
+**La couche de téléchargement de masse (couche brute) est construite
+et éprouvée en direct (v0.3.0, 03.10.2026)** — détails dans
+[report-0.3.0.md](docs/report/report-0.3.0.md) (EN) : chaque source de
+masse confirmée est décrite par une *instruction d'approvisionnement*
+JSON committée et révisable (`raw_sources/AS-2.instruction.json`) ; la
+CLI scanne la livraison réelle vers ce brouillon (comptage exact,
+colonnes, recherche de clé naturelle, budget de politesse dérivé de
+robots), puis charge chaque enregistrement **verbatim** dans une table
+brute par source — upsert + journal des changements, points de
+reprise par lots (interruption → reprise), budget de taille par
+enregistrement qui tronque par priorité sans jamais perdre une ligne.
+Les téléchargements sont répétables et incrémentaux ; une nouvelle
+source de même forme s'intègre sans aucune modification de code.
+Résultat en direct : **Écolabel européen ECAT entièrement chargé —
+89 396 enregistrements distincts** (la livraison contient 89 867
+lignes ; 471 doublons octet-identiques s'effondrent), 200/200
+vérifications ponctuelles verbatim, audit propre. **La route d'export
+CSV confirmée du Cygne Nordique est morte entre les unités** (HTTP 404
+après une refonte du site, 03.10.2026) — enregistrée dans son fichier
+d'instruction comme le cas réservé `html_pages` ; l'instantané
+archivé du 14.09.2026 reste la copie vérifiée la plus récente. Le
+même passage a montré à quel point de tels exports de masse sont
+instables comme infrastructure : l'export d'un catalogue a survécu,
+celui de l'autre est mort en trois semaines.
 
-**2. Normalisation déterministe et fusion (couche de rapprochement).**
-Pour fusionner le même produit vu dans plusieurs sources, noms et
+**Ensuite : normalisation déterministe et fusion (couche de
+rapprochement).** Pour fusionner le même produit vu dans plusieurs sources, noms et
 identifiants sont normalisés de façon déterministe (pas de LLM ni
 d'apprentissage — chaque lien reste explicable et reproductible) :
 pliage des diacritiques Unicode, casse normalisée, suppression des
@@ -162,11 +168,12 @@ une table produits** ramenées à l'unité formulation de l'étude,
 chaque produit portant ses observations par source et le niveau de
 preuve de chaque lien.
 
-Détails : les fichiers de stratégie
-[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) et
-[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (règles,
-seuils et choix de bibliothèque y sont verrouillés comme décisions
-d'adoption en attente R1–R9 et MA1–MA9).
+Détails : les règles de rapprochement, seuils et choix de bibliothèque
+sont verrouillés dans la stratégie en attente
+[`MATCHING.md`](.3SM/plan/CONCEPT/MATCHING.md) (décisions d'adoption
+MA1–MA9) ; le contrat de la couche brute vit dans les fichiers
+d'instruction committés et dans
+[report-0.3.0.md](docs/report/report-0.3.0.md) (EN).
 
 
 ## État du projet : unités antérieures, résultats et lacunes
@@ -187,7 +194,10 @@ d'identifiants par article
 - **AS-3 — Cygne Nordique : 100 sur 2'322 lignes peinture
   distinctes** — export réel sous `?format=csv` (2'424 lignes
   peinture, 53 licences), portant même des numéros de licence
-  Écolabel européen.
+  Écolabel européen. *(Dérive de route 03.10.2026 : l'export CSV
+  renvoie désormais HTTP 404 après une refonte du site — voir
+  [report-0.3.0.md](docs/report/report-0.3.0.md) (EN) ;
+  l'instantané archivé reste valable.)*
 - **ST-1/3/6/7 — aucune ligne produit publiée** (PCN réservé aux
   autorités ; SBS ; AT danois ; secret KemI) — chaque motif cité.
 
@@ -313,7 +323,9 @@ et à un document précis. L'outil ne stocke que des données produit.
   installateur pour Windows brut (sans make, sans Python
   préinstallé) est un objectif affiché pour v0.3.
 - Les opérations qui touchent de vrais sites sont gardées derrière un
-  `GO=1` explicite.
+  `GO=1` explicite — y compris les chargements bruts de la couche raw
+  (`GO=1 make raw-scan SOURCE=AS-2`, `GO=1 make raw-run SOURCE=AS-2`,
+  plus hors ligne `make raw-status` / `make raw-explain SOURCE=AS-2`).
 
 Détails : [architecture](docs/study/ARCHITECTURE.md) et
 [modèle de données](docs/study/DATA_MODEL.md) (EN) ;
@@ -371,20 +383,21 @@ README.md                  ce fichier (EN)
 
 
 ## État
-Les unités outil v0.1.1–v0.2.4 sont construites et testées (412 tests
+Les unités outil v0.1.1–v0.3.0 sont construites et testées (460 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente
 d'un feu vert de collecte), carte du paysage des données avec les
 trois chiffres phares, sondage de capacité des registres officiels,
 l'entonnoir à trois questions exécuté sur le réseau réel
-(14.09.2026), et l'estimation de pool v2 — le vote méta-benchmark
-avec un verdict de magnitude à deux niveaux (14.09.2026) : moteur de
-benchmarks, paquet d'adaptateurs, quatre nouvelles extractions
-primaires, section de rapport avec bandeau de péremption — chaque
-chiffre est un résultat de requête ou une extraction datée — et
+(14.09.2026), l'estimation de pool v2 — le vote méta-benchmark
+avec un verdict de magnitude à deux niveaux (14.09.2026) —,
 l'échantillon CSV de gestion avec la preuve par lignes produit pour
-chaque registre (14.09.2026). Le rapport
-est publié sous `docs/report/`. La méthodologie reste ouverte à
+chaque registre (14.09.2026) et la couche brute pilotée par
+instructions avec le premier chargement de masse en direct
+(Écolabel européen ECAT, 89 396 enregistrements distincts,
+03.10.2026) — chaque
+chiffre est un résultat de requête ou une extraction datée. Les rapports
+sont publiés sous `docs/report/`. La méthodologie reste ouverte à
 révision à mesure que les résultats arrivent.
 

@@ -27,9 +27,9 @@ green; `db audit` exits 0 after the live loads.
 |---|---|---|---|
 | static checks | `python3 -m compileall src tests` | clean | every run |
 | user run review | per-run USER TEST PLAN below | pass | every run |
-| offline suite | `make test` | green | FINAL (in r03) |
-| provenance audit | `make db-audit` | exit 0 (after live loads) | FINAL (in r03) |
-| smoke | `make smoke` | green | FINAL (in r03) |
+| offline suite | `make test` | green | FINAL (in r03) — **done 2026-10-03: 460 passed, 2 deselected** |
+| provenance audit | `make db-audit` | exit 0 (after live loads) | FINAL (in r03) — **done 2026-10-03: audit clean (incl. --unreferenced)** |
+| smoke | `make smoke` | green | FINAL (in r03) — **done 2026-10-03: 6 passed** |
 | lint/typecheck | — | none configured (PROJECT) | — |
 
 Regular runs gate lean (PROJECT testing economy); all authored testing
@@ -39,9 +39,17 @@ concentrates at FINAL.
 
 | run | goal | state | SHA | review |
 |---|---|---|---|---|
-| r01 | raw schema + instruction foundation | PLANNED | — | — |
-| r02 | scan + guards → committed instructions (AS-2, AS-3) | PLANNED | — | — |
-| r03 | seed interpreter + live bulk load (+ FINAL folded, rs10) | PLANNED | — | — |
+| r01 | raw schema + instruction foundation | DONE 2026-10-03 | 1a043db | user test plan pass (scratch DB: 0012 applies; refusals name paths; canonical hash stable) |
+| r02 | scan + guards → committed instructions (AS-2, AS-3) | DONE 2026-10-03 | d098c3e (+ live fixes ca06e42) | pass — AS-2/AS-3 scanned live; AS-3 route dead → honest instruction; AS-2/AS-3 instruction files committed + reviewed |
+| r03 | seed interpreter + live bulk load (+ FINAL folded, rs10) | DONE 2026-10-03 | 92408d1 + ca06e42 + 350d275 | pass — AS-2 loaded live (89,396 rows, 200/200 spot-checks); suite 460 green; smoke green; db-audit 0 |
+
+Build session 2026-10-03 (user directive: single build pass, all runs,
+then live). Run details live in the ENGINEERING ledgers; the unit
+report is `docs/report/report-0.3.0.md`. Live-found facts recorded in
+the Build record section of `interfaces.md` (degraded row-hash mode,
+404 scan refusal, UTF-8-first decode, table_name field) and
+`data_model.md` § Raw source tables (AS-2 loaded numbers, AS-3 route
+death).
 
 ## r01 — raw schema + instruction foundation (offline)
 

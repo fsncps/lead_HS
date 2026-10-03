@@ -107,7 +107,7 @@ substance dictionary (`dict load` — docs/study/DATA_MODEL.md D6);
 | `0009__csv_sample.sql` | M0 (v0.2.4, D36) | — (probe_mode `csv_sample` + metrics csv_sample_rows / csv_sample_unavailable) | — |
 | `0010__as_source_probe.sql` | M0 (v0.2.4, D37) | — (probe_mode `as_source_probe` + 4 metrics: rows / records / unavailable / assoc) | — |
 | `0011__basta_probe.sql` | M0 (v0.2.4, D40) | — (probe_mode `basta_special_probe` + 2 metrics; exact counts ride `catalog_count`) | — |
-| `0012__raw_layer.sql` | v0.3.0 | raw_source_profile, raw_change, raw_as2_ecat, raw_as3_nordic_swan + raw_export_kind lookup (see § Raw source tables) | — (raw status reporting queries tables directly; views deferred) |
+| `0012__raw_layer.sql` | v0.3.0 — **APPLIED 2026-10-03** | raw_source_profile, raw_change, raw_as2_ecat, raw_as3_nordic_swan + raw_export_kind lookup (see § Raw source tables) | — (raw status reporting queries tables directly; views deferred) |
 | `0013__dictionary.sql` | M1 | substance, compound_synonym, compound_identifier + 5 lookups | — |
 | `0014__catalog_frame.sql` | M1 | study, org, product, product_org, product_classification, category, product_category, population_anchor, frame_stratum, frame_stratum_anchor, cn_code + 8 lookups | v_anchor_candidates (redefined — promoted-exclusion lands here), v_product_current |
 | `0015__sampling.sql` | M1 | sampling_run, sample_selection + 2 lookups | — |
@@ -352,17 +352,22 @@ instructions directory (e.g. `raw_sources/AS-2.instruction.json`):
 - **Bookkeeping columns are `_`-prefixed** so they can never collide
   with source headers: `_row_hash`, `_first_run_id`, `_last_run_id`,
   `_last_changed_run_id`, `_truncated`.
-- **Row identity / upsert key (R7).** The manifest declares the
-  natural-key columns per source; key uniqueness within an export is
-  validated at manifest time against the delivered 100-row samples.
-  `_row_hash` = sha256 over the verbatim tuple (change detection,
-  R7). Same key + same hash → skip; same key + new hash → UPDATE +
-  `raw_change` journal row; new key → INSERT. If a source yields no
-  resolvable key (intra-export collisions), degraded mode = row-hash
-  identity, documented in the manifest (changed content then inserts
-  rather than updates — counted honestly). AS-2 candidate key:
-  (licence_number, product_or_service_name); AS-3 candidate key:
-  (license_number, product) — validated at build.
+- **Identity / upsert key (R7).** The manifest declares the
+  natural-key columns per source. **Degraded mode (used by AS-2,
+  live 2026-10-03):** when the export carries intra-export exact
+  duplicate rows, no column combination is unique — `natural_key: []`
+  selects row-hash identity: inserts only, byte-identical rows
+  collapse (counted honestly in run notes), changed content inserts
+  rather than updates, no journal rows. AS-2 delivery: 89,867 rows =
+  89,396 distinct + 471 byte-identical duplicates. Exact-duplicate
+  collapse loses zero information (byte-identical); the instruction's
+  `records.expected_count` is set to the distinct count so `raw
+  status` drift signals real change (+N inserts after a source
+  update). A source WITH a resolvable key upserts per R7 (skip /
+  update + `raw_change` row). `raw_as2_ecat`/`raw_as3_nordic_swan`
+  were created by 0012; a new source's table is created at first run
+  from its instruction columns (`raw_<source_id no-dash>` unless the
+  instruction names `table_name`).
 - **Truncation visibility.** `_truncated INTEGER NOT NULL DEFAULT 0`:
   D44 truncation is deterministic (manifest per-field priority list)
   and flagged per row. ECAT/NS rows sit far below the 1 KB default
@@ -402,8 +407,13 @@ product_or_service_name, decision, expiration_date, company_name,
 company_country, vat_number, extract_date — plus `_row_hash`,
 `_first_run_id`, `_last_run_id`, `_last_changed_run_id`, `_truncated`,
 `id INTEGER PRIMARY KEY`.
+**Loaded live 2026-10-03 (v0.3.0): 89,396 distinct rows** (delivery
+89,867; 471 byte-identical duplicates collapsed under row-hash
+identity; 200/200 verbatim spot-checks; `db audit` exit 0). Snapshot
+date `extract_date` = 2026-10-03; 17,843 rows in paint/varnish groups
+(filter is downstream); `code_value` populated on 40.1%.
 Semicolon CSV snapshot. `code_type`/`code_value` are sparse (EAN13 on
-~17% of the sample); `group_name` spans ALL ecolabel groups
+~17% of the v0.2.4 sample); `group_name` spans ALL ecolabel groups
 (lubricants, tissue, textiles, furniture …) — unfiltered copy per D44,
 the paint filter is downstream analysis. No per-row URL in the export;
 record-level provenance rides the `document` row of the export
@@ -412,7 +422,14 @@ artifact per run (backbone discipline, dm2/dm15).
 **raw_as3_nordic_swan** — Nordic Swan export, 10 verbatim columns:
 product, license_number, ecolabel, category, product_group,
 criteria_generation, brand, licensee, address, city — plus the same
-bookkeeping columns.
+bookkeeping columns. Created by 0012; **empty as of 2026-10-03**: the
+pinned `?format=csv` export route died between units (HTTP 404 after a
+svanen.se redesign, found by the v0.3.0 live scan; the delivery is now
+a server-rendered WP search — the reserved `html_pages` case, see
+`raw_sources/AS-3.instruction.json`). The v0.2.4 archived snapshot
+(52,539 rows, sha256-verified, raw store 2026-09-14/15) remains the
+newest verified copy. The table fills when the html_pages interpreter
+lands (v0.3.8) or a new bulk route appears.
 "License number" is multi-valued ("2096 0050, 2097 0022") — kept
 verbatim, split downstream; "Category" uses "." as its null token;
 product_group carries the numeric prefix inline ("096 Paints and

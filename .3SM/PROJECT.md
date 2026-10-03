@@ -45,6 +45,9 @@ Operator entrypoint is the repo-root `Makefile` (one target = one
 | full census (network) | `GO=1 make census` |
 | recon / capability / landscape (network) | `GO=1 make recon` / `GO=1 make capability` / `GO=1 make landscape` |
 | csv sample / as-probe / basta-probe (network) | `GO=1 make sample-csv` / `GO=1 make as-probe` / `GO=1 make basta-probe` |
+| raw scan (live delivery → draft instruction) | `GO=1 make raw-scan SOURCE=AS-2` |
+| raw run (init + seed bulk load) | `GO=1 make raw-run SOURCE=AS-2\|all` (CAP=/WORKERS= optional) |
+| raw status / explain (offline) | `make raw-status [SOURCE=…]` / `make raw-explain SOURCE=AS-2` |
 | test (full offline suite) | `make test` (`pytest`; net+mdbtools deselected by default) |
 | test (single file) | `python3 -m pytest tests/test_engine.py` |
 | smoke (fixture e2e) | `make smoke` |
@@ -58,13 +61,13 @@ Operator entrypoint is the repo-root `Makefile` (one target = one
 
 | Suite | Command | Scope | Runtime |
 |---|---|---|---|
-| full (offline) | `make test` | everything; net+mdbtools deselected via `addopts` | ~1–2 min (412 tests at v0.2.4 D40) |
+| full (offline) | `make test` | everything; net+mdbtools deselected via `addopts` | ~2–3 min (460 tests at v0.3.0) |
 | net-marked | `python3 -m pytest -m net` | real-network checks (`test_doctor_net.py` etc.) | seconds |
 | mdbtools-gated | `python3 -m pytest -m mdbtools` | SPIN extraction (skips when binary absent) | seconds |
 | smoke | `make smoke` | fixture-site end-to-end (init → load → probe → report → audit) | seconds |
 
-Latest recorded full-suite state: **412 passed, 2 deselected**
-(v0.2.4 D40 build, 2026-09-17). Golden report tests regenerate only with
+Latest recorded full-suite state: **460 passed, 2 deselected**
+(v0.3.0 build, 2026-10-03). Golden report tests regenerate only with
 explicit review. Test rules: no sleeps (injected clock), order-independent,
 local fixture site on an ephemeral port, every error-mapping row tested.
 

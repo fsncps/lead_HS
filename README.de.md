@@ -119,28 +119,33 @@ Farbfilter gesteckt ist. Detail:
 Glossar; EN-Elterndokument).
 
 
-## Projektstand: nächste Schritte (v0.3)
-Die nächste Bauphase verwandelt die bestätigten Bulk-Quellen in eine
-konsolidierte Produktdatenbank, in zwei Schichten:
+## Projektstand: v0.3 — Raw-Schicht gebaut, Matching-Schicht als Nächstes
 
-**1. Bulk-Download der Quellen (Raw-Schicht).** Jede bestätigte
-Bulk-Quelle — EU Ecolabel (≈17'013 distinct), Nordischer Schwan
-(≈2'322) und BASTA (195'391 Artikel; über die eigene anonyme
-Web-Client-Route angezapft) — wird in eine **Raw-Tabelle je Quelle**
-übernommen: wortgetreu, ungefiltert, eine Zeile je
-Quellendatensatz, mit Herstellername, Produktkennung und
-Gruppencode genau wie von der Quelle geschrieben. Die Downloads
-sind wiederholbar (Unterbrechung, Fortsetzen), inkrementell
-(Wiederholung prüft nur neue/veränderte Datensätze anhand eines
-Change-Journals) und manifest-getrieben (ein kommittiertes
-Manifest je Quelle definiert die Tabellenform, bevor Daten
-fliessen; übergrosse Datensätze werden in den Raw-Speicher
-ausgelagert, nichts geht verloren). Höflichkeit: List-Endpoint
-zuerst, Ratenbegrenzung und Backoff, über die bestehende
-`GO=1`-gesteuerte CLI (`leadhs raw init <source>` /
-`leadhs raw seed <source>`).
+**Die Bulk-Download-Schicht (Raw-Schicht) ist gebaut und live erprobt
+(v0.3.0, 2026-10-03)** — Details in
+[report-0.3.0.md](docs/report/report-0.3.0.md): jede bestätigte
+Bulk-Quelle wird durch eine kommittierte, prüfbare JSON-*Bezugsanweisung*
+beschrieben (`raw_sources/AS-2.instruction.json`); die CLI scannt die
+live Auslieferung in diesen Entwurf (exakte Zählung, Spalten,
+Natürschlüssel-Suche, Höflichkeitsbudget aus robots abgeleitet) und
+lädt dann jeden Datensatz **wortgetreu** in eine Raw-Tabelle je Quelle —
+Upsert + Change-Journal, Batch-Checkpoints (Unterbrechung → Fortsetzen),
+Grössenbudget je Datensatz, das nach Priorität kürzt, ohne je einen
+Datensatz zu verwerfen. Downloads sind wiederholbar und inkrementell;
+eine neue Quelle derselben Form kommt mit null Codezeilenänderungen
+an Bord. Live-Ergebnis: **EU Ecolabel ECAT vollständig geladen —
+89'396 distinct Datensätze** (die Auslieferung hält 89'867 Zeilen; 471
+byte-identische Duplikate kollabieren), 200/200 wortgetreue
+Stichproben, Audit sauber. **Der bestätigte CSV-Exportweg des Nordischen
+Schwans starb zwischen den Einheiten** (HTTP 404 nach einem
+Website-Redesign, 2026-10-03) — in seiner Anweisungsdatei als der
+reservierte `html_pages`-Fall verzeichnet; der archivierte Schnappschuss
+vom 2026-09-14 bleibt die neueste verifizierte Kopie. Derselbe Durchgang
+zeigte auch, wie instabil solche Bulk-Exporte als Infrastruktur sind:
+der Export des einen Katalogs überlebte, der des anderen starb innerhalb
+von drei Wochen.
 
-**2. Deterministische Normalisierung und Verschmelzung
+**Nächster Schritt: deterministische Normalisierung und Verschmelzung
 (Matching-Schicht).** Um dasselbe Produkt aus mehreren Quellen
 zusammenzuführen, werden Namen und Identifikatoren deterministisch
 normalisiert (keine LLM/Maschine-Lern-Zuordnung — jede Verknüpfung
@@ -186,6 +191,10 @@ Identifikator-Spalten je Artikel
 - **AS-3 — Nordischer Schwan: 100 von 2'322 unterscheidbaren
   Farbpositionen** — echter Export unter `?format=csv` (2'424
   Farbzeilen, 53 Lizenzen), mit EU-Ecolabel-Lizenznummern.
+  *(Routen-Drift 2026-10-03: der CSV-Export liefert nach einem
+  Website-Redesign HTTP 404 — siehe
+  [report-0.3.0.md](docs/report/report-0.3.0.md) (EN); der archivierte
+  Schnappschuss bleibt gültig.)*
 - **ST-1/3/6/7 — keine Produktzeilen publiziert** (PCN nur für
   Behörden; SBS; dänisches AT; KemI-Geheimhaltung) — jeder Grund
   belegt.
@@ -308,7 +317,9 @@ zurückführbar. Das Werkzeug erfasst ausschliesslich Produktdaten.
   noch aus. Ein Installer für nacktes Windows (ohne make, ohne
   vorinstalliertes Python) ist ein erklärtes Ziel für v0.3.
 - Vorgänge, die echte Sites berühren, sind hinter einem expliziten
-  `GO=1` abgesichert.
+  `GO=1` abgesichert — auch die Raw-Schicht-Bulkladungen
+  (`GO=1 make raw-scan SOURCE=AS-2`, `GO=1 make raw-run SOURCE=AS-2`,
+  dazu offline `make raw-status` / `make raw-explain SOURCE=AS-2`).
 
 Details: [Architektur](docs/study/ARCHITECTURE.md) und
 [Datenmodell](docs/study/DATA_MODEL.md) (je EN); das
@@ -366,7 +377,7 @@ README.md                  diese Datei (EN)
 
 
 ## Status
-Die Werkzeug-Einheiten v0.1.1–v0.2.4 sind gebaut und getestet (412
+Die Werkzeug-Einheiten v0.1.1–v0.3.0 sind gebaut und getestet (460
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
 Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
 Katalogdurchläufe (wartet auf eine Sammel-Freigabe), die
@@ -374,11 +385,11 @@ Datenlandschaft-Karte mit den drei Leitgrössen, die
 Quellenfähigkeits-Sondierung der amtlichen Register, der
 Drei-Fragen-Trichter im echten Netz (14.09.2026) sowie die
 Pool-Schätzung v2 — die Meta-Benchmark-Abstimmung mit doppelstufigem
-Grössenklassen-Urteil (14.09.2026): Benchmark-Maschine,
-Adapter-Paket, vier neue Primärextraktionen, Berichtsabschnitt mit
-Überholt-Banner — jede Zahl ein Abfrageergebnis oder eine datierte
-Extraktion — und die Verwaltungs-CSV-Stichprobe mit Produktzeilen-
-Evidenz je Register (14.09.2026). Der Bericht ist unter `docs/report/`
-veröffentlicht. Die
+Grössenklassen-Urteil (14.09.2026) —, die Verwaltungs-CSV-Stichprobe
+mit Produktzeilen-Evidenz je Register (14.09.2026) und die
+anweisungsgetriebene Raw-Schicht mit der ersten live Bulkladung
+(EU Ecolabel ECAT, 89'396 distinct Datensätze, 03.10.2026) — jede Zahl
+ein Abfrageergebnis oder eine datierte Extraktion. Die Berichte sind
+unter `docs/report/` veröffentlicht. Die
 Methodik bleibt offen für Revision, während Ergebnisse eintreffen.
 

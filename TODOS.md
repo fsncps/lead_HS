@@ -69,6 +69,31 @@ entry is kept as the record of the resolution, not as pending work.
 - **Depends on / blocked by:** v0.2.4-basta-addendum PHASE01
   executed with an honest pin-not-found outcome; nothing else.
 
+## AS-3 re-acquisition: the html_pages walk interpreter (v0.3.8 candidate, open 2026-10-03)
+
+- **What:** the svanen.se `?format=csv` export route pinned at v0.2.4
+  returned HTTP 404 at the v0.3.0 live scan (2026-10-03) — the site
+  was redesigned into a server-rendered WordPress product search
+  (`GET /?s=<q>&post_type=markeds`, plugin
+  `nordic-swan-ecolabel/build/content-search`, `?more=N` server-side
+  batching). Re-acquiring Nordic Swan needs the reserved `html_pages`
+  interpreter (rs3): paginate the search surface politely, extract
+  product rows from the rendered HTML, keep the 10-column shape of
+  `raw_as3_nordic_swan`.
+- **Why deferred:** v0.3.0 deliberately built nothing speculative
+  (rs3) — AS-3 is now the first real HTML source, which is exactly
+  the design's trigger for building the walker; it does not fit this
+  unit's interpreter depth (csv_snapshot + JSON API).
+- **State until then:** `raw_sources/AS-3.instruction.json` records
+  the dead route + reserved kind (`raw run AS-3` refuses, named);
+  the archived 2026-09-14 snapshot (52,539 rows, sha256-verified,
+  raw store) remains the newest verified full copy; the pinned
+  `raw_as3_nordic_swan` table waits empty.
+- **Where to start:** `.3SM/plan/DESIGN/v0.3.0/interfaces.md` § Build
+  record (reserved kinds), the AS-3 instruction file's notes, and the
+  conftest fixture pattern for HTML surfaces (the PE adapters already
+  walk HTML — reuse their politeness/parse idioms).
+
 ## Reconcile the v0.2.4 AS-3 discovery trial with the pilot unit's pinned mechanics
 
 - **Status (D38, 2026-09-14): the mechanics are now known** — the

@@ -110,26 +110,30 @@ is pinned. Detail:
 DE/FR translations).
 
 
-## Project status: next steps (v0.3)
+## Project status: v0.3 — raw layer built, matching layer next
 
-The next build phase turns the confirmed bulk sources into one
-consolidated product database, in two layers:
+**The bulk download layer (raw layer) is built and proven live
+(v0.3.0, 2026-10-03)** — details in
+[report-0.3.0.md](docs/report/report-0.3.0.md): each confirmed bulk
+source is described by one committed, reviewable JSON *sourcing
+instruction* (`raw_sources/AS-2.instruction.json`); the CLI scans the
+live delivery into that draft (exact counts, columns, natural-key
+search, politeness guards derived from robots), then bulk-loads every
+record **verbatim** into a per-source raw table — upsert + change
+journal, batch checkpoints (interrupt → resume), per-record size budget
+that truncates by priority without ever dropping a record. Downloads
+are repeatable and incremental; a new same-shape source onboards with
+zero code changes. Live result: **EU Ecolabel ECAT fully loaded —
+89,396 distinct records** (delivery holds 89,867 rows; 471
+byte-identical duplicates collapse), 200/200 verbatim spot-checks,
+audit clean. **Nordic Swan's confirmed CSV export route died between
+units** (HTTP 404 after a site redesign, 2026-10-03) — recorded in its
+instruction file as the reserved `html_pages` case; the 2026-09-14
+archived snapshot remains the newest verified copy. The same turn also
+showed how unstable such bulk exports are as infrastructure: one
+catalogue's export survived, the other's died within three weeks.
 
-**1. Bulk source download (raw layer).** Each confirmed bulk source —
-EU Ecolabel (≈17,013 distinct products), Nordic Swan (≈2,322), and
-BASTA (195,391 articles; pinned via its own anonymous web-client
-route) — gets downloaded into a **per-source raw table**: verbatim,
-unfiltered, one row per source record, with the manufacturer name,
-product identifier and product-group code exactly as the source
-writes them. The downloads are repeatable (interrupt, resume), incremental
-(rerun updates only new/changed records via a change journal) and
-manifest-driven (a committed per-source manifest defines the table
-shape before any data flows; oversize records spill to the raw store,
-nothing is dropped). Politeness: list-endpoint-first crawling with
-rate limits and backoff, seeded through the existing `GO=1`-gated CLI
-(`leadhs raw init <source>` / `leadhs raw seed <source>`).
-
-**2. Deterministic normalization and merging (matching layer).** To
+**Next: deterministic normalization and merging (matching layer).** To
 merge the same product seen in several sources, names and identifiers
 are normalized deterministically (no LLM/machine-learning matching —
 every match must stay explainable and reproducible): Unicode
@@ -148,19 +152,19 @@ append-only. The merged output: **manufacturer table and product
 table** collapsed to the study's formulation unit, every product
 carrying its per-source observations and each match's evidence tier.
 
-Details: the pending strategy topics
-[`RAW_SOURCING.md`](.3SM/plan/CONCEPT/RAW_SOURCING.md) and
-[`MATCHING.md`](.3SM/plan/CONCEPT/MATCHING.md) in the planning tree
-(norms, thresholds and library choice are pinned there as the pending
-adoption decisions R1–R9 and MA1–MA9).
+Details: the matching norms, thresholds and library choice are pinned
+in the pending strategy topic
+[`MATCHING.md`](.3SM/plan/CONCEPT/MATCHING.md) (adoption decisions
+MA1–MA9); the raw-layer contract lives in the committed instruction
+files and [report-0.3.0.md](docs/report/report-0.3.0.md).
 
 
 ## Project status: previous units, results and gaps
 
-The current unit answers the management question per large register:
-**what does a product row look like there** — which fields, which
-identifier columns, is cross-identification possible — answered with
-real downloaded rows where a register publishes them (seeded,
+The previous unit (v0.2.4) answered the management question per large
+register: **what does a product row look like there** — which fields,
+which identifier columns, is cross-identification possible — answered
+with real downloaded rows where a register publishes them (seeded,
 reproducible, n=100 per register) and a cited structural reason where
 it does not. Of the six large registers exactly two publish product
 rows at all, and only EU Ecolabel ECAT has per-item identifier
@@ -172,7 +176,10 @@ columns ([report-0.2.4.md](docs/report/report-0.2.4.md)):
   real columns.
 - **AS-3 — Nordic Swan: 100 of 2,322 distinct paint items** — a real
   export at `?format=csv` (2,424 paint rows, 53 licences), even
-  carrying EU Ecolabel licence numbers.
+  carrying EU Ecolabel licence numbers. *(Route drift 2026-10-03: the
+  CSV export now returns HTTP 404 after a site redesign — see
+  [report-0.3.0.md](docs/report/report-0.3.0.md); the archived
+  snapshot remains valid.)*
 - **ST-1/3/6/7 — no product rows published** (PCN authorities-only;
   SBS; Danish AT; KemI secrecy) — every reason cited.
 
@@ -294,7 +301,9 @@ data only.
   assets are still pending. An installer for vanilla Windows (no
   make, no preinstalled Python) is a stated goal for v0.3.
 - Operations that touch real sites are gated behind an explicit
-  `GO=1`.
+  `GO=1` — including the raw-layer bulk loads (`GO=1 make raw-scan
+  SOURCE=AS-2`, `GO=1 make raw-run SOURCE=AS-2`, plus offline
+  `make raw-status` / `make raw-explain SOURCE=AS-2`).
 
 Detail: [architecture](docs/study/ARCHITECTURE.md) and
 [data model](docs/study/DATA_MODEL.md); the historical technical
@@ -336,7 +345,8 @@ design of the built units in [20_DESIGN/](docs/plan/3SM/20_DESIGN/)
     AGENTS.md                  conventions for AI-assisted work on this repo
     Makefile                   operator entrypoint (make help = index)
     pyproject.toml             Python packaging for the leadhs tool
-    src/leadhs/                source code of the tool (v0.1.1 probing, v0.1.2 operator layer, v0.1.3 walk counters, v0.2.x staging + waves)
+    src/leadhs/                source code of the tool (v0.1.x probing/operator layer/walk counters, v0.2.x staging + waves, v0.3.0 raw layer)
+    raw_sources/               committed sourcing instructions (one JSON per bulk source — the reviewable contracts)
     tests/                     automated offline test suite
     data/                      local working state (gitignored): database, raw store, report intermediates
     docs/report/               published report finals (committed deliberately)
@@ -356,17 +366,17 @@ design of the built units in [20_DESIGN/](docs/plan/3SM/20_DESIGN/)
 
 ## Status
 
-Tool units v0.1.1–v0.2.4 are built and tested (412 automated offline
+Tool units v0.1.1–v0.3.0 are built and tested (460 automated offline
 tests): evidence database, source register, source probing,
 per-source feasibility reports, counting machinery for catalogue walks
 (idle until a collection go-ahead), the data-landscape map with the
 three headline numbers, the source-level capability sounding-out of
 the official registers, the three-question funnel executed on the
 real network (2026-09-14), the pool estimate v2 — the
-meta-benchmarking vote with a dual-level magnitude verdict — and the
+meta-benchmarking vote with a dual-level magnitude verdict — the
 management CSV sample with per-registry product-row evidence
-(2026-09-14): benchmark engine, adapters package, four new primary
-extractions, report section with supersession banner — every number a
-query result or a dated extraction. The report is published under
-`docs/report/`. The methodology stays open to revision as results
-come in.
+(2026-09-14), and the instruction-driven raw source layer with the
+first live bulk load (EU Ecolabel ECAT, 89,396 distinct records,
+2026-10-03) — every number a query result or a dated extraction. The
+reports are published under `docs/report/`. The methodology stays
+open to revision as results come in.
