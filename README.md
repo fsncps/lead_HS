@@ -148,10 +148,10 @@ append-only. The merged output: **manufacturer table and product
 table** collapsed to the study's formulation unit, every product
 carrying its per-source observations and each match's evidence tier.
 
-Details: the strategy files
-[`RAW_SOURCING.md`](docs/plan/3SM/10_STRATEGY/RAW_SOURCING.md) and
-[`MATCHING.md`](docs/plan/3SM/10_STRATEGY/MATCHING.md) (norms,
-thresholds and library choice are pinned there as the pending
+Details: the pending strategy topics
+[`RAW_SOURCING.md`](.3SM/plan/CONCEPT/RAW_SOURCING.md) and
+[`MATCHING.md`](.3SM/plan/CONCEPT/MATCHING.md) in the planning tree
+(norms, thresholds and library choice are pinned there as the pending
 adoption decisions R1–R9 and MA1–MA9).
 
 
@@ -297,8 +297,9 @@ data only.
   `GO=1`.
 
 Detail: [architecture](docs/study/ARCHITECTURE.md) and
-[data model](docs/study/DATA_MODEL.md); the reviewed
-technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
+[data model](docs/study/DATA_MODEL.md); the historical technical
+design of the built units in [20_DESIGN/](docs/plan/3SM/20_DESIGN/)
+(read-only; live design docs: `.3SM/plan/DESIGN/`).
 
 
 ## More detailed documentation (methodology, architecture, database)
@@ -311,11 +312,11 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
 | [`ARCHITECTURE.md`](docs/study/ARCHITECTURE.md) | the collection tool and the reporting concept (semi-technical) |
 | [`DATA_MODEL.md`](docs/study/DATA_MODEL.md) | the evidence database (technical) |
 | [`LEAD_SDS.md`](docs/study/LEAD_SDS.md) | lead compounds, EU law, what sheets can and cannot reveal (semi-technical) |
-| [`10_STRATEGY/MASTER.md`](docs/plan/3SM/10_STRATEGY/MASTER.md) | strategy decisions, open questions, roadmap |
-| [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | technical design of tool + database |
-| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | build-phase plans for the build units (v0.1.1–v0.1.3, v0.2.0–v0.2.4 built) — phase tracking, exit gates |
+| [`.3SM/plan/CONCEPT/MASTER.md`](.3SM/plan/CONCEPT/MASTER.md) | strategy decisions (register), open questions, roadmap — live planning tree |
+| [`20_DESIGN/`](docs/plan/3SM/20_DESIGN/) | historical technical design of tool + database (read-only; live: `.3SM/plan/DESIGN/`) |
+| [`30_IMPLEMENTATION/`](docs/plan/3SM/30_IMPLEMENTATION/) | historical build-phase plans for the built units (v0.1.1–v0.1.3, v0.2.0–v0.2.4) — phase tracking, exit gates |
 | [`charts/`](docs/study/charts/) | the diagrams, with their sources (referenced from the detail docs) |
-| [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the planning tree |
+| [`3SM README`](docs/plan/3SM/README.md) | plain-language guide to the legacy v1 planning tree (read-only) |
 
 
 ## Roadmap
@@ -342,12 +343,14 @@ technical design in [20_DESIGN/](docs/plan/3SM/20_DESIGN/).
     docs/management_summary.md bilingual management summary (DE/FR), always current
     docs/study/                study detail documentation (methodology, sources, architecture,
                                data model, lead background; DE/FR translations, charts/)
-    docs/plan/3SM/             planning notes (3-stage system)
-    ├── README.md              plain-language guide to the planning tree
-    ├── MASTER.md, LOG.md      project dashboard, lifecycle log
-    ├── 10_STRATEGY/           research findings and decisions (what & why) —
-    │                          slim topic summaries; detail lives in docs/study/
-    ├── 20_DESIGN/             technical design (how exactly)
+    .3SM/                      live planning tree (3SM v2: CONCEPT → DESIGN → ENGINEERING)
+    └── plan/                  plan MASTER, stage masters, topic docs, session records
+    docs/plan/3SM/             legacy v1 planning tree — read-only historical reference
+    ├── README.md              plain-language guide to the (historical) planning tree
+    ├── MASTER.md, LOG.md      historical project dashboard, lifecycle log
+    ├── 10_STRATEGY/           historical strategy docs incl. verbatim unit records (v0.1.1–v0.2.4)
+    ├── 20_DESIGN/             historical technical design (how exactly)
+    ├── 30_IMPLEMENTATION/     historical build-phase plans and run trails
     └── _archive/              superseded material
 
 
