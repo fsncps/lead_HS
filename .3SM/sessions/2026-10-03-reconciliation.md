@@ -40,6 +40,12 @@ agents: explore subagent (read-only orientation report) + concept
 
 ## pending (outside this stage's write scope — specs for the applier)
 
+ADDENDUM (same day, 2026-10-03): the user ordered the remaining docs
+updated and opened the permission rules; all three below were applied
+and committed — b50d548 (DESIGN MASTER), 2166138 (README), f6371bb
+(legacy README banner). README.de/fr `source_updated` left behind as
+drift markers per D23. Specs kept below for the record.
+
 Permission rules deny Concept writes outside `.3SM/plan/CONCEPT/**` +
 `.3SM/sessions/**` + `.3SM/PROJECT.md`; apply via build context,
 housekeeping (explicit invocation), or direct edit:
