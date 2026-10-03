@@ -1,5 +1,11 @@
 # lead_HS — Project Planning (3SM)
 
+> **Read-only since 2026-09-18.** This v1 planning tree is kept as a
+> historical reference and is no longer edited. The live planning tree
+> is [`.3SM/`](../../../.3SM/) (3SM v2: CONCEPT → DESIGN →
+> ENGINEERING); the distilled unit history (v0.1 … v0.2.4) is
+> [`../CONCEPT/DEV_HISTORY.md` in the live tree](../../../.3SM/plan/CONCEPT/DEV_HISTORY.md).
+
 This folder holds the planning notes for the lead-in-paint study described in
 the [project README](../../../README.md). It uses a simple three-stage
 notebook system called **3SM**:
@@ -11,11 +17,12 @@ notebook system called **3SM**:
   the data collection.
 - **Implementation** (later) contains the finished step-by-step work plans.
 
-These are working documents: they are meant to be corrected and refined, and
-ordinary edits never silently advance the project to the next stage. The
-strategy stage is filled; the design stage holds the technical design for
-the first build unit (v0.1.1 — source probing). Implementation plans will
-be written when the project is ready to build.
+During the v1 era (2026-08-31 → 2026-09-18) these were working
+documents: they were corrected and refined, and ordinary edits never
+silently advanced the project to the next stage. The strategy stage
+was filled; the design stage held the technical design for the build
+units (v0.1.1 through v0.2.4 — all built and merged; see the
+DEV_HISTORY link above).
 
 ## What is where
 
