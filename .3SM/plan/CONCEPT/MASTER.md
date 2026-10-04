@@ -592,7 +592,13 @@ lead). Open questions and the phased roadmap follow.
   confirmed bulk sources → v0.3.4 deterministic normalization +
   matching (manufacturer × unique id) → v0.3.8 source expansion via a
   generic bulk-import pipeline (entry gate de5) → data analysis
-  afterwards. Vanilla-Windows distribution (D32) and other deferred
+  afterwards. **D45 (2026-10-04):** the import pipeline is typed by
+  *access mode* (open enum, `SOURCE_ACCESS_MODES.md`) — instruction =
+  table shape × access mode; probe ladder L0–L7 classifies sources;
+  interpreter phasing (file → API → walk/form) is the v0.3.8 cost
+  decision. Trigger: the AS-3 route death proved table-shape-only
+  instructions insufficient. Vanilla-Windows distribution (D32) and
+  other deferred
   preliminary planning re-booked to v0.4 (D42). Live queue:
   `PIPELINE.md` (v0.3.0 INIT-READY 2026-10-03).
 - Phase 0 — close gaps: verify current legal
@@ -655,6 +661,10 @@ the plan tree.
   journal, oversize spill, list-endpoint-first politeness gate;
   proposed decisions R1–R9, R1–R3 user-confirmed 2026-09-17, DRAFT
   pending adoption)
+- `SOURCE_ACCESS_MODES.md` — access-mode taxonomy + probe ladder
+  (the orthogonal instruction half: 22 modes in 5 delivery classes,
+  L0–L7 classification protocol, AS-3 worked example; D45 +
+  local A1–A3, 2026-10-04)
 - `charts/` → `docs/study/charts/` — rendered diagrams in active use
   (system components, lead decision tree, probe process); index and
   regeneration: `docs/study/charts/README.md`; superseded charts

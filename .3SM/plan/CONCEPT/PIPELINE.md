@@ -58,15 +58,25 @@ intent: Streamlined scraping/import pipeline so additional sources
   become raw tables without bespoke code (same-shape sources: manifest
   + seed CSV + raw init/seed); consultant probe queue (KemiDigi,
   WINGIS, INIES, eBVD, Quick-FDS, PT21) as candidates; entry gate de5.
+  D45 scope addition: instruction = table shape × ACCESS MODE (open
+  enum, `SOURCE_ACCESS_MODES.md`) — probe ladder L0–L7 (`probe source`
+  deep-probe) classifies each source; interpreters phase in
+  file → API → walk/form (html_pages walker = first walk mode; AS-3
+  re-acquisition is the reference case after the 2026-10-03 route
+  death).
 decisions:
   - R8 proposed (RAW_SOURCING.md) — onboarding without pipeline-code
     changes for same-shape sources
+  - D45 (SOURCE_ACCESS_MODES.md, 2026-10-04) — access-mode enum +
+    probe ladder; run refuses unknown/unimplemented modes by name
 constraints: de5 gate (confirmed bulk + identity tuple + in-scope
-  filter); politeness budget per source
+  filter); politeness budget per source; facet_enumeration politeness
+  rule must exist before any facet loop runs
 non-goals: MSE/capture-recapture methodology turn (separate decision,
   INPUT digest)
-readiness: candidate order + gate mechanics at unit start (OPEN-NOW)
-updated: 2026-10-03
+readiness: candidate order + gate mechanics at unit start (OPEN-NOW);
+  mode enum naming + per-mode fields pin at unit design
+updated: 2026-10-04
 
 # PARKED
 

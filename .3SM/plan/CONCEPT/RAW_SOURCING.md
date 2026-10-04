@@ -211,6 +211,9 @@ adopted-in-substance as the v0.3.0 concept unit — MASTER D42–D44,
 
 ## REFERENCES
 
+- SOURCE_ACCESS_MODES.md — the orthogonal half of the instruction
+  contract (access-mode enum + probe ladder; D45). Table shape (this
+  doc) × access mode (that doc) = a complete instruction.
 - ARCHITECTURE.md — D1 (no-server SQLite — Postgres rejected there
   first), stage 2 raw store, acquire politeness principles, D8 make
   wrapper, D32 vanilla-Windows v0.2.4 context.
