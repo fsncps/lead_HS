@@ -154,6 +154,18 @@ dokumentiert (INIES: abo-gesperrte API; Blue Angel: token-geschütztes
 Suchformular; KemiDigi: bot-gesperrter Spiegel; environdec: im
 Prinzip laufbar, braucht einen HTML-Läufer).
 
+**Datenbestand heute (2026-10-04):** Die Datenbank hält **288'138
+rohe Produktdatensätze** aus zwei Gesamtladungen — EU Ecolabel ECAT
+(89'396 Zeilen; Farben ≈ 20 %) und BASTA (198'742 Zeilen; Farbfamilie
+7'526) — dazu den archivierten Nordic-Swan-Schnappschuss (52'543
+Zeilen, wartet auf seinen Wiederbeschaffungs-Interpreter), 477
+archivierte Dokumente, 1'116 Sondierungsbefunde aus 109 registrierten
+Quellen (58 aktiv). Jeder Rohdatensatz bewahrt die eigenen Felder
+seiner Quelle (Hersteller, Produktname, GTIN/Artikelnummer,
+Klassencodes, Gültigkeit) unverändert und nachvollziehbar. Detaillierte
+Zahlen, gemeinsame Datenfelder und Schlüsselzahlen je Quelle:
+[db-content.md](docs/report/db-content.md) (EN).
+
 **Nächster Schritt: deterministische Normalisierung und Verschmelzung
 (Matching-Schicht).** Um dasselbe Produkt aus mehreren Quellen
 zusammenzuführen, werden Namen und Identifikatoren deterministisch

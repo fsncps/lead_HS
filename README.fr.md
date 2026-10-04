@@ -156,6 +156,19 @@ semaines. Les refus et blocages sont documentés avec le même soin
 jeton ; KemiDigi : miroir bloqué aux robots ; environdec : praticable
 en principe, nécessite un marcheur HTML).
 
+**Fonds de données aujourd'hui (04.10.2026) :** la base détient
+**288 138 enregistrements bruts de produits** issus de deux chargements
+intégraux — Écolabel européen ECAT (89 396 lignes ; peintures ≈ 20 %)
+et BASTA (198 742 lignes ; famille peinture 7 526) — plus
+l'instantané archivé du Cygne Nordique (52 543 lignes, attend son
+interpréteur de réacquisition), 477 documents archivés, 1 116
+constats de sondage sur 109 sources enregistrées (58 actives).
+Chaque enregistrement brut conserve les champs propres à sa source
+(fabricant, nom du produit, GTIN/numéro d'article, codes de catégorie,
+validité) inchangés et retraçables. Chiffres détaillés, champs de
+données communs et indicateurs par source :
+[db-content.md](docs/report/db-content.md) (EN).
+
 **Ensuite : normalisation déterministe et fusion (couche de
 rapprochement).** Pour fusionner le même produit vu dans plusieurs sources, noms et
 identifiants sont normalisés de façon déterministe (pas de LLM ni

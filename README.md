@@ -141,6 +141,17 @@ documented with equal care (INIES: subscription-gated API; Blue
 Angel: token-gated search form; KemiDigi: bot-walled mirror;
 environdec: walkable in principle, needs an HTML walker).
 
+**Data holdings today (2026-10-04):** the database holds **288,138 raw
+product records** from two whole-register loads — EU Ecolabel ECAT
+(89,396 rows; paints ≈ 20%) and BASTA (198,742 rows; paint family
+7,526) — plus the archived Nordic Swan snapshot (52,543 rows) waiting
+for its re-acquisition interpreter, 477 archived documents, 1,116
+probe findings across 109 registered sources (58 active). Every raw
+record keeps its source's own fields (manufacturer, product name,
+GTIN/article number, category codes, validity) unchanged and
+re-derivable. Detailed numbers, common data headers and per-source key
+figures: [db-content.md](docs/report/db-content.md).
+
 **Next: deterministic normalization and merging (matching layer).** To
 merge the same product seen in several sources, names and identifiers
 are normalized deterministically (no LLM/machine-learning matching —
