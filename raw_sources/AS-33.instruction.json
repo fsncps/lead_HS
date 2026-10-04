@@ -145,14 +145,14 @@
   "natural_key": [
     "source_article_id"
   ],
-  "notes": "Route pinned in D40 (docs/report/report-0.2.4.md), re-verified live 2026-10-04: GET https://www.bastaonline.se/apiproxy/v3/search/articles, anonymous, envelope {searchTime, pagination{total,page,pageSize,pages}, items[]}. pageSize=1000 accepted (199 pages; 250 also works). Total drifts with the live register (200,769 at the D40 probe 2026-09-17; 198,742 at 2026-10-04). Nested objects (company, bk04Code, bsabCode) are projected via dot-path columns (interpreter r04); grades/flags are kept as JSON-encoded full containers. gradeId/gradeIds deliberately skipped as redundant with grade/grades. BASTA's clustered pagination (pages cluster per manufacturer) is irrelevant for a full walk. max_pages=250 is a runaway guard only; the run ends on the short final page (page_done).",
+  "notes": "Route pinned in D40 (docs/report/report-0.2.4.md), re-verified live 2026-10-04: GET https://www.bastaonline.se/apiproxy/v3/search/articles, anonymous, envelope {searchTime, pagination{total,page,pageSize,pages}, items[]}. pageSize=1000 accepted (199 pages; 250 also works). Total drifts with the live register (200,769 at the D40 probe 2026-09-17; 198,742 at 2026-10-04). Nested objects (company, bk04Code, bsabCode) are projected via dot-path columns (interpreter r04); grades/flags are kept as JSON-encoded full containers. gradeId/gradeIds deliberately skipped as redundant with grade/grades. BASTA's clustered pagination (pages cluster per manufacturer) is irrelevant for a full walk. max_pages=250 is a runaway guard only; the run ends on the short final page (page_done). Budget raised 1024 -> 4096 before first-light completion: the flags object (declaration booleans, ~750 B avg) plus descriptions overflowed 1 KB on every row, truncating the whole priority-3 group (25,000/25,000 _truncated at 1024). ECAT stays at 1024 (0/89,396 truncated).",
   "pagination": {
     "kind": "page_param",
     "max_pages": 250,
     "page_param": "page",
     "page_size": 1000
   },
-  "payload_budget_bytes": 1024,
+  "payload_budget_bytes": 4096,
   "politeness": {
     "crawl_delay_seconds": 10.0,
     "delay_seconds": 10.0,
