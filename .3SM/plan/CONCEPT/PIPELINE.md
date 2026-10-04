@@ -56,22 +56,30 @@ updated: 2026-10-03
 status: MATURING
 intent: Streamlined scraping/import pipeline so additional sources
   become raw tables without bespoke code (same-shape sources: manifest
-  + seed CSV + raw init/seed); consultant probe queue (KemiDigi,
-  WINGIS, INIES, eBVD, Quick-FDS, PT21) as candidates; entry gate de5.
-  D45 scope addition: instruction = table shape × ACCESS MODE (open
-  enum, `SOURCE_ACCESS_MODES.md`) — probe ladder L0–L7 (`probe source`
-  deep-probe) classifies each source; interpreters phase in
-  file → API → walk/form (html_pages walker = first walk mode; AS-3
-  re-acquisition is the reference case after the 2026-10-03 route
-  death).
+  + seed CSV + raw init/seed); entry gate de5. **Candidate order
+  refreshed 2026-10-04 (DATA_SOURCE.md research round):** BASTA
+  whole-load via the pinned anonymous API (no filter needed for raw
+  load — closest to ECAT-class, 195k) → INIES Export API → Blue Angel
+  (Drupal search walk, "70,000 products") → KemiDigi open data →
+  retail batch (OBI/toom/hagebau/ManoMano/K-Rauta-class; Hornbach
+  template proven). D45 scope addition: instruction = table shape ×
+  ACCESS MODE (open enum, `SOURCE_ACCESS_MODES.md`) — probe ladder
+  L0–L7 (`probe source` deep-probe) classifies each source;
+  interpreters phase in file → API → walk/form (html_pages walker =
+  first walk mode; AS-3 re-acquisition is the reference case after
+  the 2026-10-03 route death).
 decisions:
   - R8 proposed (RAW_SOURCING.md) — onboarding without pipeline-code
     changes for same-shape sources
   - D45 (SOURCE_ACCESS_MODES.md, 2026-10-04) — access-mode enum +
     probe ladder; run refuses unknown/unimplemented modes by name
-constraints: de5 gate (confirmed bulk + identity tuple + in-scope
-  filter); politeness budget per source; facet_enumeration politeness
-  rule must exist before any facet loop runs
+  - 2026-10-04 user direction — corpora need: EU market, paint-rich,
+    manufacturer + unique id, HS-linkable field; retailers approved;
+    ≥10k records per corpus; ≥1–2 more ECAT-class sources
+constraints: de5 gate applies to SAMPLES, not to raw loads (load
+  whole, filter downstream); politeness budget per source;
+  facet_enumeration politeness rule must exist before any facet loop
+  runs
 non-goals: MSE/capture-recapture methodology turn (separate decision,
   INPUT digest)
 readiness: candidate order + gate mechanics at unit start (OPEN-NOW);
