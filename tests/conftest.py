@@ -491,6 +491,16 @@ class _FixtureSite(http.server.BaseHTTPRequestHandler):
                 {"name": "Paint B", "articleNumber": "AR-0002", "company": "Acme AB",
                  "bastaId": "B0002", "gtin": "", "bk04": "211", "category": "paints"},
             ]})
+        elif p == "/basta-nested.json":
+            # BASTA-shaped nested objects: dot-path projection targets
+            # (company.name, bk04.code) plus a deliberately missing path
+            # and a full-container column (JSON-encoded verbatim).
+            self._json({"total": 25, "items": [
+                {"id": 1, "articleNumber": "AR-0001", "company": {"name": "Acme AB", "url": None},
+                 "bk04": {"code": "211", "name": "Färg"}},
+                {"id": 2, "articleNumber": "AR-0002", "company": {"name": "Acme AB", "url": None},
+                 "bk04": {"code": "211", "name": "Färg"}},
+            ]})
         elif p.startswith("/api-articles"):
             # paginated article route: honors page, pageSize, the
             # category=paint filter, and a `fixed=1` mode that serves the

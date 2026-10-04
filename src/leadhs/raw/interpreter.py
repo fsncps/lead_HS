@@ -151,6 +151,17 @@ def extract_csv(text: str, inst: Instruction) -> tuple:
     return records, ragged
 
 
+def _project(rec: dict, path: str):
+    """Dot-path projection for nested JSON records ("company.name").
+    A plain key is the single-part case; a missing link yields None."""
+    cur = rec
+    for part in path.split("."):
+        if not isinstance(cur, dict):
+            return None
+        cur = cur.get(part)
+    return cur
+
+
 def extract_json(payload, inst: Instruction) -> list:
     if isinstance(payload, list):
         records_raw = payload
@@ -168,7 +179,7 @@ def extract_json(payload, inst: Instruction) -> list:
     for rec in records_raw:
         if not isinstance(rec, dict):
             raise InterpreterError("JSON record is not an object")
-        records.append({col.column: to_text(rec.get(col.source_header)) for col in inst.columns})
+        records.append({col.column: to_text(_project(rec, col.source_header)) for col in inst.columns})
     return records
 
 

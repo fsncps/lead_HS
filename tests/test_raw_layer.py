@@ -464,6 +464,47 @@ def test_json_scalar_projection_is_verbatim_json(conn, site, make_fetcher):
     assert row["gtin"] == "" and row["company"] == "Acme AB"
 
 
+def test_json_dotpath_projection_is_verbatim(conn, site, make_fetcher):
+    run_id = _load_register_and_run(conn)
+    doc = {
+        "schema_version": 1,
+        "source_id": "ZX-1",
+        "source_name": "Fixture API meta",
+        "source_class": "AS",
+        "export_kind": "api_endpoint",
+        "delimiter": ",",
+        "endpoints": {"list": f"{site}/basta-nested.json", "detail": None},
+        "pagination": {"kind": "single"},
+        "records": {"expected_count": 2, "count_derivation": "scan"},
+        "columns": [
+            {"source_header": "id", "column": "src_id", "type": "text", "truncation_priority": 1},
+            {"source_header": "company.name", "column": "company_name", "type": "text", "truncation_priority": 1},
+            {"source_header": "bk04.code", "column": "bk04_code", "type": "text", "truncation_priority": 1},
+            {"source_header": "bk04.missing.deep", "column": "bk04_missing", "type": "text", "truncation_priority": 1},
+            {"source_header": "company", "column": "company_full", "type": "text", "truncation_priority": 1},
+        ],
+        "natural_key": ["src_id"],
+        "payload_budget_bytes": 1024,
+        "politeness": {"delay_seconds": 2.0, "request_budget_per_run": 3, "derivation": "1 fetch"},
+    }
+    inst = from_dict(doc)
+    conn.execute(
+        "CREATE TABLE raw_zx1 (id INTEGER PRIMARY KEY, src_id TEXT, company_name TEXT, bk04_code TEXT, "
+        "bk04_missing TEXT, company_full TEXT, "
+        "_row_hash TEXT NOT NULL, _first_run_id INTEGER, _last_run_id INTEGER, "
+        "_last_changed_run_id INTEGER, _truncated INTEGER NOT NULL DEFAULT 0)"
+    )
+    conn.commit()
+    clock = FakeClock()
+    seed(conn, make_fetcher(), inst, run_id, "raw_zx1",
+         pacer=Pacer(inst.politeness.delay_seconds, clock.now, clock.sleep))
+    row = conn.execute("SELECT * FROM raw_zx1 WHERE src_id='1'").fetchone()
+    assert row["company_name"] == "Acme AB"
+    assert row["bk04_code"] == "211"
+    assert row["bk04_missing"] is None  # missing link projects None, never an error
+    assert json.loads(row["company_full"]) == {"name": "Acme AB", "url": None}  # container stays verbatim JSON
+
+
 # --- init phase (rs6) --------------------------------------------------------
 
 def test_register_sync_warning_for_new_source(conn):
