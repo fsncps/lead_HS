@@ -66,3 +66,37 @@ carry URL + access date (2026-10-04).
 - KemiDigi proper API route (CKAN 403 with study UA).
 - Retail batch per-shop probes (at onboarding).
 - eBVD registry row: where did the service go?
+
+## Build turn (same day, user-approved live work)
+
+User directive: probe the candidates for data headers/shapes, write
+sourcing instructions for all that can be pinned, feed to CLI,
+download data, commit.
+
+- **r04 committed (`3c1c7c5`)**: interpreter dot-path projection
+  (`_project`, `extract_json` uses `col.source_header` as dot-path;
+  plain keys unchanged; missing link → None) + fixture route
+  `/basta-nested.json` + test `test_json_dotpath_projection_is_verbatim`.
+  Suite: 461 passed, 2 deselected.
+- **AS-33 BASTA instruction written** (`raw_sources/AS-33.instruction.json`):
+  api_endpoint, `?pageSize=1000` + `page` param (max_pages=250 guard),
+  22 columns (dot-paths `company.name`, `bk04Code.code`, …; containers
+  `grades`/`flags` JSON-encoded verbatim), natural_key
+  `source_article_id`, delay 10 s = robots Crawl-delay, budget 220.
+  `expected_count=198742` (live total; register drifts).
+- **AS-33 load executed** (background, resumable; checkpointed pages;
+  first launch killed by a tool-session timeout, relaunched detached
+  with `setsid`, checkpoint `next` honored — resume verified working).
+- **AS-7 environdec reserved-kind record written**
+  (`raw_sources/AS-7.instruction.json`): html_pages (run refuses by
+  name until a walk interpreter exists); SSR pagination
+  `?page=N` (~10 EPD uuids/page, disjoint pages verified), doc route
+  uuid-keyed live, robots `/library` allowed for `*`, client search API
+  not extractable from inspected chunk, `/EPD` singular 500 on guessed
+  params, `/EPDs` 404.
+- **Refusals recorded** (no instruction — nothing loadable to pin):
+  INIES AS-5 gated API (login email+apiKey, read permissions by
+  subscription; root site a JS shell, no open downloads); Blue Angel
+  AS-4 token-POST Drupal search, `produkte.` subdomain DNS-dead;
+  KemiDigi AS-31 CKAN mirror 403 (bot-wall, retried).
+- DATA_SOURCE.md research table updated with round-2 outcomes.

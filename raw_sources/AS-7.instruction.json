@@ -1,0 +1,41 @@
+{
+  "columns": [
+    {
+      "column": "epd_uuid",
+      "description": "uuid from the SSR document URL pattern /api/v1/EPDLibrary/Files/EPDs/<uuid>/Documents",
+      "source_header": "EPD document link uuid",
+      "truncation_priority": 1,
+      "type": "text"
+    }
+  ],
+  "delimiter": ",",
+  "endpoints": {
+    "detail": null,
+    "list": "https://environdec.com/library?page=1"
+  },
+  "export_kind": "html_pages",
+  "natural_key": [
+    "epd_uuid"
+  ],
+  "notes": "Reserved-kind record (html_pages: no walk interpreter exists in v0.3.x; raw run refuses this kind by name - the record pins what was verified). Probe 2026-10-04: environdec.com/library is a Next.js SSR app; ?page=N serves different EPD content (verified pages 1 and 2 carry disjoint EPD uuids); SSR HTML embeds uuid-keyed document routes https://api.prod.environdec.com/api/v1/EPDLibrary/Files/EPDs/<uuid>/Documents (live). Client search API not extracted from the inspected chunk (9e2ce4282b45ccf7.js: only /EPDLibrary/Collections/, /EPD/<id>/QRCode, /Files/EPDs/, /SearchLog, /dynamic-forms/epd-library/documents/); GET /api/v1/EPDLibrary/EPD (singular) exists but 500s on guessed list params; /EPDs (plural) 404. A future walk interpreter (mode html_pages) can enumerate the library page by page; volume unknown - verify whether pages carry the full list or a newest-items strip before any load.",
+  "pagination": {
+    "kind": "page_param",
+    "max_pages": 12000,
+    "page_param": "page",
+    "page_size": 10
+  },
+  "politeness": {
+    "delay_seconds": 2.0,
+    "derivation": "conservative default; robots.txt (environdec.com/robots.txt, accessed 2026-10-04) disallows /search only - /library allowed for User-agent: *",
+    "request_budget_per_run": 50
+  },
+  "records": {
+    "count_derivation": "not pinned; SSR library pages expose ~10 EPD document links each; total EPD count unknown (site marketing copy only)",
+    "expected_count": null
+  },
+  "schema_version": 1,
+  "source_class": "AS",
+  "source_id": "AS-7",
+  "source_name": "environdec EPD library (international EPD system)",
+  "table_name": "raw_as7_environdec"
+}

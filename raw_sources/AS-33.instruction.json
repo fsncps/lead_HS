@@ -1,0 +1,172 @@
+{
+  "columns": [
+    {
+      "column": "source_article_id",
+      "description": "BASTA internal article id (unique)",
+      "source_header": "id",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "article_name",
+      "source_header": "articleName",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "article_number",
+      "source_header": "articleNumber",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "brand_name",
+      "source_header": "brandName",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "company_id",
+      "source_header": "company.id",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "company_name",
+      "source_header": "company.name",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "gtin",
+      "source_header": "gtin",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "bk04_code",
+      "source_header": "bk04Code.code",
+      "truncation_priority": 1,
+      "type": "text"
+    },
+    {
+      "column": "bk04_name",
+      "source_header": "bk04Code.name",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "bsab_code",
+      "source_header": "bsabCode.code",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "bsab_name",
+      "source_header": "bsabCode.name",
+      "truncation_priority": 3,
+      "type": "text"
+    },
+    {
+      "column": "enumber",
+      "source_header": "enumber",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "ebvd_id",
+      "source_header": "ebvdId",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "rsk",
+      "source_header": "rsk",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "grade",
+      "source_header": "grade",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "article_description",
+      "source_header": "articleDescription",
+      "truncation_priority": 2,
+      "type": "text"
+    },
+    {
+      "column": "extensive_description",
+      "source_header": "extensiveDescription",
+      "truncation_priority": 3,
+      "type": "text"
+    },
+    {
+      "column": "article_url",
+      "source_header": "bastaArticleUrl",
+      "truncation_priority": 3,
+      "type": "text"
+    },
+    {
+      "column": "expiration_date",
+      "source_header": "expirationDate",
+      "truncation_priority": 3,
+      "type": "text"
+    },
+    {
+      "column": "last_modified_at",
+      "source_header": "lastModifiedAt",
+      "truncation_priority": 3,
+      "type": "text"
+    },
+    {
+      "column": "grades",
+      "description": "full container; JSON-encoded verbatim by the interpreter",
+      "source_header": "grades",
+      "truncation_priority": 3,
+      "type": "text"
+    },
+    {
+      "column": "flags",
+      "description": "full container; JSON-encoded verbatim by the interpreter",
+      "source_header": "flags",
+      "truncation_priority": 3,
+      "type": "text"
+    }
+  ],
+  "delimiter": ",",
+  "endpoints": {
+    "detail": null,
+    "list": "https://www.bastaonline.se/apiproxy/v3/search/articles?pageSize=1000"
+  },
+  "export_kind": "api_endpoint",
+  "natural_key": [
+    "source_article_id"
+  ],
+  "notes": "Route pinned in D40 (docs/report/report-0.2.4.md), re-verified live 2026-10-04: GET https://www.bastaonline.se/apiproxy/v3/search/articles, anonymous, envelope {searchTime, pagination{total,page,pageSize,pages}, items[]}. pageSize=1000 accepted (199 pages; 250 also works). Total drifts with the live register (200,769 at the D40 probe 2026-09-17; 198,742 at 2026-10-04). Nested objects (company, bk04Code, bsabCode) are projected via dot-path columns (interpreter r04); grades/flags are kept as JSON-encoded full containers. gradeId/gradeIds deliberately skipped as redundant with grade/grades. BASTA's clustered pagination (pages cluster per manufacturer) is irrelevant for a full walk. max_pages=250 is a runaway guard only; the run ends on the short final page (page_done).",
+  "pagination": {
+    "kind": "page_param",
+    "max_pages": 250,
+    "page_param": "page",
+    "page_size": 1000
+  },
+  "payload_budget_bytes": 1024,
+  "politeness": {
+    "crawl_delay_seconds": 10.0,
+    "delay_seconds": 10.0,
+    "derivation": "robots.txt Crawl-delay: 10 (www.bastaonline.se/robots.txt, accessed 2026-10-04); 199 pages at pageSize=1000 plus margin",
+    "records_per_request": 1000,
+    "request_budget_per_run": 220
+  },
+  "records": {
+    "count_derivation": "envelope pagination.total of the unfiltered search (verified live 2026-10-04; the register drifts)",
+    "expected_count": 198742
+  },
+  "schema_version": 1,
+  "source_class": "AS",
+  "source_id": "AS-33",
+  "source_name": "BASTA online (construction products SE)",
+  "table_name": "raw_as33_basta"
+}
