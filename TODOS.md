@@ -18,30 +18,29 @@ accessed 2026-09-17; module constant db8). Delivered the 100-article
 sample (run_key probe-20260917-as33bastaprobe, D40 addendum). This
 entry is kept as the record of the resolution, not as pending work.
 
-## bk04Code paint-code enumeration for a server-side paint filter (open)
+## bk04Code paint-code enumeration for a server-side paint filter (superseded 2026-10-04)
 
-- **What:** pin the BK04 code values that denote paints/varnishes
-  (the sample surfaced 03402 Fasadfärg utomhus and 03404 Vägg- och
-  takfärg inomhus; a full enumeration of the paint-family codes in
-  the register's BK04 vocabulary still has no pinned list — the
-  /apiproxy search takes one bk04Code per call) so a BASTA
-  paint-subset filter can run server-side. When pinned, the D40
-  draw re-runs with `_PAINT_FILTER_PARAM` set and **de5 (a
-  data_sources.csv row) is met** — the de5 gate still NOT met for
-  BASTA.
-- **Why:** the paint subset of BASTA's ~195k construction articles
-  is the study's AS-33 population; the articleName search is not a
-  filter (färg→106, lack→30, "lack färg"→200,769 — the D40 record).
-- **Pros:** turns a source-survey answer (Q2 floor) into a real
-  bulk surface; the identity tuple is already proven 100% complete.
-- **Cons:** needs the BK04 master (likely behind the same-origin
-  /apiproxy code lists or an SSR category page); possible manual devtools
-  pin (one fetch).
-- **Context:** created by the D40 execution (2026-09-17). Start: on
-  the extend of the basta special probe; see
-  20_DESIGN/units/v0.2.4-basta-addendum.md db5.
-- **Depends on / blocked by:** nothing hard; any future paint-filter
-  probe run.
+- **What it was:** pin the BK04 code values that denote
+  paints/varnishes (the sample surfaced 03402 Fasadfärg utomhus and
+  03404 Vägg- och takfärg inomhus; a full enumeration of the
+  paint-family codes in the register's BK04 vocabulary still had no
+  pinned list — the /apiproxy search takes one bk04Code per call) so
+  a BASTA paint-subset filter could run server-side. When pinned, the
+  D40 draw was to re-run with `_PAINT_FILTER_PARAM` set and **de5 (a
+  data_sources.csv row) would be met** — the de5 gate still NOT met
+  for BASTA.
+- **Superseded by the full load (2026-10-04):** `raw_as33_basta`
+  holds the whole register (198,742 rows) locally, `bk04_code` +
+  `bk04_name` populated throughout — the paint-family enumeration is
+  now offline SQL over the raw table (034xx "Färgvaror" ≈ 7,339
+  rows: 03402 facade 2,100 / 03404 wall+ceiling 1,884 / 03408 other
+  1,044 / 03405 trim 860 / 03406 floor 696 / 03401 primer 301 /
+  03499 misc 181 / 03403 roof 169). No server-side filter is needed
+  for any downstream draw; **de5 remains open only as the formal
+  data_sources.csv row**, decidable offline.
+- **Context:** created by the D40 execution (2026-09-17); design
+  background in 20_DESIGN/units/v0.2.4-basta-addendum.md db5
+  (historical).
 
 - **What:** If the `basta-probe` PHASE01 bundle-chain pin ends in an
   honest "no anonymous route found" record, run one manual devtools
@@ -88,7 +87,13 @@ entry is kept as the record of the resolution, not as pending work.
   the dead route + reserved kind (`raw run AS-3` refuses, named);
   the archived 2026-09-14 snapshot (52,539 rows, sha256-verified,
   raw store) remains the newest verified full copy; the pinned
-  `raw_as3_nordic_swan` table waits empty.
+  `raw_as3_nordic_swan` table waits empty. Re-test (2026-10-04):
+  the 404 persists with two user agents; the whole historical export
+  route family (`/ExportToCsv/?st=0&brand=X&p=N`, form_download +
+  facet enumeration, alive in captures through 2025-10) is dead live;
+  `?format=csv` was never archived — the local snapshot is therefore
+  the only existing copy of the 2026-09-14 export state (sha256
+  re-verified 2026-10-04, 52,543 data rows × 10 columns).
 - **Where to start:** `.3SM/plan/DESIGN/v0.3.0/interfaces.md` § Build
   record (reserved kinds), the AS-3 instruction file's notes, and the
   conftest fixture pattern for HTML surfaces (the PE adapters already

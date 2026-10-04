@@ -133,17 +133,26 @@ Upsert + Change-Journal, Batch-Checkpoints (Unterbrechung → Fortsetzen),
 Grössenbudget je Datensatz, das nach Priorität kürzt, ohne je einen
 Datensatz zu verwerfen. Downloads sind wiederholbar und inkrementell;
 eine neue Quelle derselben Form kommt mit null Codezeilenänderungen
-an Bord. Live-Ergebnis: **EU Ecolabel ECAT vollständig geladen —
-89'396 distinct Datensätze** (die Auslieferung hält 89'867 Zeilen; 471
-byte-identische Duplikate kollabieren), 200/200 wortgetreue
-Stichproben, Audit sauber. **Der bestätigte CSV-Exportweg des Nordischen
-Schwans starb zwischen den Einheiten** (HTTP 404 nach einem
-Website-Redesign, 2026-10-03) — in seiner Anweisungsdatei als der
-reservierte `html_pages`-Fall verzeichnet; der archivierte Schnappschuss
-vom 2026-09-14 bleibt die neueste verifizierte Kopie. Derselbe Durchgang
-zeigte auch, wie instabil solche Bulk-Exporte als Infrastruktur sind:
-der Export des einen Katalogs überlebte, der des anderen starb innerhalb
-von drei Wochen.
+an Bord. Live-Ergebnisse (2026-10-04): **EU Ecolabel ECAT vollständig
+geladen — 89'396 distinct Datensätze** (die Auslieferung hält 89'867
+Zeilen; 471 byte-identische Duplikate kollabieren), 200/200 wortgetreue
+Stichproben, Audit sauber — und **BASTA (schwedisches
+Bauproduktregister) vollständig geladen — 198'742 Datensätze** über
+ihre anonyme seitenseitige JSON-API (199 Seiten bei 10 s
+Robots-Crawl-Delay, ~3 h Durchlauf, 0 gekürzt, wortgetreue
+Stichproben gegen die Live-API bestanden; die BK04-Farbklassen
+«Färgvaror» halten ≈ 7'339 Produkte). **Der bestätigte CSV-Exportweg
+des Nordischen Schwans starb zwischen den Einheiten** (HTTP 404 nach
+einem Website-Redesign, 2026-10-03; am 2026-10-04 erneut verifiziert)
+— in seiner Anweisungsdatei als der reservierte `html_pages`-Fall
+verzeichnet; der archivierte Schnappschuss vom 2026-09-14 bleibt die
+neueste verifizierte Kopie. Dieselben Durchgänge zeigten auch, wie
+instabil solche Bulk-Exporte als Infrastruktur sind: der Export des
+einen Katalogs überlebte, der des anderen starb innerhalb von drei
+Wochen. Ablehnungen und Blockaden werden mit derselben Sorgfalt
+dokumentiert (INIES: abo-gesperrte API; Blue Angel: token-geschütztes
+Suchformular; KemiDigi: bot-gesperrter Spiegel; environdec: im
+Prinzip laufbar, braucht einen HTML-Läufer).
 
 **Nächster Schritt: deterministische Normalisierung und Verschmelzung
 (Matching-Schicht).** Um dasselbe Produkt aus mehreren Quellen
@@ -377,7 +386,7 @@ README.md                  diese Datei (EN)
 
 
 ## Status
-Die Werkzeug-Einheiten v0.1.1–v0.3.0 sind gebaut und getestet (460
+Die Werkzeug-Einheiten v0.1.1–v0.3.0 sind gebaut und getestet (461
 automatisierte Offline-Tests): Evidenzdatenbank, Quellenregister,
 Quellensondierung, Feasibility-Berichte je Quelle, Zähl-Maschinerie für
 Katalogdurchläufe (wartet auf eine Sammel-Freigabe), die

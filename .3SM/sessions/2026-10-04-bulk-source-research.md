@@ -61,11 +61,21 @@ carry URL + access date (2026-10-04).
 
 ## Open
 
-- INIES Export API endpoint/auth pin + volume count.
-- Blue Angel volume pin + Drupal search endpoint naming.
-- KemiDigi proper API route (CKAN 403 with study UA).
-- Retail batch per-shop probes (at onboarding).
+- INIES Export API endpoint/auth pin + volume count — **resolved as a
+  refusal 2026-10-04**: gated API (subscription), not publicly
+  retrievable.
+- Blue Angel volume pin + Drupal search endpoint naming — **changed
+  shape 2026-10-04**: produkte. subdomain DNS-dead; search is a
+  token-gated POST; unwalkable without a form interpreter.
+- KemiDigi proper API route (CKAN 403 with study UA) — **still
+  blocked** (retried 2026-10-04).
+- Retail batch per-shop probes (at onboarding) — now the next real
+  load candidates.
 - eBVD registry row: where did the service go?
+- de5 for BASTA: decidable offline now (data_sources.csv row is the
+  formal act; user call).
+- ECAT counting-unit reconciliation (17,013-old-keyfigure vs 80,847
+  pairs) — standing open item.
 
 ## Build turn (same day, user-approved live work)
 
@@ -87,6 +97,20 @@ download data, commit.
 - **AS-33 load executed** (background, resumable; checkpointed pages;
   first launch killed by a tool-session timeout, relaunched detached
   with `setsid`, checkpoint `next` honored — resume verified working).
+  **First light caught a budget defect:** at the default 1,024-byte
+  budget every row truncated (the `flags` declaration object averages
+  ~750 B; prio-3 group cut on all 25,000 then-loaded rows; ECAT is
+  0/89,396 at 1,024). Load stopped, table+profile+run reset,
+  budget 1024 → 4096 (commit `50f833c`), fresh run. **Final: 198,742
+  rows = envelope total exactly, 0 truncated, run complete 04:44→07:46
+  UTC (~3 h), audit clean; verbatim spot-check vs live API passes on
+  all projected columns + `flags`/`grades` containers (Flügger Iso 5,
+  gtin 5701573767356).** Paint proxy: BK04 034xx ≈ 7,339 rows
+  (03402: 2,100 / 03404: 1,884 / 03408: 1,044 / 03405: 860 /
+  03406: 696 / 03401: 301 / 03499: 181 / 03403: 169). Note for future
+  probes: the `/apiproxy` filter params (e.g. gtin) require
+  page+pageSize alongside (400 empty otherwise) — irrelevant for full
+  walks, worth knowing for filtered draws.
 - **AS-7 environdec reserved-kind record written**
   (`raw_sources/AS-7.instruction.json`): html_pages (run refuses by
   name until a walk interpreter exists); SSR pagination

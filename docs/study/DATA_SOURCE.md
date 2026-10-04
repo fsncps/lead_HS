@@ -1,5 +1,5 @@
 ---
-updated: 2026-09-18
+updated: 2026-10-04
 ---
 
 # Data sources — register, access, provenance
@@ -204,6 +204,38 @@ export** (≤5 polite GETs, honest unknown + what's-instead), ECHA
 PT21 robots-blocked. The de5 gate met by nothing new;
 data_sources.csv unchanged. Deep per-source pinning stays
 next-unit work.
+
+**Raw product loads (v0.3.0 unit, 2026-10-04):** the raw layer
+(schema + per-source instruction contracts, `raw_sources/*.json`)
+turns probed bulk surfaces into loaded tables. Loaded, whole-register,
+verbatim-where-declared (deterministic truncation under a per-record
+byte budget, `_truncated` flag):
+
+- **AS-2 ECAT (Nordic product registers):** 89,396 rows
+  (2026-09 export file; all 25 use categories; paints ≈ 17,843 rows
+  ≈ 20%; 88,384 PRODUCT vs 1,012 SERVICE; 80,847 distinct
+  licence×product pairs).
+- **AS-33 BASTA (SE construction products):** 198,742 rows loaded
+  2026-10-04 (anonymous paginated JSON API, `pageSize=1000`, 199
+  pages, 10 s robots crawl-delay honoured, ~3 h walk; 0 truncated at
+  a 4,096-byte budget; verbatim spot-checks vs live pass). Paint
+  proxy: BK04 034xx "Färgvaror" ≈ 7,339 rows (03402 facade 2,100,
+  03404 wall/ceiling 1,884, 03408 other 1,044, 03405 trim 860,
+  03406 floor paint/oil 696, …). The live register drifts (200,769
+  at the 2026-09-17 probe pin).
+- **AS-3 Nordic Swan:** export route dead since 2026-10-03 (reserved
+  html_pages record); the archived 2026-09-14 snapshot (52,539 rows,
+  sha256-verified) remains the newest existing copy — table waits
+  empty pending a walk interpreter.
+
+Documented non-loads (2026-10-04 probes): **AS-5 INIES** — Export API
+is auth-gated (login email+apiKey, read permissions by subscription);
+not publicly retrievable, refused. **AS-4 Blue Angel** — product
+search is a token-gated Drupal form POST; old product subdomain
+DNS-dead; no plain GET list. **AS-31 KemiDigi** — CKAN mirror 403 to
+study UA. **AS-7 environdec** — server-rendered library paginates
+(`?page=N`, ~10 EPDs/page, robots-allowed) but needs a walk
+interpreter; reserved-kind record pins the route family.
 
 ## Probing pass (unit v0.1.1)
 

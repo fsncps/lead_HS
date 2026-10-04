@@ -135,17 +135,26 @@ reprise par lots (interruption → reprise), budget de taille par
 enregistrement qui tronque par priorité sans jamais perdre une ligne.
 Les téléchargements sont répétables et incrémentaux ; une nouvelle
 source de même forme s'intègre sans aucune modification de code.
-Résultat en direct : **Écolabel européen ECAT entièrement chargé —
-89 396 enregistrements distincts** (la livraison contient 89 867
-lignes ; 471 doublons octet-identiques s'effondrent), 200/200
-vérifications ponctuelles verbatim, audit propre. **La route d'export
-CSV confirmée du Cygne Nordique est morte entre les unités** (HTTP 404
-après une refonte du site, 03.10.2026) — enregistrée dans son fichier
-d'instruction comme le cas réservé `html_pages` ; l'instantané
-archivé du 14.09.2026 reste la copie vérifiée la plus récente. Le
-même passage a montré à quel point de tels exports de masse sont
-instables comme infrastructure : l'export d'un catalogue a survécu,
-celui de l'autre est mort en trois semaines.
+Résultats en direct (04.10.2026) : **Écolabel européen ECAT entièrement
+chargé — 89 396 enregistrements distincts** (la livraison contient
+89 867 lignes ; 471 doublons octet-identiques s'effondrent), 200/200
+vérifications ponctuelles verbatim, audit propre — et **BASTA
+(registre suédois des produits de construction) entièrement chargé —
+198 742 enregistrements** via son API JSON paginée anonyme (199 pages
+à 10 s de délai robots, ~3 h de parcours, 0 tronqué, vérifications
+ponctuelles verbatim réussies contre l'API en direct ; ses classes de
+peinture BK04 « Färgvaror » comptent ≈ 7 339 produits). **La route
+d'export CSV confirmée du Cygne Nordique est morte entre les unités**
+(HTTP 404 après une refonte du site, 03.10.2026 ; revérifié le
+04.10.2026) — enregistrée dans son fichier d'instruction comme le cas
+réservé `html_pages` ; l'instantané archivé du 14.09.2026 reste la
+copie vérifiée la plus récente. Ces mêmes passages ont montré à quel
+point de tels exports de masse sont instables comme infrastructure :
+l'export d'un catalogue a survécu, celui de l'autre est mort en trois
+semaines. Les refus et blocages sont documentés avec le même soin
+(INIES : API sous abonnement ; Blue Angel : formulaire de recherche à
+jeton ; KemiDigi : miroir bloqué aux robots ; environdec : praticable
+en principe, nécessite un marcheur HTML).
 
 **Ensuite : normalisation déterministe et fusion (couche de
 rapprochement).** Pour fusionner le même produit vu dans plusieurs sources, noms et
@@ -383,7 +392,7 @@ README.md                  ce fichier (EN)
 
 
 ## État
-Les unités outil v0.1.1–v0.3.0 sont construites et testées (460 tests
+Les unités outil v0.1.1–v0.3.0 sont construites et testées (461 tests
 automatisés hors ligne) : base de preuves, registre des sources,
 reconnaissance des sources, rapports de faisabilité par source,
 machinerie de comptage pour les parcours de catalogues (en attente

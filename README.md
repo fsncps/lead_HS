@@ -123,15 +123,23 @@ record **verbatim** into a per-source raw table — upsert + change
 journal, batch checkpoints (interrupt → resume), per-record size budget
 that truncates by priority without ever dropping a record. Downloads
 are repeatable and incremental; a new same-shape source onboards with
-zero code changes. Live result: **EU Ecolabel ECAT fully loaded —
-89,396 distinct records** (delivery holds 89,867 rows; 471
+zero code changes. Live results (2026-10-04): **EU Ecolabel ECAT fully
+loaded — 89,396 distinct records** (delivery holds 89,867 rows; 471
 byte-identical duplicates collapse), 200/200 verbatim spot-checks,
-audit clean. **Nordic Swan's confirmed CSV export route died between
-units** (HTTP 404 after a site redesign, 2026-10-03) — recorded in its
-instruction file as the reserved `html_pages` case; the 2026-09-14
-archived snapshot remains the newest verified copy. The same turn also
-showed how unstable such bulk exports are as infrastructure: one
-catalogue's export survived, the other's died within three weeks.
+audit clean — and **BASTA (Swedish construction-products register)
+fully loaded — 198,742 records** via its anonymous paginated JSON API
+(199 pages at 10 s robots crawl-delay, ~3 h walk, 0 truncated,
+verbatim spot-checks vs live pass; its BK04 "Färgvaror" paint classes
+hold ≈ 7,339 products). **Nordic Swan's confirmed CSV export route
+died between units** (HTTP 404 after a site redesign, 2026-10-03;
+re-verified 2026-10-04) — recorded in its instruction file as the
+reserved `html_pages` case; the 2026-09-14 archived snapshot remains
+the newest verified copy. The same turns also showed how unstable such
+bulk exports are as infrastructure: one catalogue's export survived,
+the other's died within three weeks. Refusals and blocks are
+documented with equal care (INIES: subscription-gated API; Blue
+Angel: token-gated search form; KemiDigi: bot-walled mirror;
+environdec: walkable in principle, needs an HTML walker).
 
 **Next: deterministic normalization and merging (matching layer).** To
 merge the same product seen in several sources, names and identifiers
@@ -366,7 +374,7 @@ design of the built units in [20_DESIGN/](docs/plan/3SM/20_DESIGN/)
 
 ## Status
 
-Tool units v0.1.1–v0.3.0 are built and tested (460 automated offline
+Tool units v0.1.1–v0.3.0 are built and tested (461 automated offline
 tests): evidence database, source register, source probing,
 per-source feasibility reports, counting machinery for catalogue walks
 (idle until a collection go-ahead), the data-landscape map with the

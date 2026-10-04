@@ -62,7 +62,13 @@ intent: Streamlined scraping/import pipeline so additional sources
   load — closest to ECAT-class, 195k) → INIES Export API → Blue Angel
   (Drupal search walk, "70,000 products") → KemiDigi open data →
   retail batch (OBI/toom/hagebau/ManoMano/K-Rauta-class; Hornbach
-  template proven). D45 scope addition: instruction = table shape ×
+  template proven). **Round-2 outcome (same day): BASTA whole-load
+  DONE — 198,742 rows in `raw_as33_basta`, 0 truncated, audit clean;
+  INIES refused (subscription-gated API), Blue Angel unwalkable now
+  (token POST search), KemiDigi blocked (CKAN 403), environdec pinned
+  as reserved html_pages record — the next real candidates are the
+  retail batch and the html_pages walker (AS-3 re-acquisition).
+  D45 scope addition: instruction = table shape ×
   ACCESS MODE (open enum, `SOURCE_ACCESS_MODES.md`) — probe ladder
   L0–L7 (`probe source` deep-probe) classifies each source;
   interpreters phase in file → API → walk/form (html_pages walker =

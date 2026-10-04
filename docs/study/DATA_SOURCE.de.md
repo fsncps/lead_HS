@@ -2,7 +2,7 @@
 updated: 2026-09-18
 language: de
 translation_of: DATA_SOURCE.md
-source_updated: 2026-09-18
+source_updated: 2026-10-04
 ---
 
 Sprachen: [EN](DATA_SOURCE.md) · **DE** · [FR](DATA_SOURCE.fr.md)
