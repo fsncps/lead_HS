@@ -2,7 +2,7 @@
 unit: v0.3.0
 stage: DESIGN
 lifecycle: LIVE
-updated: 2026-10-03
+updated: 2026-10-09
 branch: v0.3.0
 ---
 
@@ -193,3 +193,11 @@ authoritative deltas over the sketch above:
 - Reserved kinds (`web_query`, `html_pages`): valid instructions,
   rendered by `raw explain`, refused by scan/run with a named message
   — AS-3 uses this deliberately for its dead CSV route (2026-10-03).
+- r04 (2026-10-04, live operation): JSON **dot-path projection** —
+  source fields may be dotted paths into nested objects/arrays
+  (BASTA's `flags`/`grades` containers); fixture-tested. Payload
+  budget default held at 1024, but AS-33's instruction ships 4096 —
+  first-light defect: the `flags` declaration object averages ~750 B,
+  so every row truncated at 1024. Lesson: budget adequacy is a
+  per-source property, verified by the first real load, not by the
+  scanner.

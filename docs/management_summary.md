@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-09-17 (v0.2.4 inkl. BASTA-Sonderprobe / v0.2.4 avec sonde BASTA).
+Stand / État: 2026-10-09 (v0.3.0 inkl. Gesamtlasten ECAT + BASTA / v0.3.0 avec chargements complets ECAT + BASTA).
 
 ---
 
@@ -342,10 +342,19 @@ Bauartikel-Katalog gesamt; `data_sources.csv` erhält **keine**
 dritte Zeile, den serverseitigen Farbfilter abzustimmen ist ein
 offener Punkt. Details: `docs/report/report-0.2.4.md` (EN).
 
-Projektstand (17.09.2026): Das Erhebungswerkzeug — ein kleines eigenes
+Ergänzend (09.10.2026): Gesamtlasten. Der Download-Layer (Einheit
+v0.3.0) hat die Evidenzdatenbank mit zwei Registern gefüllt: EU
+Ecolabel ECAT **89'396 Datensätze** (wörtgetreu, 200/200
+Stichproben) und BASTA **198'742 Artikel** (anonyme paginierte API,
+199 Seiten, 0 abgeschnittene Felder; Farbfamilie BK04 034xx ≈ 7'339
+Produkte). `data_sources.csv` bleibt bei zwei formellen Zeilen (de5
+für BASTA offen); der Bestandsinventar:
+`docs/report/db-content.md` (EN).
+
+Projektstand (09.10.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
-jeden Befund nachvollziehbar hält — ist in neun Ausbaustufen gebaut und
-getestet (412 automatisierte Offline-Tests): Evidenzdatenbank,
+jeden Befund nachvollziehbar hält — ist in den Einheiten v0.1.1–v0.3.0 gebaut und
+getestet (461 automatisierte Offline-Tests): Evidenzdatenbank,
 Quellenregister, Quellensondierung mit Feasibility-Berichten je Quelle,
 Zähl-Maschinerie für Katalogdurchläufe (wartet auf eine Sammel-Freigabe),
 die Datenlandschaft-Karte mit den drei Leitgrössen, die
@@ -735,10 +744,19 @@ rapport à l'ensemble ; `data_sources.csv` **ne** reçoit **pas** de
 troisième ligne, l'épinglage d'un filtre peinture côté serveur reste
 un point ouvert. Détails : `docs/report/report-0.2.4.md` (EN).
 
-État du projet (17.09.2026) : l'outil de collecte — un petit programme
+En complément (09.10.2026) : chargements complets. La couche de
+téléchargement (unité v0.3.0) a rempli la base de preuves avec deux
+registres : EU Ecolabel ECAT **89'396 enregistrements** (verbatim,
+200/200 contrôles) et BASTA **198'742 articles** (API paginée
+anonyme, 199 pages, 0 champ tronqué ; famille peinture BK04 034xx ≈
+7'339 produits). `data_sources.csv` reste à deux lignes formelles
+(de5 ouvert pour BASTA) ; l'inventaire chiffré :
+`docs/report/db-content.md` (EN).
+
+État du projet (09.10.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
-et rend chaque constat traçable — est construit et testé en neuf étapes
-(412 tests automatisés hors ligne) : base de preuves, registre des
+et rend chaque constat traçable — est construit et testé dans les unités
+v0.1.1–v0.3.0 (461 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
 attente d'un feu vert de collecte), carte du paysage des données avec

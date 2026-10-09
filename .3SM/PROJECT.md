@@ -61,13 +61,14 @@ Operator entrypoint is the repo-root `Makefile` (one target = one
 
 | Suite | Command | Scope | Runtime |
 |---|---|---|---|
-| full (offline) | `make test` | everything; net+mdbtools deselected via `addopts` | ~2–3 min (460 tests at v0.3.0) |
+| full (offline) | `make test` | everything; net+mdbtools deselected via `addopts` | ~2–3 min (461 tests at v0.3.0 ship) |
 | net-marked | `python3 -m pytest -m net` | real-network checks (`test_doctor_net.py` etc.) | seconds |
 | mdbtools-gated | `python3 -m pytest -m mdbtools` | SPIN extraction (skips when binary absent) | seconds |
 | smoke | `make smoke` | fixture-site end-to-end (init → load → probe → report → audit) | seconds |
 
-Latest recorded full-suite state: **460 passed, 2 deselected**
-(v0.3.0 build, 2026-10-03). Golden report tests regenerate only with
+Latest recorded full-suite state: **461 passed, 2 deselected**
+(v0.3.0 ship gate re-walk, 2026-10-09; 460 at the 2026-10-03 build,
++1 r04 dot-path). Golden report tests regenerate only with
 explicit review. Test rules: no sleeps (injected clock), order-independent,
 local fixture site on an ephemeral port, every error-mapping row tested.
 
@@ -207,10 +208,12 @@ refactor, JSON-stat decoder generalization.
   empirical question).
 - Source classes: CS (statistics), PE (web channels), ST (statistical/
   register sources), AS (associations & registers), LI (literature);
-  register 108 rows; exactly two confirmed bulk sources today
-  (`data_sources.csv`: AS-2 ECAT 17,013 distinct, AS-3 Nordic Swan
-  2,322 distinct; BASTA pinned 195,391 articles / 1,925 companies but
-  de5 not met — paint filter open).
+  register 109 rows. Raw-layer whole-loads live (v0.3.0): AS-2 ECAT
+  89,396 distinct verbatim, AS-33 BASTA 198,742 rows (0 truncated) —
+  `data_sources.csv` still holds exactly two formal rows (AS-2, AS-3;
+  BASTA de5 row open, paint-filter question superseded by the
+  whole-load). AS-3 Nordic Swan's CSV route died 2026-10-03
+  (reserved `html_pages`); its 2026-09-14 snapshot is the newest copy.
 - Milestones: M0 probe (done) → M1 frame/sample → M2 acquire/parse →
   M3 corroborate/analyze → M4 report; frame/sampling machinery is
   designed-ahead but unbuilt.
