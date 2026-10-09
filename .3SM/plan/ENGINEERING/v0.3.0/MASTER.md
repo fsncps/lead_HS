@@ -1,6 +1,6 @@
 ---
 unit: v0.3.0
-stage: ENGINEERING
+stage: COMPLETE
 lifecycle: LIVE
 updated: 2026-10-09
 branch: main (unit-branch init waived by user, 2026-10-03)
@@ -45,10 +45,10 @@ interfaces.md` § Build record, and the unit report
 - [x] full offline suite green (`make test` — 460 passed)
 - [x] `make db-audit` exit 0 after the live loads (incl. --unreferenced)
 - [x] `make smoke` green (6 passed)
-- [ ] whole-unit diff reviewed (ship-unit pass — pending /finalize-and-merge)
+- [x] whole-unit diff reviewed (ship-unit Pass 1, 2026-10-09: 18 non-planning files, all explained by run rows; unplanned: none)
 - [x] docs synced: DESIGN interfaces.md § Build record, data_model.md
       § Raw source tables + migration table, PROJECT commands/suites,
       READMEs ×3 (+ report-0.3.0.md); management summary substance
       check — no change needed (study numbers unchanged; AS-3 route
       death recorded in DATA_SOURCE-level docs, not the summary)
-- [ ] ship-profile checklists (PROJECT § Ship profile: local channel — ship verifies)
+- [x] ship-profile local channel verified (ship-unit Pass 3, 2026-10-09: 461 passed / smoke 6 / db-audit clean / doctor ok; tag v0.3.0 local; public-repo push+release deferred — explicit user instruction pending)

@@ -2,7 +2,7 @@
 unit: global
 stage: GLOBAL
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-09
 ---
 # lead_HS — 3SM Plan MASTER
 
@@ -13,13 +13,15 @@ pre-migration units is `plan/CONCEPT/DEV_HISTORY.md`.
 
 ## STATE
 
-- **Active unit: none.** All units to date were completed and merged
-  under the legacy v1 layout (`docs/plan/3SM/`, 2026-08-31 → 2026-09-17);
-  the v2 tree starts clean after the 2026-09-18 migration.
-- Current tool state: `leadhs` at v0.2.x (pyproject 0.2.3; D40 addendum
-  built on top), 412 offline tests green, `db audit` clean, migrations
-  0001–0011 applied.
-- Next-unit decision is OPEN — see ROADMAP.
+- **Active unit: none.** v0.3.0 (instruction-driven raw source layer)
+  is the first v2-tree unit: completed and archived 2026-10-09
+  (branch waiver — ran on main; ship = archive + pipeline flip + tag,
+  no merge). All earlier units are legacy-v1 (see UNITS).
+- Current tool state: `leadhs` at 0.3.0 (pyproject), 461 offline tests
+  green, `db audit` clean, migrations 0001–0012 applied; raw whole-loads
+  live: AS-2 ECAT 89,396 + AS-33 BASTA 198,742.
+- Next unit: **v0.3.4 — INIT-READY** (identity layer, user-directed
+  2026-10-09; `/init-unit` pending) — see ROADMAP.
 
 ## UNITS
 
@@ -37,25 +39,21 @@ legacy tree, distilled in DEV_HISTORY:
 | v0.2.2 | the three-question funnel | COMPLETE | ARCHIVED | legacy + DEV_HISTORY |
 | v0.2.3 | pool estimate v2 (meta-benchmarking) | COMPLETE | ARCHIVED | legacy + DEV_HISTORY |
 | v0.2.4 | management CSV sample (+ D37–D40 addenda) | COMPLETE | ARCHIVED | legacy + DEV_HISTORY |
+| v0.3.0 | instruction-driven raw source layer + first bulk loads | COMPLETE | ARCHIVED | `DESIGN/_archive/v0.3.0` · `ENGINEERING/_archive/v0.3.0` |
 
 ## ROADMAP
 
-Pending concept inputs awaiting adoption at the next concept turn
-(none adopted; nothing binds):
+Per CONCEPT MASTER D42/D43 (adopted 2026-10-03) and the 2026-10-09
+identity-layer directive:
 
-- **Unit numbering is open**: the label "v0.3" is double-booked
-  (D32 vanilla-Windows distribution goal vs the provisional
-  product-identification/product-DB seeding label). The next unit id
-  needs an explicit user decision.
-- **MATCHING.md** (T-doc): normalization-first record linkage for the
-  product-DB build; proposed decisions MA1–MA9 (MA8 dependency call
-  open: rapidfuzz vs stdlib-only).
-- **RAW_SOURCING.md** (T-doc): raw source tables + seed CLI; R1–R3
-  user-confirmed, R4–R9 proposed; adoption order = raw layer before
-  matching layer.
-- **INPUT-source-expansion-MSE.md**: consultant handover (source
-  expansion queue + capture-recapture/MSE turn) — input, not adopted
-  policy; decision points deferred.
+- **v0.3.4 (INIT-READY)** — deterministic normalization + matching;
+  Stage 0 identity layer user-directed (manufacturer/product canonical
+  tables, MA10–MA16); MA1–MA9 + MA8 pin at Design.
+- **v0.3.8** — generic bulk-import source expansion (retail batch,
+  html_pages walker; D45 access modes).
+- **v0.4** — vanilla-Windows installer + deferred preliminaries (D42).
+- **INPUT-source-expansion-MSE.md**: consultant handover — input, not
+  adopted policy; decision points deferred.
 - Standing open threads: BASTA paint-subset filter (de5 gate),
   ECAT 17,838-vs-38,233 reconciliation, legal-text verification items
   (ChemRRV/VIPaV consolidated texts), lead-driers empirical question.
