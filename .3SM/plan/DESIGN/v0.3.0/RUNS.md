@@ -194,3 +194,15 @@ PROJECT commands/gates).
 
 *(3sm-eng-run pass lands here at run planning; 3sm-eng-final +
 3sm-ship-unit records land at finalization; append-only.)*
+
+## CLOSURE (ship, 2026-10-09)
+
+- r04 — unplanned post-FINAL live-operation run (user-directed):
+  JSON dot-path projection (`3c1c7c5`), AS-33 payload budget 1024 →
+  4096 first-light fix (`50f833c`), AS-33 whole-load verified
+  (198,742 rows, 0 truncated), AS-7 reserved record. Booked in the
+  unit ENG MASTER runs table at ship; PHASE plans waived per the
+  unit's one-pass override, PHASE_FINAL backfilled in `r03/`.
+- Ship unit pass executed 2026-10-09 (branch waiver: unit ran on
+  main; no merge/branch-delete — archive + pipeline flip + tag
+  instead). Skill record in the FINAL section below.
