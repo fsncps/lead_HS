@@ -5,7 +5,10 @@ Shipped + abandoned entries verbatim, with end-dates (PIPELINE.md law).
 ### v0.3.0 — evidence DB + bulk download of the confirmed sources
 status: SHIPPED 2026-10-09 (/finalize-and-merge executed; branch
   waiver held — archive + pipeline flip + local tag; gate green:
-  461/smoke 6/db-audit 0) Note: unit dir `DESIGN/v0.3.0/` +
+  461/smoke 6/db-audit 0).
+note: unit dirs `DESIGN/_archive/v0.3.0/` + `ENGINEERING/_archive/v0.3.0/`
+  (moved at ship); work landed on main (unit-branch init waived by
+  user 2026-10-03, recorded in the unit ENG MASTER — not drift).
   `ENGINEERING/v0.3.0/`; work landed on main (unit-branch init
   waived by user 2026-10-03, recorded in the unit ENG MASTER —
   not drift).
