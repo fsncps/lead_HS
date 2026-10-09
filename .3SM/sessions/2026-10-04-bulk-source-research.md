@@ -146,3 +146,7 @@ download data, commit.
   migration part got one review finding (raw tables are
   instruction-dynamic → link column + group indexes are runtime
   concerns, not static-migration content) worth carrying into Design.
+- 2026-10-09 follow-up decision: MA15 — deterministic uuid5 derivation
+  (uuid = uuid5(project namespace, normalized key)); normalized string
+  = ingress key, uuid = canonical key thereafter; rule changes that
+  alter strings require full layer re-derivation (recorded consequence).
