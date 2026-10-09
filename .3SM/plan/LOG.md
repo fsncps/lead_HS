@@ -56,3 +56,14 @@ PROJECT facts (461, raw-load state, AS-3 route death), pyproject
 Stand + addenda. Unit dirs archived, PIPELINE entry → SHIPPED. Tag
 `v0.3.0` (local, annotated) at the archive commit. **Push + GitHub
 release deferred — explicit user instruction pending.**
+
+## 2026-10-10 — v0.3.4 — UNIT REGISTERED (/init-unit)
+
+Gates: clean tree (after the AGENTS.md permission-header housekeeping
+commit 6e17158 the user ordered first), id free (branch + archives),
+unregistered. Branch `v0.3.4` created off `main` (f039b26). Scaffolded:
+`DESIGN/v0.3.4/{MASTER,RUNS}.md`, `ENGINEERING/v0.3.4/MASTER.md`;
+pipeline intent carried verbatim into the design MASTER as starting
+context. Registries: plan/MASTER UNITS row (DSG/LIVE) + State flip;
+PIPELINE entry ACTIVE. Next: the user's move — design discussions /
+3sm-design-unit.

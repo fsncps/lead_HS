@@ -13,15 +13,15 @@ pre-migration units is `plan/CONCEPT/DEV_HISTORY.md`.
 
 ## STATE
 
-- **Active unit: none.** v0.3.0 (instruction-driven raw source layer)
+- **Active unit: v0.3.4** (identity layer; branch `v0.3.4`, init 2026-10-10).
+  Predecessor v0.3.0 (instruction-driven raw source layer)
   is the first v2-tree unit: completed and archived 2026-10-09
   (branch waiver — ran on main; ship = archive + pipeline flip + tag,
   no merge). All earlier units are legacy-v1 (see UNITS).
 - Current tool state: `leadhs` at 0.3.0 (pyproject), 461 offline tests
   green, `db audit` clean, migrations 0001–0012 applied; raw whole-loads
   live: AS-2 ECAT 89,396 + AS-33 BASTA 198,742.
-- Next unit: **v0.3.4 — INIT-READY** (identity layer, user-directed
-  2026-10-09; `/init-unit` pending) — see ROADMAP.
+- Design pass: `3sm-design-unit` started 2026-10-10 — see the unit dir.
 
 ## UNITS
 
@@ -40,6 +40,7 @@ legacy tree, distilled in DEV_HISTORY:
 | v0.2.3 | pool estimate v2 (meta-benchmarking) | COMPLETE | ARCHIVED | legacy + DEV_HISTORY |
 | v0.2.4 | management CSV sample (+ D37–D40 addenda) | COMPLETE | ARCHIVED | legacy + DEV_HISTORY |
 | v0.3.0 | instruction-driven raw source layer + first bulk loads | COMPLETE | ARCHIVED | `DESIGN/_archive/v0.3.0` · `ENGINEERING/_archive/v0.3.0` |
+| v0.3.4 | deterministic normalization + matching (identity layer) | DSG | LIVE | branch `v0.3.4` |
 
 ## ROADMAP
 

@@ -12,14 +12,10 @@ move to the archive with their end-date.
 
 # ACTIVE
 
-(none)
-
-# NEXT-UP
-
 ### v0.3.4 — deterministic normalization + matching
-status: INIT-READY (prepared 2026-10-09 — id free, theme
-  user-confirmed by directive + design order; OPEN-NOW items are
-  Design-stage deferrals, same pattern as v0.3.0's manifest fields)
+status: ACTIVE (2026-10-10 — /init-unit; branch `v0.3.4`; design
+  pass in progress). Prepared INIT-READY 2026-10-09; OPEN-NOW items
+  are Design-stage deferrals, same pattern as v0.3.0's manifest fields
 intent: Identity layer first (user-directed 2026-10-09): canonical
   manufacturer + product tables built from the raw source tables —
   extract → normalize → match-or-create over UNIQUE normalized
@@ -41,6 +37,9 @@ readiness: Stage 0 contracts user-directed and recorded; MA15
   pinning, MA8 dependency call, ECAT code_type mapping, score-band
   calibration plan (OPEN-NOW)
 updated: 2026-10-09
+
+
+# NEXT-UP
 
 ### v0.3.8 — source expansion via generic bulk import
 status: MATURING
