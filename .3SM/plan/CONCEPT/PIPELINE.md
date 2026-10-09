@@ -40,17 +40,25 @@ updated: 2026-10-03
 
 ### v0.3.4 — deterministic normalization + matching
 status: MATURING
-intent: Collapse cross-source observations onto formulation-level
-  products: normalize manufacturer names and product identifiers, join
-  on exact keys (manufacturer × unique id), score near-matches within
-  blocks, tiered verdicts (auto_match/review/no_match) — no LLM
-  matching.
+intent: Identity layer first (user-directed 2026-10-09): canonical
+  manufacturer + product tables built from the raw source tables —
+  extract → normalize → match-or-create over UNIQUE normalized
+  strings → link (raw→product back-link FK, product→manufacturer FK);
+  then an enrichment pass completing canonical fields with the
+  most-common raw values. Cross-source collapse (exact keys, blocking,
+  scored tiers — no LLM matching) rides on top of these tables.
 decisions:
+  - MA10–MA14 (MATCHING.md Stage 0) — column contracts, typed
+    composite ident_string, group-level identity, two-pass CLI,
+    coverage-scan extension columns
   - MA1–MA7/MA9 proposed (MATCHING.md) — pin at this unit's Design
-constraints: MA8 dependency call open (rapidfuzz vs stdlib-only)
+constraints: deterministic + idempotent (re-run = no-op); product
+  data only (D27); MA8 dependency call open (rapidfuzz vs stdlib)
 non-goals: raw acquisition (v0.3.0), source expansion (v0.3.8)
-readiness: MA adoption, MA8, score-band calibration plan (OPEN-NOW)
-updated: 2026-10-03
+readiness: Stage 0 contracts user-directed and recorded; MA pinning,
+  uuid derivation, GTIN-collision rule, enrichment tie rule at Design
+  (OPEN-NOW)
+updated: 2026-10-09
 
 ### v0.3.8 — source expansion via generic bulk import
 status: MATURING
@@ -116,8 +124,9 @@ Authoritative register: `MASTER.md` (this directory). Latest:
 
 # OPEN ITEMS
 
-- OPEN-NOW (v0.3.4): MA decision pinning; MA8 dependency call;
-  score-band calibration plan.
+- OPEN-NOW (v0.3.4): MA pinning (MA1–MA14); MA8 dependency call;
+  uuid derivation; GTIN-collision + enrichment-tie rules (user
+  confirm); score-band calibration plan.
 - OPEN-NOW (v0.3.8): candidate source order; gate mechanics.
 - NON-BLOCKING: BASTA paint-subset filter (de5; TODOS.md), ECAT
   17,838-vs-38,233 reconciliation — standing threads, CONCEPT MASTER
