@@ -55,9 +55,11 @@ decisions:
 constraints: deterministic + idempotent (re-run = no-op); product
   data only (D27); MA8 dependency call open (rapidfuzz vs stdlib)
 non-goals: raw acquisition (v0.3.0), source expansion (v0.3.8)
-readiness: Stage 0 contracts user-directed and recorded; MA15 (uuid
-  derivation) decided; MA pinning, GTIN-collision rule, enrichment
-  tie rule at Design (OPEN-NOW)
+readiness: Stage 0 contracts user-directed and recorded; MA15
+  (deterministic uuid) + MA16 (GTIN collision → review queue) + MA13
+  tie rules confirmed 2026-10-09; remaining at Design: MA adoption
+  pinning, MA8 dependency call, ECAT code_type mapping, score-band
+  calibration plan (OPEN-NOW)
 updated: 2026-10-09
 
 ### v0.3.8 — source expansion via generic bulk import

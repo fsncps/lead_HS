@@ -135,9 +135,10 @@ canonical columns.
 2. **Enrichment pass** — loop the canonical records; scan all
    occurrences of company name, country, VAT-ID, identifiers etc.
    across the source tables; complete the canonical fields with the
-   most common value. Proposed refinements: fill-if-empty always takes
-   the majority value; an existing value is replaced only on a strict
-   majority; ties never win — deterministic and self-healing.
+   most common value. Refinements user-confirmed 2026-10-09 (MA13):
+   fill-if-empty always takes the majority value; an existing value is
+   replaced only on a strict majority; ties never win — deterministic
+   and self-healing.
 
 ### Stage 1 — Deterministic normalization (the workhorse)
 
@@ -320,14 +321,21 @@ concept turn / unit Design — nothing frozen.)*
   (licence, product name), BASTA (company, article number); multi-code
   sighting rows collapse onto one canonical product; raw rows keep
   provenance.
-- **MA13 (user-directed):** two CLI passes — resolve (match-or-create,
-  fill-at-creation from the creating raw record, missing → blank) and
-  enrichment (re-scan occurrences, complete with most-common value;
-  proposed: strict-majority replacement, ties never win).
+- **MA13 (user-directed, refinements confirmed 2026-10-09):** two CLI
+  passes — resolve (match-or-create, fill-at-creation from the
+  creating raw record, missing → blank) and enrichment (re-scan
+  occurrences, complete with most-common value; confirmed rules:
+  fill-if-empty by majority, replace only on strict majority, ties
+  never win).
 - **MA14 (proposed, from the directive):** canonical extension columns
   only per coverage scan ("common to a large enough number of
   records") — included: country, vat_id, name, eu_group, brand, url;
   reserved: city, hs_code.
+- **MA16 (user-confirmed 2026-10-09):** cross-manufacturer GTIN
+  collisions (the same global ident claimed by two manufacturers):
+  first claim wins and keeps the row; every collision is counted and
+  the list feeds the review queue (MA5 verdict pattern) — never
+  silently resolved.
 - **MA15 (user decision 2026-10-09):** deterministic UUID derivation —
   `uuid5(project namespace, normalized key)` (name_norm for
   manufacturer, ident_string for product); namespace constant pinned
@@ -338,13 +346,8 @@ concept turn / unit Design — nothing frozen.)*
 
 ## OPEN ITEMS
 
-- Cross-manufacturer GTIN collisions (207 BASTA dup-GTIN articles;
-  ECAT expected too): first-claim-wins + collision counting feeding
-  the review queue (MA5) — confirm rule at Design.
 - ECAT code_type → ident-type mapping (EAN13/GTIN14 → gtin; Internal
   Producer ID/Other → article; else name-basis) — pin at Design.
-- Enrichment tie rule: strict-majority-only replacement is *proposed*
-  (MA13) — user to confirm at the unit's Design.
 - Stage-0 prototype note: an out-of-stage prototype (migration +
   resolve module + tests, 672 lines, drafted 2026-10-09, reverted
   same day) is kept non-authoritative at `/tmp/opencode/`
