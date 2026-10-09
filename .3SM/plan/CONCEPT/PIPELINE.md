@@ -21,8 +21,9 @@ status: BUILT 2026-10-03/04 (design + build ran; generic probe/scan/
   run pipeline, AS-2 + AS-33 loaded verbatim, AS-7 reserved record)
   — finalize (`/finalize-and-merge`) NOT yet run; entry stays until
   the ship gate archives it. Note: unit dir `DESIGN/v0.3.0/` +
-  `ENGINEERING/v0.3.0/`; work landed on main (no unit branch was
-  kept — recorded as project practice drift for housekeeping).
+  `ENGINEERING/v0.3.0/`; work landed on main (unit-branch init
+  waived by user 2026-10-03, recorded in the unit ENG MASTER —
+  not drift).
 intent: One SQLite evidence DB gains one raw table per bulk source with
   the source's own column headers verbatim; every confirmed bulk source
   (ECAT, Nordic Swan — BASTA when its filter clears) is bulk-downloaded
