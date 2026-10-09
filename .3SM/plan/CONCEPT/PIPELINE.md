@@ -126,9 +126,8 @@ Authoritative register: `MASTER.md` (this directory). Latest:
 
 # OPEN ITEMS
 
-- OPEN-NOW (v0.3.4): MA pinning (MA1–MA14); MA8 dependency call;
-  uuid derivation; GTIN-collision + enrichment-tie rules (user
-  confirm); score-band calibration plan.
+- OPEN-NOW (v0.3.4): MA adoption pinning (MA1–MA16); MA8 dependency
+  call; ECAT code_type mapping; score-band calibration plan.
 - OPEN-NOW (v0.3.8): candidate source order; gate mechanics.
 - NON-BLOCKING: BASTA paint-subset filter (de5; TODOS.md), ECAT
   17,838-vs-38,233 reconciliation — standing threads, CONCEPT MASTER
