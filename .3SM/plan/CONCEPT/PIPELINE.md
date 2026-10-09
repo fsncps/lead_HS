@@ -17,7 +17,12 @@ move to the archive with their end-date.
 # NEXT-UP
 
 ### v0.3.0 — evidence DB + bulk download of the confirmed sources
-status: INIT-READY
+status: BUILT 2026-10-03/04 (design + build ran; generic probe/scan/
+  run pipeline, AS-2 + AS-33 loaded verbatim, AS-7 reserved record)
+  — finalize (`/finalize-and-merge`) NOT yet run; entry stays until
+  the ship gate archives it. Note: unit dir `DESIGN/v0.3.0/` +
+  `ENGINEERING/v0.3.0/`; work landed on main (no unit branch was
+  kept — recorded as project practice drift for housekeeping).
 intent: One SQLite evidence DB gains one raw table per bulk source with
   the source's own column headers verbatim; every confirmed bulk source
   (ECAT, Nordic Swan — BASTA when its filter clears) is bulk-downloaded
@@ -39,7 +44,9 @@ readiness: none — init-ready (manifest field lists, R9 mechanics pin at
 updated: 2026-10-03
 
 ### v0.3.4 — deterministic normalization + matching
-status: MATURING
+status: INIT-READY (prepared 2026-10-09 — id free, theme
+  user-confirmed by directive + design order; OPEN-NOW items are
+  Design-stage deferrals, same pattern as v0.3.0's manifest fields)
 intent: Identity layer first (user-directed 2026-10-09): canonical
   manufacturer + product tables built from the raw source tables —
   extract → normalize → match-or-create over UNIQUE normalized
@@ -138,6 +145,29 @@ Authoritative register: `MASTER.md` (this directory). Latest:
   DECISIONS + CONCEPT MASTER ROADMAP.
 
 # SKILL RECORDS
+
+### 3sm-concept-pipeline CAPTURE+PREPARE — 2026-10-09
+scope: open-item confirmations (MA13 ties, MA16 GTIN collisions,
+MA15 uuid decision prior); v0.3.4 matured to INIT-READY; v0.3.0
+entry reconciled to built state
+checklist:
+- [x] capture — user confirmed both remaining proposals as proposed
+  (enrichment strict-majority/ties; GTIN first-claim-wins + review
+  queue) — MA13/MA16 updated — OK
+- [x] prepare v0.3.4 — id free (no unit dir/branch); theme
+  user-confirmed (identity-layer directive, "proceed to design");
+  no parallel-unit conflict (v0.3.0 build complete, finalize
+  pending — user's sequencing call); OPEN-NOW items are Design
+  deferrals → INIT-READY — OK
+- [x] audit — drift found and recorded in-entry: v0.3.0 built but
+  entry said INIT-READY/NEXT-UP; unit MASTER still stage: DESIGN —
+  housekeeping/ship-gate territory, flagged — OK
+findings: CRITICAL GAP 0 · WARNING 1 (v0.3.0 lifecycle bookkeeping
+lag; finalized via user's ship gate) · unresolved 0
+carries: design may take MA10–MA16 + Stage 0 contracts as decided
+(no re-derivation); MA1–MA9 pin at Design as planned
+valid-until: user revisits the Stage 0 contracts or the v0.3.4 scope
+commit: <lands in this pass's commits>
 
 ### 3sm-concept-pipeline CAPTURE+PREPARE — 2026-10-03
 scope: PIPELINE.md created (was absent); v0.3 program adoption captured;
