@@ -95,9 +95,17 @@ tables, never re-normalizes raw rows.
   NOT unique (193,456 distinct over 198,742 rows) but company-scoped
   it is.
 - **Deterministic and idempotent:** a re-run over the same raw state
-  must be a no-op (match-or-create on normalized keys). UUID
-  derivation strategy (deterministic from normalized keys vs random +
-  index lookup) is a Design decision.
+  must be a no-op (match-or-create on normalized keys). UUIDs are
+  **deterministic (MA15, user decision 2026-10-09):**
+  `uuid5(project namespace, normalized key)`. Two key regimes: the
+  normalized string is the *ingress* key — how new raw entries match
+  into the canonical tables; within and after the canonical tables the
+  **uuid is always the key** (raw back-links, enrichment, every later
+  layer reference by uuid). Known consequence: a normalization-rule
+  change can mint a new string (→ new uuid) for an unchanged real
+  product; the documented recovery path is a full re-derivation of the
+  layer (re-links every back-link consistently — the "re-run when
+  rules improve" doctrine).
 
 **Coverage scan** — extension columns warrant a canonical column only
 when "common to a large enough number of records" (user rule). Scan of
@@ -320,12 +328,16 @@ concept turn / unit Design — nothing frozen.)*
   only per coverage scan ("common to a large enough number of
   records") — included: country, vat_id, name, eu_group, brand, url;
   reserved: city, hs_code.
+- **MA15 (user decision 2026-10-09):** deterministic UUID derivation —
+  `uuid5(project namespace, normalized key)` (name_norm for
+  manufacturer, ident_string for product); namespace constant pinned
+  in the repo at Design. The normalized string is the ingress match
+  key; after creation the uuid is the key everywhere (back-links,
+  enrichment, downstream layers). Rule changes that alter normalized
+  strings require a full layer re-derivation to stay consistent.
 
 ## OPEN ITEMS
 
-- UUID derivation for manufacturer/product (deterministic from
-  normalized keys vs random + lookup) — Design decision, rides the
-  determinism/idempotence constraint (Stage 0).
 - Cross-manufacturer GTIN collisions (207 BASTA dup-GTIN articles;
   ECAT expected too): first-claim-wins + collision counting feeding
   the review queue (MA5) — confirm rule at Design.
