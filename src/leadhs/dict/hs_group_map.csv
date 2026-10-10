@@ -1,0 +1,346 @@
+source_id,group_code,hs_code,confidence,note
+AS-2,Absorbent hygiene products,9619,high,diapers/sanitary; 4818/5601 pre-2022
+AS-2,Animal care products,,flag,not a goods category — verify licence rows
+AS-2,Bed mattresses,9404,high,mattress supports/bedding
+AS-2,Cosmetic Products,3304,high,
+AS-2,"Decorative paints, varnishes, and related products (2014 criteria)",3209,medium,3208 non-aqueous | 3209 aqueous — by formulation
+AS-2,Dishwasher Detergents,3402,high,
+AS-2,Electronic Displays,8528,high,
+AS-2,Footwear,,flag,6401-6405 by upper/material
+AS-2,Furniture,9403,medium,9401 seats | 9403 other furniture
+AS-2,Graphic paper,4802,medium,4810 coated | 4811 converted
+AS-2,Growing media and soil improvers,,flag,2703 peat | 3805 other — multi
+AS-2,Hand dishwashing detergents,3402,high,
+AS-2,Hard Surface Cleaning Products,3402,high,
+AS-2,Hard covering products,,flag,"multi: 4409/4411 wood, 6802 stone, 6904-6907 ceramic, 4504 cork"
+AS-2,Indoor Cleaning Services,,flag,service (no HS good)
+AS-2,Industrial and Institutional Dishwasher Detergents,3402,high,
+AS-2,Industrial and Institutional Laundry Detergents,3402,high,
+AS-2,Laundry detergents,3402,high,
+AS-2,Lubricants,2710,medium,2710 petroleum | 3403 blends
+AS-2,Performance coatings and related products,3208,medium,3208 non-aqueous | 3209 aqueous
+AS-2,"Printed paper, stationery paper and paper carrier bag products",4802,flag,"4802/4810 paper, 4819 bags, 4901/4911 printed"
+AS-2,Textile products,,flag,"ch. 50-63: 61/62 clothing, 63 home textiles"
+AS-2,Tissue Paper and Tissue Products,4803,high,4818 sanitary
+AS-2,Tourist accommodation,,flag,service (no HS good)
+AS-2,"Wood-, cork- and bamboo-based floor coverings",4411,medium,4409 moulded | 4504 cork
+AS-33,010,3824,medium,2523 cement | 3824.50 prepared mortars
+AS-33,01001,2523,high,
+AS-33,01002,3824,high,prepared mortars 3824.50
+AS-33,01003,2522,high,
+AS-33,01004,3824,high,
+AS-33,01005,3824,high,
+AS-33,01006,3824,high,
+AS-33,01007,3824,medium,refractory 6902/3801 by form
+AS-33,01008,3824,high,
+AS-33,01009,3824,high,
+AS-33,01099,3824,flag,
+AS-33,01101,6810,high,
+AS-33,01102,6904,high,
+AS-33,01103,6810,high,
+AS-33,01104,6810,medium,6806 lightweight aggregate
+AS-33,01105,6810,medium,
+AS-33,01106,6806,high,loose expanded clay
+AS-33,01107,6802,high,
+AS-33,01108,6810,medium,6905 ceramic pipes
+AS-33,01110,2505,high,
+AS-33,01112,2517,high,
+AS-33,01113,2517,high,
+AS-33,01114,6810,high,
+AS-33,01199,6810,flag,
+AS-33,01201,4412,flag,generic board
+AS-33,01202,4412,high,veneer sheet 4408
+AS-33,01203,4412,high,
+AS-33,01204,4412,high,
+AS-33,01205,4412,high,
+AS-33,01206,4412,high,
+AS-33,01207,4412,medium,glulam 4418
+AS-33,01208,4410,high,
+AS-33,01209,4410,high,
+AS-33,01210,4411,medium,4412 ply | 4410 chip
+AS-33,01211,3921,medium,HPL 3921.90 | 4823.90 paper-based
+AS-33,01212,6809,high,
+AS-33,01213,6810,high,
+AS-33,01214,4411,high,
+AS-33,01215,4412,high,
+AS-33,01216,4411,flag,
+AS-33,01217,6809,high,
+AS-33,01218,6809,high,
+AS-33,01219,6809,high,
+AS-33,01220,6809,high,
+AS-33,01221,6809,high,
+AS-33,01299,4411,flag,
+AS-33,01301,6806,high,
+AS-33,01302,3921,high,EPS 3921.11
+AS-33,01303,3921,high,XPS
+AS-33,01304,4405,high,
+AS-33,01305,3921,high,
+AS-33,01306,6806,flag,
+AS-33,01307,3921,medium,loose cellulose fibre
+AS-33,01399,6806,flag,
+AS-33,01401,6807,medium,3921 synthetic underlay
+AS-33,01402,6807,medium,
+AS-33,01403,4811,medium,
+AS-33,01404,4008,high,
+AS-33,01405,3919,high,
+AS-33,01406,3920,high,
+AS-33,01407,3919,high,
+AS-33,01408,3925,medium,EPDM 4016
+AS-33,01409,3210,flag,6807 sheet | 3214 liquid-applied
+AS-33,01499,3210,flag,
+AS-33,01501,7214,high,
+AS-33,01502,4412,high,
+AS-33,01503,7215,high,
+AS-33,01504,7216,high,
+AS-33,01505,7212,medium,7210 coated | 7208-7225 by finish
+AS-33,01506,7306,high,
+AS-33,01507,7314,high,
+AS-33,01508,7210,high,
+AS-33,01509,7219,medium,7220 flat-rolled
+AS-33,01510,,flag,multi-metal
+AS-33,01511,7216,high,
+AS-33,01512,7214,high,welded mesh
+AS-33,01599,7216,flag,
+AS-33,01601,6810,high,
+AS-33,01602,7308,medium,profiled roofing sheet
+AS-33,01603,7308,flag,
+AS-33,01604,6807,high,
+AS-33,01605,7308,medium,
+AS-33,01606,7326,flag,
+AS-33,01699,7308,flag,
+AS-33,01701,3824,high,
+AS-33,01702,3506,high,
+AS-33,01703,3214,high,
+AS-33,01704,3214,high,3214.10 bitumen mastics
+AS-33,01705,3214,high,
+AS-33,01706,2710,medium,3403 preparations
+AS-33,01799,3824,flag,
+AS-33,01801,3918,flag,4411/6806 by material
+AS-33,01899,3918,flag,
+AS-33,01901,3917,high,PVC gutters/downpipes
+AS-33,01904,6810,high,
+AS-33,01905,7308,high,steel hatches
+AS-33,01906,7308,flag,4418 wood
+AS-33,01907,7308,high,
+AS-33,01908,7322,flag,6810 concrete flues
+AS-33,01909,7326,high,
+AS-33,01910,3925,flag,WPC 3925/4419
+AS-33,01999,7308,flag,
+AS-33,02001,4407,high,
+AS-33,02002,4407,high,
+AS-33,02003,4409,high,
+AS-33,02004,4409,high,
+AS-33,02005,4409,high,
+AS-33,02006,4409,high,
+AS-33,02007,4407,high,
+AS-33,02008,4407,high,
+AS-33,02099,4407,flag,
+AS-33,02105,4407,high,
+AS-33,02109,4407,high,
+AS-33,02201,4407,high,
+AS-33,02202,4407,high,
+AS-33,02302,4407,high,
+AS-33,02303,4407,high,
+AS-33,02399,4407,flag,
+AS-33,02402,4409,high,
+AS-33,025,4418,flag,
+AS-33,02501,4418,high,
+AS-33,02502,4418,high,
+AS-33,02503,4407,high,
+AS-33,02504,4418,medium,I-joists
+AS-33,02505,4412,flag,
+AS-33,03001,6907,high,tiles 6904-6907 (2022 nomenclature)
+AS-33,03002,3214,flag,3506 adhesives
+AS-33,03003,6907,high,
+AS-33,03004,6907,high,
+AS-33,03005,6907,high,
+AS-33,03099,6907,flag,
+AS-33,03101,4409,high,
+AS-33,03102,4411,high,multilayer 4411.13
+AS-33,03103,4411,high,
+AS-33,03104,3918,high,
+AS-33,03105,3918,high,
+AS-33,03106,5705,high,5701-5705
+AS-33,03107,3918,flag,
+AS-33,03108,4409,high,
+AS-33,03109,5705,flag,4016 rubber mats
+AS-33,03110,4409,high,
+AS-33,03111,4016,high,
+AS-33,03112,4411,flag,
+AS-33,03199,3918,flag,
+AS-33,03201,4811,high,
+AS-33,03202,6304,flag,textile wall coverings
+AS-33,03203,5603,flag,nonwovens
+AS-33,03301,6809,flag,4411/6810 by material
+AS-33,03302,7308,flag,suspended ceilings metal
+AS-33,03303,4409,high,
+AS-33,03399,7308,flag,
+AS-33,034,3209,flag,3208/3209 paint; by medium
+AS-33,03401,3209,medium,3208 solvent-borne primer
+AS-33,03402,3209,medium,3208 solvent | 3209 water
+AS-33,03403,3209,medium,
+AS-33,03404,3209,high,interior water-borne
+AS-33,03405,3208,medium,trim; solvent alkyd | 3209 water
+AS-33,03406,3209,flag,mixed: floor paint + oils 3403 + soaps 3402
+AS-33,03407,3808,flag,preservatives 3808.91 | oils 3403
+AS-33,03408,3209,flag,3208/3209
+AS-33,03409,9603,flag,brushes 9603.40 | thinners 3814
+AS-33,03410,3208,medium,
+AS-33,03499,3209,flag,
+AS-33,03501,4409,high,
+AS-33,03502,4409,high,
+AS-33,03503,4409,high,
+AS-33,03506,4409,high,
+AS-33,03507,4409,high,
+AS-33,03508,4411,medium,MDF mouldings
+AS-33,03512,4409,high,
+AS-33,03513,4419,flag,
+AS-33,03599,4409,flag,
+AS-33,04001,4418,high,
+AS-33,04002,7308,flag,4418 wood | 7610 alu
+AS-33,04003,4418,high,
+AS-33,04005,4418,flag,7308 steel | 7610 alu
+AS-33,04101,4418,high,wood windows
+AS-33,04103,7610,flag,4418 wood
+AS-33,04105,7610,flag,4418 wood
+AS-33,04107,7610,flag,4418 wood
+AS-33,04109,7610,flag,4418 wood
+AS-33,04111,7610,flag,4418 wood
+AS-33,04199,4418,flag,
+AS-33,04201,9403,high,kitchen furniture
+AS-33,04202,4418,flag,6810 stone / laminate tops
+AS-33,04299,9403,flag,
+AS-33,04301,9403,flag,
+AS-33,04401,6802,flag,4418 wood
+AS-33,04402,4418,flag,7308 steel
+AS-33,04403,4418,flag,
+AS-33,04502,9403,flag,7308 shelving
+AS-33,04603,8310,flag,3926 plastic signs
+AS-33,05,7318,high,fasteners
+AS-33,05001,7317,high,
+AS-33,05002,7415,flag,7317 steel; NF 7415.10
+AS-33,05003,7317,high,
+AS-33,05004,7317,high,
+AS-33,05005,7317,high,
+AS-33,05007,7317,high,
+AS-33,05008,7317,high,
+AS-33,05009,7317,high,
+AS-33,05010,7317,high,
+AS-33,05099,7317,flag,
+AS-33,051,7318,high,
+AS-33,05101,7318,high,
+AS-33,05102,7318,high,
+AS-33,05103,7318,high,
+AS-33,05104,7318,high,
+AS-33,05105,7318,high,
+AS-33,05106,7318,high,
+AS-33,05107,7318,high,
+AS-33,05108,7318,high,
+AS-33,05109,7318,high,
+AS-33,05110,7318,high,
+AS-33,05111,7318,high,
+AS-33,05112,7318,high,
+AS-33,05113,7318,high,
+AS-33,05199,7318,flag,
+AS-33,05201,7318,high,
+AS-33,05202,7318,high,
+AS-33,05203,7318,high,
+AS-33,05204,7318,high,
+AS-33,05205,7318,high,
+AS-33,05206,7318,high,
+AS-33,05299,7318,high,
+AS-33,05301,7318,medium,7415.33 NF rivets
+AS-33,05399,7318,flag,
+AS-33,05401,7318,high,
+AS-33,05402,3926,medium,plastic anchors
+AS-33,05403,3926,flag,
+AS-33,05404,3506,flag,injection mortar/adhesive anchors
+AS-33,05405,7326,flag,plastic washers 3926
+AS-33,05406,4407,flag,wooden plugs
+AS-33,05407,7326,flag,
+AS-33,05499,7318,flag,
+AS-33,05501,7326,high,
+AS-33,05502,7326,high,
+AS-33,05503,7326,high,
+AS-33,05504,7326,high,
+AS-33,05505,7326,high,
+AS-33,05506,7326,high,
+AS-33,05507,7326,high,
+AS-33,05599,7326,flag,
+AS-33,06001,8301,high,
+AS-33,06102,8302,high,
+AS-33,06104,8302,high,
+AS-33,06105,8310,flag,8301 letterboxes
+AS-33,06199,8302,flag,
+AS-33,07003,8424,flag,extinguishers; alarm 8531
+AS-33,07099,8531,flag,
+AS-33,08001,6810,flag,6904 ceramic
+AS-33,08009,4418,flag,
+AS-33,08014,6810,flag,
+AS-33,08099,4418,flag,
+AS-33,09099,7308,flag,7610 alu | 4418 wood
+AS-33,10001,6810,flag,4418 wood elements
+AS-33,10002,4418,high,roof trusses
+AS-33,10004,4418,flag,
+AS-33,10005,4418,flag,6810 concrete
+AS-33,10006,4418,flag,
+AS-33,10011,6810,flag,
+AS-33,10015,7308,flag,
+AS-33,10099,6810,flag,
+AS-33,11402,3402,high,
+AS-33,18202,9405,high,
+AS-33,18299,9405,high,
+AS-33,18301,8544,high,
+AS-33,18303,8536,high,
+AS-33,18307,8536,flag,
+AS-33,18399,8536,flag,
+AS-33,19099,8481,flag,gas appliances
+AS-33,19101,3603,high,
+AS-33,19199,3603,flag,
+AS-33,19299,2710,flag,
+AS-33,20004,8402,flag,boilers 8402/8403
+AS-33,20010,8419,flag,solar collectors 8419.80
+AS-33,20201,3925,flag,3917 pipes | 6810 concrete
+AS-33,20202,3917,high,
+AS-33,20203,3917,flag,7307 metal fittings
+AS-33,20204,7303,high,
+AS-33,20205,3925,flag,6810 concrete manholes
+AS-33,20206,3925,flag,7326 castings
+AS-33,20207,3925,flag,
+AS-33,20208,3917,flag,5603 geotextile
+AS-33,20209,3917,flag,
+AS-33,20210,3925,flag,
+AS-33,20211,5603,high,
+AS-33,20212,6807,flag,3921 boards
+AS-33,20213,3925,flag,6810 concrete | 7309 steel
+AS-33,20299,3925,flag,
+AS-33,20301,4009,high,
+AS-33,20399,4009,flag,
+AS-33,20401,7306,medium,stainless 7304/7306
+AS-33,20407,7307,high,
+AS-33,20409,7307,flag,
+AS-33,20499,7306,flag,
+AS-33,20502,7412,high,
+AS-33,20504,7412,flag,7307 steel
+AS-33,20507,7303,high,
+AS-33,20508,3917,high,
+AS-33,20510,3925,flag,7326 steel
+AS-33,20512,3917,high,
+AS-33,20513,7326,high,
+AS-33,20514,7326,flag,
+AS-33,20705,8481,high,
+AS-33,20709,8481,high,
+AS-33,20714,8424,flag,
+AS-33,21,7306,flag,
+AS-33,21001,8481,flag,dampers
+AS-33,21002,7306,medium,galvanized ducts
+AS-33,21003,8479,flag,AHU units
+AS-33,21004,7326,flag,7616 aluminium grilles
+AS-33,21005,8414,high,
+AS-33,21006,7616,flag,3917/7306 flexible duct
+AS-33,21098,7326,flag,
+AS-33,21099,7306,flag,
+AS-33,22001,,flag,generic consumables
+AS-33,22099,,flag,generic consumables
+AS-33,23005,7314,flag,7308 gates
+AS-33,23006,7314,flag,

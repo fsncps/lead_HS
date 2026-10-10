@@ -172,7 +172,7 @@ def test_load_unparsable_json_is_named(tmp_path):
 def test_migration_chain_complete_and_0012_idempotent(conn):
     files = dbmod.migration_files()
     numbers = [f[0] for f in files]
-    assert numbers == list(range(1, 14))
+    assert numbers == list(range(1, 15))
     applied, _pending = dbmod.migrate(conn, db_path=":memory:")
     assert applied == []  # fresh conn fixture already migrated; idempotent
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}

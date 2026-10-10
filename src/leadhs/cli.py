@@ -84,6 +84,73 @@ def identity():
     """Canonical identity layer: resolve, rebuild, status (v0.3.4)."""
 
 
+@click.group(name="hs", no_args_is_help=True)
+def hs():
+    """HS-code completion: apply, status (v0.3.4 r02)."""
+
+
+def _hs_map_path(map_path: str | None) -> str:
+    return map_path or os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "dict", "hs_group_map.csv"
+    )
+
+
+@hs.command("apply")
+@click.option("--map", "map_path", default=None, help="hs_group_map.csv path (default: bundled dict)")
+@click.option("--dry-run", is_flag=True, help="identical read path; zero writes, no run rows")
+@click.pass_context
+def hs_apply(ctx, map_path, dry_run):
+    """Apply the curated group-to-HS4 map to products.hs_code."""
+    import json
+
+    from . import db as dbmod
+    from .hs import HsMapError, apply as hs_apply_mod
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    _ensure_migrated(ctx, rt)
+    conn = dbmod.connect(rt.db_path)
+    try:
+        try:
+            counts = hs_apply_mod(conn, _hs_map_path(map_path), dry_run=dry_run)
+        except HsMapError as exc:
+            click.echo(f"error: {exc}", err=True)
+            ctx.exit(2)
+        except FileNotFoundError as exc:
+            click.echo(f"error: map file not found: {exc}", err=True)
+            ctx.exit(2)
+        prefix = "dry-run planned: " if dry_run else ""
+        click.echo(prefix + ", ".join(f"{k}={v}" for k, v in sorted(counts.items())))
+    finally:
+        conn.close()
+
+
+@hs.command("status")
+@click.option("--map", "map_path", default=None, help="hs_group_map.csv path (default: bundled dict)")
+@click.pass_context
+def hs_status(ctx, map_path):
+    """Three-state HS coverage per source + pending-group worklist."""
+    from . import db as dbmod
+    from .hs import HsMapError, render_status, status as hs_status_mod
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    _ensure_migrated(ctx, rt)
+    conn = dbmod.connect(rt.db_path, readonly=True)
+    try:
+        try:
+            out = hs_status_mod(conn, _hs_map_path(map_path))
+        except HsMapError as exc:
+            click.echo(f"error: {exc}", err=True)
+            ctx.exit(2)
+        except FileNotFoundError as exc:
+            click.echo(f"error: map file not found: {exc}", err=True)
+            ctx.exit(2)
+        render_status(out)
+    finally:
+        conn.close()
+
+
 def _ensure_migrated(ctx: click.Context, rt: Runtime) -> None:
     """d22 preflight: pending migrations are a blocked state, not a
     usage error — the identity tables may not exist yet."""

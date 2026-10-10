@@ -10,7 +10,7 @@ from leadhs import db as dbmod
 
 def test_fresh_apply_all_migrations(conn):
     applied = {r[0] for r in conn.execute("SELECT version FROM schema_version")}
-    assert applied == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}
+    assert applied == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
     for table in ("source", "document", "run", "probe_run", "probe_finding", "probe_metric"):
         assert table in tables
@@ -93,7 +93,7 @@ def test_0004_prunes_lg_li_rows_with_evidence(tmp_path):
 
     applied, _ = dbmod.migrate(conn)
     assert applied == ["0004__product_census.sql", "0005__priors_metric.sql", "0006__recon_numbers.sql", "0007__capability.sql", "0008__landscape.sql", "0009__csv_sample.sql", "0010__as_source_probe.sql", "0011__basta_probe.sql", "0012__raw_layer.sql",
-                                                "0013__identity.sql"]
+                                                "0013__identity.sql", "0014__hs.sql"]
 
     ids = {r[0] for r in conn.execute("SELECT id FROM source")}
     assert "LG-9" not in ids and "LI-9" not in ids and "PE-9" in ids
@@ -141,7 +141,7 @@ def test_migration_order_enforced(tmp_path):
                            "0006__recon_numbers.sql", "0007__capability.sql",
                            "0008__landscape.sql", "0009__csv_sample.sql",
                            "0010__as_source_probe.sql", "0011__basta_probe.sql",
-                           "0012__raw_layer.sql", "0013__identity.sql"]
+                           "0012__raw_layer.sql", "0013__identity.sql", "0014__hs.sql"]
     finally:
         conn.close()
 

@@ -107,6 +107,41 @@ def _identity_checks(result: DoctorResult, db_path: str) -> None:
         result.add("warn", "identity", f"check skipped ({exc})")
 
 
+def _hs_checks(result: DoctorResult, db_path: str) -> None:
+    """v0.3.4 r02: HS completion coverage — read-only, informational."""
+    if not (os.path.isfile(db_path) and os.path.getsize(db_path) > 0):
+        return
+    try:
+        conn = sqlite3.connect(f"file:{os.path.abspath(db_path)}?mode=ro", uri=True)
+        conn.row_factory = sqlite3.Row
+        try:
+            have = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            if "product" not in have:
+                return
+            total = conn.execute("SELECT COUNT(*) FROM product").fetchone()[0]
+            if not total:
+                return
+            set_n = conn.execute("SELECT COUNT(*) FROM product WHERE hs_code IS NOT NULL").fetchone()[0]
+            run_row = conn.execute(
+                "SELECT run_key, status_code, finished_at FROM run "
+                "WHERE kind_code = 'hs_apply' ORDER BY id DESC LIMIT 1"
+            ).fetchone()
+            last = ""
+            if run_row is not None:
+                last = f"; last hs_apply {run_row['run_key']} ({run_row['status_code']}, {run_row['finished_at']})"
+            elif set_n == 0:
+                result.add("warn", "hs", "no HS codes on any product (`leadhs hs apply`)")
+                return
+            result.add(
+                "ok" if set_n else "warn", "hs",
+                f"coverage {set_n:,}/{total:,} ({(100.0 * set_n / total):.1f}%)" + last,
+            )
+        finally:
+            conn.close()
+    except sqlite3.Error as exc:
+        result.add("warn", "hs", f"check skipped ({exc})")
+
+
 def run(rt, net: bool = False) -> DoctorResult:
     result = DoctorResult()
 
@@ -147,6 +182,9 @@ def run(rt, net: bool = False) -> DoctorResult:
 
     # identity layer (v0.3.4; read-only, informational)
     _identity_checks(result, rt.db_path)
+
+    # hs completion coverage (v0.3.4 r02; read-only, informational)
+    _hs_checks(result, rt.db_path)
 
     # contact
     if rt.contact:
