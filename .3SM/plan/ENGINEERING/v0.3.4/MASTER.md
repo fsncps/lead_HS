@@ -13,13 +13,13 @@ currency; `/init-unit` registers the unit here (one row below); build
 appends execution state at the moment of truth.
 
 ## STATE
-current run: r01    branch: v0.3.4    base: f039b26
+current run: r01 DELIVERED (next: r02 enrichment)    branch: v0.3.4    base: f039b26
 
 ## RUNS
 
 | run | status | SHA | tests |
 |---|---|---|---|
-| r01 | PLANNED (plan: r01/PHASE01.md, review-complete) | — | run gate = user test plan |
+| r01 | DELIVERED 2026-10-10 (executed; public report docs/report/report-0.3.4-r01.md) | 4a661e6 + 6b429f0 | 461 passed; real-data gates green; rebuild + chaos → FINAL |
 
 ## DECISIONS
 

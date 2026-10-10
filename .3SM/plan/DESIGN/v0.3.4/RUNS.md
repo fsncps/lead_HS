@@ -42,7 +42,7 @@ after each run.
 
 | run | scope | status | SHA | notes |
 |---|---|---|---|---|
-| r01 | canonical identity layer: migration 0013, resolve pass, `identity rebuild`, doctor identity checks | PLANNED | — | — |
+| r01 | canonical identity layer: migration 0013, resolve pass, `identity rebuild`, doctor identity checks | DELIVERED | 4a661e6 + 6b429f0 | 461 passed; real-data gates green (report-0.3.4-r01.md) |
 | r02 | enrichment pass (majority fill/replace, MA13 rules) | PLANNED | — | — |
 | r03 | matching layer: blocking + scoring + linkage_candidate + review-queue visibility | PLANNED | — | — |
 | FINAL | full-suite + live-op verification + reconciliation | PLANNED | — | user decides fold vs FINAL dir at last regular run |
@@ -84,6 +84,28 @@ backup.
   count sane (il17).
 - Rebuild on SQLite < 3.35 → named refusal, nothing torn down.
 - Dry-run zero-write invariant on a fixture DB.
+
+### EXECUTION RECORD — r01 build (2026-10-10, build session)
+
+- Implemented per PHASE01 + REVIEW PINS; commits `4a661e6` (impl) +
+  `6b429f0` (adapter SELECT fix). Migration 0013 applied to the real DB.
+- Real run: AS-2 `identity_resolve-20261010-as2-4`, AS-33
+  `identity_resolve-20261010-as33-2` — 288,138 raw rows → **2,857
+  manufacturers / 271,005 products**, 100.0% back-linked, created=0 on
+  re-run (il5 verified), doctor green. Public numbers + sample query
+  (50 products): `docs/report/report-0.3.4-r01.md`.
+- One defect caught at the dry-run gate: adapters selected only
+  group-key columns (crash pre-write; two stuck run rows cleaned +
+  annotated).
+- PROVISIONAL inputs exercised on real data: double-resolve
+  hash-identity ✓, dry-run zero-write ✓ (after fix), bad-GTIN refusals ✓
+  (7, degraded to name basis, skipped=0), election determinism ✓
+  (3,884 multi-code / 2,261 multi-gtin, ECAT). Still open for FINAL:
+  SIGKILL chaos, rebuild round, SQLite<3.35 refusal, staging-norm
+  recompute.
+- USER TEST PLAN steps 1–6 executed by the build session (db init,
+  dry-run, resolve, re-run, status, doctor); step 7 (rebuild) left to
+  the user/FINAL. Run gate = user review (no linter configured).
 
 ### SKILL RECORDS
 

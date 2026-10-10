@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-10-09 (v0.3.0 inkl. Gesamtlasten ECAT + BASTA / v0.3.0 avec chargements complets ECAT + BASTA).
+Stand / État: 2026-10-10 (v0.3.4 r01: Identitätsschicht ausgeführt — 271'005 kanonische Produkte / 2'857 Hersteller aus 288'138 Rohzeilen / r01 de la couche d'identité exécuté — 271 005 produits canoniques / 2 857 fabricants à partir de 288 138 lignes brutes).
 
 ---
 
@@ -350,6 +350,15 @@ Stichproben) und BASTA **198'742 Artikel** (anonyme paginierte API,
 Produkte). `data_sources.csv` bleibt bei zwei formellen Zeilen (de5
 für BASTA offen); der Bestandsinventar:
 `docs/report/db-content.md` (EN).
+
+Ergänzend (10.10.2026): Identitätsschicht. Die Einheit v0.3.4 (Lauf
+r01) hat die 288'138 Rohzeilen deterministisch zu **271'005 kanonischen
+Produkten** unter **2'857 Herstellern** zusammengeführt (100 % der
+Rohzeilen rückverknüpft; Wiederholungslauf erzeugt null neue Zeilen;
+jeder kanonische Datensatz ist zu allen Rohbeobachtungen
+zurückverfolgbar). Registeruniversen, keine Farbzählungen — der
+Farbausschnitt bleibt der Anreicherungs-/Matching-Arbeit vorbehalten.
+Details: `docs/report/report-0.3.4-r01.md` (EN).
 
 Projektstand (09.10.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
@@ -753,10 +762,19 @@ anonyme, 199 pages, 0 champ tronqué ; famille peinture BK04 034xx ≈
 (de5 ouvert pour BASTA) ; l'inventaire chiffré :
 `docs/report/db-content.md` (EN).
 
+En complément (10.10.2026) : couche d'identité. L'unité v0.3.4 (run
+r01) a fusionné les 288'138 lignes brutes en **271'005 produits
+canoniques** sous **2'857 fabricants** (100 % des lignes brutes
+rattachées ; une réexécution ne crée aucune ligne ; chaque enregistrement
+canonique est traçable vers toutes ses observations brutes). Univers de
+registres, pas des comptages peinture — la découpe peinture reste au
+travail d'enrichissement/appariement. Détails :
+`docs/report/report-0.3.4-r01.md` (EN).
+
 État du projet (09.10.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
 et rend chaque constat traçable — est construit et testé dans les unités
-v0.1.1–v0.3.0 (461 tests automatisés hors ligne) : base de preuves, registre des
+v0.1.1–v0.3.4 (461 tests automatisés hors ligne) : base de preuves, registre des
 sources, reconnaissance des sources avec rapports de faisabilité par
 source, machinerie de comptage pour les parcours de catalogues (en
 attente d'un feu vert de collecte), carte du paysage des données avec
@@ -765,8 +783,7 @@ officiels, l'entonnoir à trois questions sur le réseau réel,
 l'estimation de pool v2 (moteur de benchmarks, paquet d'adaptateurs,
 extractions primaires, section de rapport) et l'échantillon CSV de
 gestion avec le sondage des sources de classe AS. L'unité active
-**v0.2.4**
-est ainsi achevée.
+**v0.3.4** (couche d'identité) — run r01 livré le 10.10.2026.
 
 ### Limites de l'étude
 
