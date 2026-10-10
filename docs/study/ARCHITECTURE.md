@@ -46,7 +46,11 @@ to [20_DESIGN](../plan/3SM/20_DESIGN/MASTER.md) in the plan tree.
 2. **raw store** — documents archived as retrieved (sha256-named); the DB
    references hashes: auditability before parsing.
 3. **ingest** — sightings/products/manufacturers upserted with dedup;
-   sources registered.
+   sources registered. **Built (in its deterministic-identity form) at
+   v0.3.4:** the canonical `manufacturer`/`product` tables are derived
+   from the verbatim raw tables by exact normalized keys (uuid5,
+   idempotent, manifest-drift-guarded) — the scored cross-source
+   matching on top is a follow-up unit.
 4. **parse** — SDS PDF → text → sections (multilingual DE/FR/IT/EN);
    Section 3 compound extraction against the dictionary (CAS/EC/synonyms);
    concentration ranges; UFI; Section 15 flags; confidence-tagged.
@@ -70,6 +74,11 @@ to [20_DESIGN](../plan/3SM/20_DESIGN/MASTER.md) in the plan tree.
     leadhs probe report                  # census summary + anchor candidates
     leadhs probe download-csv-sample     # per-registry 100-row seeded CSV
                                          # samples + manifest (v0.2.4, D36)
+    leadhs raw scan|run|status|explain   # instruction-driven bulk load into
+                                         # verbatim per-source tables (v0.3.0)
+    leadhs identity resolve|rebuild|status  # canonical manufacturer/product
+                                         # tables from the raw tables,
+                                         # deterministic + idempotent (v0.3.4)
     leadhs acquire run --source PE-1     # rate-limited fetch → raw store
     leadhs ingest sightings --file …     # upsert products/sightings
     leadhs parse sds [--product ID|all]  # parse queue → findings

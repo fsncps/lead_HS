@@ -43,9 +43,9 @@ after each run.
 | run | scope | status | SHA | notes |
 |---|---|---|---|---|
 | r01 | canonical identity layer: migration 0013, resolve pass, `identity rebuild`, doctor identity checks | DELIVERED | 4a661e6 + 6b429f0 | 461 passed; real-data gates green (report-0.3.4-r01.md) |
-| r02 | enrichment pass (majority fill/replace, MA13 rules) | PLANNED | — | — |
-| r03 | matching layer: blocking + scoring + linkage_candidate + review-queue visibility | PLANNED | — | — |
-| FINAL | full-suite + live-op verification + reconciliation | PLANNED | — | user decides fold vs FINAL dir at last regular run |
+| r02 | enrichment pass (majority fill/replace, MA13 rules) | **DEFERRED** → follow-up unit v0.3.5 | — | unit closed early (user decision 2026-10-10) — entry + plans carry over verbatim |
+| r03 | matching layer: blocking + scoring + linkage_candidate + review-queue visibility | **DEFERRED** → follow-up unit v0.3.6 | — | same; score-band calibration pins at v0.3.6 planning |
+| FINAL | full-suite + live-op verification + reconciliation | **FOLDED into ship** | — | early close: r01's gates re-walked at ship (see CLOSURE) |
 
 ## r01 — canonical identity layer
 
@@ -227,3 +227,49 @@ done walk on the real DB.
 ## OPEN ITEMS
 
 (tracked in the unit MASTER § OPEN ITEMS — single source.)
+
+## CLOSURE — unit v0.3.4 closed early (2026-10-10)
+
+**Decision (user):** close v0.3.4 with r01 delivered; r02 (enrichment)
+and r03 (matching) spawn as follow-up units **v0.3.5** / **v0.3.6** —
+both entries planted in the PIPELINE with their RUNS entries as the
+carried design payload. Deviation note: no 3sm-eng-final pass ran; the
+user explicitly ordered the early close (the ship skill's FINAL
+precondition overridden by its owner). r01's gate lines were re-walked
+at ship instead.
+
+### Ship gate evidence (2026-10-10, re-walked at ship)
+
+| Gate line | Evidence | State |
+|---|---|---|
+| full suite | `make test` exit 0 — 461 passed / 0 failed (post-merge tree) | OK |
+| smoke | `make smoke` exit 0 — 6 passed | OK |
+| db audit | `make db-audit` — clean incl. --unreferenced (R7 now covers product→manufacturer FK) | OK |
+| live-op identity pass | executed 2026-10-10 (report-0.3.4-r01.md): resolve idempotent, 100.0% back-linked, doctor green | OK |
+| whole-unit diff review | r01 review (cda8109) + build-session review; unplanned files: none | OK |
+| docs sync | README status block, management summary DE/FR, ARCHITECTURE CLI+stages, pyproject 0.3.4, RUNS/MASTER rows, LOG | OK |
+
+Deferred with the units (recorded, consistent with DoD): SIGKILL chaos
+pass, full `identity rebuild` round, SQLite<3.35 refusal check,
+staging-norm recompute — FINAL inputs inherited by v0.3.5/v0.3.6.
+
+### SKILL RECORD — 3sm-ship-unit v0.3.4 — 2026-10-10
+
+checklist:
+- [x] Precondition deviation — FINAL plans absent; user-ordered early
+  close (close unit, spawn follow-ups); recorded here as the decision
+- [x] Pass 1 consistency — RUNS rows vs SHAs vs merge: 4a661e6 + 6b429f0
+  reachable from main via merge 2c73aea (PR #1, user-executed); quiescent;
+  tree clean
+- [x] Pass 2 docs sync — README, management_summary DE/FR (pre-ship),
+  ARCHITECTURE (CLI surface + pipeline-stage note), pyproject 0.3.0→0.3.4,
+  RUNS/impl-MASTER/root-MASTER rows, LOG entry
+- [x] Pass 3 gate walk — table above; all OK
+- [x] Pass 4 git — merge already on main (user's PR #1, --no-ff via
+  GitHub, message kept); no squash needed (clean run sequence); local
+  tag v0.3.4 at the merge; unit dirs archived; branch deleted post-merge
+- [x] Pass 5 dashboard — below (conversation output)
+carries: housekeeping may treat v0.3.4 as verification-complete for
+  archiving; v0.3.5/v0.3.6 inherit this file's r02/r03 entries + the
+  deferred FINAL inputs above; probe-report publish history untouched
+valid-until: n/a — terminal record for the unit

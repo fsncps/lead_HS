@@ -13,7 +13,7 @@ currency; `/init-unit` registers the unit here (one row below); build
 appends execution state at the moment of truth.
 
 ## STATE
-current run: r01 DELIVERED (next: r02 enrichment)    branch: v0.3.4    base: f039b26
+unit CLOSED early 2026-10-10 (r01 delivered; r02/r03 → follow-up units v0.3.5/v0.3.6)
 
 ## RUNS
 
@@ -26,6 +26,12 @@ current run: r01 DELIVERED (next: r02 enrichment)    branch: v0.3.4    base: f03
 Unit design decisions live in `../../DESIGN/v0.3.4/MASTER.md` §
 DECISIONS (single source; il1–il17). Run-level pins live in
 `r01/PHASE01.md` § REVIEW PINS.
+
+## CLOSURE
+
+Closed early by user decision 2026-10-10 after r01; ship gate evidence
+and the ship skill record live in `../../DESIGN/v0.3.4/RUNS.md` §
+CLOSURE. Archive: `../_archive/v0.3.4/`.
 
 ## OPEN ITEMS
 

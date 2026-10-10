@@ -169,23 +169,24 @@ source whose raw table changed since (the remedy is a documented
 backup-then-rebuild command), and `leadhs doctor` reports coverage,
 orphans and drift.
 
-**Next: the scored matching pass (r03) and the enrichment pass (r02).**
-The identity layer collapsed each *source's* own register exactly; to
-merge the *same product seen in several sources*, records are linked
-in tiers: exact keys first (GTIN; normalized identifier within the
-same normalized manufacturer), then scored near-matches (Jaro-Winkler,
+**Next: two follow-up units.** The identity layer collapsed each
+*source's* own register exactly; to merge the *same product seen in
+several sources*, a scored matching unit links records in tiers:
+exact keys first (GTIN; normalized identifier within the same
+normalized manufacturer), then scored near-matches (Jaro-Winkler,
 token-set similarity) restricted to small candidate blocks so that
 200k+ rows stay tractable. Each candidate link carries a verdict —
 `auto_match` (high score / exact-key backed) / `review` (human
 queue) / `no_match` — with method and scores stored per pair, so the
 merged view is fully auditable and corrections are append-only. Before
-that, r02 enriches canonical rows from their per-source observations.
+that, an enrichment unit completes canonical rows from their
+per-source observations.
 
 Details: the matching norms, thresholds and library choice are pinned
 in the pending strategy topic
 [`MATCHING.md`](.3SM/plan/CONCEPT/MATCHING.md) (adoption decisions
 MA1–MA9); the identity-layer decisions are il1–il17 in
-`.3SM/plan/DESIGN/v0.3.4/MASTER.md`; the run report is
+`.3SM/plan/DESIGN/v0.3.4/MASTER.md` (archived); the run report is
 [report-0.3.4-r01.md](docs/report/report-0.3.4-r01.md).
 
 

@@ -67,3 +67,20 @@ pipeline intent carried verbatim into the design MASTER as starting
 context. Registries: plan/MASTER UNITS row (DSG/LIVE) + State flip;
 PIPELINE entry ACTIVE. Next: the user's move — design discussions /
 3sm-design-unit.
+
+## 2026-10-10 — v0.3.4 — SHIP: unit completed (early close) and archived
+
+User executed the merge themselves (PR #1, `2c73aea`, --no-ff) after
+r01; then ordered "close unit, spawn follow-ups" — an explicit early
+close without a 3sm-eng-final pass (deviation owner-approved). Ship
+re-walked r01's gate lines on the post-merge tree: `make test` 461
+passed, `make smoke` 6 passed, `make db-audit` clean incl.
+--unreferenced; live-op identity evidence in
+`docs/report/report-0.3.4-r01.md` (288,138 raw rows → 2,857
+manufacturers / 271,005 products, 100.0% back-linked, idempotent
+re-run). r02/r03 DEFERRED → follow-up units v0.3.5 (enrichment) /
+v0.3.6 (matching), entries in the PIPELINE with the deferred FINAL
+inputs recorded. Unit dirs archived (`_archive/v0.3.4/`), PIPELINE
+entry → SHIPPED, root registry updated, tag `v0.3.4` (local,
+annotated) at the merge commit. Push of the closure commits + remote
+branch deletion: explicit user instruction pending.
