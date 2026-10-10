@@ -88,6 +88,30 @@ never enters review (already exact-key linked). verdict NOT NULL;
 corrections never DELETE. Canonical records: uuid + normalized key
 immutable at creation; only enrichment fields mutate (MA13 rules).
 
+### Error model (Section 2 registries — failure classes + rescues)
+
+| codepath | failure class | rescued? | rescue action | user sees |
+|---|---|---|---|---|
+| resolve adapter | SourceMissingError (raw table absent) | Y | skip source, continue | named line + count in summary |
+| resolve adapter | SourceSchemaError (expected column absent/renamed) | Y | refuse that source | named error + offending column |
+| resolve adapter | ManifestDriftError (manifest_hash ≠ recorded, il2) | Y | refuse source, offer rebuild | "run identity rebuild" |
+| resolve normalize | NormalizeError (blank manufacturer / blank ident+name) | Y | skip row + count | skipped-row total per source |
+| resolve normalize | EmptyNormError (norm collapses to empty) | Y | refuse row + count | refused-row total |
+| resolve match-or-create | IntegrityError (UNIQUE violation) | N (loud) | run failed, batch rolled back | traceback, exit 1 — a bug by construction |
+| resolve | crash mid-run | Y | committed batches stay; re-run idempotent (il5) | re-run completes, no dupes |
+| enrich | SourceMissingError (raw dropped since resolve) | Y | refuse source | named error |
+| enrich | majority tie | — | rule: tie never wins (MA13) | n/a |
+| match | MissingDependencyError (scoring lib absent) | N (loud) | refuse at command start | install hint / stdlib fallback line |
+| match | zero canonical rows / zero pairs | — | explicit zero-state report | zero-state line |
+| match | BlockTooLarge (> 500k pairs, il6) | Y | split + count | warning + block stats |
+| rebuild | BackupError (pre-DROP backup fails, d20) | N (loud) | abort before any teardown | named error, exit 2 |
+| migration 0013 | any step fails | N (loud) | backup-first abort (d20) | named error |
+
+The only swallow-and-continue class is row-level skip — never silent
+(counted per source, in the run summary). Constraint violations are
+impossible by construction (single writer, first-claim MA16): when one
+fires it is a bug and stays loud. No silent + untested + unhandled rows.
+
 ### Posture
 
 - **Scaling:** resolve over 198k rows = batched transactions (500/batch,
@@ -165,6 +189,20 @@ MATCHING.md — this section records unit-level design decisions only.)*
   `article:` (manufacturer-scoped); no code → `name:` basis. BASTA is
   always `article:` (company-scoped article numbers; GTIN only lands
   via enrichment/coverage).
+- **il5 (2026-10-10, Section 2, user ok):** identity operations are
+  runs — recorded in the unified `run` table (d3) with kind codes
+  (`identity_resolve`, `identity_enrich`, `identity_match`), status and
+  per-source count details; batch commits every 500 rows (raw-run
+  precedent); crash recovery = idempotent re-run, NO checkpoint
+  machinery (a resolve pass is minutes — resume-by-re-run beats
+  resume-by-checkpoint on simplicity and auditability). Dry-run support
+  rides the house dry-run discipline.
+- **il6 (2026-10-10, Section 2, user ok):** block-size caps exist from
+  day one — secondary blocking (ident prefix 4–6) auto-applies above
+  50,000 pairs in a primary block; hard cap 500,000 pairs per
+  block-group, beyond which the group is split and counted
+  (BlockTooLarge path), never scored silently. Numbers recalibrate at
+  the pilot with the score bands.
 - **il4 (2026-10-10, Section 1 close):** uuid namespace pinned:
   `uuid5(uuid.NAMESPACE_URL, "https://github.com/fsncps/lead_HS#identity-v1")`;
   domain prefixes `manufacturer:<name_norm>`, `product:<ident_string>`.
