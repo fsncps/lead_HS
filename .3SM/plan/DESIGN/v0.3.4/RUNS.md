@@ -31,7 +31,7 @@ after each run.
 
 | Gate | Run | FINAL |
 |---|---|---|
-| fast static (ruff + mypy, changed files) | every run | FINAL incl. whole unit |
+| lint/typecheck | — | none configured (PROJECT gates table) — run gate = user review |
 | offline suite (`make test`) | grows per run as authored | FINAL — full suite green |
 | db audit (`make db-audit`) | — | FINAL — exit 0 incl. --unreferenced |
 | smoke (`make smoke`) | — | FINAL — green |
