@@ -160,7 +160,46 @@ context above).
 
 ## TESTING POSTURE
 
-(authored at Section 6)
+Offline, deterministic, no network in tests (PROJECT guidelines; this
+unit is pure derivation over fixture DBs). Pyramid: many unit
+(normalize, uuid, adapters, blocking caps), fewer integration (resolve
+end-to-end, enrich, match bands, run rows), few system (CLI + rebuild
+via CliRunner). No e2e — real-data verification is the live-op pass on
+the 288k-row DB, user-tested (r03/r04 pattern), not automated. No
+wall-clock assertions — perf is guarded structurally by the il6 caps.
+
+Test diagram (codepath → type → happy/failure/edge):
+
+    normalize            unit            order-insensitive ≙; NUL stripped; empty
+                                         guard; NFKD
+    uuid derivation      unit            stable; domain-separated; empty refuse
+    ecat adapter         unit+int        group extraction; il3 map; SourceSchemaError
+    basta adapter        unit+int        company-scoped article group key
+    match-or-create      int             new vs existing; GTIN collision → review (MA16);
+                                         back-link ensure fresh+existing
+    resolve end-to-end   int             fixture → canonical; RE-RUN = NO-OP
+                                         (hash-compare) ← determinism showcase
+    enrich               int             fill-if-empty; strict majority; tie never;
+                                         dropped raw table → named error
+    blocking             unit+int        same-product pairs co-block; secondary auto (il6)
+    scoring + bands      int             band edges; il9 human-row protection
+    BlockTooLarge        unit            split + count at synthetic cap
+    run rows / dry-run   int             run row + per-source details; dry-run zero-write
+    CLI + rebuild        system          exit 0/1/2/130; rebuild = backup→drop→resolve;
+                                         BackupError aborts BEFORE drop
+    migration 0013       int             backup default; schema; no 0014+ collision
+
+FINAL-test inputs (provisional, recorded in RUNS.md): double-resolve
+hash-identity on the real DB; SIGKILL-mid-batch chaos re-run.
+
+Calibration plan (procedure now, thresholds at first real run):
+(1) fixture samples from the on-disk 100-row ECAT/BASTA CSVs;
+(2) hand-label ~50 cross-source same-product pairs + ~50 non-pairs,
+committed to the repo; (3) sweep rapidfuzz scorers (JW, token_set, DL),
+record distributions; (4) pin bands: auto_match ≥ T_high with zero
+labelled false-positives, review ∈ [T_low, T_high) capturing ≥80% of
+true pairs; (5) sweep script + labelled set + thresholds committed —
+recalibration = re-run the sweep, never a hand-edit.
 
 ## RISKS
 
@@ -214,6 +253,19 @@ MATCHING.md — this section records unit-level design decisions only.)*
   a concurrent writer fails fast with a named SQLITE_BUSY error; serial
   operator discipline stays the house rule (raw-run pattern); il2
   manifest check covers post-hoc drift.
+- **il10 (2026-10-10, Section 5):** `normalize.py` stays the single
+  shared module — identity imports it; token-set order-insensitivity and
+  control-char strip land there (fu7 staging consumers benefit; staging
+  is rebuildable from archive, so changed norms are safe). Two
+  normalizers would be the DRY violation.
+- **il11 (2026-10-10, Section 5):** seed CSVs live in
+  `src/leadhs/dict/` (`legal_forms.csv`, `ident_prefixes.csv`) — the D6
+  pattern; versioned, reviewed, loadable.
+- **il12 (2026-10-10, Section 5):** per-source adapters are plain
+  functions + a registry dict (no framework), each defining its group
+  key — ECAT `(licence_number, product_or_service_name)`, BASTA
+  `(company_id, article_number)`; resolve iterates GROUPS, not rows
+  (MA12).
 - **il9 (2026-10-10, Section 4):** match re-run semantics — candidate
   pairs UNIQUE (row_a, row_b, method); a re-run updates only
   machine-owned rows (auto_match/no_match/pending review); human-decided
