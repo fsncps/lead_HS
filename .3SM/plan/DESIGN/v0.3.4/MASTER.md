@@ -203,6 +203,22 @@ MATCHING.md — this section records unit-level design decisions only.)*
   block-group, beyond which the group is split and counted
   (BlockTooLarge path), never scored silently. Numbers recalibrate at
   the pilot with the score bands.
+- **il7 (2026-10-10, Section 3):** MA8 decided — **rapidfuzz**, exact
+  version pinned in pyproject (D16's one-package extension slot, BSD,
+  vanilla-Windows wheels, 50–100× pure Python at block scale; it IS the
+  reference implementation the hand-rolled path would have to be
+  verified against).
+- **il8 (2026-10-10, Section 4):** normalization strips control
+  characters before folding (NUL bytes survive SQLite TEXT; never enter
+  a normalized key). Identity commands take BEGIN IMMEDIATE per batch —
+  a concurrent writer fails fast with a named SQLITE_BUSY error; serial
+  operator discipline stays the house rule (raw-run pattern); il2
+  manifest check covers post-hoc drift.
+- **il9 (2026-10-10, Section 4):** match re-run semantics — candidate
+  pairs UNIQUE (row_a, row_b, method); a re-run updates only
+  machine-owned rows (auto_match/no_match/pending review); human-decided
+  rows (confirmed/rejected) are never touched and the protected count is
+  reported. Human corrections remain append-only new rows (MA5/D5).
 - **il4 (2026-10-10, Section 1 close):** uuid namespace pinned:
   `uuid5(uuid.NAMESPACE_URL, "https://github.com/fsncps/lead_HS#identity-v1")`;
   domain prefixes `manufacturer:<name_norm>`, `product:<ident_string>`.
@@ -221,7 +237,7 @@ MATCHING.md — this section records unit-level design decisions only.)*
   + `manufacturer:`/`product:` domain prefixes).
 - Score-band calibration plan: thresholds unpinned until the labelled
   pilot; the calibration PROCEDURE must be designed (Section 6/7).
-- MA8 dependency call: rapidfuzz vs stdlib-only (pin at Section 3/6).
+  Related pins landed: block caps il6, dependency il7.
 - Bubble-ups to drain at record time: data_model.md "name_base dedup
   rules — Phase-1 pilot" OPEN item → resolved-by-reference to
   MATCHING.md; DESIGN/MASTER.md State stale (v0.3.0 shipped, v0.3.4
