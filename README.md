@@ -169,6 +169,20 @@ source whose raw table changed since (the remedy is a documented
 backup-then-rebuild command), and `leadhs doctor` reports coverage,
 orphans and drift.
 
+**HS-code completion is applied (v0.3.4, run r02, 2026-10-10)** —
+details in [report-0.3.4-r02.md](docs/report/report-0.3.4-r02.md): a
+curated, bundled mapping (`dict/hs_group_map.csv`, 345 rows covering
+*every* group in both sources — ECAT Ecolabel groups join directly,
+BASTA chapters vote per product) fills `product.hs_code`; **258,360 of
+271,005 products (95.3%) now carry an HS4 code**, the remaining NULLs
+are by documented decision (services/non-goods assortments, or 23
+products whose raw chapters resolve to two different HS4 — kept NULL,
+never guessed). The paint-relevant core **HS 3208 + 3209 holds 23,748
+products** — the candidate universe the SDS unit budgets against.
+`leadhs hs apply|status` are idempotent, run-booked, and order-bound
+after any identity rebuild; the mapping's 131 flagged rows await the
+commissioning owner's review.
+
 **Next: three follow-up units, SDS coverage first.** The immediate
 unit (v0.3.5) puts the **manufacturer-authored safety data sheet
 (SDS/MSDS) PDF on file** for the product basis — discovered in stages

@@ -121,3 +121,18 @@ LIVE. Run table reshaped: r02 = HS completion (D51; new, PLANNED),
 enrichment renumbered r02→r03 (still DEFERRED → v0.3.6), matching
 r03→r04 (DEFERRED → v0.3.7). Tag `v0.3.4` stays at the first-ship
 merge 2c73aea. Run registration done; next: 3sm-eng-run r02.
+
+## 2026-10-10 — v0.3.4 — r02 HS completion DELIVERED
+
+D51 pull-forward executed on branch `v0.3.4` (commits fb1e9dd, 594efd3,
+f3f16d1, 3fa4219): migration 0014 (hs_apply), curated bundled map
+(345 rows: 25 ECAT + 320 BASTA; 131 flagged, 10 reviewed-empty),
+`hs apply|status` CLI, doctor coverage line, 10 offline tests (suite
+471). Live pipeline first-run: rebuild 42 s (counts identical to r01;
+three live-found defects in rebuild teardown + status fixed in-run),
+apply set 258,360/271,005 = **95.3%**; idempotent; worklist empty →
+de5 enumeration done. **HS 3208+3209 = 23,748 products** (SDS unit
+budget basis). Report `docs/report/report-0.3.4-r02.md` (incl. the
+user-requested complete ECAT eu_group↔HS4 interface table); README,
+management summary DE/FR, RUNS/MASTER updated. Open: 131 flagged rows
+→ user review; FINAL (r01 + r02 provisional inputs).

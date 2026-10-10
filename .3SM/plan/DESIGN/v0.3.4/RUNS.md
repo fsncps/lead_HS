@@ -43,7 +43,7 @@ after each run.
 | run | scope | status | SHA | notes |
 |---|---|---|---|---|
 | r01 | canonical identity layer: migration 0013, resolve pass, `identity rebuild`, doctor identity checks | DELIVERED | 4a661e6 + 6b429f0 | 461 passed; real-data gates green (report-0.3.4-r01.md) |
-| r02 | **HS completion** (D51): curated hs_group_map CSV + deterministic apply + coverage status | PLANNED | — | user-pulled-forward 2026-10-10 ("all product rows with HS"); universal HS4 granularity — see REOPEN |
+| r02 | **HS completion** (D51): curated hs_group_map CSV + deterministic apply + coverage status | DELIVERED | a55ad2f + fb1e9dd + 594efd3 + f3f16d1 + 3fa4219 (+ docs commit) | 471 passed; live pipeline green: 95.3% coverage, paint core 3208+3209 = 23,748 (report-0.3.4-r02.md) |
 | r03 | enrichment pass (majority fill/replace, MA13 rules) | **DEFERRED** → follow-up unit v0.3.6 | — | renumbered from r02 at the 2026-10-10 reopen; carries verbatim |
 | r04 | matching layer: blocking + scoring + linkage_candidate + review-queue visibility | **DEFERRED** → follow-up unit v0.3.7 | — | renumbered from r03; score-band calibration pins at v0.3.7 planning |
 | FINAL | full-suite + live-op verification + reconciliation | PLANNED | — | after the last regular run of the reopened unit |
@@ -355,3 +355,46 @@ carries: build may take the back-link column name (`product_uuid`),
   inherits r01's PROVISIONAL inputs unchanged + r02's above
 valid-until: RUNS.md re-plan, migration-order changes (0014), or a
   product-schema change touching eu_group/back-links
+
+### DELIVERED — r02 executed 2026-10-10
+
+**Execution (dependency order: migrate → dry-run → rebuild → apply →
+idempotence → status → doctor):**
+
+| step | result |
+|---|---|
+| `db init` | 0014 applied |
+| `hs apply --dry-run` | planned ECAT 60,221 + BASTA 198,139, conflicts 23; zero writes; 2.4 s (after the perf fix, see defects) |
+| `identity rebuild` (first live) | 42 s; AS-2 2,418 mfr / 72,652 prod; AS-33 439 mfr / 198,353 prod; counts identical to r01; backup `leadhs.sqlite-20261010T034250.sqlite` |
+| `hs apply` | ECAT set 60,221; BASTA set 198,139; conflicts 23 kept NULL; 3.2 s |
+| `hs apply` again | both sets 0 (idempotent) |
+| `hs status` | 258,360/271,005 (95.3%); AS-2 reviewed 12,431; AS-33 reviewed 191, not_applied 23; **worklist empty (map total → de5 enumeration done)** |
+| `doctor` | identity + hs lines green |
+
+Spot-checks (user test plan step 3): ECAT "Decorative paints…" product
+→ 3209 ("Divina Competence"); BASTA Flügger bk04 03404 → 3209.
+
+**User test plan walk:** steps 2–5 executed live as above; step 1
+(pre-apply status) superseded — the dry-run+rebuild order made the
+all-pending state transient (three-state semantics verified offline +
+post-apply); step 6 (map-edit re-apply) covered by the offline test
+(`test_rerun_after_map_edit`), not re-run live; step 7 (flag review)
+**open — user's Q1 loop**.
+
+**Headline:** 23,748 products at HS 3208+3209 (the v0.3.5 SDS budget
+basis); 83 distinct HS4 in use; 12,645 NULL = 12,431 ECAT reviewed +
+191 BASTA reviewed + 23 conflicts.
+
+**Live-found defects, fixed in-run** (all three unreachable via the
+offline fixtures alone; no offline regression test yet → FINAL input):
+1. rebuild teardown dropped the back-link column while 0013's index
+   depended on it → dependent indexes drop first (594efd3).
+2. rebuild teardown truncated linkage_candidate/identity_state then
+   collided with the re-CREATE block → all four tables dropped
+   (f3f16d1).
+3. hs status read-only handle blocked temp DDL + worklist re-used the
+   wrong group column for AS-2 → read-write handle + per-source
+   worklist SQL (3fa4219). Perf: BASTA vote was O(n²) → indexed
+   `_hs_best` (594efd3, 10 min → 2.4 s).
+
+Report: `docs/report/report-0.3.4-r02.md`.

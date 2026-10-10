@@ -6,7 +6,7 @@
 > the project README. Sources and detail: project README (English) and
 > docs/plan/3SM/.
 
-Stand / État: 2026-10-10 (v0.3.4 r01: Identitätsschicht ausgeführt — 271'005 kanonische Produkte / 2'857 Hersteller aus 288'138 Rohzeilen / r01 de la couche d'identité exécuté — 271 005 produits canoniques / 2 857 fabricants à partir de 288 138 lignes brutes).
+Stand / État: 2026-10-10 (v0.3.4 r02: Identitäts- + HS-Schicht ausgeführt — 271'005 kanonische Produkte / 2'857 Hersteller; 95,3 % mit HS4-Code, Farbkern 3208+3209 = 23'748 / r01 de la couche d'identité exécuté — 271 005 produits canoniques / 2 857 fabricants ; 95,3 % avec code HS4, cœur peinture 3208+3209 = 23 748).
 
 ---
 
@@ -359,6 +359,17 @@ jeder kanonische Datensatz ist zu allen Rohbeobachtungen
 zurückverfolgbar). Registeruniversen, keine Farbzählungen — der
 Farbausschnitt bleibt der Anreicherungs-/Matching-Arbeit vorbehalten.
 Details: `docs/report/report-0.3.4-r01.md` (EN).
+
+Ergänzend (10.10.2026): HS-Vervollständigung (Lauf r02, dieselbe
+Einheit). Eine kuratierte, gebündelte Zuordnungstabelle (345 Zeilen,
+jede Gruppe beider Register abgedeckt) füllt das HS-Feld: **258'360 von
+271'005 Produkten (95,3 %) tragen einen HS4-Code**; die übrigen sind
+dokumentiert NULL (Dienstleistungen/Nicht-Waren, bzw. 23 Produkte mit
+mehrdeutigen Kapiteln — nie geraten). Der farbrelevante Kern **HS 3208
++ 3209 umfasst 23'748 Produkte** — die Kandidatenmenge, an der sich die
+SDB-Beschaffung (v0.3.5) budgetiert. 131 gekennzeichnete Zuordnungszeilen
+liegen der durchführenden Stelle zur Prüfung vor. Details:
+`docs/report/report-0.3.4-r02.md` (EN).
 
 Projektstand (09.10.2026): Das Erhebungswerkzeug — ein kleines eigenes
 Programm («leadhs»), das Dokumente sammelt, unverändert archiviert und
@@ -770,6 +781,17 @@ canonique est traçable vers toutes ses observations brutes). Univers de
 registres, pas des comptages peinture — la découpe peinture reste au
 travail d'enrichissement/appariement. Détails :
 `docs/report/report-0.3.4-r01.md` (EN).
+
+En complément (10.10.2026) : complétion HS (run r02, même unité). Une
+table de correspondance curatée et embarquée (345 lignes, chaque groupe
+des deux registres couvert) remplit le champ HS : **258'360 produits
+sur 271'005 (95,3 %) portent un code HS4** ; les autres sont NULL de
+façon documentée (services/non-marchandises, et 23 produits à chapitres
+ambigus — jamais devinés). Le cœur peinture **HS 3208 + 3209 compte
+23'748 produits** — l'ensemble candidat sur lequel la collecte FDS
+(v0.3.5) se budgète. 131 lignes de correspondance marquées attendent la
+révision de l'entité reqérante. Détails :
+`docs/report/report-0.3.4-r02.md` (EN).
 
 État du projet (09.10.2026) : l'outil de collecte — un petit programme
 propre (« leadhs ») qui rassemble les documents, les archive à l'identique
