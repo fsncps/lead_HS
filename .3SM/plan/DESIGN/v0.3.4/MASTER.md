@@ -112,6 +112,25 @@ The only swallow-and-continue class is row-level skip — never silent
 impossible by construction (single writer, first-claim MA16): when one
 fires it is a bug and stays loud. No silent + untested + unhandled rows.
 
+### What already exists (reused, not rebuilt)
+
+`normalize.py` (manufacturer/ident norms, fu7 — extended in place,
+il10) · `raw/interpreter.py` patterns (runtime table creation, quoting
+helper, batch/checkpoint/dry-run discipline) · `ids.py` run_key builder
+(no collision) · unified `run` table + report content layer (d3/d25 —
+identity rides them) · migration discipline (d20 backup, d36 renumber)
+· the reverted prototype at `/tmp/opencode/matching-prototype/`
+(resolve loop, link-ensure, namespace scheme — mined, not adopted).
+
+### Dream-state delta (vs the 12-month ideal)
+
+After this unit the canonical spine exists for ECAT + BASTA: "how many
+distinct paint products do the registers hold?" becomes answerable,
+cross-source overlap counts with evidence tiers exist, and the review
+queue turns fuzzy judgment into a bounded human duty. Remaining to the
+ideal: Nordic Swan + retail batch sources (v0.3.8), MSE denominator
+inputs, M1–M4 catalog/SDS integration on top of the spine.
+
 ### Posture
 
 - **Scaling:** resolve over 198k rows = batched transactions (500/batch,
@@ -354,3 +373,61 @@ MATCHING.md — this section records unit-level design decisions only.)*
 ## SKILL RECORDS
 
 (3sm-design-unit / 3sm-design-master passes; append-only)
+
+### 3sm-design-unit HOLD SCOPE runs-ready — 2026-10-10
+scope: full first pass — unit MASTER (SCOPE, ARCHITECTURE, INTERFACES,
+ERROR MODEL, TESTING POSTURE, RISKS), RUNS.md (r01–r03 + FINAL)
+checklist:
+- [x] records inherited — none exist (no 3sm-design-master record);
+  taste calibration self-ran (raw/ package, normalize.py, d20/d36
+  discipline as references; static-migration-vs-runtime-schema and
+  silent truncation as anti-patterns) — OK, noted for the master
+- [x] pass classification — full (first pass for v0.3.4) — OK
+- [x] pre-review system audit — 288k raw rows over 461-test base;
+  TODO clusters only in v0.3.0-adjacent probe files; prototype mined — OK
+- [x] retrospective check — previously problematic areas: schema-assuming
+  migrations (prototype 0013, fixed), truncation (AS-33 budget) → both
+  anti-patterns carried into calibration; identity layer avoids both
+  (runtime ensure il-shape; budget-bounded inputs upstream) — OK
+- [x] drift review — 3 findings: data_model design-ahead collision
+  (RESOLVED: il1), name_base stale mirror (bubble-up), stage-MASTER
+  State stale (bubble-up) — OK
+- [x] Step 0 — premises hold (spine-first is user-directed, direct,
+  real pain); scope boundary confirmed as recorded (identity + matching);
+  complexity WARNING answered via run split; mode HOLD (user A) — OK
+- [x] Sec 1 Architecture — dependency graph, 4-path flows, candidate
+  state machine, coupling/rollback posture; il1 naming, il2 manifest
+  drift + rebuild, il3 code mapping, il4 namespace — OK
+- [x] Sec 2 Error & rescue — full registry, 0 silent rows; il5 run-row
+  integration + idempotent resume, il6 block caps — OK
+- [x] Sec 3 Security — small surface, threat table 5 rows all
+  mitigated/n-a; il7 rapidfuzz pinned (MA8 decided) — OK
+- [x] Sec 4 Data/UX edge cases — resolve shadow grid; il8 control-chars
+  + BEGIN IMMEDIATE, il9 re-run vs append-only — OK
+- [x] Sec 5 Quality — il10 shared normalize, il11 dict CSVs, il12
+  group-key adapters; no questions — OK
+- [x] Sec 6 Tests — test diagram 13 rows, pyramid holds, no e2e
+  (live-op is user-tested); calibration procedure recorded; FINAL
+  inputs: double-resolve hash-identity, chaos re-run — OK
+- [x] Sec 7 Perf — il13 in-memory key index, il14 set-based enrich;
+  indexes enumerated; il6 caps bound the worst case — OK
+- [x] Sec 8 Observability — run rows as telemetry; il15 doctor identity
+  checks; error messages as runbooks — OK
+- [x] Sec 9 Deploy — additive migration, backup-first, live-op
+  verification — OK
+- [x] Sec 10 Future — reversibility 4/5; debts named (adapters per
+  source, renumber churn, review-queue duty) — OK
+- [x] RUNS.md — r01–r03 + FINAL, user-testable goals, USER TEST PLANs,
+  PROVISIONAL TESTS recorded — OK
+findings: CRITICAL GAP 0 · WARNING 1 (unit complexity ~10–14 files —
+  answered: run split, scope recorded) · unresolved 0
+carries: eng-run may start from Section 2 deltas per run (error model
+complete for unit scope); eng-final inherits the PROVISIONAL list +
+calibration sweep as FINAL-plan inputs; design-master should drain the
+two bubble-ups and may consolidate MATCHING-derived contracts into
+data_model.md at its next pass
+valid-until: concept re-freeze (MATCHING.md MA register changes);
+RUNS.md re-planned; PROJECT.md review preferences change; any il-decision
+revised
+commit: 03599c5, 9d83f32, 54f3176, e8880dc, 4e5a02b, 275d556, and this
+  record's commit (see `git log --oneline v0.3.4 -- .3SM/plan/DESIGN/v0.3.4/`)
