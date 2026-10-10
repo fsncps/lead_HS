@@ -12,34 +12,36 @@ move to the archive with their end-date.
 
 # ACTIVE
 
-### v0.3.4 — deterministic normalization + matching
-status: ACTIVE (2026-10-10 — /init-unit; branch `v0.3.4`; design
-  pass in progress). Prepared INIT-READY 2026-10-09; OPEN-NOW items
-  are Design-stage deferrals, same pattern as v0.3.0's manifest fields
-intent: Identity layer first (user-directed 2026-10-09): canonical
-  manufacturer + product tables built from the raw source tables —
-  extract → normalize → match-or-create over UNIQUE normalized
-  strings → link (raw→product back-link FK, product→manufacturer FK);
-  then an enrichment pass completing canonical fields with the
-  most-common raw values. Cross-source collapse (exact keys, blocking,
-  scored tiers — no LLM matching) rides on top of these tables.
-decisions:
-  - MA10–MA14 (MATCHING.md Stage 0) — column contracts, typed
-    composite ident_string, group-level identity, two-pass CLI,
-    coverage-scan extension columns
-  - MA1–MA7/MA9 proposed (MATCHING.md) — pin at this unit's Design
-constraints: deterministic + idempotent (re-run = no-op); product
-  data only (D27); MA8 dependency call open (rapidfuzz vs stdlib)
-non-goals: raw acquisition (v0.3.0), source expansion (v0.3.8)
-readiness: Stage 0 contracts user-directed and recorded; MA15
-  (deterministic uuid) + MA16 (GTIN collision → review queue) + MA13
-  tie rules confirmed 2026-10-09; remaining at Design: MA adoption
-  pinning, MA8 dependency call, ECAT code_type mapping, score-band
-  calibration plan (OPEN-NOW)
-updated: 2026-10-09
-
+(none — v0.3.4 shipped 2026-10-10)
 
 # NEXT-UP
+
+### v0.3.5 — enrichment pass (ex-v0.3.4 r02)
+status: INIT-READY (spawned 2026-10-10 at v0.3.4 early close; branch
+  id free)
+intent: complete canonical manufacturer/product rows from their
+  per-source observations — majority fill/replace per MA13 over the
+  r01 back-links (288,138 rows → 271,005 products / 2,857
+  manufacturers already resolved, 100% linked)
+carries: archived RUNS.md r02 entry (`DESIGN/_archive/v0.3.4/`) as
+  the plan payload; deferred FINAL inputs (SIGKILL chaos, full
+  `identity rebuild` round, SQLite<3.35 pin, staging-norm recompute)
+constraints: deterministic + idempotent; product data only (D27)
+updated: 2026-10-10
+
+### v0.3.6 — matching layer (ex-v0.3.4 r03)
+status: MATURING (pends v0.3.5 DELIVERED — match reads enriched
+  fields)
+intent: cross-source collapse on the canonical tables — blocking +
+  scored tiers (exact keys first, then Jaro-Winkler / token-set with
+  small candidate blocks), verdicts auto_match/review/no_match in
+  linkage_candidate, review-queue visibility in reports
+carries: archived RUNS.md r03 entry; il6 block caps; `ident_prefixes`
+  / `legal_forms.csv` repo move (open item)
+constraints: no LLM matching; score-band calibration pins at its
+  planning; MA8 dependency call (rapidfuzz vs stdlib) open
+updated: 2026-10-10
+
 
 ### v0.3.8 — source expansion via generic bulk import
 status: MATURING
