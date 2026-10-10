@@ -1,11 +1,16 @@
-"""Identity normalization — shared by ingest and the overlap SQL (fu7).
+"""Identity normalization — shared by ingest, the overlap SQL (fu7)
+and the canonical identity layer (v0.3.4).
 
-Exact-match-only (design c5): no fuzzy matching in v0.2.2. The
-manufacturer normal form casefolds, folds diacritics, strips legal-form
-suffix tokens and collapses punctuation/whitespace; the ident normal
-form strips spaces/dashes (leading zeros survive — callers must keep
-idents TEXT, e4). The product-name normal form (the ``ident_basis=name``
-fallback) folds and collapses whitespace only.
+Exact-match-only: no fuzzy matching. Normal forms are identity KEYS,
+not display values (the readable text lives in the raw/canonical name
+columns). The manufacturer and product-name normal forms casefold,
+fold diacritics, strip control characters, collapse
+punctuation/whitespace and return the SORTED-TOKEN form — order
+insensitive, pinned at v0.3.4 so uuids never churn (MA15). The
+manufacturer normal form additionally strips legal-form suffix tokens.
+The ident normal form strips spaces/dashes (leading zeros survive —
+callers must keep idents TEXT, e4). ``norm_gtin`` is the canonical
+GTIN-14 form (il16): digits only, 8/12/13/14 accepted, zero-padded.
 """
 
 from __future__ import annotations
@@ -34,18 +39,29 @@ _LEGAL_FORM_TOKENS = frozenset(
 )
 _PUNCT_RE = re.compile(r"[^\w\s]+", re.UNICODE)
 _WS_RE = re.compile(r"\s+")
+_CTRL_RE = re.compile(r"[\x00-\x1f\x7f]")
 
 
 def _fold(text: str) -> str:
-    """Diacritic fold + casefold."""
+    """Control-character strip + diacritic fold + casefold (il8: NUL
+    bytes and friends never enter a normalized key)."""
+    text = _CTRL_RE.sub(" ", text)
     decomposed = unicodedata.normalize("NFKD", text)
     stripped = "".join(ch for ch in decomposed if not unicodedata.combining(ch))
     return stripped.casefold().strip()
 
 
+def _sorted_tokens(text: str) -> str:
+    """Whitespace collapse + token-set order-insensitivity (the final
+    identity shape — sorting happens LAST, after every other step)."""
+    tokens = sorted(_WS_RE.sub(" ", text).split())
+    return " ".join(tokens)
+
+
 def norm_manufacturer(raw) -> str:
     """Manufacturer normal form: fold + casefold, strip legal-form suffix
-    tokens (repeatedly), then punctuation → space, whitespace collapse."""
+    tokens (repeatedly), then punctuation → space, whitespace collapse,
+    sorted-token form."""
     if raw is None:
         return ""
     text = _fold(str(raw))
@@ -57,7 +73,7 @@ def norm_manufacturer(raw) -> str:
     while len(tokens) > 1 and _is_legal(tokens[-1]):
         tokens.pop()
     text = _PUNCT_RE.sub(" ", " ".join(tokens))
-    return _WS_RE.sub(" ", text).strip()
+    return _sorted_tokens(text)
 
 
 def norm_ident(raw) -> str:
@@ -73,10 +89,27 @@ def norm_ident(raw) -> str:
 
 def norm_name(raw) -> str:
     """Product-name normal form (``ident_basis=name`` fallback): fold,
-    casefold, whitespace collapse — punctuation kept (exact match)."""
+    casefold, whitespace collapse, sorted-token form — punctuation
+    kept (exact match)."""
     if raw is None:
         return ""
-    return _WS_RE.sub(" ", _fold(str(raw))).strip()
+    return _sorted_tokens(_fold(str(raw)))
+
+
+def norm_gtin(raw) -> str:
+    """Canonical GTIN-14 form (il16): digits only; 8/12/13/14 digits
+    accepted (GTIN-8/UPC-12/EAN-13/GTIN-14) and zero-padded to 14 —
+    one canonical row for EAN-13 and GTIN-14 of the same product.
+    Empty/no digits → ``""`` (callers fall back); any other digit
+    count raises ValueError (callers count the refusal)."""
+    if raw is None:
+        return ""
+    digits = re.sub(r"\D", "", str(raw))
+    if not digits:
+        return ""
+    if len(digits) not in (8, 12, 13, 14):
+        raise ValueError(f"not a GTIN (need 8/12/13/14 digits): {str(raw)[:40]!r}")
+    return digits.zfill(14)
 
 
 def ident_type_of(hint) -> str:

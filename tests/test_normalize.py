@@ -39,9 +39,11 @@ def test_norm_ident_strips_separators_keeps_case():
     assert norm_ident(None) == ""
 
 
-def test_norm_name_folds_but_keeps_words():
-    assert norm_name("Müller Blau Seidenmatt") == "müller blau seidenmatt".replace("ü", "u")
-    assert norm_name("  Paint   A  ") == "paint a"
+def test_norm_name_folds_sorts_keeps_words():
+    # v0.3.4 pin (MA15): sorted-token identity keys, order-insensitive
+    assert norm_name("Müller Blau Seidenmatt") == "blau muller seidenmatt"
+    assert norm_name("Seidenmatt Blau Müller") == "blau muller seidenmatt"
+    assert norm_name("  Paint   A  ") == "a paint"
 
 
 def test_ident_type_hints():
@@ -66,4 +68,4 @@ def test_identity_basis_pinning():
     ident = identity("Acme GmbH", "", "licence_no", "Paint  A")
     assert ident["ident_basis"] == "name"
     assert ident["ident_type"] == "none"
-    assert ident["ident_norm"] == "paint a"
+    assert ident["ident_norm"] == "a paint"
