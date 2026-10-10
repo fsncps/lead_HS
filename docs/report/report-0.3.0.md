@@ -130,3 +130,18 @@ loads. No legal referencing anywhere in the layer — product data only.
   defect.
 - `api_endpoint` interpretation is implemented and fixture-tested but
   has no live source yet; `offset` pagination likewise.
+
+## Addendum (2026-10-09, at ship)
+
+Post-FINAL live operation (run r04, booked at ship): JSON dot-path
+projection for nested source fields (r04, `3c1c7c5`) — BASTA's
+`flags`/`grades` containers project through dotted paths. AS-33 BASTA
+whole-load executed and verified: **198,742 rows = envelope total
+exactly, 0 truncated**, ~3 h walk at the 10 s robots crawl-delay,
+audit clean, verbatim spot-checks vs the live API pass. First-light
+defect recorded: the 1,024-byte default budget truncated every row
+(the `flags` object averages ~750 B) — instruction budget set to
+4,096 (`50f833c`). AS-7 environdec reserved as an `html_pages`
+record. Suite at ship: **461 passed, 2 deselected**; `make smoke` 6
+passed; `db-audit` exit 0. DB content inventory:
+`docs/report/db-content.md`.

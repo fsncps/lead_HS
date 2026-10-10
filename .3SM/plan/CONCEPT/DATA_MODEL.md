@@ -2,7 +2,7 @@
 unit: global
 stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-09-19
+updated: 2026-10-09
 ---
 
 # Topic — Data model (concept summary)
@@ -30,6 +30,11 @@ milestone-gated; the fully normalized registry schema is Design's.
   provisional; anchor promotion manual.
 - D27 — product data only; no legal-category, Swiss-relevance or
   legal-status fields anywhere.
+- MA10–MA15 (MATCHING.md, 2026-10-09) — canonical identity tables
+  (`manufacturer`, `product`, UNIQUE normalized strings) precede the
+  sighting layer; deterministic uuid5 identity, uuid is the canonical
+  key after ingress; raw tables keep verbatim rows plus a product_uuid
+  back-link; extension columns per coverage scan.
 
 ## OPEN ITEMS
 

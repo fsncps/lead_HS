@@ -12,45 +12,34 @@ move to the archive with their end-date.
 
 # ACTIVE
 
-(none)
+### v0.3.4 — deterministic normalization + matching
+status: ACTIVE (2026-10-10 — /init-unit; branch `v0.3.4`; design
+  pass in progress). Prepared INIT-READY 2026-10-09; OPEN-NOW items
+  are Design-stage deferrals, same pattern as v0.3.0's manifest fields
+intent: Identity layer first (user-directed 2026-10-09): canonical
+  manufacturer + product tables built from the raw source tables —
+  extract → normalize → match-or-create over UNIQUE normalized
+  strings → link (raw→product back-link FK, product→manufacturer FK);
+  then an enrichment pass completing canonical fields with the
+  most-common raw values. Cross-source collapse (exact keys, blocking,
+  scored tiers — no LLM matching) rides on top of these tables.
+decisions:
+  - MA10–MA14 (MATCHING.md Stage 0) — column contracts, typed
+    composite ident_string, group-level identity, two-pass CLI,
+    coverage-scan extension columns
+  - MA1–MA7/MA9 proposed (MATCHING.md) — pin at this unit's Design
+constraints: deterministic + idempotent (re-run = no-op); product
+  data only (D27); MA8 dependency call open (rapidfuzz vs stdlib)
+non-goals: raw acquisition (v0.3.0), source expansion (v0.3.8)
+readiness: Stage 0 contracts user-directed and recorded; MA15
+  (deterministic uuid) + MA16 (GTIN collision → review queue) + MA13
+  tie rules confirmed 2026-10-09; remaining at Design: MA adoption
+  pinning, MA8 dependency call, ECAT code_type mapping, score-band
+  calibration plan (OPEN-NOW)
+updated: 2026-10-09
+
 
 # NEXT-UP
-
-### v0.3.0 — evidence DB + bulk download of the confirmed sources
-status: INIT-READY
-intent: One SQLite evidence DB gains one raw table per bulk source with
-  the source's own column headers verbatim; every confirmed bulk source
-  (ECAT, Nordic Swan — BASTA when its filter clears) is bulk-downloaded
-  completely: each and every record, stubs/nulls/duplicates included,
-  maximum data depth within the per-record budget.
-decisions:
-  - D42 — product-DB turn = v0.3; Windows installer + deferred
-    preliminaries → v0.4 (CONCEPT MASTER)
-  - D43 — v0.3 sub-roadmap 0.3.0 → 0.3.4 → 0.3.8 → analysis
-  - D44 — completeness mandate; verbatim source headers; 1 KB default
-    budget; deterministic truncation, never drop (amends R3 spill)
-  - R1/R2 — SQLite stays; upsert + change journal (RAW_SOURCING.md)
-constraints: GO=1 network discipline; list-endpoint-first + crawl-delay
-  politeness; product data only (D27); provenance per record (D17)
-non-goals: normalization/matching (v0.3.4), new-source onboarding
-  (v0.3.8), any analysis
-readiness: none — init-ready (manifest field lists, R9 mechanics pin at
-  Design)
-updated: 2026-10-03
-
-### v0.3.4 — deterministic normalization + matching
-status: MATURING
-intent: Collapse cross-source observations onto formulation-level
-  products: normalize manufacturer names and product identifiers, join
-  on exact keys (manufacturer × unique id), score near-matches within
-  blocks, tiered verdicts (auto_match/review/no_match) — no LLM
-  matching.
-decisions:
-  - MA1–MA7/MA9 proposed (MATCHING.md) — pin at this unit's Design
-constraints: MA8 dependency call open (rapidfuzz vs stdlib-only)
-non-goals: raw acquisition (v0.3.0), source expansion (v0.3.8)
-readiness: MA adoption, MA8, score-band calibration plan (OPEN-NOW)
-updated: 2026-10-03
 
 ### v0.3.8 — source expansion via generic bulk import
 status: MATURING
@@ -116,8 +105,8 @@ Authoritative register: `MASTER.md` (this directory). Latest:
 
 # OPEN ITEMS
 
-- OPEN-NOW (v0.3.4): MA decision pinning; MA8 dependency call;
-  score-band calibration plan.
+- OPEN-NOW (v0.3.4): MA adoption pinning (MA1–MA16); MA8 dependency
+  call; ECAT code_type mapping; score-band calibration plan.
 - OPEN-NOW (v0.3.8): candidate source order; gate mechanics.
 - NON-BLOCKING: BASTA paint-subset filter (de5; TODOS.md), ECAT
   17,838-vs-38,233 reconciliation — standing threads, CONCEPT MASTER
@@ -128,6 +117,29 @@ Authoritative register: `MASTER.md` (this directory). Latest:
   DECISIONS + CONCEPT MASTER ROADMAP.
 
 # SKILL RECORDS
+
+### 3sm-concept-pipeline CAPTURE+PREPARE — 2026-10-09
+scope: open-item confirmations (MA13 ties, MA16 GTIN collisions,
+MA15 uuid decision prior); v0.3.4 matured to INIT-READY; v0.3.0
+entry reconciled to built state
+checklist:
+- [x] capture — user confirmed both remaining proposals as proposed
+  (enrichment strict-majority/ties; GTIN first-claim-wins + review
+  queue) — MA13/MA16 updated — OK
+- [x] prepare v0.3.4 — id free (no unit dir/branch); theme
+  user-confirmed (identity-layer directive, "proceed to design");
+  no parallel-unit conflict (v0.3.0 build complete, finalize
+  pending — user's sequencing call); OPEN-NOW items are Design
+  deferrals → INIT-READY — OK
+- [x] audit — drift found and recorded in-entry: v0.3.0 built but
+  entry said INIT-READY/NEXT-UP; unit MASTER still stage: DESIGN —
+  housekeeping/ship-gate territory, flagged — OK
+findings: CRITICAL GAP 0 · WARNING 1 (v0.3.0 lifecycle bookkeeping
+lag; finalized via user's ship gate) · unresolved 0
+carries: design may take MA10–MA16 + Stage 0 contracts as decided
+(no re-derivation); MA1–MA9 pin at Design as planned
+valid-until: user revisits the Stage 0 contracts or the v0.3.4 scope
+commit: <lands in this pass's commits>
 
 ### 3sm-concept-pipeline CAPTURE+PREPARE — 2026-10-03
 scope: PIPELINE.md created (was absent); v0.3 program adoption captured;

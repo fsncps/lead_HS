@@ -124,3 +124,29 @@ download data, commit.
   AS-4 token-POST Drupal search, `produkte.` subdomain DNS-dead;
   KemiDigi AS-31 CKAN mirror 403 (bot-wall, retried).
 - DATA_SOURCE.md research table updated with round-2 outcomes.
+
+## Turn — 2026-10-09: identity-layer directive captured (CONCEPT)
+
+- User re-confirmed CONCEPT stage and issued the next-unit directive:
+  canonical manufacturer + product tables from the raw source tables,
+  UNIQUE normalized strings as the only match keys, deterministic
+  match-or-create resolve pass, majority-value enrichment pass,
+  product_uuid back-link in every raw table, extension columns only
+  per coverage scan ("common to a large enough number of records").
+- Captured as MATCHING.md Stage 0 + MA10–MA14 (column contracts, typed
+  composite ident_string gtin:/article:/name:, group-level identity
+  ECAT (licence, name) / BASTA (company, article), two-pass CLI,
+  coverage-scan verdicts incl. reserved city + hs_code); PIPELINE
+  v0.3.4 entry updated; DATA_MODEL.md slim addition.
+- Stage incident, recorded for honesty: a prototype (migration +
+  resolve module + tests, 672 lines) was drafted out-of-stage during
+  the directive turn and REVERTED the same day — tree back at HEAD;
+  the patch is kept non-authoritative at /tmp/opencode/matching-prototype/
+  for the unit's Design to mine. Nothing in it is decided; the
+  migration part got one review finding (raw tables are
+  instruction-dynamic → link column + group indexes are runtime
+  concerns, not static-migration content) worth carrying into Design.
+- 2026-10-09 follow-up decision: MA15 — deterministic uuid5 derivation
+  (uuid = uuid5(project namespace, normalized key)); normalized string
+  = ingress key, uuid = canonical key thereafter; rule changes that
+  alter strings require full layer re-derivation (recorded consequence).

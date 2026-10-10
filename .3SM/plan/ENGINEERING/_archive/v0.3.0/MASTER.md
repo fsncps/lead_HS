@@ -1,8 +1,8 @@
 ---
 unit: v0.3.0
-stage: ENGINEERING
+stage: COMPLETE
 lifecycle: LIVE
-updated: 2026-10-03
+updated: 2026-10-09
 branch: main (unit-branch init waived by user, 2026-10-03)
 ---
 
@@ -18,6 +18,7 @@ current run: (none — all runs CLOSED 2026-10-03)    branch: main (init waived)
 | r01 | CLOSED 2026-10-03 | 1a043db | user test plan pass (scratch DB: 0012 applies, refusals name paths, canonical hash stable) — functional-only per testing economy |
 | r02 | CLOSED 2026-10-03 | d098c3e (live fixes ca06e42) | user test plan pass — AS-2/AS-3 scanned live; drafts reviewed + committed; drift honest |
 | r03 | CLOSED 2026-10-03 (FINAL folded) | 92408d1 + ca06e42 + 350d275 | 460 passed, 2 deselected; smoke 6 passed; db-audit exit 0 (incl. --unreferenced); live AS-2 89,396 rows, 200/200 verbatim spot-checks |
+| r04 | CLOSED 2026-10-04 (unplanned live-operation run, booked at ship) | 3c1c7c5 + 50f833c (+ instruction JSONs in 1f7262e) | 461 passed; AS-33 whole-load 198,742 rows / 0 truncated / audit clean; dot-path projection fixture-tested; PHASE_FINAL backfilled r03 |
 
 Build-session note: the user overrode per-run sequencing ("implement
 0.3.0" in one pass, then live) — r02/r03 were built without separate
@@ -44,10 +45,10 @@ interfaces.md` § Build record, and the unit report
 - [x] full offline suite green (`make test` — 460 passed)
 - [x] `make db-audit` exit 0 after the live loads (incl. --unreferenced)
 - [x] `make smoke` green (6 passed)
-- [ ] whole-unit diff reviewed (ship-unit pass — pending /finalize-and-merge)
+- [x] whole-unit diff reviewed (ship-unit Pass 1, 2026-10-09: 18 non-planning files, all explained by run rows; unplanned: none)
 - [x] docs synced: DESIGN interfaces.md § Build record, data_model.md
       § Raw source tables + migration table, PROJECT commands/suites,
       READMEs ×3 (+ report-0.3.0.md); management summary substance
       check — no change needed (study numbers unchanged; AS-3 route
       death recorded in DATA_SOURCE-level docs, not the summary)
-- [ ] ship-profile checklists (PROJECT § Ship profile: local channel — ship verifies)
+- [x] ship-profile local channel verified (ship-unit Pass 3, 2026-10-09: 461 passed / smoke 6 / db-audit clean / doctor ok; tag v0.3.0 local; public-repo push+release deferred — explicit user instruction pending)

@@ -1,3 +1,9 @@
+---
+permission:
+  bash:
+    "python3 *": allow
+---
+
 # AGENTS.md — lead_HS (robin_HS)
 
 Project-specific instructions for all agents in this repository.

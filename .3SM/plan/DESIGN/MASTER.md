@@ -229,6 +229,16 @@ interfaces together — consolidation decision, no separate design.md.)
   (inherited from Strategy).
 - name_base dedup rules, UFI validation — Phase-1 pilot (inherited).
 - parameters_json schemas per future run kind — at their milestones.
+- BUBBLE-UP (v0.3.4 design, 2026-10-10): data_model.md OPEN item
+  "name_base normalization/dedup rules — Phase-1 pilot" is
+  resolved-by-reference to MATCHING.md Stage 1 (mark it there).
+- BUBBLE-UP (v0.3.4 design, 2026-10-10): this MASTER's State section is
+  stale — v0.3.0 shipped 2026-10-09 (archived); v0.3.4 active on branch
+  `v0.3.4`.
+- BUBBLE-UP (v0.3.4 design, 2026-10-10): data_model.md design-ahead
+  block superseded-in-advance on naming by unit v0.3.4 il1 (identity
+  layer owns `manufacturer`/`product`; migration 0013; design-ahead
+  renumbers 0014–0020); M1 reconciles.
 
 ## Readiness for ENGINEERING
 

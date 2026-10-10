@@ -38,3 +38,32 @@ references updated across law, facts, plan and pointer docs.
 Legacy-tree paths (`docs/plan/3SM/10_STRATEGY/`, `30_IMPLEMENTATION/`)
 and skill records stay untouched (historical record, append-only). No
 lifecycle transition of any live document is implied.
+
+
+## 2026-10-09 — v0.3.0 — SHIP: unit completed and archived
+
+`/finalize-and-merge v0.3.0` executed (branch waiver held: unit ran on
+main, so ship = verification + sync + archive + pipeline flip + local
+tag; no merge, no branch delete). Gate evidence fresh at ship: 461
+passed / smoke 6 passed / db-audit clean incl. --unreferenced / doctor
+ok (informational warns: pandoc M3/M4-deferred, contact is per-session
+env, network skipped offline). Pass 1 booked the post-FINAL r04
+(dot-path `3c1c7c5` + AS-33 budget `50f833c`) and backfilled
+`r03/PHASE_FINAL.md`; whole-unit diff reviewed (18 non-planning files,
+none unplanned). Pass 2 synced interfaces.md § Build record (+r04),
+PROJECT facts (461, raw-load state, AS-3 route death), pyproject
+0.2.3 → 0.3.0, report-0.3.0.md addendum, management summary (DE/FR)
+Stand + addenda. Unit dirs archived, PIPELINE entry → SHIPPED. Tag
+`v0.3.0` (local, annotated) at the archive commit. **Push + GitHub
+release deferred — explicit user instruction pending.**
+
+## 2026-10-10 — v0.3.4 — UNIT REGISTERED (/init-unit)
+
+Gates: clean tree (after the AGENTS.md permission-header housekeeping
+commit 6e17158 the user ordered first), id free (branch + archives),
+unregistered. Branch `v0.3.4` created off `main` (f039b26). Scaffolded:
+`DESIGN/v0.3.4/{MASTER,RUNS}.md`, `ENGINEERING/v0.3.4/MASTER.md`;
+pipeline intent carried verbatim into the design MASTER as starting
+context. Registries: plan/MASTER UNITS row (DSG/LIVE) + State flip;
+PIPELINE entry ACTIVE. Next: the user's move — design discussions /
+3sm-design-unit.

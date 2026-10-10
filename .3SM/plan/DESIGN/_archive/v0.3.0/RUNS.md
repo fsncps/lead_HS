@@ -194,3 +194,45 @@ PROJECT commands/gates).
 
 *(3sm-eng-run pass lands here at run planning; 3sm-eng-final +
 3sm-ship-unit records land at finalization; append-only.)*
+
+## CLOSURE (ship, 2026-10-09)
+
+- r04 — unplanned post-FINAL live-operation run (user-directed):
+  JSON dot-path projection (`3c1c7c5`), AS-33 payload budget 1024 →
+  4096 first-light fix (`50f833c`), AS-33 whole-load verified
+  (198,742 rows, 0 truncated), AS-7 reserved record. Booked in the
+  unit ENG MASTER runs table at ship; PHASE plans waived per the
+  unit's one-pass override, PHASE_FINAL backfilled in `r03/`.
+- Ship unit pass executed 2026-10-09 (branch waiver: unit ran on
+  main; no merge/branch-delete — archive + pipeline flip + tag
+  instead). Skill record in the FINAL section below.
+
+## FINAL — skill records
+
+### 3sm-ship-unit — 2026-10-09
+scope: /finalize-and-merge v0.3.0 (user order; branch waiver held)
+checklist:
+- [x] startup — branch main (waiver recorded in unit ENG MASTER);
+  PHASE_FINAL missing (r03 FINAL folded in build session) → backfilled
+  verbatim from recorded evidence before the gate walk — OK
+- [x] Pass 1 consistency — runs r01–r04 vs git 47b7ac8..HEAD: post-FINAL
+  r04 booked at ship; whole-unit diff 18 non-planning files, none
+  unplanned; AGENTS.md runtime permission header excluded (not unit
+  WIP) — OK
+- [x] Pass 2 docs sync — interfaces § Build record +r04; PROJECT facts
+  (461, raw-load state, AS-3 route death); pyproject 0.3.0;
+  report-0.3.0.md addendum; management summary DE/FR current — OK
+- [x] Pass 3 FINAL gate — fresh evidence: make test 461 passed 2
+  deselected; smoke 6 passed; db-audit exit 0 (incl. --unreferenced);
+  doctor ok (warns informational) — OK, green
+- [x] Pass 4 git ship (adapted) — root MASTER COMPLETE + registry row +
+  ROADMAP refresh; LOG entry; tag v0.3.0 (local); unit dirs archived;
+  PIPELINE entry SHIPPED → CONCEPT/_archive/PIPELINE.md — OK
+- [x] Pass 5 dashboard — reported (push + GitHub release deferred,
+  explicit user instruction pending)
+findings: CRITICAL GAP 0 · WARNING 1 (PHASE_FINAL backfill — provenance
+recorded in the file) · unresolved 0
+carries: housekeeping may treat v0.3.0 as verification-complete for
+retention pruning; push/release remain user-gated follow-ups
+valid-until: n/a — terminal record for the unit
+commit: <this pass's commits>

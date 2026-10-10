@@ -41,6 +41,72 @@ class DoctorResult:
             print(f"{marker} {name}: {detail}")
 
 
+def _identity_checks(result: DoctorResult, db_path: str) -> None:
+    """v0.3.4: canonical identity layer state — read-only, never creates
+    the DB, informational (identity problems warn, never error)."""
+    if not (os.path.isfile(db_path) and os.path.getsize(db_path) > 0):
+        return
+    try:
+        conn = sqlite3.connect(f"file:{os.path.abspath(db_path)}?mode=ro", uri=True)
+        conn.row_factory = sqlite3.Row
+        try:
+            have = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            if not {"manufacturer", "product", "identity_state", "linkage_candidate"} <= have:
+                result.add("ok", "identity", "not initialized (migration 0013 pending) — informational")
+                return
+            states = {r["source_id"]: r["manifest_hash"] for r in conn.execute("SELECT source_id, manifest_hash FROM identity_state")}
+            if not states:
+                result.add("ok", "identity", "tables present, no sources resolved yet (`leadhs identity resolve`)")
+                return
+            mfr_n = conn.execute("SELECT COUNT(*) FROM manufacturer").fetchone()[0]
+            prod_n = conn.execute("SELECT COUNT(*) FROM product").fetchone()[0]
+            orphans = 0
+            backtables = [
+                r[0]
+                for r in conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'raw\\_%' ESCAPE '\\'"
+                )
+            ]
+            for table in backtables:
+                cols = {r[1] for r in conn.execute(f'PRAGMA table_info("{table}")')}
+                if "product_uuid" not in cols:
+                    continue
+                total = conn.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone()[0]
+                linked = conn.execute(f'SELECT COUNT(*) FROM "{table}" WHERE product_uuid IS NOT NULL').fetchone()[0]
+                orph = conn.execute(
+                    f'SELECT COUNT(*) FROM "{table}" r LEFT JOIN product p ON p.uuid = r.product_uuid '
+                    "WHERE r.product_uuid IS NOT NULL AND p.uuid IS NULL"
+                ).fetchone()[0]
+                orphans += orph
+                result.add(
+                    "ok" if orph == 0 else "warn",
+                    f"identity {table}",
+                    f"back-linked {linked:,}/{total:,}" + (f", {orph:,} ORPHAN" if orph else ""),
+                )
+            drift = [
+                r["source_id"]
+                for r in conn.execute(
+                    "SELECT p.source_id, p.manifest_hash AS ph, s.manifest_hash AS sh "
+                    "FROM raw_source_profile p JOIN identity_state s ON s.source_id = p.source_id "
+                    "WHERE s.manifest_hash != p.manifest_hash"
+                )
+            ]
+            if drift:
+                result.add(
+                    "warn", "identity drift",
+                    f"{', '.join(drift)} re-acquired after resolve — `leadhs identity rebuild`",
+                )
+            result.add(
+                "ok", "identity",
+                f"{len(states)} source(s) resolved; manufacturers={mfr_n:,} products={prod_n:,}"
+                + (f"; {orphans:,} orphan links" if orphans else ""),
+            )
+        finally:
+            conn.close()
+    except sqlite3.Error as exc:
+        result.add("warn", "identity", f"check skipped ({exc})")
+
+
 def run(rt, net: bool = False) -> DoctorResult:
     result = DoctorResult()
 
@@ -78,6 +144,9 @@ def run(rt, net: bool = False) -> DoctorResult:
         result.add("ok", "data dir", f"{db_dir} (writable; raw/ created)")
     except OSError as exc:
         result.add("error", "data dir", f"{db_dir}: {exc}")
+
+    # identity layer (v0.3.4; read-only, informational)
+    _identity_checks(result, rt.db_path)
 
     # contact
     if rt.contact:

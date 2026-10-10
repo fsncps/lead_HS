@@ -79,6 +79,154 @@ def raw():
     """Raw source layer: scan, run, status, explain (v0.3.0)."""
 
 
+@click.group(name="identity", no_args_is_help=True)
+def identity():
+    """Canonical identity layer: resolve, rebuild, status (v0.3.4)."""
+
+
+def _ensure_migrated(ctx: click.Context, rt: Runtime) -> None:
+    """d22 preflight: pending migrations are a blocked state, not a
+    usage error — the identity tables may not exist yet."""
+    import sqlite3
+
+    from . import db as dbmod
+
+    if not (os.path.isfile(rt.db_path) and os.path.getsize(rt.db_path) > 0):
+        click.echo("error: database not initialized — run `leadhs db init` first", err=True)
+        ctx.exit(2)
+    try:
+        conn = sqlite3.connect(f"file:{os.path.abspath(rt.db_path)}?mode=ro", uri=True)
+        try:
+            applied = conn.execute("SELECT MAX(version) FROM schema_version").fetchone()[0]
+        finally:
+            conn.close()
+    except sqlite3.Error:
+        click.echo("error: database not initialized — run `leadhs db init` first", err=True)
+        ctx.exit(2)
+    pending = [name for number, name, _ in dbmod.migration_files() if applied is None or number > applied]
+    if pending:
+        click.echo(
+            f"error: pending migrations ({', '.join(pending)}) — run `leadhs db init` first",
+            err=True,
+        )
+        ctx.exit(2)
+
+
+def _wanted_identity_sources(ctx, rt, source_id):
+    """--source validation (d8 pattern) against the register + the
+    adapter registry; default = every acquired adapter-backed source."""
+    from . import db as dbmod, source as sourcemod
+    from .identity.adapters import ADAPTERS
+
+    conn = dbmod.connect(rt.db_path, readonly=True)
+    try:
+        if source_id:
+            if sourcemod.get_source(conn, source_id) is None:
+                click.echo(f"error: unknown source {source_id!r} (run `leadhs source load` first)", err=True)
+                ctx.exit(1)
+            if source_id not in ADAPTERS:
+                click.echo(
+                    f"error: no identity adapter for {source_id} (known: {', '.join(sorted(ADAPTERS))})",
+                    err=True,
+                )
+                ctx.exit(1)
+            return [source_id]
+        acquired = [
+            r[0]
+            for r in conn.execute(
+                "SELECT source_id FROM raw_source_profile WHERE source_id IN "
+                f"({', '.join('?' for _ in ADAPTERS)}) ORDER BY source_id",
+                tuple(sorted(ADAPTERS)),
+            )
+        ]
+        if not acquired:
+            click.echo("error: no acquired adapter-backed sources (run `raw run` first)", err=True)
+            ctx.exit(1)
+        return acquired
+    finally:
+        conn.close()
+
+
+@identity.command()
+@click.option("--source", "source_id", default=None, help="source ID (default: every acquired adapter-backed source)")
+@click.option("--dry-run", is_flag=True, help="identical read path; zero writes (its own run row only)")
+@click.option("--batch", "batch", type=click.IntRange(min=1), default=500, show_default=True,
+              help="rows per BEGIN IMMEDIATE commit")
+@click.pass_context
+def resolve(ctx, source_id, dry_run, batch):
+    """Derive canonical manufacturer/product rows from the raw tables."""
+    from . import db as dbmod
+    from .identity import resolve as resolvemod
+    from .identity.errors import IdentityError, SourceMissingError, SourceSchemaError
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    _ensure_migrated(ctx, rt)
+    wanted = _wanted_identity_sources(ctx, rt, source_id)
+    conn = dbmod.connect(rt.db_path)
+    try:
+        try:
+            summaries = resolvemod.resolve(conn, wanted, dry_run=dry_run, batch=batch, logger=rt.logger)
+        except (SourceMissingError, SourceSchemaError) as exc:
+            click.echo(f"error: {exc}", err=True)
+            ctx.exit(1)
+        except IdentityError as exc:
+            click.echo(f"error: {exc}", err=True)
+            ctx.exit(2)
+        for s in summaries:
+            counts = ", ".join(f"{k}={v}" for k, v in sorted(s.items()) if k not in ("source", "run_key", "dry_run"))
+            state = "dry-run" if s["dry_run"] else "done"
+            click.echo(f"{s['source']:<6} {s['run_key']:<34} {state:<8} {counts}")
+    finally:
+        conn.close()
+
+
+@identity.command()
+@click.option("--batch", "batch", type=click.IntRange(min=1), default=500, show_default=True,
+              help="rows per BEGIN IMMEDIATE commit")
+@click.pass_context
+def rebuild(ctx, batch):
+    """Backup → tear down → re-derive ALL sources (il2). Aborts before
+    any teardown when the backup fails; keeps a timestamped snapshot."""
+    from . import db as dbmod
+    from .identity import resolve as resolvemod
+    from .identity.errors import IdentityError
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    _ensure_migrated(ctx, rt)
+    conn = dbmod.connect(rt.db_path)
+    try:
+        try:
+            summaries = resolvemod.rebuild(conn, rt.db_path, batch=batch, logger=rt.logger)
+        except IdentityError as exc:
+            click.echo(f"error: {exc}", err=True)
+            ctx.exit(2)
+        for s in summaries:
+            counts = ", ".join(f"{k}={v}" for k, v in sorted(s.items()) if k not in ("source", "run_key", "dry_run", "backup"))
+            click.echo(f"{s['source']:<6} {s['run_key']:<34} done   {counts}")
+        click.echo(f"backup: {summaries[0]['backup']}" if summaries else "backup: (no sources)")
+    finally:
+        conn.close()
+
+
+@identity.command("status")
+@click.pass_context
+def identity_status(ctx):
+    """Per-source resolution state, back-link coverage, drift, queue."""
+    from . import db as dbmod
+    from .identity import resolve as resolvemod
+
+    rt = _runtime(ctx)
+    _ensure_initialized(ctx, rt)
+    _ensure_migrated(ctx, rt)
+    conn = dbmod.connect(rt.db_path, readonly=True)
+    try:
+        resolvemod.status(conn)
+    finally:
+        conn.close()
+
+
 def _instruction_path(source_id: str, instructions_dir: str | None) -> str:
     import os as _os
 
@@ -1046,6 +1194,7 @@ cli.add_command(db)
 cli.add_command(source)
 cli.add_command(probe)
 cli.add_command(raw)
+cli.add_command(identity)
 cli.add_command(doctor)
 
 

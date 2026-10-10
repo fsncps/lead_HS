@@ -110,7 +110,7 @@ is pinned. Detail:
 DE/FR translations).
 
 
-## Project status: v0.3 — raw layer built, matching layer next
+## Project status: v0.3 — raw + identity layers built, matching layer next
 
 **The bulk download layer (raw layer) is built and proven live
 (v0.3.0, 2026-10-03)** — details in
@@ -152,30 +152,41 @@ GTIN/article number, category codes, validity) unchanged and
 re-derivable. Detailed numbers, common data headers and per-source key
 figures: [db-content.md](docs/report/db-content.md).
 
-**Next: deterministic normalization and merging (matching layer).** To
-merge the same product seen in several sources, names and identifiers
-are normalized deterministically (no LLM/machine-learning matching —
-every match must stay explainable and reproducible): Unicode
-diacritic folding, case folding, legal-form token stripping
-("Foo-Bar Ltd." ≙ "Foo Bar Limited" → `foo bar`), identifier
-uppercasing/padding/prefix cleanup ("ABC-123/B" ≙ "abc00123b" →
-`ABC123B`). Records are then linked in tiers: exact keys first
-(GTIN/EAN; normalized identifier within the same normalized
-manufacturer), then scored near-matches (Jaro-Winkler, token-set
-similarity) restricted to small candidate blocks so that 200k+ rows
-stay tractable. Each candidate link carries a verdict —
+**The canonical identity layer is built and run (v0.3.4, run r01,
+2026-10-10)** — details in
+[report-0.3.4-r01.md](docs/report/report-0.3.4-r01.md): the 288,138
+raw records are now collapsed into **2,857 canonical manufacturers**
+and **271,005 canonical products** with 100.0% row-level back-links.
+Identity is fully deterministic — uuid5 over pinned normal forms, so
+the same input always yields the same row, a re-run over unchanged raw
+data creates nothing, and any canonical row traces to every raw
+observation behind it (and vice versa). Identity keys are typed:
+`gtin:<14 digits>` (global; EAN-13 and GTIN-14 of one product
+collapse), `article:<manufacturer>:<article no.>`, and a
+`name:<manufacturer>:<name>` fallback (19.5% of products — mostly ECAT
+code-less rows). A manifest-hash drift guard refuses to re-resolve a
+source whose raw table changed since (the remedy is a documented
+backup-then-rebuild command), and `leadhs doctor` reports coverage,
+orphans and drift.
+
+**Next: the scored matching pass (r03) and the enrichment pass (r02).**
+The identity layer collapsed each *source's* own register exactly; to
+merge the *same product seen in several sources*, records are linked
+in tiers: exact keys first (GTIN; normalized identifier within the
+same normalized manufacturer), then scored near-matches (Jaro-Winkler,
+token-set similarity) restricted to small candidate blocks so that
+200k+ rows stay tractable. Each candidate link carries a verdict —
 `auto_match` (high score / exact-key backed) / `review` (human
 queue) / `no_match` — with method and scores stored per pair, so the
-merged product view is fully auditable and corrections are
-append-only. The merged output: **manufacturer table and product
-table** collapsed to the study's formulation unit, every product
-carrying its per-source observations and each match's evidence tier.
+merged view is fully auditable and corrections are append-only. Before
+that, r02 enriches canonical rows from their per-source observations.
 
 Details: the matching norms, thresholds and library choice are pinned
 in the pending strategy topic
 [`MATCHING.md`](.3SM/plan/CONCEPT/MATCHING.md) (adoption decisions
-MA1–MA9); the raw-layer contract lives in the committed instruction
-files and [report-0.3.0.md](docs/report/report-0.3.0.md).
+MA1–MA9); the identity-layer decisions are il1–il17 in
+`.3SM/plan/DESIGN/v0.3.4/MASTER.md`; the run report is
+[report-0.3.4-r01.md](docs/report/report-0.3.4-r01.md).
 
 
 ## Project status: previous units, results and gaps
@@ -364,7 +375,7 @@ design of the built units in [20_DESIGN/](docs/plan/3SM/20_DESIGN/)
     AGENTS.md                  conventions for AI-assisted work on this repo
     Makefile                   operator entrypoint (make help = index)
     pyproject.toml             Python packaging for the leadhs tool
-    src/leadhs/                source code of the tool (v0.1.x probing/operator layer/walk counters, v0.2.x staging + waves, v0.3.0 raw layer)
+    src/leadhs/                source code of the tool (v0.1.x probing/operator layer/walk counters, v0.2.x staging + waves, v0.3.0 raw layer, v0.3.4 canonical identity layer)
     raw_sources/               committed sourcing instructions (one JSON per bulk source — the reviewable contracts)
     tests/                     automated offline test suite
     data/                      local working state (gitignored): database, raw store, report intermediates

@@ -2,7 +2,7 @@
 unit: global
 stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-10-03
+updated: 2026-10-09
 ---
 
 # MATCHING — product identity, string matching and cross-source dedup
@@ -25,7 +25,10 @@ driver: the v0.3-era product-DB seeding, where ~200k-row sources
 proposal converged in the 2026-09-17 concept session; the product-DB
 program is adopted (MASTER D42/D43, 2026-10-03) and this topic rides
 unit **v0.3.4** — MA pinning and the dependency call (MA8) at that
-unit's Design.
+unit's Design. Stage 0 (the canonical identity layer: manufacturer +
+product tables built deterministically from the raw tables) is
+**user-directed 2026-10-09** — column contracts, identity scheme and
+the two-pass CLI flow recorded below.
 
 ## Problem statement
 
@@ -54,7 +57,88 @@ filed in `INPUT-source-expansion-MSE.md`.
 - **Constraint fit (D16, D32):** no new heavyweight dependency, no
   vector store, vanilla-Windows portability preserved.
 
-## Method — five stages
+## Method — stages 0–5
+
+### Stage 0 — canonical identity layer (user-directed 2026-10-09)
+
+Before any cross-source scoring, build the canonical **manufacturer**
+and **product** tables from the raw source tables, deterministically:
+extract → normalize → match-or-create over **UNIQUE normalized
+strings** → link. All later matching (Stages 1–5) operates on these
+tables, never re-normalizes raw rows.
+
+**Column contracts** (concept altitude; DDL is Design's):
+
+    manufacturer — uuid PK; name_norm UNIQUE NOT NULL; name NOT NULL;
+      country; city; vat_id.
+    product — uuid PK; ident_string UNIQUE NOT NULL; ident_nr NOT NULL;
+      manufacturer_uuid FK → manufacturer; hs_code; eu_group;
+      name; brand; url (the last three per coverage scan, below).
+    every raw source table — one added column product_uuid FK →
+      product (back-link; sighting rows stay raw and verbatim, MA6).
+
+**Identity scheme:**
+
+- Uniqueness binds the *normalized string*. `ident_string` is a typed
+  composite: `gtin:<norm>` is globally unique, while
+  `article:<manufacturer_norm>:<norm>` and
+  `name:<manufacturer_norm>:<name_norm>` are **manufacturer-scoped** —
+  article numbers and product names collide across manufacturers, so
+  the uniqueness constraint must carry the manufacturer key for
+  anything that is not a global identifier.
+- **Group-level identity:** one canonical product per natural product
+  group, sighting rows collapse onto it. ECAT group =
+  (licence_number, product_or_service_name) — of 80,847 groups, 3,925
+  carry multiple codes (2,226 multi-EAN variants; 851 mixed code
+  types), so row-level identity would split one product into variants.
+  BASTA group = (company_id, article_number) — article_number alone is
+  NOT unique (193,456 distinct over 198,742 rows) but company-scoped
+  it is.
+- **Deterministic and idempotent:** a re-run over the same raw state
+  must be a no-op (match-or-create on normalized keys). UUIDs are
+  **deterministic (MA15, user decision 2026-10-09):**
+  `uuid5(project namespace, normalized key)`. Two key regimes: the
+  normalized string is the *ingress* key — how new raw entries match
+  into the canonical tables; within and after the canonical tables the
+  **uuid is always the key** (raw back-links, enrichment, every later
+  layer reference by uuid). Known consequence: a normalization-rule
+  change can mint a new string (→ new uuid) for an unchanged real
+  product; the documented recovery path is a full re-derivation of the
+  layer (re-links every back-link consistently — the "re-run when
+  rules improve" doctrine).
+
+**Coverage scan** — extension columns warrant a canonical column only
+when "common to a large enough number of records" (user rule). Scan of
+the loaded raw tables (recorded numbers, 2026-10-04 loads):
+
+| candidate | coverage | verdict |
+|---|---|---|
+| manufacturer country | ECAT 100% | include |
+| manufacturer VAT-ID | ECAT 93.2% | include |
+| manufacturer city | none loaded (Nordic Swan carries it) | reserved, blank |
+| product name | ECAT + BASTA 100% | include |
+| eu_group | ECAT group_name 100% | include (the EU product-group identifier the directive asks for) |
+| brand | BASTA 76.4% | include |
+| url | BASTA article_url 100% | include |
+| hs_code | no source carries it | reserved, blank |
+
+BASTA BK04/BSAB are national classifications — stay raw-side, not
+canonical columns.
+
+**Two CLI passes** (user-directed flow):
+
+1. **Resolve pass** — loop the raw source tables; per record:
+   normalize manufacturer + product ident; match-or-create both
+   (fill mandatory fields from the creating raw record; add whatever
+   optional fields that record carries; leave the rest blank); link
+   product → manufacturer; back-link raw row → product.
+2. **Enrichment pass** — loop the canonical records; scan all
+   occurrences of company name, country, VAT-ID, identifiers etc.
+   across the source tables; complete the canonical fields with the
+   most common value. Refinements user-confirmed 2026-10-09 (MA13):
+   fill-if-empty always takes the majority value; an existing value is
+   replaced only on a strict majority; ties never win — deterministic
+   and self-healing.
 
 ### Stage 1 — Deterministic normalization (the workhorse)
 
@@ -75,7 +159,9 @@ untouched; normalized forms are derived columns, always re-derivable
 no fuzzy step needed.
 
 **Identifier normalization** (target: `ident_norm`):
-1. uppercase; strip everything non-alphanumeric; strip leading zeros;
+1. uppercase; strip everything non-alphanumeric; strip leading zeros
+   **except on GTIN/EAN** (fixed-width, check-digit position — zeros
+   are significant);
 2. strip known manufacturer prefixes (prefix table built empirically
    from the staged data, updated as sources join).
 
@@ -222,9 +308,51 @@ concept turn / unit Design — nothing frozen.)*
   identifier prefixes, colour/size words) are repo seed CSVs like the
   lead-compound dictionary (D6 pattern) — versioned, reviewed, source
   of truth for `name_base` rules.
+- **MA10 (user-directed 2026-10-09):** canonical identity tables
+  precede all matching — one `manufacturer` and one `product` table
+  built from the raw tables by deterministic extract → normalize →
+  match-or-create; normalized strings are UNIQUE and are the only
+  match keys; raw tables gain a `product_uuid` back-link column.
+- **MA11 (proposed, from the directive):** typed composite
+  `ident_string` — `gtin:` globally unique; `article:` and `name:`
+  manufacturer-scoped (non-global identifiers collide across
+  manufacturers; uniqueness must include the manufacturer key).
+- **MA12 (proposed, scan-driven):** group-level identity — ECAT
+  (licence, product name), BASTA (company, article number); multi-code
+  sighting rows collapse onto one canonical product; raw rows keep
+  provenance.
+- **MA13 (user-directed, refinements confirmed 2026-10-09):** two CLI
+  passes — resolve (match-or-create, fill-at-creation from the
+  creating raw record, missing → blank) and enrichment (re-scan
+  occurrences, complete with most-common value; confirmed rules:
+  fill-if-empty by majority, replace only on strict majority, ties
+  never win).
+- **MA14 (proposed, from the directive):** canonical extension columns
+  only per coverage scan ("common to a large enough number of
+  records") — included: country, vat_id, name, eu_group, brand, url;
+  reserved: city, hs_code.
+- **MA16 (user-confirmed 2026-10-09):** cross-manufacturer GTIN
+  collisions (the same global ident claimed by two manufacturers):
+  first claim wins and keeps the row; every collision is counted and
+  the list feeds the review queue (MA5 verdict pattern) — never
+  silently resolved.
+- **MA15 (user decision 2026-10-09):** deterministic UUID derivation —
+  `uuid5(project namespace, normalized key)` (name_norm for
+  manufacturer, ident_string for product); namespace constant pinned
+  in the repo at Design. The normalized string is the ingress match
+  key; after creation the uuid is the key everywhere (back-links,
+  enrichment, downstream layers). Rule changes that alter normalized
+  strings require a full layer re-derivation to stay consistent.
 
 ## OPEN ITEMS
 
+- ECAT code_type → ident-type mapping (EAN13/GTIN14 → gtin; Internal
+  Producer ID/Other → article; else name-basis) — pin at Design.
+- Stage-0 prototype note: an out-of-stage prototype (migration +
+  resolve module + tests, 672 lines, drafted 2026-10-09, reverted
+  same day) is kept non-authoritative at `/tmp/opencode/`
+  (matching-prototype/) — Design may mine it, nothing in it is
+  decided.
 - Legal-form + identifier-prefix seed tables: populate per source
   country as sources join; validate against the staged ECAT/Nordic
   Swan/BASTA samples (100-row CSVs already on disk).
