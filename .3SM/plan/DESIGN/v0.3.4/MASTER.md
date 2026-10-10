@@ -100,7 +100,8 @@ immutable at creation; only enrichment fields mutate (MA13 rules).
   version control).
 - **Rollback:** the identity layer is 100% derived from raw state —
   recovery = DROP + re-run resolve (minutes); migration backup default
-  (d20).
+  (d20); as of il2 the recovery path is a named CLI verb
+  (`identity rebuild`) offered by the manifest-mismatch refusal.
 - **Security:** local CLI; public register data; no secrets; no new
   network surface; dynamic table names quoted (interpreter precedent).
 
@@ -153,6 +154,21 @@ MATCHING.md — this section records unit-level design decisions only.)*
   takes `0013` and the design-ahead block renumbers 0014–0020 (d36
   pattern). M1 reconciles (org → view/subordinate of manufacturer;
   formulation-product against the canonical spine) — OPEN ITEM.
+- **il2 (2026-10-10, Section 1 Issue 2, user B):** manifest-change
+  semantics — resolve records the `manifest_hash` it consumed per
+  source (small state table in migration 0013); on mismatch it refuses
+  that source with a named error and offers `identity rebuild`
+  (teardown of canonical tables + back-links, then re-resolve over all
+  sources). No mixed state, ever.
+- **il3 (2026-10-10, Section 1 close):** ECAT code_type mapping pinned:
+  EAN13/GTIN14 → `gtin:` (global); Internal Producer ID/Other →
+  `article:` (manufacturer-scoped); no code → `name:` basis. BASTA is
+  always `article:` (company-scoped article numbers; GTIN only lands
+  via enrichment/coverage).
+- **il4 (2026-10-10, Section 1 close):** uuid namespace pinned:
+  `uuid5(uuid.NAMESPACE_URL, "https://github.com/fsncps/lead_HS#identity-v1")`;
+  domain prefixes `manufacturer:<name_norm>`, `product:<ident_string>`.
+  The URL is a project identifier, never fetched.
 
 ## OPEN ITEMS
 
@@ -168,7 +184,6 @@ MATCHING.md — this section records unit-level design decisions only.)*
 - Score-band calibration plan: thresholds unpinned until the labelled
   pilot; the calibration PROCEDURE must be designed (Section 6/7).
 - MA8 dependency call: rapidfuzz vs stdlib-only (pin at Section 3/6).
-- Manifest-change semantics (Section 1 Issue 2 — pending).
 - Bubble-ups to drain at record time: data_model.md "name_base dedup
   rules — Phase-1 pilot" OPEN item → resolved-by-reference to
   MATCHING.md; DESIGN/MASTER.md State stale (v0.3.0 shipped, v0.3.4
