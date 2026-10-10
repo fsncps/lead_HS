@@ -43,6 +43,25 @@ STATUS_JOIN = {
     "AS-2": ("product", "uuid", "eu_group", "eu_group IS NOT NULL AND eu_group != ''"),
     "AS-33": ("raw_as33_basta", "product_uuid", "bk04_code", "product_uuid IS NOT NULL"),
 }
+# worklist: groups with no mapping row, by product count. AS-2 groups
+# live on the canonical product row (exact, authoritative), so its
+# worklist joins raw → product; BASTA groups are raw-column values.
+WORKLIST_SQL = {
+    "AS-2": """
+        SELECT p.eu_group AS gcode, COUNT(DISTINCT r.product_uuid) AS prods
+        FROM raw_as2_ecat r JOIN product p ON p.uuid = r.product_uuid
+        LEFT JOIN _hs_map m ON m.source_id = 'AS-2' AND m.group_code = p.eu_group
+        WHERE p.eu_group IS NOT NULL AND p.eu_group != '' AND m.group_code IS NULL
+        GROUP BY p.eu_group ORDER BY prods DESC LIMIT :top
+    """,
+    "AS-33": """
+        SELECT r.bk04_code AS gcode, COUNT(DISTINCT r.product_uuid) AS prods
+        FROM raw_as33_basta r LEFT JOIN _hs_map m
+          ON m.source_id = 'AS-33' AND m.group_code = r.bk04_code
+        WHERE r.product_uuid IS NOT NULL AND m.group_code IS NULL
+        GROUP BY r.bk04_code ORDER BY prods DESC LIMIT :top
+    """,
+}
 
 
 class HsMapError(ValueError):
@@ -322,22 +341,17 @@ def status(conn: sqlite3.Connection, map_path: str, top: int = 15) -> dict:
             "not_applied": row["notapplied_n"] or 0,
             "pending": row["pending_n"] or 0,
         }
-    for sid, gcol in SOURCE_GROUP_COLUMN.items():
-        cols = {r[1] for r in conn.execute(f'PRAGMA table_info("{RAW_TABLE[sid]}")')}
-        if "product_uuid" not in cols:
+    tables = {
+        r[0] for r in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        )
+    }
+    for sid in ("AS-2", "AS-33"):
+        if RAW_TABLE[sid] not in tables:
             continue
         out["worklist"].extend(
             {"source": sid, "group_code": r[0], "products": r[1]}
-            for r in conn.execute(
-                f"""
-                SELECT r.{gcol} AS gcode, COUNT(DISTINCT r.product_uuid) AS prods
-                FROM "{RAW_TABLE[sid]}" r LEFT JOIN _hs_map m
-                  ON m.source_id = :sid AND m.group_code = r.{gcol}
-                WHERE r.product_uuid IS NOT NULL AND m.group_code IS NULL
-                GROUP BY r.{gcol} ORDER BY prods DESC LIMIT :top
-                """,
-                {"sid": sid, "top": top},
-            )
+            for r in conn.execute(WORKLIST_SQL[sid], {"top": top})
         )
     conn.execute("ROLLBACK")
     return out

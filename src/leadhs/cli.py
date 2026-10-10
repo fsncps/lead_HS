@@ -136,7 +136,9 @@ def hs_status(ctx, map_path):
     rt = _runtime(ctx)
     _ensure_initialized(ctx, rt)
     _ensure_migrated(ctx, rt)
-    conn = dbmod.connect(rt.db_path, readonly=True)
+    # read-write despite being a report verb: status stages its map +
+    # votes in TEMP tables, and a readonly handle blocks temp DDL
+    conn = dbmod.connect(rt.db_path, readonly=False)
     try:
         try:
             out = hs_status_mod(conn, _hs_map_path(map_path))
