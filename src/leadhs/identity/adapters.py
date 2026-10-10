@@ -110,14 +110,16 @@ def elect(group: Group, mfr_norm: str, name_norm: str) -> Elected | None:
     return None
 
 
-def _iter_groups(conn, table, order_cols, build) -> list:
-    """One ordered pass; groupby on the leading group-key columns."""
-    col_list = ", ".join(_q(c) for c in order_cols)
+def _iter_groups(conn, table, group_cols, select_cols, build) -> list:
+    """One ordered pass; groupby on the leading group-key columns.
+    select_cols must include every column the build function reads."""
+    col_list = ", ".join(_q(c) for c in select_cols)
+    order_list = ", ".join(_q(c) for c in group_cols)
     groups = []
     rowset = conn.execute(
-        f"SELECT rowid AS _rid, {col_list} FROM {_q(table)} ORDER BY {col_list}"
+        f"SELECT rowid AS _rid, {col_list} FROM {_q(table)} ORDER BY {order_list}"
     )
-    for _key, rows in itertools.groupby(rowset, key=lambda r: tuple(r[c] for c in order_cols)):
+    for _key, rows in itertools.groupby(rowset, key=lambda r: tuple(r[c] for c in group_cols)):
         groups.append(build(list(rows)))
     return groups
 
@@ -148,7 +150,11 @@ def ecat(conn: sqlite3.Connection, table: str = "raw_as2_ecat") -> list:
 
     return _iter_groups(
         conn, table,
-        ("licence_number", "product_or_service_name"), build,
+        ("licence_number", "product_or_service_name"),
+        ("licence_number", "product_or_service_name", "group_name",
+         "code_type", "code_value", "company_name", "company_country",
+         "vat_number"),
+        build,
     )
 
 
@@ -176,7 +182,10 @@ def basta(conn: sqlite3.Connection, table: str = "raw_as33_basta") -> list:
 
     return _iter_groups(
         conn, table,
-        ("company_id", "article_number"), build,
+        ("company_id", "article_number"),
+        ("company_id", "article_number", "company_name", "article_name",
+         "brand_name", "article_url"),
+        build,
     )
 
 
