@@ -288,10 +288,13 @@ def rebuild(conn, db_path, batch=BATCH_RECORDS, logger=None) -> list:
         raise BackupError(f"pre-rebuild backup failed — nothing torn down: {exc}") from exc
 
     conn.execute("BEGIN IMMEDIATE")
-    conn.execute("DROP TABLE product")
-    conn.execute("DROP TABLE manufacturer")
-    conn.execute("DELETE FROM linkage_candidate")
-    conn.execute("DELETE FROM identity_state")
+    # all four canonical tables are re-created from spec DDLs below, so
+    # teardown must drop all four (r02 defect: truncate-instead-of-drop
+    # for linkage_candidate/identity_state collided with the CREATEs)
+    conn.execute("DROP TABLE IF EXISTS product")
+    conn.execute("DROP TABLE IF EXISTS manufacturer")
+    conn.execute("DROP TABLE IF EXISTS linkage_candidate")
+    conn.execute("DROP TABLE IF EXISTS identity_state")
     for table, has_col in spec.backlink_columns(conn).items():
         if has_col:
             spec.drop_backlink_column(conn, table)
