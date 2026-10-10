@@ -84,3 +84,17 @@ inputs recorded. Unit dirs archived (`_archive/v0.3.4/`), PIPELINE
 entry → SHIPPED, root registry updated, tag `v0.3.4` (local,
 annotated) at the merge commit. Push of the closure commits + remote
 branch deletion: explicit user instruction pending.
+
+## 2026-10-10 — CONCEPT — v0.3.5 re-scoped to SDS document acquisition
+
+User direction after the v0.3.4 close: the next need is MSDS coverage
+over the canonical product basis. Concept pass against accumulated
+knowledge (LEAD_SDS feasibility, d2/d8/d16 raw-store precedent,
+SOURCE_ACCESS_MODES, probe walk machinery, MATCHING norms) produced
+`SDS_ACQUISITION.md` with D46–D50: PDFs as hash-addressed raw-store
+files (no DB blobs), staged discovery register links → producer
+sites → budgeted web search, pypdf text gate, producer-authorship
+verdict, two-pass `sds discover|fetch|status` CLI. v0.3.5 re-scoped
+to SDS acquisition; enrichment slides to v0.3.6, matching to v0.3.7
+(pends v0.3.6; SDS orthogonal). Open at Design: search backend,
+tier-C posture, migration number, revision policy, language sets.

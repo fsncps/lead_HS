@@ -169,18 +169,22 @@ source whose raw table changed since (the remedy is a documented
 backup-then-rebuild command), and `leadhs doctor` reports coverage,
 orphans and drift.
 
-**Next: two follow-up units.** The identity layer collapsed each
-*source's* own register exactly; to merge the *same product seen in
-several sources*, a scored matching unit links records in tiers:
-exact keys first (GTIN; normalized identifier within the same
-normalized manufacturer), then scored near-matches (Jaro-Winkler,
-token-set similarity) restricted to small candidate blocks so that
-200k+ rows stay tractable. Each candidate link carries a verdict —
-`auto_match` (high score / exact-key backed) / `review` (human
-queue) / `no_match` — with method and scores stored per pair, so the
-merged view is fully auditable and corrections are append-only. Before
-that, an enrichment unit completes canonical rows from their
-per-source observations.
+**Next: three follow-up units, SDS coverage first.** The immediate
+unit (v0.3.5) puts the **manufacturer-authored safety data sheet
+(SDS/MSDS) PDF on file** for the product basis — discovered in stages
+(register-carried links → manufacturer sites → budgeted web search),
+stored as hash-addressed files with full provenance, text-extract
+gated at download so every sheet is machine-readable later. Then an
+enrichment unit (v0.3.6) completes canonical rows from their
+per-source observations, and the scored matching unit (v0.3.7) merges
+the *same product seen in several sources* in tiers: exact keys first
+(GTIN; normalized identifier within the same normalized
+manufacturer), then scored near-matches (Jaro-Winkler, token-set
+similarity) restricted to small candidate blocks so that 200k+ rows
+stay tractable. Each candidate link carries a verdict — `auto_match`
+(high score / exact-key backed) / `review` (human queue) /
+`no_match` — with method and scores stored per pair, so the merged
+view is fully auditable and corrections are append-only.
 
 Details: the matching norms, thresholds and library choice are pinned
 in the pending strategy topic

@@ -16,9 +16,31 @@ move to the archive with their end-date.
 
 # NEXT-UP
 
-### v0.3.5 — enrichment pass (ex-v0.3.4 r02)
-status: INIT-READY (spawned 2026-10-10 at v0.3.4 early close; branch
-  id free)
+### v0.3.5 — SDS document acquisition (re-scoped 2026-10-10)
+status: MATURING (concept D46–D50 in SDS_ACQUISITION.md; design pass
+  at /init-unit)
+intent: manufacturer-authored SDS PDF on file for the 271,005-product
+  canonical basis — staged discovery A register links (BASTA/ECAT url
+  columns; semantics probe first) → B producer-site SDS libraries
+  (2,857 domains, probe walk machinery, MATCHING stage-1 norms) →
+  C budgeted per-product web search fallback; whole PDFs stored as
+  hash-addressed files in data/raw/ (never DB blobs), document
+  backbone + sds_document link rows; pypdf text gate at fetch
+  (scans flagged ocr_needed, OCR execution later);
+  producer_match verdict per document
+decisions: D46 storage files-not-blobs · D47 staged A→B→C · D48
+  text gate · D49 authorship verdict · D50 sds discover|fetch|status
+  two-pass CLI, run kinds sds_discover/sds_fetch
+constraints: D9 no paid sources; D20 robots/crawl-delay/no hammering;
+  GO=1 gates; D27 product data only; OCR execution out of v0.3.5
+open at Design: search backend (DDG HTML vs self-host SearXNG);
+  tier-C exhaustive vs stratified; migration no. (0014?); revision
+  policy; language synonym sets
+updated: 2026-10-10
+
+### v0.3.6 — enrichment pass (ex-v0.3.5, slid 2026-10-10)
+status: MATURING (was INIT-READY as v0.3.5; SDS re-scope slides it;
+  no design payload lost)
 intent: complete canonical manufacturer/product rows from their
   per-source observations — majority fill/replace per MA13 over the
   r01 back-links (288,138 rows → 271,005 products / 2,857
@@ -29,9 +51,9 @@ carries: archived RUNS.md r02 entry (`DESIGN/_archive/v0.3.4/`) as
 constraints: deterministic + idempotent; product data only (D27)
 updated: 2026-10-10
 
-### v0.3.6 — matching layer (ex-v0.3.4 r03)
-status: MATURING (pends v0.3.5 DELIVERED — match reads enriched
-  fields)
+### v0.3.7 — matching layer (ex-v0.3.6, renumbered 2026-10-10)
+status: MATURING (pends v0.3.6 DELIVERED — match reads enriched
+  fields; SDS acquisition is orthogonal and does not block it)
 intent: cross-source collapse on the canonical tables — blocking +
   scored tiers (exact keys first, then Jaro-Winkler / token-set with
   small candidate blocks), verdicts auto_match/review/no_match in

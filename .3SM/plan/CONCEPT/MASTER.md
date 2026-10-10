@@ -2,7 +2,7 @@
 unit: global
 stage: CONCEPT
 lifecycle: LIVE
-updated: 2026-10-03
+updated: 2026-10-10
 ---
 
 # Concept MASTER — lead_HS
@@ -476,6 +476,14 @@ lead). Open questions and the phased roadmap follow.
     priority list, reproducible per D4) — **never a dropped record**.
     The spill-to-raw-store mechanism is superseded (simplicity); the
     "never silently drop" principle stands.
+45a. **SDS document acquisition concept (2026-10-10; user direction,
+    v0.3.5 re-scope):** D46–D50 in `SDS_ACQUISITION.md` — files in the
+    raw store (not DB blobs; d2/d8/d16 precedent), staged discovery
+    A register links → B producer sites → C budgeted web search,
+    text-layer gate at fetch (pypdf; scans flagged for later OCR),
+    producer-authorship verdict, two-pass `sds discover|fetch|status`
+    CLI with run bookkeeping. v0.3.5 re-scoped to this; the v0.3.4
+    r02 enrichment pass slides to v0.3.6, matching to v0.3.7.
 
 ## OPEN ITEMS
 
@@ -661,6 +669,11 @@ the plan tree.
   journal, oversize spill, list-endpoint-first politeness gate;
   proposed decisions R1–R9, R1–R3 user-confirmed 2026-09-17, DRAFT
   pending adoption)
+- `SDS_ACQUISITION.md` — SDS/MSDS document acquisition over the
+  canonical product basis (v0.3.5): hash-addressed raw-store files +
+  document backbone (D46), staged discovery register links →
+  producer sites → budgeted web search (D47), text-layer gate (D48),
+  producer-authorship verdict (D49), two-pass `sds` CLI (D50)
 - `SOURCE_ACCESS_MODES.md` — access-mode taxonomy + probe ladder
   (the orthogonal instruction half: 22 modes in 5 delivery classes,
   L0–L7 classification protocol, AS-3 worked example; D45 +
