@@ -76,10 +76,54 @@ backup.
 - SIGKILL mid-batch → re-run completes, counts consistent (chaos).
 - Real-data blank/odd ECAT rows (empty norms) — skipped/refused counts
   reconcile to raw row counts.
+- norm_manufacturer/norm_name behavior change — staging/overlap norm
+  recompute consistency (fu7 consumers, il10).
+- GTIN canonicalization edges: 8/12/13/14-digit, non-digit reject,
+  EAN13 vs GTIN14 of one product → ONE canonical row (il16).
+- Mixed-code-type groups (851 ECAT) — election determinism; multi_gtin
+  count sane (il17).
+- Rebuild on SQLite < 3.35 → named refusal, nothing torn down.
+- Dry-run zero-write invariant on a fixture DB.
 
 ### SKILL RECORDS
 
 (3sm-eng-run pass on this run; append-only)
+
+#### 3sm-eng-run r01 — 2026-10-10
+scope: r01 phase plan + ledgers (no code)
+checklist:
+- [x] ledger reconciliation — 2 drift findings fixed (root ENGINEERING
+  registry; RUNS.md gates row: no linter configured per PROJECT) — 7d410e7
+- [x] Step 0 — leverage heavy (normalize/interpreter patterns/db/ids
+  reused); minimum change (legal_forms CSV move → r03, OPEN ITEM in
+  impl MASTER); 8 files exactly — at the smell line, justified (run
+  split already maximal); open-items cross-ref clean
+- [x] mode BIG (user)
+- [x] PHASE01 authored — goal, data-flow + shadow diagrams, 8 steps,
+  FILES TOUCHED, user test plan, FINAL inputs (8), failure modes
+  (10 rows, 0 silent), NOT-in-scope (6), what-exists
+- [x] Sec 1 architecture — issues: 1A canonical GTIN form (CRITICAL
+  GAP-class: uuid-minting), 1B multi-code election (WARNING); user A/A
+  → il16/il17 in the design MASTER; statements: FK-less back-link
+  (SQLite limitation), coupling clean, SPOF unchanged — OK
+- [x] Sec 2 quality — 0 questions; 4 statements pinned (quoting dup
+  rationale, sorted-token norms as keys, normalize docstring refresh,
+  name_norm-only manufacturer identity) — OK
+- [x] Sec 3 tests — functional-only honored (no test authoring); user
+  test plan executable as written; FINAL inputs registered above — OK
+- [x] Sec 4 performance — 1 structural pin: single-pass ordered
+  groupby + rowid back-link UPDATEs (never per-group WHERE scans);
+  il13 in-memory index confirmed — OK
+findings: CRITICAL GAP 1 (1A — resolved, user A) · WARNING 1 (1B —
+  resolved, user A) · statements 7 · unresolved 0
+carries: build may take the PHASE01 REVIEW PINS as settled (norm_gtin,
+election, quoting duplication, single-pass shape, normalize docstring
+refresh); FINAL inherits the 8 PROVISIONAL inputs above; r02/r03
+planners: election counts + raw-side non-elected codes are the r01
+contract, identity report visibility is r03 scope
+valid-until: PHASE01 re-planned; il16/il17 revised; a linter gets
+configured (PROJECT gates change)
+commit: 7d410e7, 5b2da1a, cda8109, + this record's commit
 
 ## r02 — enrichment pass
 

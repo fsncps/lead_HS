@@ -346,6 +346,14 @@ MATCHING.md — this section records unit-level design decisions only.)*
   section: back-link coverage (back-links = raw rows − skipped),
   orphaned-back-link detection, per-source manifest drift (il2's check,
   queryable without running resolve).
+- **il16 (2026-10-10, r01 plan review, user A):** canonical GTIN form —
+  `norm_gtin`: digits only, accept 8/12/13/14, zero-pad to 14
+  (GS1 machine form); invalid → counted refusal. Kills the
+  EAN13/GTIN14 dupe class at mint time (2,226 multi-EAN ECAT groups).
+- **il17 (2026-10-10, r01 plan review, user A):** multi-code-group
+  election — per group: gtin-wins → min-sorted article → name basis;
+  multiple DISTINCT gtins elect min-lexicographic + count; non-elected
+  codes stay raw-side; multi_gtin/multi_code counts in the run summary.
 - **il4 (2026-10-10, Section 1 close):** uuid namespace pinned:
   `uuid5(uuid.NAMESPACE_URL, "https://github.com/fsncps/lead_HS#identity-v1")`;
   domain prefixes `manufacturer:<name_norm>`, `product:<ident_string>`.
