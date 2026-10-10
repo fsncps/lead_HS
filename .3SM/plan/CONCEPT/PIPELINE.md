@@ -41,14 +41,20 @@ updated: 2026-10-10
 ### v0.3.6 — enrichment pass (ex-v0.3.5, slid 2026-10-10)
 status: MATURING (was INIT-READY as v0.3.5; SDS re-scope slides it;
   no design payload lost)
-intent: complete canonical manufacturer/product rows from their
-  per-source observations — majority fill/replace per MA13 over the
+intent: (1) leading step — **HS-code completion (D51)**: curated
+  `hs_group_map` repo CSV + deterministic apply (ECAT via
+  product.eu_group — 25 distinct groups; BASTA via raw back-link
+  majority on bk04_code — 320 codes; 0 rows lack a group key);
+  hs_code stays nullable, never NN, highest-priority column;
+  coverage + unreviewed-group worklist report (feeds de5
+  paint-subset). (2) majority fill/replace per MA13 over the
   r01 back-links (288,138 rows → 271,005 products / 2,857
   manufacturers already resolved, 100% linked)
 carries: archived RUNS.md r02 entry (`DESIGN/_archive/v0.3.4/`) as
   the plan payload; deferred FINAL inputs (SIGKILL chaos, full
   `identity rebuild` round, SQLite<3.35 pin, staging-norm recompute)
-constraints: deterministic + idempotent; product data only (D27)
+constraints: deterministic + idempotent; product data only (D27);
+  curated mapping outranks majority rules (D51)
 updated: 2026-10-10
 
 ### v0.3.7 — matching layer (ex-v0.3.6, renumbered 2026-10-10)

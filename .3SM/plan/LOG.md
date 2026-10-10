@@ -98,3 +98,16 @@ verdict, two-pass `sds discover|fetch|status` CLI. v0.3.5 re-scoped
 to SDS acquisition; enrichment slides to v0.3.6, matching to v0.3.7
 (pends v0.3.6; SDS orthogonal). Open at Design: search backend,
 tier-C posture, migration number, revision policy, language sets.
+
+## 2026-10-10 — CONCEPT — D51 HS-code completion (v0.3.6 leading step)
+
+User direction: keep all raw products in `product`, but make
+everything HS-identifiable; hs_code (0013, nullable, so far empty)
+is a highest-priority completion column, fed directly at resolve or
+by a later completion run. Decision D51: curated `hs_group_map` repo
+CSV + deterministic apply — ECAT via eu_group (25 distinct groups;
+paint group top with 16,454 products), BASTA via bk04_code
+back-link majority (320 codes; 0 rows without group key; probe
+2026-10-10). Conflicts report-only; worklist report feeds the de5
+paint-subset open item. Wired into v0.3.6 enrichment as the leading
+step; standalone pull-forward allowed.

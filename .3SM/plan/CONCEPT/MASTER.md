@@ -484,6 +484,26 @@ lead). Open questions and the phased roadmap follow.
     producer-authorship verdict, two-pass `sds discover|fetch|status`
     CLI with run bookkeeping. v0.3.5 re-scoped to this; the v0.3.4
     r02 enrichment pass slides to v0.3.6, matching to v0.3.7.
+46. **HS-code completion over the canonical products (2026-10-10;
+    user direction):** the `product` table keeps every raw product
+    (paint or not), but all of it must be HS-identifiable — the de5
+    admission criterion ("identifiable by HS directly or via a
+    related product group id") becomes data. `products.hs_code`
+    (TEXT, migration 0013) stays **nullable — never NN — but is a
+    highest-priority completion column**. Mechanism: a curated
+    `hs_group_map` (repo CSV, register-of-record pattern: source_id,
+    group_code, hs_code nullable = reviewed-out-of-scope, provenance
+    note) + a deterministic apply pass — ECAT via `product.eu_group`
+    (25 distinct groups; top "Decorative paints, varnishes, and
+    related products (2014 criteria)" = 16,454 products), BASTA via
+    the raw back-link with majority vote on `bk04_code` (320 distinct
+    codes; 0 rows without a group key in either source — probe
+    2026-10-10). Conflicts write nothing and surface in the report;
+    direct-HS source columns supported for future sources. Coverage +
+    unreviewed-group worklist report feeds the BASTA paint-subset
+    filter (de5 open item). Home: **v0.3.6 enrichment, leading step**
+    (curated mapping outranks MA13 majority fill); pull-forward as a
+    standalone pass allowed.
 
 ## OPEN ITEMS
 
