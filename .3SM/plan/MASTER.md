@@ -13,8 +13,9 @@ pre-migration units is `plan/CONCEPT/DEV_HISTORY.md`.
 
 ## STATE
 
-- **Active unit: none** — v0.3.4 shipped 2026-10-10 (early close; r02/r03 →
-  follow-up units v0.3.5/v0.3.6, NEXT-UP in the PIPELINE).
+- **Active unit: v0.3.4** (reopened 2026-10-10 by user decision for an
+  additional run — r02 HS completion per D51; v0.3.5 SDS stays NEXT-UP,
+  enrichment/matching renumbered v0.3.6/v0.3.7).
   Predecessor v0.3.0 (instruction-driven raw source layer)
   is the first v2-tree unit: completed and archived 2026-10-09
   (branch waiver — ran on main; ship = archive + pipeline flip + tag,
@@ -41,7 +42,7 @@ legacy tree, distilled in DEV_HISTORY:
 | v0.2.3 | pool estimate v2 (meta-benchmarking) | COMPLETE | ARCHIVED | legacy + DEV_HISTORY |
 | v0.2.4 | management CSV sample (+ D37–D40 addenda) | COMPLETE | ARCHIVED | legacy + DEV_HISTORY |
 | v0.3.0 | instruction-driven raw source layer + first bulk loads | COMPLETE | ARCHIVED | `DESIGN/_archive/v0.3.0` · `ENGINEERING/_archive/v0.3.0` |
-| v0.3.4 | canonical identity layer | ENG | SHIPPED 2026-10-10 (early close, r01; archived) | merge 2c73aea, tag `v0.3.4` |
+| v0.3.4 | canonical identity layer + HS completion | ENG | LIVE (reopened 2026-10-10; first ship: merge 2c73aea, tag `v0.3.4`) | branch `v0.3.4` |
 
 ## ROADMAP
 

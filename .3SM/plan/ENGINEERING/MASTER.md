@@ -1,14 +1,14 @@
 # ENGINEERING — units
 
 ## STATE
-active unit: (none — v0.3.4 shipped 2026-10-10; next: v0.3.5 at /init-unit)
+active unit: v0.3.4 (reopened 2026-10-10, user decision — r02 HS completion)
 
 ## UNITS
 
 | unit | branch | stage | lifecycle | theme |
 |---|---|---|---|---|
 | v0.3.0 | main (unit-branch init waived by user, 2026-10-03) | ENGINEERING | SHIPPED 2026-10-09 (archived; tag v0.3.0) | instruction-driven raw source layer (generic acquisition pipeline) |
-| v0.3.4 | v0.3.4 | ENGINEERING | SHIPPED 2026-10-10 (early close, r01 of 3 runs; r02/r03 → v0.3.5/v0.3.6; archived; tag v0.3.4) | canonical identity layer (resolve/rebuild/status) |
+| v0.3.4 | v0.3.4 | ENGINEERING | LIVE (reopened 2026-10-10 for r02 HS; first ship archived at tag v0.3.4) | canonical identity layer + HS completion |
 
 ## RUN INVENTORY  (a section per unit — mandatory)
 
@@ -19,11 +19,11 @@ mirror: `../DESIGN/_archive/v0.3.0/RUNS.md`
 detail: `_archive/v0.3.0/MASTER.md`
 
 ### v0.3.4
-runs: r01 DELIVERED (executed 2026-10-10) · r02, r03 DEFERRED →
-follow-up units v0.3.5/v0.3.6 · FINAL folded into ship (early close,
-user decision; gate evidence in the mirror § CLOSURE)
-mirror: `../DESIGN/_archive/v0.3.4/RUNS.md` (authority for goals/DoD)
-detail: `_archive/v0.3.4/MASTER.md`
+runs: r01 DELIVERED · r02 PLANNED (HS completion, D51) · r03, r04
+DEFERRED → v0.3.6/v0.3.7 · FINAL after last regular run (unit
+reopened post-first-ship 2026-10-10; see mirror § REOPEN)
+mirror: `../DESIGN/v0.3.4/RUNS.md` (authority for goals/DoD)
+detail: `v0.3.4/MASTER.md`
 
 ## ROADMAP
 

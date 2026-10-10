@@ -12,7 +12,17 @@ move to the archive with their end-date.
 
 # ACTIVE
 
-(none — v0.3.4 shipped 2026-10-10)
+### v0.3.4 — canonical identity layer + HS completion (reopened)
+status: ACTIVE (2026-10-10 — reopened post-first-ship by user
+  decision; branch `v0.3.4`). r01 (identity) DELIVERED and shipped at
+  tag `v0.3.4`; now planning r02 = HS completion (D51): curated
+  hs_group_map + deterministic apply + coverage status — "all product
+  rows with HS" (universal HS4; 25 ECAT groups + 320 BASTA bk04
+  codes, 0 rows without a group key). r03/r04 (enrichment, matching)
+  stay DEFERRED to v0.3.6/v0.3.7.
+updated: 2026-10-10
+
+
 
 # NEXT-UP
 
@@ -50,8 +60,8 @@ intent: (1) leading step — **HS-code completion (D51)**: curated
   paint-subset). (2) majority fill/replace per MA13 over the
   r01 back-links (288,138 rows → 271,005 products / 2,857
   manufacturers already resolved, 100% linked)
-carries: archived RUNS.md r02 entry (`DESIGN/_archive/v0.3.4/`) as
-  the plan payload; deferred FINAL inputs (SIGKILL chaos, full
+carries: RUNS.md r03 entry (live, `DESIGN/v0.3.4/`) as the plan
+  payload (renumbered at the 2026-10-10 reopen); deferred FINAL inputs (SIGKILL chaos, full
   `identity rebuild` round, SQLite<3.35 pin, staging-norm recompute)
 constraints: deterministic + idempotent; product data only (D27);
   curated mapping outranks majority rules (D51)
@@ -64,7 +74,7 @@ intent: cross-source collapse on the canonical tables — blocking +
   scored tiers (exact keys first, then Jaro-Winkler / token-set with
   small candidate blocks), verdicts auto_match/review/no_match in
   linkage_candidate, review-queue visibility in reports
-carries: archived RUNS.md r03 entry; il6 block caps; `ident_prefixes`
+carries: RUNS.md r04 entry (live); il6 block caps; `ident_prefixes`
   / `legal_forms.csv` repo move (open item)
 constraints: no LLM matching; score-band calibration pins at its
   planning; MA8 dependency call (rapidfuzz vs stdlib) open

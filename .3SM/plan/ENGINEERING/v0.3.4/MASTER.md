@@ -13,7 +13,7 @@ currency; `/init-unit` registers the unit here (one row below); build
 appends execution state at the moment of truth.
 
 ## STATE
-unit CLOSED early 2026-10-10 (r01 delivered; r02/r03 → follow-up units v0.3.5/v0.3.6)
+current run: r02 (HS completion)    branch: v0.3.4    base: main@f0ac0e6 (reopened post-ship)
 
 ## RUNS
 

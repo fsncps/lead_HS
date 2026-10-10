@@ -111,3 +111,13 @@ back-link majority (320 codes; 0 rows without group key; probe
 2026-10-10). Conflicts report-only; worklist report feeds the de5
 paint-subset open item. Wired into v0.3.6 enrichment as the leading
 step; standalone pull-forward allowed.
+
+## 2026-10-10 — v0.3.4 — UNIT REOPENED (user decision)
+
+"Plan as additional run in 0.3.4 — all product rows with HS." Branch
+`v0.3.4` recreated off main; unit dirs moved back out of `_archive/`;
+registries (plan/MASTER, ENGINEERING MASTER, PIPELINE) flipped to
+LIVE. Run table reshaped: r02 = HS completion (D51; new, PLANNED),
+enrichment renumbered r02→r03 (still DEFERRED → v0.3.6), matching
+r03→r04 (DEFERRED → v0.3.7). Tag `v0.3.4` stays at the first-ship
+merge 2c73aea. Run registration done; next: 3sm-eng-run r02.

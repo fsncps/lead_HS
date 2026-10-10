@@ -43,9 +43,10 @@ after each run.
 | run | scope | status | SHA | notes |
 |---|---|---|---|---|
 | r01 | canonical identity layer: migration 0013, resolve pass, `identity rebuild`, doctor identity checks | DELIVERED | 4a661e6 + 6b429f0 | 461 passed; real-data gates green (report-0.3.4-r01.md) |
-| r02 | enrichment pass (majority fill/replace, MA13 rules) | **DEFERRED** → follow-up unit v0.3.5 | — | unit closed early (user decision 2026-10-10) — entry + plans carry over verbatim |
-| r03 | matching layer: blocking + scoring + linkage_candidate + review-queue visibility | **DEFERRED** → follow-up unit v0.3.6 | — | same; score-band calibration pins at v0.3.6 planning |
-| FINAL | full-suite + live-op verification + reconciliation | **FOLDED into ship** | — | early close: r01's gates re-walked at ship (see CLOSURE) |
+| r02 | **HS completion** (D51): curated hs_group_map CSV + deterministic apply + coverage status | PLANNED | — | user-pulled-forward 2026-10-10 ("all product rows with HS"); universal HS4 granularity — see REOPEN |
+| r03 | enrichment pass (majority fill/replace, MA13 rules) | **DEFERRED** → follow-up unit v0.3.6 | — | renumbered from r02 at the 2026-10-10 reopen; carries verbatim |
+| r04 | matching layer: blocking + scoring + linkage_candidate + review-queue visibility | **DEFERRED** → follow-up unit v0.3.7 | — | renumbered from r03; score-band calibration pins at v0.3.7 planning |
+| FINAL | full-suite + live-op verification + reconciliation | PLANNED | — | after the last regular run of the reopened unit |
 
 ## r01 — canonical identity layer
 
@@ -273,3 +274,25 @@ carries: housekeeping may treat v0.3.4 as verification-complete for
   archiving; v0.3.5/v0.3.6 inherit this file's r02/r03 entries + the
   deferred FINAL inputs above; probe-report publish history untouched
 valid-until: n/a — terminal record for the unit
+
+## REOPEN (2026-10-10, user decision)
+
+Unit reopened post-ship for an additional run: **r02 = HS completion**
+(D51) — user direction "plan as additional run in 0.3.4 — all product
+rows with HS". The closure section above stays as the r01-era record;
+this run table supersedes it for lifecycle state. Reopen mechanics:
+branch `v0.3.4` recreated off main (post-archive commits
+23a80e0/47825cc/efb932c/f0ac0e6 included), unit dirs moved out of
+`_archive/`, registries flipped back, tag `v0.3.4` remains at the
+first-ship merge 2c73aea (historical marker, not the unit's end).
+Prior-scope renumbering: enrichment r02→r03, matching r03→r04; the
+v0.3.6/v0.3.7 PIPELINE entries carry their payload (updated refs).
+
+r02 design basis: D51 (CONCEPT MASTER entry 46) + SDS_ACQUISITION-
+adjacent probe facts — ECAT 25 distinct eu_group values (top
+"Decorative paints, varnishes, and related products (2014 criteria)"
+= 16,454 products), BASTA 320 distinct bk04 codes with 0 rows lacking
+a group key (probe 2026-10-10). Granularity: universal HS4 per user
+direction — every group maps to its primary HS4; multi-HS groups
+record alternatives in the mapping note column; paint classes
+3208/3209/3213 are the load-bearing values.
