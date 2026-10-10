@@ -20,6 +20,7 @@ current run: r02 (HS completion)    branch: v0.3.4    base: main@f0ac0e6 (reopen
 | run | status | SHA | tests |
 |---|---|---|---|
 | r01 | DELIVERED 2026-10-10 (executed; public report docs/report/report-0.3.4-r01.md) | 4a661e6 + 6b429f0 | 461 passed; real-data gates green; rebuild + chaos → FINAL |
+| r02 | PLANNED | — | — (plan: r02/PHASE02.md) |
 
 ## DECISIONS
 

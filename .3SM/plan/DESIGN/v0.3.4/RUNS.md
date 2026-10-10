@@ -296,3 +296,62 @@ a group key (probe 2026-10-10). Granularity: universal HS4 per user
 direction — every group maps to its primary HS4; multi-HS groups
 record alternatives in the mapping note column; paint classes
 3208/3209/3213 are the load-bearing values.
+
+## r02 — HS completion
+
+**Goal:** products.hs_code populated for all rows from a curated
+source-group → primary-HS4 map; deterministic, idempotent, run-booked;
+coverage status + pending worklist (= de5 BASTA paint-subset
+enumeration); doctor coverage line.
+
+**Decisions in force:** D51 (CONCEPT MASTER 46); reopen direction
+"all product rows with HS" (universal HS4, primary-code + note for
+multi-HS groups); Q1 build-curated first pass with confidence flags
+(user review of flagged rows); Q2 doctor check included.
+
+**Plan:** `../ENGINEERING/v0.3.4/r02/PHASE02.md` (SMALL-mode review —
+Step 0 + combined pass; issues 1–5 recorded there; failure-mode table:
+no CRITICAL GAPS).
+
+**User test plan (the run's verification):**
+1. `hs status` pre-apply → all pending, 0 coverage.
+2. `hs apply --dry-run` → counts only, no run row, no writes.
+3. `hs apply` → coverage ≈ 271,005; spot-check ECAT paint product →
+   3208/3209, BASTA Plastgolv / Fönsterdörrar products → map values.
+4. re-apply → all unchanged (idempotence).
+5. `doctor` → hs line green.
+6. edit one map row → re-apply → value changes, counters correct;
+   revert.
+7. review `confidence=flag` rows in the CSV (Q1 loop).
+
+**FINAL test-plan inputs:** dup-key + non-4-digit CSV refusal ·
+conflict path skip+count · reviewed-NULL vs pending distinction ·
+unmapped eu_group → pending · BK04 zero-pad exact match ·
+rebuild→re-apply order dependency · re-apply after map edit · SIGKILL
+rollback · empty-map refusal.
+
+### SKILL RECORD — 3sm-eng-run r02 — 2026-10-10
+
+checklist:
+- [x] Ledger reconciliation — reopen commit 312f37b registers r02
+  before this planning pass; branch `v0.3.4` matches unit id;
+  quiescent (no run IN PROGRESS)
+- [x] Step 0 — leverage: identity run-bookkeeping/back-link/dict-CSV
+  patterns reused; minimum set 5 files + CSV; ≤6 files, 0 new classes;
+  OPEN-ITEMS: de5 synergy recorded, r01 PROVISIONAL stays open
+- [x] Mode — SMALL CHANGE (user accepted; no REDUCTION)
+- [x] Combined review — issues 1–5 (map-as-CSV d19; majority-vote
+  conflict skip; universal-HS4 interpretation recorded; functional-only
+  testing; single-transaction perf) — no STOP-worthy gaps
+- [x] Batched question round — Q1 curation posture (A: build
+  first-pass + flags), Q2 doctor check (include) — both recommended
+  options chosen
+- [x] Phase plan authored (r02/PHASE02.md); user test plan into RUNS.md
+- [x] Failure modes — 4 codepath rows, 0 CRITICAL GAPS
+carries: build may take the back-link column name (`product_uuid`),
+  `_ensure_migrated` helper, run_kind insert pattern, dict/ CSV
+  conventions, and the three-state coverage semantics as settled;
+  suite authoring + run at gate follows r01 project practice; FINAL
+  inherits r01's PROVISIONAL inputs unchanged + r02's above
+valid-until: RUNS.md re-plan, migration-order changes (0014), or a
+  product-schema change touching eu_group/back-links
