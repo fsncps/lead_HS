@@ -114,9 +114,17 @@ def ensure_backlink_column(conn: sqlite3.Connection, table: str) -> bool:
 
 def drop_backlink_column(conn: sqlite3.Connection, table: str) -> None:
     """Remove the back-link column (rebuild teardown; SQLite >= 3.35
-    enforced by the caller)."""
-    conn.execute(f"ALTER TABLE {_q(table)} DROP COLUMN product_uuid")
+    enforced by the caller). Indexes referencing the column must drop
+    BEFORE the column — SQLite refuses DROP COLUMN while an index
+    depends on it (r02 defect: 0013's _puid index blocked teardown)."""
     conn.execute(f"DROP INDEX IF EXISTS {_q(table + '_puid')}")
+    for row in conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='index' AND tbl_name = ? "
+        "AND sql LIKE '%product_uuid%'",
+        (table,),
+    ).fetchall():
+        conn.execute(f"DROP INDEX IF EXISTS {_q(row[0])}")
+    conn.execute(f"ALTER TABLE {_q(table)} DROP COLUMN product_uuid")
 
 
 def tables_present(conn: sqlite3.Connection) -> bool:

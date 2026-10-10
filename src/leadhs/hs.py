@@ -119,7 +119,7 @@ def _load_temp_map(conn, mapping) -> None:
 
 
 def _drop_temp(conn) -> None:
-    for name in ("_hs_votes", "_hs_major"):
+    for name in ("_hs_votes", "_hs_best"):
         conn.execute(f"DROP TABLE IF EXISTS temp.{name}")
 
 
@@ -151,8 +151,9 @@ def _ecat_update(conn) -> int:
 
 
 def _basta_major(conn) -> int:
-    """Vote table → per-product top-voted HS4; returns the conflict
-    count (products with ≥2 distinct top-voted values)."""
+    """Vote table → per-product top-voted HS4 pick (_hs_best, indexed);
+    returns the conflict count (products with ≥2 distinct top-voted
+    values)."""
     conn.execute(
         "CREATE TEMP TABLE _hs_votes AS "
         "SELECT r.product_uuid AS uuid, m.hs_code AS hs, COUNT(*) AS n "
@@ -162,36 +163,33 @@ def _basta_major(conn) -> int:
         "AND r.bk04_code IS NOT NULL AND r.bk04_code != '' "
         "GROUP BY 1, 2"
     )
+    conn.execute("CREATE INDEX _hs_votes_ix ON _hs_votes (uuid)")
     conn.execute(
-        "CREATE TEMP TABLE _hs_major AS "
-        "SELECT v.uuid, v.hs, v.n FROM _hs_votes v "
-        "WHERE v.n = (SELECT MAX(x.n) FROM _hs_votes x WHERE x.uuid = v.uuid)"
+        "CREATE TEMP TABLE _hs_best AS "
+        "SELECT uuid, MIN(hs) AS hs, COUNT(*) AS k FROM ("
+        "  SELECT v.uuid, v.hs FROM _hs_votes v "
+        "  WHERE v.n = (SELECT MAX(x.n) FROM _hs_votes x WHERE x.uuid = v.uuid)"
+        ") GROUP BY uuid"
     )
-    return conn.execute(
-        "SELECT COUNT(*) FROM (SELECT uuid FROM _hs_major GROUP BY uuid HAVING COUNT(*) > 1)"
-    ).fetchone()[0]
+    conn.execute("CREATE INDEX _hs_best_ix ON _hs_best (uuid)")
+    return conn.execute("SELECT COUNT(*) FROM _hs_best WHERE k > 1").fetchone()[0]
 
 
 def _basta_planned(conn) -> int:
     return conn.execute(
-        "SELECT COUNT(*) FROM ("
-        "  SELECT m.uuid FROM _hs_major m "
-        "  JOIN product p ON p.uuid = m.uuid "
-        "  WHERE m.uuid NOT IN ("
-        "    SELECT uuid FROM _hs_major GROUP BY uuid HAVING COUNT(*) > 1) "
-        "  AND (p.hs_code IS NULL OR p.hs_code != m.hs)"
-        ")"
+        "SELECT COUNT(*) FROM _hs_best b "
+        "JOIN product p ON p.uuid = b.uuid "
+        "WHERE b.k = 1 AND (p.hs_code IS NULL OR p.hs_code != b.hs)"
     ).fetchone()[0]
 
 
 def _basta_update(conn) -> int:
     cur = conn.execute(
         "UPDATE product SET hs_code = ("
-        "  SELECT m.hs FROM _hs_major m WHERE m.uuid = product.uuid) "
-        "WHERE product.uuid IN ("
-        "  SELECT uuid FROM _hs_major GROUP BY uuid HAVING COUNT(*) = 1) "
+        "  SELECT b.hs FROM _hs_best b WHERE b.uuid = product.uuid) "
+        "WHERE product.uuid IN (SELECT uuid FROM _hs_best WHERE k = 1) "
         "AND (product.hs_code IS NULL OR product.hs_code != ("
-        "  SELECT m.hs FROM _hs_major m WHERE m.uuid = product.uuid))"
+        "  SELECT b.hs FROM _hs_best b WHERE b.uuid = product.uuid))"
     )
     return cur.rowcount
 

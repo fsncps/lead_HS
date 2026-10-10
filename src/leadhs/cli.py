@@ -1262,6 +1262,7 @@ cli.add_command(source)
 cli.add_command(probe)
 cli.add_command(raw)
 cli.add_command(identity)
+cli.add_command(hs)
 cli.add_command(doctor)
 
 
