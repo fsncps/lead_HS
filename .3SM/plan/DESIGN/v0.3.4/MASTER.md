@@ -156,7 +156,47 @@ context above).
 
 ## INTERFACES
 
-(authored as sections decide them)
+### CLI surface (`leadhs identity …`)
+
+| verb | purpose | exit codes |
+|---|---|---|
+| `identity resolve [--source ID] [--dry-run] [--batch N]` | pass 1: extract → normalize → match-or-create → back-link (per source or all) | 0 ok · 1 usage · 2 refused source / budget-class · 130 interrupt |
+| `identity enrich [--dry-run]` | pass 2: majority fill/replace of canonical fields | same |
+| `identity match [--dry-run]` | blocking → scoring → linkage_candidate verdicts | same; MissingDependencyError → 2 |
+| `identity rebuild` | teardown + full re-resolve (il2 recovery verb) | BackupError aborts before drop → 2 |
+| `identity status` | per-source identity state: manifest_hash consumed, back-link coverage, queue depth | 0 |
+
+`--source` validates against the register (d8 id pattern). DB-init
+preflight (d22) applies to all verbs.
+
+### Run kinds (unified `run` table, d3)
+
+`identity_resolve` · `identity_enrich` · `identity_match` — status,
+per-source count details (rows, groups, created, linked, skipped,
+refused), dry-runs excluded from report floors (d25 convention).
+
+### Named error classes (the Section 2 registry is the contract)
+
+SourceMissingError · SourceSchemaError · ManifestDriftError ·
+NormalizeError · EmptyNormError · MissingDependencyError ·
+BlockTooLargeError · BackupError (all carry one-line remedies).
+
+### Migration 0013 content inventory
+
+`manufacturer` (uuid PK; name_norm UNIQUE NOT NULL; name NOT NULL;
+country; city; vat_id) · `product` (uuid PK; ident_string UNIQUE NOT
+NULL; ident_nr NOT NULL; manufacturer_uuid FK; hs_code; eu_group; name;
+brand; url — the MA10/MA14 contracts) · `identity_state` (per source:
+consumed manifest_hash) · `linkage_candidate` (pair + method + scores +
+evidence tier + verdict + review status; UNIQUE (row_a, row_b, method))
+· lookups as needed (code constants for block caps live in code, il6).
+Additive only; design-ahead block renumbers 0014–0020 (il1).
+
+### Seed CSV contracts (dict/, il11)
+
+`legal_forms.csv` (form,note) · `ident_prefixes.csv` (prefix,source_id)
+— loaded by normalize; versioned in git; reviewed like the substance
+dictionary.
 
 ## TESTING POSTURE
 
@@ -203,7 +243,12 @@ recalibration = re-run the sweep, never a hand-edit.
 
 ## RISKS
 
-(authored as sections decide them)
+| risk | mitigation | owner |
+|---|---|---|
+| score bands mis-calibrate → wrong auto-matches | calibration plan (labelled set + sweep); review queue; no silent merges | operator, first real run |
+| normalization rule change → uuid churn | MA15 doctrine; versioned rules; `identity rebuild` (il2) | design, rules review |
+| real-data field surprises (collisions within one manufacturer at scale) | live-op first pass user-tested; skipped/refused counts visible | build + user |
+| review-queue volume unknown | bands tuned for low false-positive rate; queue report-rendered, queryable | operator |
 
 ## DECISIONS
 
@@ -271,6 +316,17 @@ MATCHING.md — this section records unit-level design decisions only.)*
   machine-owned rows (auto_match/no_match/pending review); human-decided
   rows (confirmed/rejected) are never touched and the protected count is
   reported. Human corrections remain append-only new rows (MA5/D5).
+- **il13 (2026-10-10, Section 7):** resolve keeps an in-memory
+  normalized-key index (bulk-loaded per run, write-through; ~300k keys ≈
+  tens of MB); inserts via executemany batches. No per-row SELECT loops.
+- **il14 (2026-10-10, Section 7):** enrich is set-based SQL — one
+  GROUP BY aggregation per canonical field over the raw tables, majority
+  by count ordering, ties detected in SQL and never applied (MA13).
+  Never a per-record Python scan.
+- **il15 (2026-10-10, Section 8):** `leadhs doctor` gains an identity
+  section: back-link coverage (back-links = raw rows − skipped),
+  orphaned-back-link detection, per-source manifest drift (il2's check,
+  queryable without running resolve).
 - **il4 (2026-10-10, Section 1 close):** uuid namespace pinned:
   `uuid5(uuid.NAMESPACE_URL, "https://github.com/fsncps/lead_HS#identity-v1")`;
   domain prefixes `manufacturer:<name_norm>`, `product:<ident_string>`.
