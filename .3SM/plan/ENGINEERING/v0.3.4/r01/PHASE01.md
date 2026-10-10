@@ -191,6 +191,31 @@ torn-down → re-derived, abort before any teardown on BackupError).
 8. **Docs duty** — build appends the run row (status/SHA/tests) to
    RUNS.md + unit MASTER at the moment of truth (1A).
 
+## REVIEW PINS (confirmed at the r01 plan review, 2026-10-10)
+
+- **1A (user A):** canonical GTIN-14 — `norm_gtin` as drafted.
+- **1B (user A):** election rule as drafted (gtin-wins → min-sorted
+  article → name basis; counts in summary).
+- **Sec 2 (stated):** back-link column FK-less by SQLite limitation —
+  integrity = application level + doctor orphan check; R7 unaffected.
+- **Sec 2 (stated):** the interpreter's inline quoting (2 lines) is
+  duplicated in `spec.py` rather than imported — identity must not grow
+  a code dependency on `raw/` (data reads only, design coupling rule).
+- **Sec 2 (stated):** sorted-token norms are identity keys, not display
+  — the readable value lives in `name`/manufacturer `name`; docs must
+  not present norms as human-readable. Build updates the normalize.py
+  module docstring (it still says "case preserved"/v0.2.2 exact-match
+  regime) — stale-docstring law.
+- **Sec 2 (stated):** manufacturer match-or-create is by `name_norm`
+  ONLY (MA10) — source-local company ids never mint manufacturer
+  identity; same-name companies collapse (correct), cross-group product
+  collapse is r03's job.
+- **Sec 4 (pin):** adapters collect member rowids in ONE ordered pass
+  (`SELECT rowid, … ORDER BY group key` + groupby) — back-link UPDATEs
+  run by rowid lists. Never a per-group WHERE scan (80k groups × table
+  scan would be quadratic); extends il13's no-per-row-loop rule to the
+  raw read.
+
 ## FILES TOUCHED
 
 - `src/leadhs/migrations/0013__identity.sql` (new)
